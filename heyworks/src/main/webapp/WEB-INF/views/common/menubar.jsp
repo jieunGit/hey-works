@@ -9,9 +9,9 @@
     #header{
         width: 1200px;
         height: 50px;
-        
         margin-top: 20px;
         border: 1px solid lightgray;
+        margin:auto;
     }
     #header>div{float: left; height: 100%;}
     #logo{width: 252px;}
@@ -42,9 +42,9 @@
         margin-left: 30px;
     }
     #sidebar{
-        width: 252px;
-        height: 800px;
-        
+        width: 70px;
+        height: 800px; 
+        margin:auto;      
     }
     #sidebar>div{float: left; height: 100%;}
     #mini{
@@ -64,10 +64,7 @@
         height: 100%;
         padding: 18px;        
     }
-    #detail{
-        width: 180px;
-        border: 1px solid red;
-    }
+ 
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
