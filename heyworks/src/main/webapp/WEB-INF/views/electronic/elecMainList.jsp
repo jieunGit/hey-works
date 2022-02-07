@@ -4,17 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>전자결재</title>
 <style>
 	.outer{
 		width:1200px;
 		height:1200px;
-		margin-left:300px;
+	    margin:auto;
 	}
+	.outer>div{float:left;}
     .elec-outer{
         margin: auto;
         margin-top:20px;
- 		margin-left:20px;
+ 		margin-left:40px;
         width: 900px;
         height: 900px;
     }
@@ -43,6 +44,7 @@
 	<div class="outer">
 	
 		<jsp:include page="../common/menubar.jsp" />
+		<jsp:include page="sidebar.jsp" />
 	
 		<div class="elec-outer">
 	        <!-- 결재 대기 문서 -->
