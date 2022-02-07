@@ -132,6 +132,8 @@
 		
 		
 	</div>
+
+	<a href="main.el">전자결재메인</a>
 	
 
 </body>
