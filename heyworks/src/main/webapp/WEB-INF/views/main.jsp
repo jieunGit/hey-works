@@ -129,9 +129,11 @@
 				</div>
 			</div>
 		</div>
-		
+
 		
 	</div>
+
+	<a href="../electronic/boardListView.jsp">전자결재메인</a>
 	
 
 </body>
