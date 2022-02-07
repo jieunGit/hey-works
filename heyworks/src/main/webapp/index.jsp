@@ -8,6 +8,8 @@
 </head>
 <body>
 
+	<jsp:forward page="WEB-INF/views/main.jsp" />
+
 	여러분 헬로 ㅎㅎ -누리
 	
 	셋팅 완료!! 감사합니당 -수현

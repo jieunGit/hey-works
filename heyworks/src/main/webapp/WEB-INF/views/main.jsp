@@ -5,8 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	div{float:left;}
+</style>
 </head>
 <body>
-			하 힘들다 -누리
+
+	<jsp:include page="electronic/boardListView.jsp" />
+	
+
 </body>
 </html>
