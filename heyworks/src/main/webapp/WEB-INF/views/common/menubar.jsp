@@ -138,9 +138,7 @@
                 </a></li>
             </ul>
         </div>
-        <div id="detail">
-            
-        </div>
+       
     </div>
 
 </body>
