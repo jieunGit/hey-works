@@ -14,10 +14,17 @@
 	}
 	.outer>div{float:left;}
 	
-   #detail{
+	
+   #menubar{
    	 border: 1px solid red;
 	 width: 180px;
 	 height: 800px;
+   }
+
+   #detail{
+	   border: 1px solid blue;
+	   width: 950px;
+	   height:100%;
    }
 
 </style>
@@ -28,9 +35,14 @@
 		<jsp:include page="../common/menubar.jsp" />
 		
 		
-		 <div id="detail">
+		 <div id="menubar">
             
         </div>
+
+		<div id="detail">
+			
+
+		</div>
 	
 	</div>
 	
