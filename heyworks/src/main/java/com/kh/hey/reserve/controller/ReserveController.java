@@ -17,7 +17,10 @@ public class ReserveController {
 	public String reservation() {
 		return "reserve/reservation";
 	}
-	
+	@RequestMapping(value="weekend.re")
+	public String WeekendReserveList() {
+		return "reserve/weekendReserve";
+	}
 	@RequestMapping(value="teset.re")
 	public String test() {
 		return "reserve/test";
