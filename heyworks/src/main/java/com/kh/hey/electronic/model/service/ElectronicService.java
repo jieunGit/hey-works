@@ -2,6 +2,7 @@ package com.kh.hey.electronic.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.electronic.model.vo.Electronic;
 
 public interface ElectronicService{

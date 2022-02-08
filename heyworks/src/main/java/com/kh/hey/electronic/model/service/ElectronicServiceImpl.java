@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
+import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.electronic.model.vo.Electronic;
 
 @Service
