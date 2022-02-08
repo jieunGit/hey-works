@@ -17,10 +17,10 @@
 	
 
    #detail{
-	  
-	   width: 900px;
+		width: 950px;
 	   height:100%;
 	   display:inline-block;
+	   border: 1px solid lightgray;
    }
 
 

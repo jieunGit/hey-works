@@ -17,12 +17,11 @@ public class ReserveController {
 	public String reservation() {
 		return "reserve/reservation";
 	}
+	
+	//주간예약리스트, 예약하기모달, 예약취소모달
 	@RequestMapping(value="weekend.re")
 	public String WeekendReserveList() {
 		return "reserve/weekendReserve";
 	}
-	@RequestMapping(value="teset.re")
-	public String test() {
-		return "reserve/test";
-	}
+	
 }

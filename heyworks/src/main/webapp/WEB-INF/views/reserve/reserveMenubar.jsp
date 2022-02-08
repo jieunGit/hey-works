@@ -29,7 +29,7 @@
 		margin: 10px 0px 0px 15px;
 	}
 	
-	   #resources{
+	 #resources{
 	list-style-type :none;
 	
    }
@@ -44,7 +44,7 @@
 	
 		
 		 <div id="menubar">
-            <p>>> 예약</p>
+            <p><i class="fas fa-angle-double-right"></i> 예약</p>
 			<button type="button" class="btn btn-primary">+예약하기</button>
 			<br><br>
 			<i class="fas fa-cog" style= "margin-left: 20px;"></i> 
@@ -52,9 +52,9 @@
 			
 			<!-- 자원카테고리불러오기 -->
 			<ul id="resources">
-				<li><i class="fas fa-history"></i> 회의실</li> <br>
-				<li><i class="fas fa-history"></i> 차량</li>	<br>
-				<li><i class="fas fa-history"></i> 비품</li>
+				<li><i href="" class="fas fa-history"></i> 회의실</li> <br>
+				<li><i href=""  lass="fas fa-history"></i> 차량</li>	<br>
+				<li><i href="" class="fas fa-history"></i> 비품</li>
 			</ul>
         </div>
 		 
