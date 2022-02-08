@@ -2,7 +2,15 @@ package com.kh.hey.electronic.model.vo;
 
 import java.sql.Date;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
 public class Electronic {
 	
 	// 전자결재 메인테이블
