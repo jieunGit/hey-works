@@ -17,8 +17,7 @@
 	
 
    #detail{
-	  
-	   width: 950px;
+	   width: 900px;
 	   height:100%;
 	   display:inline-block;
        border: 1px solid lightgray;
@@ -35,8 +34,6 @@
 		<jsp:include page="../address/addressMenubar.jsp" />
 		
 		
-		
-
 		<div id="detail">
         </div>
 
