@@ -1,5 +1,5 @@
 package com.kh.hey.common.model.service;
 
-public class ReplyService {
+public interface ReplyService {
 
 }
