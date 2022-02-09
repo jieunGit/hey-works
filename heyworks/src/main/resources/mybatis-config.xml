@@ -14,5 +14,6 @@
 	
 	<mappers>
 	 	<mapper resource="/mappers/approval-mapper.xml" />
-	</mappers>
+	 </mappers>
+	
 </configuration>
