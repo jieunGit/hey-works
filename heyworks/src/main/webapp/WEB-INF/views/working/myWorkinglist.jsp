@@ -71,7 +71,7 @@
             </div><br>
 
             <div class="working-box">
-                <strong>근무시간</strong>
+                <strong><img src="resources/images/time.png" style="width: 20px; height: 20px;">근무시간</strong>
                 <ul class="working-box-list" style="width:30%">
                     <li style="border-right:1px solid gray;">
                         <strong>근무일수</strong><br><br>
@@ -87,8 +87,8 @@
                     </li>
                 </ul>
 
-                <strong>근태현황</strong>
-                <ul class="working-box-list"  style="width:30%">
+                <strong><img src="resources/images/to-do-list.png" style="width: 20px; height: 20px;">근태현황</strong>
+                <ul class="working-box-list" style="width:30%">
                     <li style="border-right:1px solid gray;">
                         <strong>지각</strong><br><br>
                         <span>1회</span>
@@ -107,7 +107,7 @@
                     </li>
                 </ul>
 
-                <strong>휴가현황</strong>
+                <strong><img src="resources/images/gift.png" style="width: 20px; height: 20px;">휴가현황</strong>
                 <ul class="working-box-list"  style="width:21%">
                     <li style="border-right:1px solid gray;">
                         <strong>잔여휴가</strong><br><br>
