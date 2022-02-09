@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
 <style>
+		
    .outer{
 		width:1200px;
 		height:1200px;

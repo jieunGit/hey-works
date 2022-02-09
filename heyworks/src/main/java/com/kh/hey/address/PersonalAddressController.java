@@ -7,9 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PersonalAddressController {
 
 	
-	//나의 예약목록
+	//즐겨찾는주소록, 전체, 부서등 
 	@RequestMapping(value="personAdList.ad")
 	public String myReserveList() {
 		return "address/likedAddress";
 	}
+	
+	//삭제목록화면
+	@RequestMapping(value="deleteAdList.ad")
+	public String deleteAddressList() {
+		return "address/deleteAddressList";
+	}
+	
+	//삭제목록화면
+		@RequestMapping(value="adAllList.ad")
+		public String AllAddressList() {
+			return "address/personAddressAllList";
+		}
 }
