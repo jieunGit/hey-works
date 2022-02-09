@@ -10,7 +10,7 @@
 <script src="https://kit.fontawesome.com/6584921572.js" crossorigin="anonymous"></script>
 <style>
 	
-	
+
    #menubar{
   	 border: 1px solid lightgray;
 	 width: 180px;
