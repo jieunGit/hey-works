@@ -1,14 +1,14 @@
-package com.kh.hey.electronic.model.service;
+package com.kh.hey.approval.model.service;
 
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
 import com.kh.hey.common.model.vo.PageInfo;
-import com.kh.hey.electronic.model.vo.Electronic;
+import com.kh.hey.approval.model.vo.Approval;
 
 @Service
-public class ElectronicServiceImpl implements ElectronicService {
+public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public int selectListCount() {
@@ -16,47 +16,47 @@ public class ElectronicServiceImpl implements ElectronicService {
 	}
 
 	@Override
-	public ArrayList<Electronic> selectList(PageInfo pi) {
+	public ArrayList<Approval> selectList(PageInfo pi) {
 		return null;
 	}
 
 	@Override
-	public int insertElectronic(Electronic elc) {
+	public int insertElectronic(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public int insertBusinessDraft(Electronic elc) {
+	public int insertBusinessDraft(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public int insertEquipmentBuy(Electronic elc) {
+	public int insertEquipmentBuy(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public int insertItemList(Electronic elc) {
+	public int insertItemList(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public int insertCertificate(Electronic elc) {
+	public int insertCertificate(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public int insertRecruiment(Electronic elc) {
+	public int insertRecruiment(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public int insertExpenseReport(Electronic elc) {
+	public int insertExpenseReport(Approval a) {
 		return 0;
 	}
 
 	@Override
-	public Electronic selectElectronic(String elecApprovalNo) {
+	public Approval selectElectronic(String elecApprovalNo) {
 		return null;
 	}
 
@@ -135,4 +135,5 @@ public class ElectronicServiceImpl implements ElectronicService {
 		return 0;
 	}
 
+	
 }
