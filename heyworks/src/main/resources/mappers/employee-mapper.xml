@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="employeeMapper">
+
+		<resultMap id="employeeResult" type="Employee">		
+		<result column="user_no" property="userNo" />
+		<result column="user_name" property="userName" />
+		<result column="user_id" property="userId" />
+		<result column="user_pwd" property="userPwd" />
+		<result column="email" property="email" />
+		<result column="birth" property="birth" />
+		<result column="phone" property="phone" />
+		<result column="call" property="call" />
+		<result column="post" property="post" />
+		<result column="address" property="address" />
+		<result column="address_detail" property="addressDetail" />
+		<result column="hire_date" property="hireDate" />
+		<result column="end_date" property="endDate" />
+		<result column="status" property="status" />
+		<result column="dept_code" property="deptCode" />
+		<result column="job_code" property="jobCode" />
+		<result column="admin_yn" property="adminYn" />
+		<result column="image" property="image" />
+	</resultMap>
+
+	<select id="loginEmployee" resultMap="employeeResult">
+
+	select
+	user_no
+	,user_name
+	,user_id
+	,user_pwd
+	,email
+	,birth
+	,phone
+	,call
+	,post
+	,address
+	,address_detail
+	,hire_date
+	,end_date
+	,status
+	,dept_code
+	,job_code
+	,admin_yn
+	,image
+	from employee
+	where status = 'Y'
+	and user_id = #{userId}
+<!--   and user_pwd = #{userPwd} -->		
+	
+	</select>
+	
+</mapper>
