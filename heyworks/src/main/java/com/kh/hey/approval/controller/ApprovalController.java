@@ -1,10 +1,17 @@
 package com.kh.hey.approval.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.hey.approval.model.service.ApprovalService;
+import com.kh.hey.approval.model.vo.Approval;
+import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.common.template.Pagination;
 
 @Controller
 public class ApprovalController {
@@ -44,11 +51,23 @@ public class ApprovalController {
 	/*목록 페이지*/
 	
 	@RequestMapping("onAllList.el")
-	public String ongoingList() {
+	public String ongoingList(@RequestParam(value="cpage", defaultValue="1")int currentPage, String status, Model model) {
+		
+		int listCount = aService.selectListCount(status);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Approval> apList = aService.selectList(pi, status);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("apList", apList);
+		
+		System.out.println(pi);
+		System.out.println(apList.size());
+		System.out.println(apList);
 		
 		return "approval/ongoingAllList";
 		
-	}
+	} // 각 게시판 페이징처리해서 조회
 	
 	@RequestMapping("endList.el")
 	public String endAllList() {
