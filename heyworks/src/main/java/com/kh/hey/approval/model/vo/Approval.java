@@ -1,4 +1,4 @@
-package com.kh.hey.electronic.model.vo;
+package com.kh.hey.approval.model.vo;
 
 import java.sql.Date;
 
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Electronic {
+public class Approval {
 	
 	// 전자결재 메인테이블
 	private String elecApprovalNo;

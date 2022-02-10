@@ -8,6 +8,12 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	
-
+	<typeAliases>
+		<typeAlias type="com.kh.hey.approval.model.vo.Approval" alias="Approval" />
+	</typeAliases>
+	
+	<mappers>
+	 	<mapper resource="/mappers/approval-mapper.xml" />
+	 </mappers>
 	
 </configuration>

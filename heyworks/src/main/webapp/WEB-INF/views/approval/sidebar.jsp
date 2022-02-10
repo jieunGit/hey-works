@@ -49,35 +49,33 @@
                 <img src="resources/images/2722998.png" style="width: 40px; height: 40px;">
                 전자결재
             </li>
-            <li id="write"><a href="" style="color: white;">작성하기</a></li>
+            <li id="write"><a href="approvalFrom.el" style="color: white;">작성하기</a></li>
             <li><img src="resources/images/3759325.png">자주쓰는양식
                 <ul>
-                    <li><a href="">업무기안서</a></li>
-                    <li><a href="">비품구매품의서</a></li>
+                    <li><a href="bdEnrollForm.el">업무기안서</a></li>
+                    <li><a href="ebEnrollForm.el">비품구매품의서</a></li>
                 </ul>
             </li>
             <li><img src="resources/images/3759325.png">진행중인문서
                 <ul>
-                    <li><a href="">전체</a></li>
+                    <li><a href="onAllList.el">전체</a></li>
                     <li><a href="">결재대기</a></li>
                     <li><a href="">결재예정</a></li>
                     <li><a href="">참조/열람대기</a></li>
                 </ul>
             </li>
-            <li><img src="resources/images/3759325.png">문서함
+            <li><img src="resources/images/3759325.png">내 문서함
                 <ul>
-                    <li><a href="">전체</a></li>
-                    <li><a href="">내 기안함</a></li>
-                    <li><a href="">결재완료문서</a></li>
+                    <li><a href="endList.el">결재완료문서</a></li>
                     <li><a href="">참조/열람문서</a></li>
-                    <li><a href="">반려된문서</a></li>
+                    <li><a href="">반려문서</a></li>
                     <li><a href="">임시저장</a></li>
                 </ul>
             </li>
             <li><img src="resources/images/3759325.png">관리자 설정
                 <ul>
-                    <li><a href="">삭제된문서</a></li>
-                    <li><a href="">전자결재관리자</a></li>
+                    <li><a href="deleteList.el">삭제된문서</a></li>
+                    <li><a href="approvalad.el">전자결재관리자</a></li>
                 </ul>
             </li>
         </ul>
