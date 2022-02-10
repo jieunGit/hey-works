@@ -19,7 +19,60 @@ public class ApprovalController {
 		
 	}
 	
+	/*작성하기 페이지*/
+	@RequestMapping("approvalFrom.el")
+	public String approvalFrom() {
+		
+		return "approval/approvalEnrollFrom";
+		
+	}
 	
+	@RequestMapping("bdEnrollForm.el")
+	public String businessDraftEnrollForm() {
+		
+		return "approval/businessDraftEnrollForm";
+		
+	}
+	
+	@RequestMapping("ebEnrollForm.el")
+	public String eqBuyEnrollForm() {
+		
+		return "approval/eqBuyEnrollForm";
+		
+	}
+	
+	/*목록 페이지*/
+	
+	@RequestMapping("onAllList.el")
+	public String ongoingList() {
+		
+		return "approval/ongoingAllList";
+		
+	}
+	
+	@RequestMapping("endList.el")
+	public String endAllList() {
+		
+		//결재완료에 연결 나중에 수정하기
+		return "approval/endAllList";
+		
+	}
+	
+	/*전자결재 관리자 파트*/
+	
+	@RequestMapping("deleteList.el")
+	public String deleteApproval() {
+		
+		return "approval/deleteApproval";
+		
+	}
+	
+	@RequestMapping("approvalad.el")
+	public String approvalAdminList() {
+		
+		return "approval/approvalAdmin";
+		
+	}
 	
 	
 
