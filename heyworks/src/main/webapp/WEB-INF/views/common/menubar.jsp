@@ -65,6 +65,7 @@
         padding: 18px;        
     }
  
+    
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -115,7 +116,7 @@
                 <li><a href="">
                     <img src="resources/images/bag.png">
                 </a></li>
-                <li><a href="">
+                <li><a href="main.el">
                     <img src="resources/images/approval.png">
                 </a></li>
                 <li><a href="">
@@ -130,17 +131,16 @@
                 <li><a href="">
                     <img src="resources/images/key.png">
                 </a></li>
-                <li><a href="">
+                <li><div id="addressbook"><a href="">
                     <img src="resources/images/addressbook.png">
+                    </div>
                 </a></li>
                 <li><a href="">
                     <img src="resources/images/coperation.png">
                 </a></li>
             </ul>
         </div>
-        <div id="detail">
-            
-        </div>
+       
     </div>
 
 </body>
