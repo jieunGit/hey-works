@@ -24,4 +24,35 @@ public class ReserveController {
 		return "reserve/weekendReserve";
 	}
 	
+	//자원카테고리list 페이지
+	@RequestMapping(value="categoryList.re")
+	public String CategoryList() {
+		return "reserve/adminResourceCategory";
+	}
+	
+	
+	//자원카테고리 이용안내페이지
+	@RequestMapping(value="categoryInfo.re")
+	public String CategoryInfo() {
+		return "reserve/adminResourceCategoryInfo";
+	}
+	
+	//자원카테고리 자원리스트페이지
+	@RequestMapping(value="resourceList.re")
+	public String ResourceList() {
+		return "reserve/adminResouceList";
+	}
+	//자원카테고리 자원추가
+		@RequestMapping(value="resourceInsert.re")
+		public String ResourceInsert() {
+			return "reserve/adminResourceAdd";
+		}
+				
+	//자원카테고리 자원수정
+	@RequestMapping(value="resourceUpdate.re")
+	public String ResourceUpdate() {
+		return "reserve/adminResourceUpdate";
+	}
+			
+	
 }
