@@ -1,14 +1,23 @@
 package com.kh.hey.reserve.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.kh.hey.reserve.model.service.ReservationService;
 
 @Controller
 public class ReserveController {
 	
+	@Autowired 
+	private ReservationService mService;
+	
 	//나의 예약목록
-	@RequestMapping(value="reservelist.re")
+	@RequestMapping(value="myReserve.re")
 	public String myReserveList() {
+		
+	
+		
 		return "reserve/myReserve";
 	}
 	
