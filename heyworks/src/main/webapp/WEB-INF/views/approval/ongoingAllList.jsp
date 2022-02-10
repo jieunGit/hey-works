@@ -97,7 +97,7 @@
                     <td>${ap.approvalNo}</td>
                     <td>${ap.userNo}</td>
                     <td>
-                    	<c:if test="${ap.emergency eq Y}">
+                    	<c:if test="${ap.emergency eq 'Y'}">
                         	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
                         </c:if>
                     </td>

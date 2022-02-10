@@ -63,6 +63,7 @@ public class ApprovalController {
 		
 		System.out.println(pi);
 		System.out.println(apList.size());
+		System.out.println(apList);
 		
 		return "approval/ongoingAllList";
 		
