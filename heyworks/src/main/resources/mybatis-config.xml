@@ -13,7 +13,7 @@
 		<typeAlias type="com.kh.hey.employee.model.vo.Employee" alias="Employee" />
 		<typeAlias type="com.kh.hey.reserve.model.vo.Resources" alias="Resources" />
 		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesCategory" alias="ResourcesCategory" />
-		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesReserve" alias="ResourcesReserve" />
+		<typeAlias type="com.kh.hey.reserve.model.vo.Reservation" alias="Reservation" />
 		
 	</typeAliases>
 	
