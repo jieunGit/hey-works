@@ -10,14 +10,16 @@
 	
 	<typeAliases>
 		<typeAlias type="com.kh.hey.approval.model.vo.Approval" alias="Approval" />
-		<typeAlias type="com.kh.hey.reserve.model.vo.Resources" alias="Resources" />
-		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesCategory" alias="ResourcesCategory" />
-		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesReserve" alias="ResourcesReserve" />
+		<typeAlias type="com.kh.hey.employee.model.vo.Employee" alias="Employee" />
+
 	</typeAliases>
 	
 	<mappers>
 	 	<mapper resource="/mappers/approval-mapper.xml" />
-	 	<mapper resource="/mappers/reservation-mapper.xml"/>
+	 	<mapper resource="/mappers/employee-mapper.xml" />
+
 	 </mappers>
+	 
+	 
 	
 </configuration>
