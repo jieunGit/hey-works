@@ -1,14 +1,23 @@
 package com.kh.hey.reserve.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.kh.hey.reserve.model.service.ReservationService;
 
 @Controller
 public class ReserveController {
 	
+	@Autowired 
+	private ReservationService mService;
+	
 	//나의 예약목록
-	@RequestMapping(value="reservelist.re")
+	@RequestMapping(value="myReserve.re")
 	public String myReserveList() {
+		
+	
+		
 		return "reserve/myReserve";
 	}
 	
@@ -23,5 +32,36 @@ public class ReserveController {
 	public String WeekendReserveList() {
 		return "reserve/weekendReserve";
 	}
+	
+	//자원카테고리list 페이지
+	@RequestMapping(value="categoryList.re")
+	public String CategoryList() {
+		return "reserve/adminResourceCategory";
+	}
+	
+	
+	//자원카테고리 이용안내페이지
+	@RequestMapping(value="categoryInfo.re")
+	public String CategoryInfo() {
+		return "reserve/adminResourceCategoryInfo";
+	}
+	
+	//자원카테고리 자원리스트페이지
+	@RequestMapping(value="resourceList.re")
+	public String ResourceList() {
+		return "reserve/adminResouceList";
+	}
+	//자원카테고리 자원추가
+		@RequestMapping(value="resourceInsert.re")
+		public String ResourceInsert() {
+			return "reserve/adminResourceAdd";
+		}
+				
+	//자원카테고리 자원수정
+	@RequestMapping(value="resourceUpdate.re")
+	public String ResourceUpdate() {
+		return "reserve/adminResourceUpdate";
+	}
+			
 	
 }

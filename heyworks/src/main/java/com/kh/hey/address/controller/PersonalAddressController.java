@@ -1,4 +1,4 @@
-package com.kh.hey.address;
+package com.kh.hey.address.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -14,11 +14,11 @@ import lombok.ToString;
 public class Approval {
 	
 	// 전자결재 메인테이블
-	private String elecApprovalNo;
+	private String approvalNo;
 	private String userNo;
 	private String formNo;
 	private String writeDept;
-	private String elecApprovalTitle;
+	private String approvalTitle;
 	private String emergency;
 	private String storageYear;
 	private String grade;

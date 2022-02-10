@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://kit.fontawesome.com/8bf37c071b.js" crossorigin="anonymous"></script>
 <style>
 .outer{
 		width:1200px;

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-d<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,7 @@ d<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
 	.outer{
 		width:1200px;
-		height:1200px;
+		height:750px;
 	    margin:auto;
 	}
 	.outer>div{float:left;}
@@ -18,7 +18,7 @@ d<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         margin-top:20px;
  		margin-left:20px;
         width: 900px;
-        height: 900px;
+        height: 650px;
     }
     #btnNsearch>*{float: left;}
     #btns{width: 640px;}
@@ -41,6 +41,10 @@ d<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     .subject:hover{
         color: black;
         text-decoration: none;
+    }
+    #pagingArea{
+    	width:fit-content;
+    	margin: auto;
     }
 </style>
 </head>
@@ -88,28 +92,77 @@ d<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
                 </tr>
             </thead>
             <tbody>
+            	<c:forEach var="ap" items="${apList}">
                 <tr>
-                    <td>SA-RE-00001</td>
-                    <td>박보검</td>
+                    <td>${ap.approvalNo}</td>
+                    <td>${ap.userNo}</td>
                     <td>
-                        <img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+                    	<c:if test="${ap.emergency eq 'Y'}">
+                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+                        </c:if>
                     </td>
-                    <td>개발팀 인원채용보고의 건</td>
+                    <td>${ap.approvalTitle}</td>
                     <td>
-                        <img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
+                    	<c:if test="${!empty ap.originName}">
+                        	<img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
+                       	</c:if>
                     </td>
                     <td>공유</td>
                     <td>강보람</td>
                     <td>
                         <button class="btn btn-sm" style="background-color: rgb(241, 196, 15);">결재대기</button>
                     </td>
-                    <td>2022-02-01</td>
+                    <td>${ap.createDate}</td>
                 </tr>
+                </c:forEach>
             </tbody>
         </table>
+        
+        <c:forEach var="b" items="${list}">
+	                    <tr>
+	                        <td class="bno">${b.boardNo}</td>
+	                        <td>${b.boardTitle}</td>
+	                        <td>${b.boardWriter}</td>
+	                        <td>${b.count}</td>
+	                        <td>${b.createDate}</td>
+	                        
+	                        <td>
+		                        <c:if test="${!empty b.originName}">
+		                       		★
+		                        </c:if>
+		                    </td>
+		                    
+	                    </tr>
+                    </c:forEach>
 
     	</div>
 	</div>
+	
+	<div id="pagingArea">
+        <ul class="pagination">
+        
+        	<c:choose>
+        		<c:when test="${pi.currentPage eq 1}">
+            		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+            	</c:when>
+            	<c:otherwise>
+            		<li class="page-item"><a class="page-link" href="onAllList.el?cpage=${pi.currentPage-1}">Previous</a></li>
+            	</c:otherwise>
+            </c:choose>
+            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+            	<li class="page-item"><a class="page-link" href="onAllList.el?cpage=${p}">${p}</a></li>
+            </c:forEach>
+            
+            <c:choose>
+        		<c:when test="${pi.currentPage eq pi.endPage}">
+            		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            	</c:when>
+            	<c:otherwise>
+            		<li class="page-item"><a class="page-link" href="onAllList.el?cpage=${pi.currentPage+1}">Next</a></li>
+            	</c:otherwise>
+           	</c:choose>
+        </ul>
+    </div>
 	
 </body>
 </html>

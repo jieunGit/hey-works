@@ -2,14 +2,17 @@ package com.kh.hey.approval.model.service;
 
 import java.util.ArrayList;
 
-import com.kh.hey.common.model.vo.PageInfo;
+
+
 import com.kh.hey.approval.model.vo.Approval;
+import com.kh.hey.common.model.vo.PageInfo;
+
 
 public interface ApprovalService{
 	
 	// 1. 게시판 리스트 페이지(페이징처리)
-	int selectListCount();
-	ArrayList<Approval> selectList(PageInfo pi);
+	int selectListCount(String status);
+	ArrayList<Approval> selectList(PageInfo pi, String status);
 	
 	// 2. 전자결재 공통 게시글 작성하기
 	int insertElectronic(Approval a);
@@ -33,52 +36,52 @@ public interface ApprovalService{
 	int insertExpenseReport(Approval a);
 	
 	// 3. 게시글 상세조회
-	Approval selectElectronic(String elecApprovalNo);
+	Approval selectElectronic(String approvalNo);
 	
 	// 3-1. 참조/열람여부 확인(클릭시 update)
 	int updateReadReferenceStatus(String read, String reference);
 	
 	// 4. 전자결재 공통 수정
-	int updateElectronic(String elecApprovalNo);
+	int updateElectronic(String approvalNo);
 	
 	// 4-1. 업무기안서
-	int updateBusinessDraft(String elecApprovalNo);
+	int updateBusinessDraft(String approvalNo);
 	
 	// 4-2. 비품구매품의서
-	int updateEquipmentBuy(String elecApprovalNo);
+	int updateEquipmentBuy(String approvalNo);
 	
 	// 4-2-1. 구매비품목록
-	int updateItemList(String elecApprovalNo);
+	int updateItemList(String approvalNo);
 	
 	// 4-3. 증명서 신청
-	int updateCertificate(String elecApprovalNo);
+	int updateCertificate(String approvalNo);
 	
 	// 4-4. 채용요청서
-	int updateRecruiment(String elecApprovalNo);
+	int updateRecruiment(String approvalNo);
 	
 	// 4-5. 일반품의서
-	int updateExpenseReport(String elecApprovalNo);
+	int updateExpenseReport(String approvalNo);
 	
 	// 5. 전자결재 공통 수정
-	int deleteElectronic(String elecApprovalNo);
+	int deleteElectronic(String approvalNo);
 		
 	// 5-1. 업무기안서
-	int deleteBusinessDraft(String elecApprovalNo);
+	int deleteBusinessDraft(String approvalNo);
 	
 	// 5-2. 비품구매품의서
-	int deleteEquipmentBuy(String elecApprovalNo);
+	int deleteEquipmentBuy(String approvalNo);
 	
 	// 5-2-1. 구매비품목록
-	int deleteItemList(String elecApprovalNo);
+	int deleteItemList(String approvalNo);
 	
 	// 5-3. 증명서 신청
-	int deleteCertificate(String elecApprovalNo);
+	int deleteCertificate(String approvalNo);
 	
 	// 5-4. 채용요청서
-	int deleteRecruiment(String elecApprovalNo);
+	int deleteRecruiment(String approvalNo);
 	
 	// 5-5. 일반품의서
-	int deleteExpenseReport(String elecApprovalNo);
+	int deleteExpenseReport(String approvalNo);
 	
 	
 	
