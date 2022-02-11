@@ -22,15 +22,16 @@ public class ReserveController {
 	
 	//나의 예약목록
 	@RequestMapping(value="myReserve.re")
-	public String myReserveList(@RequestParam(value="cpage", defaultValue="1") Employee loginUser, int currentPage, Model model) {
+	public String myReserveList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Employee loginUser, Model model) {
 		
 		// 예약수가 몇개인지 알아오기
 		int listCount = rService.selectListCount(loginUser);
-		
+		System.out.println(loginUser);
+		System.out.println(listCount);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		ArrayList<Reservation> list = rService.myReserveList(pi, loginUser);
-		
+		System.out.println(list);
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		

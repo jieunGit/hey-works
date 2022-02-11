@@ -22,7 +22,7 @@
 		select
 				count(*)
 		  from resources_reserve
-		where user_no = ${ userNo }
+		where user_no = #{ userNo }
 	</select>
 
 
@@ -38,7 +38,7 @@
 			    , reserve_Date
 			    , reserve_content
 			from resources_reserve
-			where user_no = ${ userNo }
+			where user_no = #{ userNo }
 			order 
 			   by reserve_date desc
 	

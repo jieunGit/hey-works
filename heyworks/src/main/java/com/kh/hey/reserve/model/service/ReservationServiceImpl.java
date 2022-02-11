@@ -27,13 +27,13 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public int selectListCount(Employee loginUser) {
 	
-		return rDao.selectListCount(sqlSession);
+		return rDao.selectListCount(sqlSession, loginUser);
 	}
 	
 	@Override
 	public ArrayList<Reservation> myReserveList(PageInfo pi, Employee loginUser ) {
 		
-		return rDao.myReserveList(sqlSession, pi);
+		return rDao.myReserveList(sqlSession, pi, loginUser);
 	}
 
 	@Override

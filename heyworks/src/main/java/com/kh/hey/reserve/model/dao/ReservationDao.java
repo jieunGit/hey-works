@@ -23,9 +23,8 @@ public class ReservationDao {
 		int limit = pi.getBoardLimit();  //몇개를조회할건지
 		//mybatis에서 제공하는 클래스
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		//전달값 없으므로 null
-		return (ArrayList)sqlSession.selectList("reservationMapper.myReserveList", loginUser, rowBounds);
 		
+		return (ArrayList)sqlSession.selectList("reservationMapper.myReserveList", loginUser, rowBounds);
 		
 	}
 }

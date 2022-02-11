@@ -15,7 +15,7 @@ import lombok.ToString;
 public class Employee {
 	
 
-	private String userNo;
+	private int userNo;
 	private String userName;
 	private String userId;
 	private String userPwd;
