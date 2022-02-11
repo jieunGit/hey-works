@@ -73,7 +73,9 @@ public class Approval {
 	
 	// 결재선
 	private String confirmNo;
-	private String confirmUserNo;
+	private String firstConfirm;
+	private String secondConfirm;
+	private String thirdConfirm;
 	private int procedure;
 	private String confirmStatus;
 	private String rejectReason;

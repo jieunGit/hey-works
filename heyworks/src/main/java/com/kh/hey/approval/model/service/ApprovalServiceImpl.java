@@ -22,19 +22,36 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public int selectListCount(String status, HashMap<String, String> map) {
+	public int selectListCount(String userName) {
 		
-		return aDao.selectListCount(sqlSession, map);
+		return aDao.selectListCount(sqlSession, userName);
 		
-	} // 총 게시글 조회
+	} // 결재자 기준 결재대기 갯수조회
 
 	@Override
-	public ArrayList<Approval> selectStandByList(PageInfo pi, HashMap<String, String> map) {
+	public ArrayList<Approval> selectStandByList(PageInfo pi, String userName) {
 		
-		return aDao.selectStandByList(sqlSession, pi, map);
+		return aDao.selectStandByList(sqlSession, pi, userName);
 		
-	} // 페이징바 처리한 게시글 조회
+	} // 페이징바 처리한 결재자 기준 결재대기 게시글 조회
 
+	@Override
+	public int selectSubmitListCount(HashMap<String, String> map) {
+
+		return aDao.selectSubmitListCount(sqlSession, map);
+		
+	} // 기안자 기준 상태값 따른 게시글 갯수조회
+	
+	@Override
+	public ArrayList<Approval> selectSubmitStandByList(PageInfo pi, HashMap<String, String> map) {
+		
+		return aDao.selectSubmitStandByList(sqlSession, pi, map);
+
+	} // 페이징바 처리한 기안자 기준 상태값 따른 게시글 조회
+	
+	
+	
+	
 	@Override
 	public int insertElectronic(Approval a) {
 		return 0;
@@ -149,6 +166,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int deleteExpenseReport(String approvalNo) {
 		return 0;
 	}
+
 
 	
 }

@@ -14,23 +14,78 @@ import com.kh.hey.employee.model.vo.Employee;
 @Repository
 public class ApprovalDao {
 	
-	public int selectListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+	public int selectListCount(SqlSessionTemplate sqlSession, String userName) {
 		
-		return sqlSession.selectOne("approvalMapper.selectListCount", map);
+		return sqlSession.selectOne("approvalMapper.selectListCount", userName);
 		
-	} // 게시글 갯수 조회
+	} // 결재자 기준 결재대기 게시글 갯수 조회
 	
-	public ArrayList<Approval> selectStandByList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+	public ArrayList<Approval> selectStandByList(SqlSessionTemplate sqlSession, PageInfo pi, String userName){
 		
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		System.out.println(rowBounds);
 		
-		return (ArrayList)sqlSession.selectList("approvalMapper.selectStandByList", map, rowBounds);
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectStandByList", userName, rowBounds);
 		
-	} // 게시글 페이징처리 조회
+	} // 결재자 기준 결재대기 게시글 페이징처리와 함께 조회
 	
+	public int selectSubmitListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.selectOne("approvalMapper.selectSubmitListCount", map);
+		
+	} // 기안자 기준 결재대기, 결재예정 게시글 갯수 조회
 	
+	public ArrayList<Approval> selectSubmitStandByList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectSubmitStandByList", map, rowBounds);
+		
+	} // 결재자 기준 결재대기 게시글 페이징처리와 함께 조회
 
-}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+} // end ApprovalDao

@@ -52,43 +52,56 @@ public class ApprovalController {
 		
 	}
 	
-	/*목록 페이지*/
-	
-	@RequestMapping("ongoing.el")
-	public String selectStandByList(@RequestParam(value="cpage", defaultValue="1")int currentPage, String status, Model model, HttpSession session) {
+	/*결재자 기준 결재 대기 목록 페이지*/	
+	@RequestMapping("standby.el")
+	public String selectStandByList(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, HttpSession session) {
 		
 		// 조건검사할 로그인 객체 받아오기
-		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
 		String userName = ((Employee)session.getAttribute("loginUser")).getUserName();
 		
 		// 각 객체들 hashmap에 담기
+		/*
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("userNo", userNo);
 		map.put("userName", userName);
 		map.put("status", status);
+		*/
 		
-		int listCount = aService.selectListCount(status, map);
+		int listCount = aService.selectListCount(userName);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-		ArrayList<Approval> apList = aService.selectStandByList(pi, map);
+		ArrayList<Approval> apList = aService.selectStandByList(pi, userName);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("apList", apList);
-		
-		System.out.println(pi);
-		System.out.println(apList.size());
-		System.out.println(apList);
-		System.out.println(map);
-		
+
 		return "approval/standbyList";
 		
 	} // 각 게시판 페이징처리해서 조회
 	
-	@RequestMapping("endList.el")
-	public String endAllList() {
+	// 기안자 기준 결재대기, 결재예정
+	@RequestMapping("onlist.el")
+	public String selectSubmitStandbyList(@RequestParam(value="cpage", defaultValue="1")int currentPage, String status, Model model, HttpSession session) {
 		
-		//결재완료에 연결 나중에 수정하기
-		return "approval/endAllList";
+		// 조건검사할 로그인 객체 받아오기
+		String userName = ((Employee)session.getAttribute("loginUser")).getUserName();
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userName", userName);
+		map.put("userNo", userNo);
+		map.put("status", status);
+		
+		
+		int listCount = aService.selectSubmitListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Approval> sbList = aService.selectSubmitStandByList(pi, map);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("sbList", sbList);
+		
+		return "approval/submitStandbyList";
 		
 	}
 	

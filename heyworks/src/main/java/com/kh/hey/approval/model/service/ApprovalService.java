@@ -10,9 +10,13 @@ import com.kh.hey.employee.model.vo.Employee;
 
 public interface ApprovalService{
 	
-	// 1. 게시판 리스트 페이지(페이징처리)
-	int selectListCount(String status, HashMap<String, String> map);
-	ArrayList<Approval> selectStandByList(PageInfo pi, HashMap<String, String> map);
+	// 1. 게시판 리스트 페이지(페이징처리)-결재자 기준(결재대기)
+	int selectListCount(String userName);
+	ArrayList<Approval> selectStandByList(PageInfo pi, String userName);
+	
+	// 1_1. 게시판 리스트 페이지(페이징처리)-기안자 기준(결재대기, 결재예정)
+	int selectSubmitListCount(HashMap<String, String> map);
+	ArrayList<Approval> selectSubmitStandByList(PageInfo pi, HashMap<String, String> map);
 	
 	// 2. 전자결재 공통 게시글 작성하기
 	int insertElectronic(Approval a);

@@ -5,24 +5,26 @@
 	<resultMap type="Approval" id="approvalResult">
 		<result column="elec_appr_no" property="approvalNo" />
 		<result column="writer_name" property="userNo" />
+		<result column="form_no" property="formNo" />
 		<result column="write_dept" property="writeDept" />
 		<result column="elec_title" property="approvalTitle" />
 		<result column="emc_yn" property="emergancy" />
 		<result column="create_date" property="createDate" />
 		<result column="status" property="status" />
 		<result column="origin_name" property="originName" />
-		<result column="confirm_name" property="confirmUserNo" />
+		<result column="confirm_name" property="firstConfirm" />
 		<result column="procedure_no" property="procedure" />
+		<result column="last_confirm" property="thirdConfirm" />
 	</resultMap>
-	
+
+	<!-- 내가 결재자일경우 진행중인 문서 -->
 	<select id="selectListCount" resultType="_int">
-		select
+		select 
 		       count(*)
-		  from elec_approval
-		 where writer_no = #{userNo}
-		 <if test="status != null">
-		   and status = #{status}
-		 </if>
+		  from vw_all_confirmlist
+		 where rank = 1
+		   and confirm_name = #{userName}
+		   and status in ('D', 'P')
 	</select>
 	
 	
@@ -31,7 +33,11 @@
 		  select 
 		  		 origin_appr_no elec_appr_no
 		       , writer_name
-		       , form_no
+		       , decode(form_no, 1, '업무기안서'
+                               , 2, '비품구매품의서'
+                               , 3, '증명서신청'
+                               , 4, '채용요청서'
+                               , 5, '일반품의서') form_no
 		       , write_dept
 		       , elec_title
 		       , emc_yn
@@ -43,13 +49,63 @@
             from vw_all_confirmlist
            where rank = 1
              and confirm_name = #{userName}
-           <if test="status != null">
-             and status = #{status}
-           </if>
-           order 
+             and status in ('D', 'P')
+           order
               by create_date desc
 	</select>
 	
+	<!-- 내가 기안자일 경우 게시글 갯수 -->
+	<select id="selectSubmitListCount" resultType="_int">
+		select
+		       count(*)
+		  from elec_approval
+		 where writer_no = #{userNo}
+	   	  <if test='status == "A"'>
+		  	and status in ('D', 'P')
+		  </if>
+		  <if test='status == "D"'>
+		  	and status = 'D'
+		  </if>
+		  <if test='status == "P"'>
+		  	and status = 'P'
+		  </if>
+	</select>
+	
+	
+	<!-- 내가 기안자 경우 결재대기(D), 진행중(P)-->
+	<select id="selectSubmitStandByList" resultMap="approvalResult">
+		  select 
+			     origin_appr_no elec_appr_no
+			   , writer_name
+			   , decode(form_no, 1, '업무기안서'
+			                   , 2, '비품구매품의서'
+			                   , 3, '증명서신청'
+			                   , 4, '채용요청서'
+			                   , 5, '일반품의서') form_no
+			   , elec_title
+			   , emc_yn
+			   , create_date
+			   , v1.status status
+			   , origin_name
+			   , confirm_name
+			   , origin_pcd_no procedure_no
+			   , last_confirm
+			from vw_all_confirmlist v1
+			join vw_last_confirm v2 on(origin_appr_no = v2.elec_appr_no)
+			where rank = 1
+			  and writer_name = #{userName}
+			  <if test='status == "A"'>
+			  	and v1.status in ('D', 'P')
+			  </if>
+			  <if test='status == "D"'>
+			  	and v1.status = 'D'
+			  </if>
+			  <if test='status == "P"'>
+			  	and v1.status = 'P'
+			  </if>
+			order 
+			  by create_date desc
+	</select>
 	
 	
 	
