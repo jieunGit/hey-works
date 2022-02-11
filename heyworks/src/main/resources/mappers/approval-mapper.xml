@@ -2,5 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="approvalMapper">
 
+	<resultMap type="Approval" id="approvalResult">
+		<result column="elec_appr_no" property="approvalNo" />
+		<result column="user_name" property="userNo" />
+		<result column="emc_yn" property="emergency" />
+		<result column="elec_title" property="approvalTitle" />
+		<result column="origin_name" property="originName" />
+		<result column="create_date" property="createDate" />
+	</resultMap>
+	
+	<select id="selectListCount" resultType="_int">
+		select
+		       count(*)
+		  from elec_approval
+		 <if test="status != null">
+		 	where status = #{status}
+		 </if>
+	</select>
+	
+	
+	<!-- 결재대기 임시 -->
+	<select id="selectList" resultMap="approvalResult">
+		select 
+		        elec_appr_no
+		      , user_name
+		      , emc_yn
+		      , elec_title
+		      , origin_name
+		      , create_date
+		  from elec_approval ea
+		  join employee on (writer_no = user_no)
+		 <if test="status != null">
+		 	where ea.status = 'D'
+		 </if>
+		order
+		      by create_date desc
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 </mapper>

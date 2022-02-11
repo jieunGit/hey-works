@@ -2,23 +2,36 @@ package com.kh.hey.approval.model.service;
 
 import java.util.ArrayList;
 
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.approval.model.dao.ApprovalDao;
 import com.kh.hey.approval.model.vo.Approval;
+import com.kh.hey.common.model.vo.PageInfo;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
+	
+	@Autowired
+	private ApprovalDao aDao;
+	
+	@Autowired
+	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public int selectListCount() {
-		return 0;
-	}
+	public int selectListCount(String status) {
+		
+		return aDao.selectListCount(status, sqlSession);
+		
+	} // 총 게시글 조회
 
 	@Override
-	public ArrayList<Approval> selectList(PageInfo pi) {
-		return null;
-	}
+	public ArrayList<Approval> selectList(PageInfo pi, String status) {
+		
+		return aDao.selectList(sqlSession, pi, status);
+		
+	} // 페이징바 처리한 게시글 조회
 
 	@Override
 	public int insertElectronic(Approval a) {
@@ -56,7 +69,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public Approval selectElectronic(String elecApprovalNo) {
+	public Approval selectElectronic(String approvalNo) {
 		return null;
 	}
 
@@ -66,72 +79,72 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public int updateElectronic(String elecApprovalNo) {
+	public int updateElectronic(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int updateBusinessDraft(String elecApprovalNo) {
+	public int updateBusinessDraft(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int updateEquipmentBuy(String elecApprovalNo) {
+	public int updateEquipmentBuy(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int updateItemList(String elecApprovalNo) {
+	public int updateItemList(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int updateCertificate(String elecApprovalNo) {
+	public int updateCertificate(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int updateRecruiment(String elecApprovalNo) {
+	public int updateRecruiment(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int updateExpenseReport(String elecApprovalNo) {
+	public int updateExpenseReport(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteElectronic(String elecApprovalNo) {
+	public int deleteElectronic(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteBusinessDraft(String elecApprovalNo) {
+	public int deleteBusinessDraft(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteEquipmentBuy(String elecApprovalNo) {
+	public int deleteEquipmentBuy(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteItemList(String elecApprovalNo) {
+	public int deleteItemList(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteCertificate(String elecApprovalNo) {
+	public int deleteCertificate(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteRecruiment(String elecApprovalNo) {
+	public int deleteRecruiment(String approvalNo) {
 		return 0;
 	}
 
 	@Override
-	public int deleteExpenseReport(String elecApprovalNo) {
+	public int deleteExpenseReport(String approvalNo) {
 		return 0;
 	}
 
