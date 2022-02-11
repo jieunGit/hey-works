@@ -1,6 +1,7 @@
 package com.kh.hey.approval.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hey.approval.model.dao.ApprovalDao;
 import com.kh.hey.approval.model.vo.Approval;
 import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.employee.model.vo.Employee;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -20,16 +22,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public int selectListCount(String status) {
+	public int selectListCount(String status, HashMap<String, String> map) {
 		
-		return aDao.selectListCount(status, sqlSession);
+		return aDao.selectListCount(sqlSession, map);
 		
 	} // 총 게시글 조회
 
 	@Override
-	public ArrayList<Approval> selectList(PageInfo pi, String status) {
+	public ArrayList<Approval> selectStandByList(PageInfo pi, HashMap<String, String> map) {
 		
-		return aDao.selectList(sqlSession, pi, status);
+		return aDao.selectStandByList(sqlSession, pi, map);
 		
 	} // 페이징바 처리한 게시글 조회
 

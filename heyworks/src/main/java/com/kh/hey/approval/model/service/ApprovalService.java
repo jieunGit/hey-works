@@ -1,18 +1,18 @@
 package com.kh.hey.approval.model.service;
 
 import java.util.ArrayList;
-
-
+import java.util.HashMap;
 
 import com.kh.hey.approval.model.vo.Approval;
 import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.employee.model.vo.Employee;
 
 
 public interface ApprovalService{
 	
 	// 1. 게시판 리스트 페이지(페이징처리)
-	int selectListCount(String status);
-	ArrayList<Approval> selectList(PageInfo pi, String status);
+	int selectListCount(String status, HashMap<String, String> map);
+	ArrayList<Approval> selectStandByList(PageInfo pi, HashMap<String, String> map);
 	
 	// 2. 전자결재 공통 게시글 작성하기
 	int insertElectronic(Approval a);

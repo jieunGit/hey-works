@@ -19,7 +19,7 @@ public class Approval {
 	private String formNo;
 	private String writeDept;
 	private String approvalTitle;
-	private String emergency;
+	private String emergancy;
 	private String storageYear;
 	private String grade;
 	private String read;
