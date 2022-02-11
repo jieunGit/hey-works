@@ -126,16 +126,25 @@
                 <li><a href="">
                     <img src="resources/images/calendar.png">
                 </a></li>
-                <li><a href="">
-                    <img src="resources/images/todo.png">
-                </a></li>
-                <li><a href="">
-                    <img src="resources/images/key.png">
-                </a></li>
-                <li><div id="addressbook"><a href="">
-                    <img src="resources/images/addressbook.png">
+                
+                <li>
+                	<div id="todoplus">
+                		<a href=""> <img src="resources/images/todo.png"></a>
+                	</div>
+                </li>
+                
+                	
+                <li>
+                	<div id="reservation">
+                	<a href="myReserve.re"> <img src="resources/images/key.png"></a>
                     </div>
-                </a></li>
+                </li>
+                
+                <li>
+                	<div id="addressbook">
+               		 <a href=""><img src="resources/images/addressbook.png"></a>
+                    </div>
+                </li>
                 <li><a href="">
                     <img src="resources/images/coperation.png">
                 </a></li>         

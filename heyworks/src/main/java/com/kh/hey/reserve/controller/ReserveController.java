@@ -1,22 +1,38 @@
 package com.kh.hey.reserve.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.common.template.Pagination;
+import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.reserve.model.service.ReservationService;
+import com.kh.hey.reserve.model.vo.Reservation;
 
 @Controller
 public class ReserveController {
 	
 	@Autowired 
-	private ReservationService mService;
+	private ReservationService rService;
 	
 	//나의 예약목록
 	@RequestMapping(value="myReserve.re")
-	public String myReserveList() {
+	public String myReserveList(@RequestParam(value="cpage", defaultValue="1") Employee loginUser, int currentPage, Model model) {
 		
-	
+		// 예약수가 몇개인지 알아오기
+		int listCount = rService.selectListCount(loginUser);
+		
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Reservation> list = rService.myReserveList(pi, loginUser);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
 		
 		return "reserve/myReserve";
 	}

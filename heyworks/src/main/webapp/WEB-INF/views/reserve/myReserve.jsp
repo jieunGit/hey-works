@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +21,7 @@
 
    #detail{
 		width: 950px;
-	   height:100%;
+	   height:800px;
 	   display:inline-block;
 	   border: 1px solid lightgray;
    }
@@ -39,7 +42,7 @@
 	   font-size: 12px;
 	   text-align: center;
    }
-
+  #pagingArea{width:fit-content;margin:auto;}
 
 </style>
 </head>
@@ -69,22 +72,56 @@
 
 					<!-- ajax로 상세보기, 예약취소 구현 -->
 					<tbody>
+					<c:forEach var="r" items="${ list }">
 						<tr>
-							<td>회의실</td>
-							<td>회의실1</td>
-							<td>2022-01-20 09:10~2022-01-20 13:10</td>
+							<td>${ r.categoryName }</td>
+							<td>${ r.resourceName }</td>
+							<td>${ r.startDate }~${ r.endDate }</td>
 							<td>상세보기|취소</td>
 						</tr>
-						<tr>
-							<td>차량</td>
-							<td>셀토스</td>
-							<td>2022-01-20 09:10~2022-01-20 13:10</td>
-							<td>상세보기|취소</td>
-						</tr>
+					</c:forEach>
+					
+						
 					
 					</tbody>
 				</table>
-			</div>
+			</div><br><br>
+
+			<div id="pagingArea">
+                <ul class="pagination pagination-sm">
+                	
+                	<c:choose>
+                		<c:when test="${ pi.currentPage eq 1 }">
+                    		<li class="page-item disabled"><a class="page-link " href="#"><i class="fa-solid fa-angles-left"></i> </a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="myReserve.re?cpage=${ pi.currentPage-1 }"><i class="fa-solid fa-angles-right"></i></a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    	<li class="page-item"><a class="page-link" href="myReserve.re?cpage=${ p }">${ p }</a></li>
+                    </c:forEach>
+                    
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                    		<li class="page-item disabled"><a class="page-link" href="#"><i class="fa-solid fa-angles-right"></i></a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="myReserve.re?cpage=${ pi.currentPage+1 }"><i class="fa-solid fa-angles-right"></i></a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                </ul>
+            </div>
+           
+
+
+
+
+
 		</div>
 	
 	</div>

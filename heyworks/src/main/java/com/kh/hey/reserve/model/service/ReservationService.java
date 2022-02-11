@@ -1,11 +1,18 @@
 package com.kh.hey.reserve.model.service;
 
+import java.util.ArrayList;
+
+import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.reserve.model.vo.Reservation;
 
 public interface ReservationService {
 	
+	
+
 	//나의 예약목록 조회(select)
-	Reservation myReserveList(Reservation re);
+	int selectListCount(Employee loginUser);
+	ArrayList<Reservation> myReserveList(PageInfo pi, Employee loginUser);
 	
 	
 	//예약하기(insert)
