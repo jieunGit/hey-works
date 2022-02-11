@@ -4,39 +4,50 @@
 
 	<resultMap type="Approval" id="approvalResult">
 		<result column="elec_appr_no" property="approvalNo" />
-		<result column="user_name" property="userNo" />
-		<result column="emc_yn" property="emergency" />
+		<result column="writer_name" property="userNo" />
+		<result column="write_dept" property="writeDept" />
 		<result column="elec_title" property="approvalTitle" />
-		<result column="origin_name" property="originName" />
+		<result column="emc_yn" property="emergancy" />
 		<result column="create_date" property="createDate" />
+		<result column="status" property="status" />
+		<result column="origin_name" property="originName" />
+		<result column="confirm_name" property="confirmUserNo" />
+		<result column="procedure_no" property="procedure" />
 	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
 		select
 		       count(*)
 		  from elec_approval
+		 where writer_no = #{userNo}
 		 <if test="status != null">
-		 	where status = #{status}
+		   and status = #{status}
 		 </if>
 	</select>
 	
 	
-	<!-- 결재대기 임시 -->
-	<select id="selectList" resultMap="approvalResult">
-		select 
-		        elec_appr_no
-		      , user_name
-		      , emc_yn
-		      , elec_title
-		      , origin_name
-		      , create_date
-		  from elec_approval ea
-		  join employee on (writer_no = user_no)
-		 <if test="status != null">
-		 	where ea.status = 'D'
-		 </if>
-		order
-		      by create_date desc
+	<!-- 내가 결재자일 경우 결재대기 -->
+	<select id="selectStandByList" resultMap="approvalResult">
+		  select 
+		  		 origin_appr_no elec_appr_no
+		       , writer_name
+		       , form_no
+		       , write_dept
+		       , elec_title
+		       , emc_yn
+		       , create_date
+		       , status
+		       , origin_name
+		       , confirm_name
+		       , origin_pcd_no procedure_no
+            from vw_all_confirmlist
+           where rank = 1
+             and confirm_name = #{userName}
+           <if test="status != null">
+             and status = #{status}
+           </if>
+           order 
+              by create_date desc
 	</select>
 	
 	
