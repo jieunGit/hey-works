@@ -20,13 +20,15 @@
         width: 900px;
         height: 700px;
     }
-    .table-bordered *{
+    .table-hover *{
         height: 40px;
+        font-size:13px;
+        border:white;
     }
-    .table-bordered th{
+    .table-hover th{
         background-color: rgb(245, 244, 244);
     }
-    .table-bordered td{
+    .table-hover td{
         text-align: center;
     }
     .subject{
@@ -58,40 +60,49 @@
 	        <!-- 결재 대기 문서 -->
 	        <a href="#" class="subject">내 결재 대기 문서</a>
 	        <br><br>
+	        
+	        <form>
+                <div align="right">
+                    <input type="text" name="" value="" placeholder="검색하기">
+                    <button type="submit" class="btn btn-sm">검색</button>
+                </div>
+            </form> <br>
 	
-	        <table border="1" align="center" class="table-bordered">
+	        <table align="center" class="table-hover">
 	            <thead>
 	                <tr align="center">
 	                    <th width="120">기안일</th>
-	                    <th width="170">결재양식</th>
+	                    <th width="120">문서번호</th>
+	                    <th width="120">문서종류</th>
+	                    <th width="80">작성팀</th>
 	                    <th width="80">긴급</th>
-	                    <th width="380">제목</th>
-	                    <th wdith="40">첨부</th>
-	                    <th width="110">작성자</th>
+	                    <th width="250">제목</th>
+	                    <th wdith="50">첨부</th>
+	                    <th width="85">작성자</th>
 	                </tr>
 	            </thead>
 	            <tbody>
 	            	<c:choose>
 	            		<c:when test="${empty apList}">
             				<tr align="center">
-			            		<td colspan="6">결재 대기중인 문서가 없습니다.</td>
+			            		<td colspan="7">결재 대기중인 문서가 없습니다.</td>
 			            	</tr>
 			            </c:when>
 			            <c:otherwise>
 				            <c:forEach var="ap" items="${apList}">
 					                <tr>
 					                    <td>${ap.createDate}</td>
+					                	<td class="ano">${ap.approvalNo}</td>
 					                    <td>${ap.formNo}</td>
+					                    <td>${ap.writeDept}</td>
 					                    <td>
 					                    	<c:if test="${ap.emergancy eq 'Y'}">
-					                        	<img src="resources/images/179386.png" style="width: 30%; height: 65%;" >
+					                        	<img src="resources/images/179386.png" style="width: 25%; height: 55%;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.approvalTitle}</td>
 					                    <td>
-					                    	<c:if test="${!empty ap.originName}">
 					                        	<img src="resources/images/2586886.png" style="width: 80%; height: 70%;" >
-					                    	</c:if>
 					                    </td>
 					                    <td>${ap.userNo}</td>
 					                </tr>
@@ -128,6 +139,42 @@
 	
 
 	</div>
+	
+	<script>
+		$(".table-hover>tbody>tr").click(function(){
+		
+			location.href="detail.el?ano=" + $(this).children(".ano").text();
+			
+		})
+		
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 </body>

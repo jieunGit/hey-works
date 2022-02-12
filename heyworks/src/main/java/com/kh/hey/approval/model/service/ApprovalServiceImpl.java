@@ -47,9 +47,21 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return aDao.selectSubmitStandByList(sqlSession, pi, map);
 
-	} // 페이징바 처리한 기안자 기준 상태값 따른 게시글 조회
+	} // 페이징바 처리한 기안자 기준 상태값 따른 게시글 조회(전체,대기,진행)
 	
+	@Override
+	public ArrayList<Approval> selectSubmitEndList(PageInfo pi, HashMap<String, String> map) {
 	
+		return aDao.selectSubmitEndList(sqlSession, pi, map);
+		
+	} // 페이징바 처리한 기안자 기준 상태값 따른 게시글 조회(승인,반려,임시저장)
+	
+	@Override
+	public Approval selectApproval(String ano, String formNo) {
+		
+		return aDao.selectApproval(sqlSession, ano, formNo);
+		
+	} // 게시글 상세조회
 	
 	
 	@Override
@@ -87,10 +99,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return 0;
 	}
 
-	@Override
-	public Approval selectElectronic(String approvalNo) {
-		return null;
-	}
 
 	@Override
 	public int updateReadReferenceStatus(String read, String reference) {
@@ -166,6 +174,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int deleteExpenseReport(String approvalNo) {
 		return 0;
 	}
+
 
 
 	

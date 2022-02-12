@@ -13,7 +13,7 @@
 	    margin:auto;
 	}
 	.outer>div{float:left;}
-	.elec-outer{
+    .elec-outer{
         margin: auto;
         margin-top:20px;
  		margin-left:20px;
@@ -43,8 +43,11 @@
         text-decoration: none;
     }
     #pagingArea{
-    	width:fit-content;
-    	margin-left: 850px;
+	   	width:fit-content;
+	   	margin-left:400px;
+    }
+    .pagination>li{
+    	border-radius:10px;
     }
 </style>
 </head>
@@ -56,15 +59,16 @@
 		<jsp:include page="sidebar.jsp" />
 		
 		<div class="elec-outer">
-        <!-- 진행중인문서 -->
-        <a href="" class="subject">진행중인문서</a>
+    
+        <a href="" class="subject">내 문서함</a>
         <br><br>
 
         <div id="btnNsearch">
             <div id="btns">
-                <button type="button" class="btn btn-sm">전체</button>
-                <button type="button" class="btn btn-sm">결재대기</button>
-                <button type="button" class="btn btn-sm">진행중</button>
+                <button type="button" class="btn btn-sm">결재완료문서</button>
+                <button type="button" class="btn btn-sm">참조/열람문서</button>
+                <button type="button" class="btn btn-sm">반려문서</button>
+                <button type="button" class="btn btn-sm">임시저장</button>
             </div>
 
             <form>
@@ -74,69 +78,69 @@
                 </div>
             </form>
         </div>
-        <br><br>
+        <br>
+
+        <br>
 
         <table align="center" class="table-hover">
             <thead>
                 <tr align="center">
                     <th width="120">문서번호</th>
+                    <th width="120">문서종류</th>
                     <th width="80">작성자</th>
                     <th width="70">긴급</th>
-                    <th width="200">제목</th>
+                    <th width="275">제목</th>
                     <th wdith="70">첨부</th>
-                    <th width="100">현재결재자</th>
-                    <th width="100">최종결재자</th>
                     <th width="80">결재상태</th>
                     <th width="100">기안일</th>
                 </tr>
             </thead>
             <tbody>
             	<c:choose>
-            		<c:when test="${!empty sbList}">
-		            	<c:forEach var="sb" items="${sbList}">
+            		<c:when test="${!empty edList}">
+            			<c:forEach var="ed" items="${edList}">
 		                <tr>
-		                    <td>${sb.approvalNo}</td>
-		                    <td>${sb.userNo}</td>
+		                    <td>${ed.approvalNo}</td>
+		                    <td>${ed.formNo}</td>
+		                    <td>${ed.userNo}</td>
 		                    <td>
-		                    	<c:if test="${sb.emergancy eq 'Y'}">
+		                    	<c:if test="${!empty ed.emergancy}">
 		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
 		                        </c:if>
 		                    </td>
-		                    <td>${sb.approvalTitle}</td>
+		                    <td>${ed.approvalTitle}</td>
 		                    <td>
-		                    	<c:if test="${!empty sb.originName}">
+		                    	<c:if test="${!empty ed.originName}">
 		                        	<img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
-		                       	</c:if>
+		                        </c:if>
 		                    </td>
-		                    <td>${sb.firstUser}</td>
-		                    <td>${sb.thirdUser}</td>
 		                    <td>
 		                    	<c:choose>
-		                    		<c:when test="${sb.status eq 'D'}">
-		                        		<button class="btn btn-sm" style="background-color: rgb(241, 196, 15);">결재대기</button>
-		                    		</c:when>
-		                    		<c:otherwise>
-		                    			<button class="btn btn-sm" style="background-color: rgb(243, 149, 137);">진행중</button>
-		                    		</c:otherwise>
-		                    	</c:choose>
+		                    		<c:when test="${ed.status eq 'Y'}">
+		                        		<button class="btn btn-sm" style="background-color: lightgray;">완료</button>
+									</c:when>
+									<c:when test="${ed.status eq 'R'}">
+				                        <button class="btn btn-sm" style="background-color: red; color: white;">반려</button>
+									</c:when>
+									<c:otherwise>
+		                        		<button class="btn btn-sm">임시저장</button>
+									</c:otherwise>	                    		
+		                        </c:choose>
 		                    </td>
-		                    <td>${sb.createDate}</td>
+		                    <td>${ed.createDate}</td>
 		                </tr>
 		                </c:forEach>
-		            </c:when>
-		            <c:otherwise>
-		            	<tr>
-		            		<td colspan="9">결재 진행중인 문서가 없습니다.</td>
-		            	</tr>
-		            </c:otherwise>
+                	</c:when>
+                	<c:otherwise>
+                		<td colspan="8">진행이 끝난 문서가 없습니다.</td>
+                	</c:otherwise>
                 </c:choose>
             </tbody>
         </table>
 
-    	</div>
-	</div>
-	
-	<div id="pagingArea">
+    </div>
+		
+		<div id="pagingArea">
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.listCount == 0}">
@@ -150,11 +154,11 @@
 		            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
 		            	</c:when>
 		            	<c:otherwise>
-		            		<li class="page-item"><a class="page-link" href="onlist.el?cpage=${pi.currentPage-1}&status="${sb.status}>이전</a></li>
+		            		<li class="page-item"><a class="page-link" href="endlist.el?cpage=${pi.currentPage-1}&status="${sb.status}>이전</a></li>
 		            	</c:otherwise>
 		            </c:choose>
 		            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-		            	<li class="page-item"><a class="page-link" href="onlist.el?cpage=${p}&status="${sb.status}">${p}</a></li>
+		            	<li class="page-item"><a class="page-link" href="endlist.el?cpage=${p}&status="${sb.status}">${p}</a></li>
 		            </c:forEach>
 		            
 		            <c:choose>
@@ -162,13 +166,16 @@
 		            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
 		            	</c:when>
 		            	<c:otherwise>
-		            		<li class="page-item"><a class="page-link" href="onlist.el?cpage=${pi.currentPage+1}&status="${sb.status}">다음</a></li>
+		            		<li class="page-item"><a class="page-link" href="endlist.el?cpage=${pi.currentPage+1}&status="${sb.status}">다음</a></li>
 		            	</c:otherwise>
 		           	</c:choose>
 		        </c:otherwise>
 		    </c:choose>
         </ul>
     </div>
+	
+		
+	</div>
 	
 </body>
 </html>

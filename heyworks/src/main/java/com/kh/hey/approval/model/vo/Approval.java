@@ -73,9 +73,21 @@ public class Approval {
 	
 	// 결재선
 	private String confirmNo;
+	private String firstUser;
+	private String secondUser;
+	private String thirdUser;
 	private String firstConfirm;
 	private String secondConfirm;
 	private String thirdConfirm;
+	private String firstReject;
+	private String secondReject;
+	private String thirdReject;
+	private String firstDate;
+	private String secondDate;
+	private String thirdDate;
+	private String firstJcode;
+	private String secondJcode;
+	private String thirdJcode;
 	private int procedure;
 	private String confirmStatus;
 	private String rejectReason;

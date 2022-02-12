@@ -86,7 +86,7 @@
             </li>
             <li class="side-list"><img src="resources/images/3759325.png">관리자 설정
                 <ul>
-                    <li><button type="button" class="onsidebtn" value="N">삭제된문서</button></li>
+                    <li><button type="button" class="" value="N">삭제된문서</button></li>
                     <li><a href="approvalad.el">&nbsp;전자결재관리자</a></li>
                 </ul>
             </li>

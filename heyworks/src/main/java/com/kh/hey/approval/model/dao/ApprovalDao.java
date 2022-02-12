@@ -44,9 +44,23 @@ public class ApprovalDao {
 		
 		return (ArrayList)sqlSession.selectList("approvalMapper.selectSubmitStandByList", map, rowBounds);
 		
+	} // 기안자 기준 결재대기 게시글 페이징처리와 함께 조회
+	
+	public ArrayList<Approval> selectSubmitEndList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectSubmitEndList", map, rowBounds);
+		
 	} // 결재자 기준 결재대기 게시글 페이징처리와 함께 조회
 
-	
+	public Approval selectApproval(SqlSessionTemplate sqlSession, String ano, String formNo) {
+		
+		return sqlSession.selectOne("approvalMapper.selectApproval", ano);
+		
+	} // 게시글 상세조회
 	
 	
 	
