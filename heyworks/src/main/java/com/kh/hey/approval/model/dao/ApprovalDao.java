@@ -56,18 +56,41 @@ public class ApprovalDao {
 		
 	} // 결재자 기준 결재대기 게시글 페이징처리와 함께 조회
 
-	public Approval selectApproval(SqlSessionTemplate sqlSession, String ano, String formNo) {
+	public Approval selectApproval(SqlSessionTemplate sqlSession, String ano) {
 		
 		return sqlSession.selectOne("approvalMapper.selectApproval", ano);
 		
-	} // 게시글 상세조회
+	} // 모든 양식 게시글 양식종류~결재자까지 상세조회
 	
+	public Approval selectBusinessDraft(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.selectOne("approvalMapper.selectBusinessDraft", ano);
+		
+	} // 업무기안서 상세
 	
+	public Approval selectEquipmentBuy(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.selectOne("approvalMapper.selectEquipmentBuy", ano);
+		
+	}
 	
+	public Approval selectCertificate(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.selectOne("approvalMapper.selectCertificate", ano);
+		
+	}
 	
+	public Approval selectRecruiment(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.selectOne("approvalMapper.selectRecruiment", ano);
+		
+	}
+
+	public Approval selectExpenseReport(SqlSessionTemplate sqlSession, String ano) {
 	
+	return sqlSession.selectOne("approvalMapper.selectExpenseReport", ano);
 	
-	
+	}
 	
 	
 	

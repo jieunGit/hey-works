@@ -17,28 +17,58 @@
 		<result column="status" property="status" />
 		<result column="origin_name" property="originName" />
 		<result column="file_path" property="filePath" />
-		
-		<result column="procedure_no" property="procedure" />
+				
+		<result column="buy_req_team" property="requestTeam" />
+		<result column="limit_date" property="limitDate" />
+		<result column="pay" property="pay" />
+		<result column="purpose" property="purpose" />
+		<result column="total_pay" property="totalPay" />
 		
 		<result column="first_user" property="firstUser" />
-		<result column="first_confirm" property="firstConfirm" />
-		<result column="first_reject" property="firstReject" />
-		<result column="first_date" property="firstDate" />
-		<result column="first_jcode" property="firstJcode" />
-		
-		<result column="second_user" property="secondUser" />
-		<result column="second_confirm" property="secondConfirm" />
-		<result column="second_reject" property="secondReject" />
-		<result column="second_date" property="secondDate" />
-		<result column="second_jcode" property="secondJcode" />
-		
 		<result column="third_user" property="thirdUser" />
-		<result column="third_confirm" property="thirdConfirm" />
-		<result column="third_reject" property="thirdReject" />
-		<result column="third_date" property="thirdDate" />
-		<result column="third_jcode" property="thirdJcode" />
 		
 		<result column="bdContent" property="businessDraftContent" />
+		
+		<result column="certificate_type" property="certificateType" />
+		<result column="use" property="use" />
+		<result column="where_submit" property="whereSubmit" />
+		<result column="submit_date" property="submitDate" />
+		<result column="crContent" property="certificateContent" />
+		
+		<result column="dept" property="recruimentDept" />
+		<result column="employee" property="employee" />
+		<result column="work_experience" property="workExperience" />
+		<result column="offer_date" property="offerDate" />
+		<result column="qualification" property="qualification" />
+		<result column="position" property="position" />
+		<result column="rcContent" property="recruimentContent" />
+		
+		<result column="imposition" property="imposition" />
+		<result column="erContent" property="expenseReportContent" />
+
+		<collection property="itemList" javaType="java.util.ArrayList" resultMap="itemListResultMap" />	
+		<collection property="confirmList" javaType="java.util.ArrayList" resultMap="confirmListResultMap" />	
+	</resultMap>
+	
+	<resultMap id="itemListResultMap" type="java.util.HashMap">
+		<result property="itemNo" column="itemNo" />
+		<result property="itemSeq" column="itemSeq" />
+		<result property="itemName" column="itemName" />
+		<result property="itemSize" column="itemSize" />
+		<result property="unit" column="unit" />
+		<result property="total" column="total" />
+		<result property="amount" column="amount" />
+		<result property="note" column="note" />
+	</resultMap>
+	
+	<resultMap id="confirmListResultMap" type="java.util.HashMap">
+		<result property="confirmNo" column="confirmNo" />
+		<result property="confirmUser" column="confirmUser" />
+		<result property="jobCode" column="jobCode" />
+		<result property="confirmStatus" column="confirmStatus" />
+		<result property="rejectReason" column="rejectReason" />
+		<result property="confirmDate" column="confirmDate" />
+		<result property="procedureNo" column="procedureNo" />
 	</resultMap>
 
 	<!-- 내가 결재자일경우 진행중인 문서 -->
@@ -190,46 +220,91 @@
 		                       , 'T', '임시저장') status
 		     , e2.user_name read_no
 		     , e3.user_name reference_no
+		     , elec_title
 		     , create_date
 		     , to_char(storage_year, 'YYYY-DD-MM') storage_year
 		     , origin_name
 		     , file_path
-		     , first_user
-		     , decode(first_jcode, 1, '사원'
-		                         , 2, '주임'
-		                         , 3, '대리'
-		                         , 4, '과장'
-		                         , 9, '대표이사') first_jcode
-		     , first_confirm
-		     , first_reject
-		     , first_date
-		     , second_user
-		     , decode(second_jcode, 1, '사원'
-		                          , 2, '주임'
-		                          , 3, '대리'
-		                          , 4, '과장'
-		                          , 9, '대표이사') second_jcode
-		     , second_confirm
-		     , second_reject
-		     , second_date
-		     , third_user
-		     , decode(third_jcode, 1, '사원'
-		                         , 2, '주임'
-		                         , 3, '대리'
-		                         , 4, '과장'
-		                         , 9, '대표이사') third_jcode
-		     , third_confirm
-		     , third_reject
-		     , third_date
-		     , content bdContent
+		     , confirm_no confirmNo
+             , confirm_user confirmUser
+             , vac.job_code jobCode
+             , procedure_no procedureNo
+             , vac.status confirmStatus
+             , reject_reason rejectReason
+             , confirm_date confirmDate
 		  from elec_approval ea
 		  join employee e1 on (writer_no = e1.user_no)
 		  join employee e2 on (read_no = e2.user_no)
 		  join employee e3 on (reference_no = e3.user_no)
-		  join business_draft using(elec_appr_no)
-		  join vw_confirm_list using(elec_appr_no)
+		  join vw_all_confirm_list vac using(elec_appr_no)
 		 where elec_appr_no = #{ano}
 	</select>
+	
+	<!-- 업무기안서 상세조회 -->
+	<select id="selectBusinessDraft" resultMap="approvalResult">
+		select
+		       content bdContent
+		  from business_draft
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	<!-- 비품구매품의서 상세조회 -->
+	<select id="selectEquipmentBuy" resultMap="approvalResult">
+		select
+		       elec_appr_no
+		     , buy_req_team
+		     , limit_date
+		     , pay
+		     , purpose
+		     , total_pay
+		     , item_no itemNo
+		     , item_seq itemSeq
+		     , item_name itemName
+		     , item_size itemSize
+		     , unit
+		     , total
+		     , amount
+		     , note
+		  from equipment_buy
+		  join item_list using(elec_appr_no)
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	<select id="selectCertificate" resultMap="approvalResult">
+		select
+		       certificate_type
+		     , use
+		     , where_submit
+		     , submit_date
+		     , content crContent
+		  from certificate
+		  join elec_approval using(elec_appr_no)
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	<select id="selectRecruiment" resultMap="approvalResult">
+		select
+		       dept
+		     , employee
+		     , work_experience
+		     , offer_date
+		     , qualification
+		     , position
+		     , content rcContent
+		  from recruiment
+		  join elec_approval using(elec_appr_no)
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	<select id="selectExpenseReport" resultMap="approvalResult">
+		select
+		       imposition
+		     , content erContent
+		  from expense_report
+		  join elec_approval using(elec_appr_no)
+		 where elec_appr_no = #{ano}
+	</select>
+	
 	
 	
 	

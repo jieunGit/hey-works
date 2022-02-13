@@ -102,7 +102,9 @@
 					                    </td>
 					                    <td>${ap.approvalTitle}</td>
 					                    <td>
+					                    	<c:if test="${!empty ap.originName}">
 					                        	<img src="resources/images/2586886.png" style="width: 80%; height: 70%;" >
+					                    	</c:if>
 					                    </td>
 					                    <td>${ap.userNo}</td>
 					                </tr>

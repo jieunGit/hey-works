@@ -57,125 +57,48 @@ public class ApprovalServiceImpl implements ApprovalService {
 	} // 페이징바 처리한 기안자 기준 상태값 따른 게시글 조회(승인,반려,임시저장)
 	
 	@Override
-	public Approval selectApproval(String ano, String formNo) {
+	public Approval selectApproval(String ano) {
 		
-		return aDao.selectApproval(sqlSession, ano, formNo);
+		return aDao.selectApproval(sqlSession, ano);
 		
-	} // 게시글 상세조회
+	} // 모든 양식 게시글 양식종류~결재자까지 상세조회
+
+	@Override
+	public Approval selectBusinessDraft(String ano) {
+		
+		return aDao.selectBusinessDraft(sqlSession, ano);
+		
+	} // 업무기안서 상세
+
+	@Override
+	public Approval selectEquipmentBuy(String ano) {
+		
+		return aDao.selectEquipmentBuy(sqlSession, ano);
+		
+	}
+
+	@Override
+	public Approval selectCertificate(String ano) {
+		
+		return aDao.selectCertificate(sqlSession, ano);
+		
+	}
+
+	@Override
+	public Approval selectRecruiment(String ano) {
+		
+		return aDao.selectRecruiment(sqlSession, ano);
+		
+	}
+
+	@Override
+	public Approval selectExpenseReport(String ano) {
+		
+		return aDao.selectExpenseReport(sqlSession, ano);
+		
+	}
 	
 	
-	@Override
-	public int insertElectronic(Approval a) {
-		return 0;
-	}
-
-	@Override
-	public int insertBusinessDraft(Approval a) {
-		return 0;
-	}
-
-	@Override
-	public int insertEquipmentBuy(Approval a) {
-		return 0;
-	}
-
-	@Override
-	public int insertItemList(Approval a) {
-		return 0;
-	}
-
-	@Override
-	public int insertCertificate(Approval a) {
-		return 0;
-	}
-
-	@Override
-	public int insertRecruiment(Approval a) {
-		return 0;
-	}
-
-	@Override
-	public int insertExpenseReport(Approval a) {
-		return 0;
-	}
-
-
-	@Override
-	public int updateReadReferenceStatus(String read, String reference) {
-		return 0;
-	}
-
-	@Override
-	public int updateElectronic(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateBusinessDraft(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateEquipmentBuy(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateItemList(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateCertificate(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateRecruiment(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateExpenseReport(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteElectronic(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteBusinessDraft(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteEquipmentBuy(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteItemList(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteCertificate(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteRecruiment(String approvalNo) {
-		return 0;
-	}
-
-	@Override
-	public int deleteExpenseReport(String approvalNo) {
-		return 0;
-	}
-
-
 
 	
 }

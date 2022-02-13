@@ -66,11 +66,13 @@
         <br><br>
 
         <div id="btns">
-            <a href="" class="btn btn-sm">목록으로</a>
+            <a href="standby.el" class="btn btn-sm">목록으로</a>
 
             <!-- 작성자 -->
-            <a href="" class="btn btn-sm text-primary">내용수정</a>
-            <a href="" class="btn btn-sm text-danger">기안취소</a>
+            <c:if test="${loginUser.userName eq ap.userNo}">
+	            <a href="" class="btn btn-sm text-primary">내용수정</a>
+	            <a href="" class="btn btn-sm text-danger">기안취소</a>
+            </c:if>
 
             <!-- 결재자 -->
             <button type="button" class="btn btn-sm text-primary">결재</button>
@@ -85,7 +87,7 @@
 
         <hr>
 
-        <div id="form-type">${ap.approvalTitle}</div>
+        <div id="form-type">${ap.formNo}</div>
         <br>
 
         <div align="right">기안일 : ${ap.createDate}&nbsp;&nbsp;&nbsp;보존연한 : ${ap.storageYear}</div>
@@ -108,28 +110,34 @@
                 <th rowspan="3" width="150">신청상태</th>
                 <td rowspan="3" width="150">${ap.status}</td>
                 <th rowspan="3" width="150">결재상태</th>
-                <th width="150">${ap.firstJcode}</th>
-                <th width="150">${ap.secondJcode}</th>
-                <th colspan="2" width="150">${ap.thirdJcode}</th>
+                <th width="150">${ap.confirmList[0].jobCode}</th>
+                <th width="150">${ap.confirmList[1].jobCode}</th>
+                <th colspan="2" width="150">${ap.confirmList[2].jobCode}</th>
             </tr>
             <tr style="height: 110px;">
                 <td>
-                    <img src="resources/images/511608.png"><br><br>
-                    ${ap.firstDate}
+              		<c:if test="${ap.confirmList[0].confirmStatus eq '승인'}">
+                  		<img src="resources/images/511608.png"><br><br>
+                  		${ap.confirmList[0].confirmDate}
+              		</c:if>
                 </td>
                 <td>
-                    <img src="resources/images/511608.png"><br><br>
-                    ${ap.secondDate}
+                    <c:if test="${ap.confirmList[1].confirmStatus eq '승인'}">
+                  		<img src="resources/images/511608.png"><br><br>
+                  		${ap.confirmList[1].confirmDate}
+              		</c:if>
                 </td>
                 <td colspan="2">
-                    <img src="resources/images/511608.png"><br><br>
-                    ${ap.thirdDate}
+                    <c:if test="${ap.confirmList[2].confirmStatus eq '승인'}">
+                  		<img src="resources/images/511608.png"><br><br>
+                  		${ap.confirmList[2].confirmDate}
+              		</c:if>
                 </td>
             </tr>
             <tr>
-                <th width="150">${ap.firstUser}</th>
-                <th width="150">${ap.secondUser}</th>
-                <th width="150" colspan="2">${ap.thirdUser}</th>
+                <th width="150">${ap.confirmList[0].confirmUser}</th>
+                <th width="150">${ap.confirmList[1].confirmUser}</th>
+                <th width="150" colspan="2">${ap.confirmList[2].confirmUser}</th>
             </tr>
             <tr>
                 <th>참 조</th>
@@ -139,56 +147,64 @@
             </tr>
 
             <!-- 증명서 일때 -->
+            <c:if test="${!empty ce}">
             <tr>
                 <th>증명서종류</th>
-                <td colspan="2"></td>
+                <td colspan="2">${ce.certificateType}</td>
                 <th>용 도</th>
-                <td colspan="3"></td>
+                <td colspan="3">${ce.use}</td>
             </tr>
             <tr>
                 <th>제출처</th>
-                <td colspan="2"></td>
+                <td colspan="2">${ce.whereSubmit}</td>
                 <th>제출일</th>
-                <td colspan="3"></td>
+                <td colspan="3">${ce.submitDate}</td>
             </tr>
+            </c:if>
 
             <!-- 채용요청서 일 때 -->
-            <tr>
-                <th>부 서</th>
-                <td></td>
-                <th>인 원</th>
-                <td></td>
-                <th>실무경력(년)</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>채용희망일</th>
-                <td></td>
-                <th>자격사항</th>
-                <td></td>
-                <th>직위</th>
-                <td></td>
-            </tr>
+            <c:if test="${!empty rc}">
+	            <tr>
+	                <th>부 서</th>
+	                <td>${rc.recruimentDept}</td>
+	                <th>인 원</th>
+	                <td>${rc.employee}</td>
+	                <th>실무경력(년)</th>
+	                <td>${rc.workExperience}</td>
+	            </tr>
+	            <tr>
+	                <th>채용희망일</th>
+	                <td>${rc.offerDate}</td>
+	                <th>자격사항</th>
+	                <td>${rc.qualification}</td>
+	                <th>직위</th>
+	                <td>${rc.position}</td>
+	            </tr>
+            </c:if>
            
             <!-- 일반 품의서 일 때 -->
-            <tr>
-                <th>시행날짜</th>
-                <td colspan="6"></td>
-            </tr>
+            <c:if test="${!empty er}">
+	            <tr>
+	                <th>시행날짜</th>
+	                <td colspan="6">${er.imposition}</td>
+	            </tr>
+            </c:if>
 
             <!-- 비품구매서 일 때 -->
-            <tr>
-                <th>구매요청부서</th>
-                <td colspan="2"></td>
-                <th>납품요청기한</th>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <th>대금지불방법</th>
-                <td colspan="2"></td>
-                <th>사용목적</th>
-                <td colspan="3"></td>
-            </tr>
+            <c:if test="${!empty eb}">
+	            <tr>
+	                <th>구매요청부서</th>
+	                <td colspan="2">${eb.requestTeam}</td>
+	                <th>납품요청기한</th>
+	                <td colspan="3">${eb.limitDate}</td>
+	            </tr>
+	            <tr>
+	                <th>대금지불방법</th>
+	                <td colspan="2">${eb.pay}</td>
+	                <th>사용목적</th>
+	                <td colspan="3">${eb.purpose}</td>
+	            </tr>
+	        </c:if>
 
             <!-- //////////////////////////////////////// -->
             <tr>
@@ -196,64 +212,65 @@
                 <td colspan="6">${ap.approvalTitle}</td>
             </tr>
 
+			<c:if test="${empty eb}">
             <!--비품구매 제외시 보여질 내용-->
             <tr style="height: 400px;">
                 <td colspan="7"style="text-align: left;"> <!-- 위치 수정하기... -->
-                	${ap.businessDraftContent}
+                	${bd.businessDraftContent}
+                	${ce.certificateContent}
+                	${rc.recruimentContent}
+                	${er.expenseReportContent}
                 </td>
             </tr>
+            </c:if>
         </table>
 
-        <!-- 비품구매 내용 -->
-        <table class="table-bordered">
-            <tr>
-                <th width="50">품 번</th>
-                        <th width="250">품 명</th>
-                        <th width="150">규 격</th>
-                        <th width="50">단 위</th>
-                        <th width="50">수 량</th>
-                        <th width="150">금 액(원)</th>
-                        <th width="200">비 고</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-
+	    <!-- 비품구매 내용 -->
+		<c:if test="${!empty eb}">
+	        <table class="table-bordered">
+	            <tr>
+	                <th width="50">품 번</th>
+                    <th width="250">품 명</th>
+                    <th width="150">규 격</th>
+                    <th width="50">수 량</th>
+                    <th width="50">단 위</th>
+                    <th width="150">금 액(원)</th>
+                    <th width="200">비 고</th>
+	            </tr>
+		        <c:forEach var="it" items="${eb.itemList}">
+		            <tr>
+		                <td>${it.itemSeq}</td>
+		                <td>${it.itemName}</td>
+		                <td>${it.itemSize}</td>
+		                <td>${it.total}</td>
+		                <td>${it.unit}</td>
+		                <td>${it.amount}</td>
+		                <td>${it.note}</td>
+		            </tr>
+		        </c:forEach>
+		        <tr>
+		        	<th colspan="6">총 금액</th>
+		        	<td>${eb.totalPay}</td>
+		        </tr>
+	        </table>
+		</c:if>
+		
         <!-- 반려시 보여질 곳 -->
         <br>
-        <div>반려사유 : 내용부족</div>
-
+        <c:if test="${ap.status eq 'N'}">
+        	<div>반려사유 : 
+        		${ap.confirmList[0].rejectReason}
+        		${ap.confirmList[1].rejectReason}
+        		${ap.confirmList[2].rejectReason}
+        	</div>
+		</c:if>
         <br>
 
         <div id="attachment-div">
             &nbsp;&nbsp;
             <img src="resources/images/124506.png" width="20px" height="20px">
-           	 첨부파일 ()개 ${ap.originName}
+           	 첨부파일(
+           	 <c:if test="${!empty ap.originName}">1</c:if>)개 ${ap.originName}
         </div>
 
         <hr>

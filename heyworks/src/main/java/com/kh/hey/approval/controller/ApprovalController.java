@@ -145,11 +145,39 @@ public class ApprovalController {
 		
 		String formNo = ano.substring(3,5); // 양식 조건비교할 값 담기
 		
-		Approval ap = aService.selectApproval(ano, formNo);
+		Approval ap = aService.selectApproval(ano); // 제목~결재자까지 알아오기
 		
 		if(ap != null) {
 			
-			mv.addObject("ap", ap);
+			mv.addObject("ap", ap);	
+			
+			if(formNo.equals("BD")) { // 업무기안서 상세
+				
+				Approval bd = aService.selectBusinessDraft(ano);
+				mv.addObject("bd", bd);
+				
+			}else if(formNo.equals("EB")) { // 비품구매 상세
+				
+				Approval eb = aService.selectEquipmentBuy(ano);
+				mv.addObject("eb", eb);
+				
+			}else if(formNo.equals("CE")) { // 증명서 신청 상세
+				
+				Approval ce = aService.selectCertificate(ano);
+				mv.addObject("ce", ce);
+				
+			}else if(formNo.equals("RC")) { // 채용요청서 상세
+				
+				Approval rc = aService.selectRecruiment(ano);
+				mv.addObject("rc", rc);
+				
+			}else { // 일반품의서 상세
+				
+				Approval er = aService.selectExpenseReport(ano);
+				mv.addObject("er", er);
+				
+			}
+			
 			mv.setViewName("approval/approvalDetail");
 			
 		}else {
@@ -157,7 +185,6 @@ public class ApprovalController {
 			//mv.setViewName("redirect:/standby.el");
 		}
 		
-		System.out.println(ap);
 		return mv;
 		
 		

@@ -100,7 +100,7 @@
             		<c:when test="${!empty edList}">
             			<c:forEach var="ed" items="${edList}">
 		                <tr>
-		                    <td>${ed.approvalNo}</td>
+		                    <td class="ano">${ed.approvalNo}</td>
 		                    <td>${ed.formNo}</td>
 		                    <td>${ed.userNo}</td>
 		                    <td>
@@ -176,6 +176,37 @@
 	
 		
 	</div>
+	
+	<script>
+		$(".table-hover>tbody>tr").click(function(){
+		
+			location.href="detail.el?ano=" + $(this).children(".ano").text();
+			
+		})
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </body>
 </html>

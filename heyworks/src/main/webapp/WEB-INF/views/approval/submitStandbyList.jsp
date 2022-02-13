@@ -95,7 +95,7 @@
             		<c:when test="${!empty sbList}">
 		            	<c:forEach var="sb" items="${sbList}">
 		                <tr>
-		                    <td>${sb.approvalNo}</td>
+		                    <td class="ano">${sb.approvalNo}</td>
 		                    <td>${sb.userNo}</td>
 		                    <td>
 		                    	<c:if test="${sb.emergancy eq 'Y'}">
@@ -169,6 +169,38 @@
 		    </c:choose>
         </ul>
     </div>
+    
+    <script>
+		$(".table-hover>tbody>tr").click(function(){
+		
+			location.href="detail.el?ano=" + $(this).children(".ano").text();
+			
+		})
+	</script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
 </body>
 </html>
