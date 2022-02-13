@@ -65,6 +65,7 @@
         padding: 18px;        
     }
  
+    
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -80,13 +81,14 @@
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 </head>
 </head>
 <body>
 
 	<div id="header">
         <div id="logo">
-            <a href="">
+            <a href="main.do">
                 <img src="resources/images/LOGO.JPG" width="180px" height="35px" style="margin-left:20px; margin-top: 10px;">
             </a>
         </div>
@@ -115,7 +117,7 @@
                 <li><a href="">
                     <img src="resources/images/bag.png">
                 </a></li>
-                <li><a href="">
+                <li><a href="main.el">
                     <img src="resources/images/approval.png">
                 </a></li>
                 <li><a href="">
@@ -130,17 +132,23 @@
                 <li><a href="">
                     <img src="resources/images/key.png">
                 </a></li>
-                <li><a href="">
+                <li><div id="addressbook"><a href="">
                     <img src="resources/images/addressbook.png">
+                    </div>
                 </a></li>
                 <li><a href="">
                     <img src="resources/images/coperation.png">
-                </a></li>
+                </a></li>         
+                
+                 <li><a href="">
+                </a></li>       
+                   	 
+                <li><a href="logout.em">
+                    <i class="bi bi-door-open" style="font-size: 4rem; color: black;"></i>
+                </a></li>  
             </ul>
         </div>
-        <div id="detail">
-            
-        </div>
+       
     </div>
 
 </body>

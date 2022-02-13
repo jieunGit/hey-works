@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="approvalMapper">
+
+	<resultMap type="Approval" id="approvalResult">
+		<result column="elec_appr_no" property="approvalNo" />
+		<result column="writer_name" property="userNo" />
+		<result column="form_no" property="formNo" />
+		<result column="write_dept" property="writeDept" />
+		<result column="elec_title" property="approvalTitle" />
+		<result column="emc_yn" property="emergancy" />
+		<result column="storage_year" property="storageYear" />
+		<result column="grade" property="grade" />
+		<result column="read_no" property="read" />
+		<result column="reference_no" property="reference" />
+		<result column="create_date" property="createDate" />
+		<result column="status" property="status" />
+		<result column="origin_name" property="originName" />
+		<result column="file_path" property="filePath" />
+		
+		<result column="procedure_no" property="procedure" />
+		
+		<result column="first_user" property="firstUser" />
+		<result column="first_confirm" property="firstConfirm" />
+		<result column="first_reject" property="firstReject" />
+		<result column="first_date" property="firstDate" />
+		<result column="first_jcode" property="firstJcode" />
+		
+		<result column="second_user" property="secondUser" />
+		<result column="second_confirm" property="secondConfirm" />
+		<result column="second_reject" property="secondReject" />
+		<result column="second_date" property="secondDate" />
+		<result column="second_jcode" property="secondJcode" />
+		
+		<result column="third_user" property="thirdUser" />
+		<result column="third_confirm" property="thirdConfirm" />
+		<result column="third_reject" property="thirdReject" />
+		<result column="third_date" property="thirdDate" />
+		<result column="third_jcode" property="thirdJcode" />
+		
+		<result column="bdContent" property="businessDraftContent" />
+	</resultMap>
+
+	<!-- 내가 결재자일경우 진행중인 문서 -->
+	<select id="selectListCount" resultType="_int">
+		select 
+		       count(*)
+		  from vw_all_confirmlist
+		 where rank = 1
+		   and confirm_name = #{userName}
+		   and status in ('D', 'P')
+	</select>
+	
+	
+	<!-- 내가 결재자일 경우 결재대기 -->
+	<select id="selectStandByList" resultMap="approvalResult">
+		  select 
+		  		 origin_appr_no elec_appr_no
+		       , writer_name
+		       , decode(form_no, 1, '업무기안서'
+                               , 2, '비품구매품의서'
+                               , 3, '증명서신청'
+                               , 4, '채용요청서'
+                               , 5, '일반품의서') form_no
+		       , write_dept
+		       , elec_title
+		       , emc_yn
+		       , create_date
+		       , status
+		       , origin_name
+		       , confirm_name first_user
+		       , origin_pcd_no procedure_no
+            from vw_all_confirmlist
+           where rank = 1
+             and confirm_name = #{userName}
+             and status in ('D', 'P')
+           order
+              by create_date desc
+	</select>
+	
+	<!-- 내가 기안자일 경우 전체, 대기, 진행, 승인, 반려, 임시저장 게시글 갯수 -->
+	<select id="selectSubmitListCount" resultType="_int">
+		select
+		       count(*)
+		  from elec_approval
+		 where writer_no = #{userNo}
+	   	  <if test='status == "A"'>
+		  	and status in ('D', 'P')
+		  </if>
+		  <if test='status == "D"'>
+		  	and status = 'D'
+		  </if>
+		  <if test='status == "P"'>
+		  	and status = 'P'
+		  </if>
+		  <if test='status == "Y"'>
+		  	and status = 'Y'
+		  </if>
+		  <if test='status == "R"'>
+		  	and status = 'R'
+		  </if>
+		  <if test='status == "T"'>
+		  	and status = 'T'
+		  </if>
+	</select>
+	
+	
+	<!-- 내가 기안자 경우 전체, 결재대기(D), 진행중(P)-->
+	<select id="selectSubmitStandByList" resultMap="approvalResult">
+		  select 
+			     origin_appr_no elec_appr_no
+			   , writer_name
+			   , write_dept
+			   , decode(form_no, 1, '업무기안서'
+			                   , 2, '비품구매품의서'
+			                   , 3, '증명서신청'
+			                   , 4, '채용요청서'
+			                   , 5, '일반품의서') form_no
+			   , elec_title
+			   , emc_yn
+			   , create_date
+			   , v1.status status
+			   , origin_name
+			   , confirm_name first_user
+			   , origin_pcd_no procedure_no
+			   , last_confirm third_user
+			from vw_all_confirmlist v1
+			join vw_last_confirm v2 on(origin_appr_no = v2.elec_appr_no)
+			where rank = 1
+			  and writer_name = #{userName}
+			  <if test='status == "A"'>
+			  	and v1.status in ('D', 'P')
+			  </if>
+			  <if test='status == "D"'>
+			  	and v1.status = 'D'
+			  </if>
+			  <if test='status == "P"'>
+			  	and v1.status = 'P'
+			  </if>
+			order 
+			  by create_date desc
+	</select>
+	
+	<!-- 내가 기안자일때 승인,반려,임시저장 조회 -->	
+	<select id="selectSubmitEndList" resultMap="approvalResult">
+		select
+		       elec_appr_no
+		     , decode(form_no, 1, '업무기안서'
+			                 , 2, '비품구매품의서'
+			                 , 3, '증명서신청'
+			                 , 4, '채용요청서'
+			                 , 5, '일반품의서') form_no
+		     , user_name writer_name
+		     , emc_yn
+		     , elec_title
+		     , origin_name
+		     , ep.status status
+		     , create_date
+		  from elec_approval ep
+		  join employee on (writer_no = user_no)
+		 where writer_no = #{userNo}
+	   	 <if test='status == "Y"'>
+		   and ep.status = 'Y'
+		 </if>
+		 <if test='status == "R"'>
+		   and ep.status = 'R'
+		 </if>
+		 <if test='status == "T"'>
+		   and ep.status = 'T'
+		 </if>
+	</select>
+	
+	<!-- 업무기안서 상세보기 -->
+	<select id="selectApproval" resultMap="approvalResult">
+		select
+		       decode(form_no, 1, '업무기안서'
+		                     , 2, '비품구매품의서'
+		                     , 3, '증명서신청'
+		                     , 4, '채용요청서'
+		                     , 5, '일반품의서') form_no
+		     , elec_appr_no
+		     , write_dept
+		     , grade
+		     , e1.user_name writer_name
+		     , decode(ea.status, 'D', '결재대기'
+		                       , 'P', '진행중'
+		                       , 'N', '기안회수(삭제)'
+		                       , 'R', '반려'
+		                       , 'Y', '결재완료(승인)'
+		                       , 'T', '임시저장') status
+		     , e2.user_name read_no
+		     , e3.user_name reference_no
+		     , create_date
+		     , to_char(storage_year, 'YYYY-DD-MM') storage_year
+		     , origin_name
+		     , file_path
+		     , first_user
+		     , decode(first_jcode, 1, '사원'
+		                         , 2, '주임'
+		                         , 3, '대리'
+		                         , 4, '과장'
+		                         , 9, '대표이사') first_jcode
+		     , first_confirm
+		     , first_reject
+		     , first_date
+		     , second_user
+		     , decode(second_jcode, 1, '사원'
+		                          , 2, '주임'
+		                          , 3, '대리'
+		                          , 4, '과장'
+		                          , 9, '대표이사') second_jcode
+		     , second_confirm
+		     , second_reject
+		     , second_date
+		     , third_user
+		     , decode(third_jcode, 1, '사원'
+		                         , 2, '주임'
+		                         , 3, '대리'
+		                         , 4, '과장'
+		                         , 9, '대표이사') third_jcode
+		     , third_confirm
+		     , third_reject
+		     , third_date
+		     , content bdContent
+		  from elec_approval ea
+		  join employee e1 on (writer_no = e1.user_no)
+		  join employee e2 on (read_no = e2.user_no)
+		  join employee e3 on (reference_no = e3.user_no)
+		  join business_draft using(elec_appr_no)
+		  join vw_confirm_list using(elec_appr_no)
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

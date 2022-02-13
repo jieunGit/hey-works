@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+
+
+<configuration>
+	
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.kh.hey.approval.model.vo.Approval" alias="Approval" />
+		<typeAlias type="com.kh.hey.employee.model.vo.Employee" alias="Employee" />
+		<typeAlias type="com.kh.hey.reserve.model.vo.Resources" alias="Resources" />
+		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesCategory" alias="ResourcesCategory" />
+		<typeAlias type="com.kh.hey.reserve.model.vo.Reservation" alias="Reservation" />
+		
+	</typeAliases>
+	
+	<mappers>
+	 	<mapper resource="/mappers/approval-mapper.xml" />
+	 	<mapper resource="/mappers/employee-mapper.xml" />
+		<mapper resource="/mappers/reservation-mapper.xml"/>
+		
+	 </mappers>
+	 
+	 
+	
+</configuration>
