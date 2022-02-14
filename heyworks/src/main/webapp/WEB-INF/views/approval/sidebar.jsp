@@ -54,54 +54,60 @@
         <ul>
             <li style="font-size: 22px; font-weight: 700;">
                 <img src="resources/images/2722998.png" style="width: 40px; height: 40px;">
-                전자결재
+                	전자결재
             </li>
             <li id="write"><a href="approvalFrom.el" style="color: white;">작성하기</a></li>
-            <li><img src="resources/images/3759325.png">자주쓰는양식
+            <li class="side-list"><img src="resources/images/3759325.png">자주쓰는양식
                 <ul>
                     <li><a href="bdEnrollForm.el">업무기안서</a></li>
                     <li><a href="ebEnrollForm.el">비품구매품의서</a></li>
                 </ul>
             </li>
-            <li><img src="resources/images/3759325.png">진행중인문서
+            <li class="side-list"><img src="resources/images/3759325.png">내 결재함
                 <ul>
-                    <li><button type="button" class="onsidebtn">전체</button></li>
+                    <li><a href="standby.el">결재대기</a></li>
+                    <li><a href="">&nbsp;참조/열람대기</a></li>
+                </ul>
+            </li>
+            <li class="side-list"><img src="resources/images/3759325.png">진행중인문서
+                <ul>
+                	<li><button type="button" class="onsidebtn" value="A">전체</button></li>
                     <li><button type="button" class="onsidebtn" value="D">결재대기</button></li>
-                    <li><button type="button" class="onsidebtn" value="P">결재예정</button></li>
-                    <li><a href="">참조/열람대기</a></li>
+                    <li><button type="button" class="onsidebtn" value="P">진행중</button></li>
                 </ul>
             </li>
-            <li><img src="resources/images/3759325.png">내 문서함
+            <li class="side-list"><img src="resources/images/3759325.png">완료된문서
                 <ul>
-                    <li><button type="button" class="endsidebtn" value="Y">결재완료문서</button></li>
-                    <li><button type="button" class="endsidebtn">참조/열람문서</button></li>
-                    <li><button type="button" class="endsidebtn" value="R">반려문서</button></li>
-                    <li><button type="button" class="endsidebtn" value="T">임시저장</button></li>
+                    <li><button type="button" class="onsidebtn" value="Y">결재완료문서</button></li>
+                    <li><button type="button" class="">참조/열람문서</button></li>
+                    <li><button type="button" class="onsidebtn" value="R">반려문서</button></li>
+                    <li><button type="button" class="onsidebtn" value="T">임시저장</button></li>
                 </ul>
             </li>
-            <li><img src="resources/images/3759325.png">관리자 설정
+            <li class="side-list"><img src="resources/images/3759325.png">관리자 설정
                 <ul>
-                    <li><button type="button" class="delsidebtn" value="N">삭제된문서</button></li>
-                    <li><a href="approvalad.el">전자결재관리자</a></li>
+                    <li><button type="button" class="" value="N">삭제된문서</button></li>
+                    <li><a href="approvalad.el">&nbsp;전자결재관리자</a></li>
                 </ul>
             </li>
         </ul>
     </div>
     
     <script>
-    	$(function(){
-    		$(".onsidebtn").click(function(){
-    			location.href="onAllList.el?status="+$(this).val();
-    		});
-    		
-    		$(".endsidebtn").click(function(){
-    			location.href="endList.el?status="+$(this).val();
-    		});
-    		
-    		$(".delsidebtn").click(function(){
-    			location.href="deleteList.el?status="+$(this).val();
-    		});
-    	})
+   		$(".onsidebtn").click(function(){
+   			
+   			const value = $(this).val();
+   			
+   			if(value == 'D' || value == 'P' || value == 'A'){
+   				location.href="onlist.el?status=" + value;
+   			}else{
+   				location.href="endlist.el?status=" + value;
+   			}
+   			
+   			console.log(value);
+   			
+   		});
+
     </script>
 
 </body>

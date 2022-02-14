@@ -1,6 +1,7 @@
 package com.kh.hey.approval.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class Approval {
 	private String formNo;
 	private String writeDept;
 	private String approvalTitle;
-	private String emergency;
+	private String emergancy;
 	private String storageYear;
 	private String grade;
 	private String read;
@@ -43,13 +44,14 @@ public class Approval {
 	
 	// 비품구매목록
 	private String itemNo;
-	private int itemSequence;
+	private int itemSeq;
 	private String itemName;
 	private String itemSize;
 	private String unit;
 	private int total; // 비품수량
 	private String amount;
 	private String note;
+	private ArrayList<Approval> itemList;
 	
 	// 증명서신청
 	private String certificateType;
@@ -73,11 +75,15 @@ public class Approval {
 	
 	// 결재선
 	private String confirmNo;
-	private String confirmUserNo;
-	private int procedure;
+	private String confirmUser;
 	private String confirmStatus;
+	private String jobCode;
+	private int procedureNo;
 	private String rejectReason;
 	private String confirmDate;
+	private ArrayList<Approval> confirmList;
 	
+	private String firstUser;
+	private String thirdUser;
 
 }

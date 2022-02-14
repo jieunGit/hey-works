@@ -117,23 +117,6 @@
                 </c:forEach>
             </tbody>
         </table>
-        
-        <c:forEach var="b" items="${list}">
-	                    <tr>
-	                        <td class="bno">${b.boardNo}</td>
-	                        <td>${b.boardTitle}</td>
-	                        <td>${b.boardWriter}</td>
-	                        <td>${b.count}</td>
-	                        <td>${b.createDate}</td>
-	                        
-	                        <td>
-		                        <c:if test="${!empty b.originName}">
-		                       		★
-		                        </c:if>
-		                    </td>
-		                    
-	                    </tr>
-                    </c:forEach>
 
     	</div>
 	</div>
