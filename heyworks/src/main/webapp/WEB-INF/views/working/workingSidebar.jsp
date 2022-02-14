@@ -56,13 +56,16 @@
                     <ul>
                         <li style="margin-left:15px;"><a href="">근무/휴가</a></li>
                         <li style="margin-left:15px;"><a href="">근무/휴가현황</a></li>
+                        <li style="margin-left:15px;"><a href="">부서 근무현황</a></li>
                     </ul>
                 </li><br><br>
-                <li style="font-size:15px;"><strong>부서 근무현황</strong>
+
+                <!--관리자만-->
+                <li style="font-size:15px;"><strong>근무관리</strong>
                     <ul>
-                        <li style="margin-left:15px;"><a href="">개발팀</a></li>
-                        <li style="margin-left:15px;"><a href="">인사팀</a></li>
-                        <li style="margin-left:15px;"><a href="">회계팀</a></li>
+                        <li style="margin-left:15px;"><a href="">전사 휴가현황</a></li>
+                        <li style="margin-left:15px;"><a href="">휴가 신청내역</a></li>
+                        <li style="margin-left:15px;"><a href="">연장근무 신청내역</a></li>
                     </ul>
                 </li>
             </ul>

@@ -64,6 +64,7 @@
             </table>
         </div><br><br><br>
 
+        <!--최신순 3개까지만-->
         <div class="leave-apply">
             <h3>휴가 신청 내역</h3>
 
@@ -74,12 +75,30 @@
             <table border="1">
                 <tr style="height:40px;">
                     <th width="120">신청일</th>
-                    <th width="90">신청자</th>
+                    <th width="90">이름</th>
                     <th width="90">소속</th>
                     <th width="70">신청일수</th>
-                    <th width="300">신청기간</th>
+                    <th width="300">휴가기간</th>
                     <th width="90">구분</th>
                     <th width="90">상태</th>
+                </tr>
+                <tr style="height:30px; text-align:center;">
+                    <td>2022/01/03</td>
+                    <td>강보람</td>
+                    <td>개발팀</td>
+                    <td>1</td>
+                    <td>2022/01/05 ~ 2022/01/06</td>
+                    <td>경조사</td>
+                    <td>대기</td>
+                </tr>
+                <tr style="height:30px; text-align:center;">
+                    <td>2022/01/03</td>
+                    <td>강보람</td>
+                    <td>개발팀</td>
+                    <td>1</td>
+                    <td>2022/01/05 ~ 2022/01/06</td>
+                    <td>경조사</td>
+                    <td>대기</td>
                 </tr>
                 <tr style="height:30px; text-align:center;">
                     <td>2022/01/03</td>
