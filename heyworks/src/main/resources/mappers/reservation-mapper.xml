@@ -13,10 +13,41 @@
 		<result column="end_date" property="endDate"/>
 		<result column="reserve_Date" property="reserveDate"/>
 		<result column="reserve_content" property="reserveContent"/>
-		
+		<result column="user_name" property="userName"/>
+		<result column ="category_no" property="categoryNo"/>
+	</resultMap>
+	
+	<resultMap id="resourcesResult" type="Resources">
+		<result column="resources_no" property="resourcesNo"/>
+		<result column="category_no" property="categoryNo"/>
+		<result column="resource_name" property="resourceName"/>
+		<result column="resource_content" property="resourceContent"/>
+	
+	
 	</resultMap>
 
 
+
+	<resultMap id="categoryResult" type="ResourcesCategory">
+	
+		<result column="category_no" property="categoryNo"></result>
+		<result column="category_name" property="categoryName"></result>
+		<result column="category_content" property="categoryContent"></result>
+		<result column="category_img" property="categoryImg"></result>
+	</resultMap>
+
+	<select id="MenuCategoryList" resultMap="categoryResult">
+		select 
+		       category_no
+		     , category_name
+		     , category_content
+		     , category_img
+		  from resource_category
+		 where status = 'Y'
+		  order
+		     by category_no
+	
+	</select>
 
 	<select id="selectListCount" resultType="_int">
 		select
@@ -44,6 +75,56 @@
 	
 	</select>
 	
+	
+	<select id="categoryInfo" resultMap="categoryResult">
+	
+		select 
+		       category_no
+		     , category_name
+		     , category_content
+		  from resource_category
+		  where status = 'Y'
+		   and category_no = #{categoryNo}
+		  order
+		     by category_no
+	
+	
+	</select>
+	
+	<select id="resourceList" resultMap="resourcesResult">
+		  select
+		        resources_no
+		       , category_no
+		       , resource_name
+		       , resource_content
+		  from resources 
+		  where category_no = #{categoryNo}
+	
+	
+	
+	</select>
+	
+	<select id="selectRsvList" resultMap="reservationResult">
+			select 
+			        reserve_no
+			      , user_no
+			      , resources_no
+			      , category_name
+			      , rr.resource_name
+			      , start_date
+			      , rr.end_date
+			      , reserve_date
+			      , reserve_content
+			      , user_name
+			      , category_no
+			 from resources_reserve rr
+			 join employee e using(user_no)
+			 join resources re using(resources_no)
+			where category_no = #{categoryNo}
+			  and resources_no = #{resourceNo}
+	
+	
+	</select>
 	
 	
 </mapper>

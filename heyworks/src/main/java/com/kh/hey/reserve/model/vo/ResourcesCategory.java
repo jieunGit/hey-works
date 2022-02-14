@@ -14,7 +14,7 @@ import lombok.ToString;
 //package explore 에서 확인가능
 public class ResourcesCategory {
 	
-	private Number categoryNo;
+	private String categoryNo;
 	private String categoryName;
 	private String status;
 	private String categoryContent;

@@ -399,11 +399,11 @@ document.addEventListener('DOMContentLoaded', function() {
                   
         //           if (json.length > 0) {
         //              events.push({
-        //                        title: item.emp_name,
-        //                        start: item.startday,
-        //                        end: item.endday,
-        //                        color: "skyblue",
-        //                        id: item.reservation_no
+        //                        title: item.emp_name,  //표시되는제목
+        //                        start: item.startday,  //예약시작날짜 표시
+        //                        end: item.endday,      // 예약 끝날짜 표시
+        //                        color: "skyblue",    
+        //                        id: item.reservation_no  //고유번호
         //                     });
         //           }else{
         //              // 검색된 결과가 없을 때

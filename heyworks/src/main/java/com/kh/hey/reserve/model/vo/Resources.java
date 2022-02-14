@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString
 public class Resources {
 	
-	private Number resourcesNo;
-	private Number categoryNo;
+	private String resourcesNo;
+	private String categoryNo;
 	private String resourceName;
 	private String status;
 	private String resourceContent;

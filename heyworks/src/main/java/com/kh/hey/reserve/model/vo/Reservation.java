@@ -24,5 +24,7 @@ public class Reservation {
 	private String endDate;
 	private Date reserveDate;
 	private String reserveContent;
+	private String userName;
+	private String categoryNo;
 
 }
