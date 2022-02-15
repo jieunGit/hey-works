@@ -1,5 +1,8 @@
 package com.kh.hey.employee.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,40 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return loginUser;
 		
 	}
+
+	/**
+	 * @author NURI
+	 */
+	@Override
+	public ArrayList<Employee> ajaxSelectEmployeeList(HashMap<String, Integer> map) {
+		
+		return eDao.ajaxSelectEmployeeList(sqlSession, map);
+		
+	} // 전자결재 결재자용 사원조회
+
+	@Override
+	public ArrayList<Employee> selectDeptList() {
+		
+		return eDao.selectDeptList(sqlSession);
+		
+	} // 전자결재 인서트용
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

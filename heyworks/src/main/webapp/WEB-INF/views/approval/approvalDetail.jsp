@@ -75,14 +75,19 @@
             </c:if>
 
             <!-- 결재자 -->
-            <button type="button" class="btn btn-sm text-primary">결재</button>
-            <button type="button" class="btn btn-sm text-danger">반려</button>
-
+            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser}">
+	            <button type="button" class="btn btn-sm text-primary">결재</button>
+	            <button type="button" class="btn btn-sm text-danger">반려</button>
+			</c:if>
+			
             <!-- 반려시 -->
-            <a href="" class="btn btn-sm text-danger">재기안</a>
-
+            <c:if test="${ap.status eq '반려'}">
+            	<a href="" class="btn btn-sm text-danger">재기안</a>
+			</c:if>
             <!-- 관리자가 복구시 -->
-            <button type="button" class="btn btn-sm text-warning">복구하기</button>
+            <c:if test="${loginUser.adminYn eq 'Y' && loginUser.deptCode eq 3}">
+            	<button type="button" class="btn btn-sm text-warning">복구하기</button>
+            </c:if>
         </div>
 
         <hr>
@@ -269,8 +274,14 @@
         <div id="attachment-div">
             &nbsp;&nbsp;
             <img src="resources/images/124506.png" width="20px" height="20px">
-           	 첨부파일(
-           	 <c:if test="${!empty ap.originName}">1</c:if>)개 ${ap.originName}
+           	<c:choose>
+           		<c:when test="${!empty ap.originName}">
+           			첨부파일 (1)개 <a href="${ap.filePath}" download="${ap.originName}">${ap.originName}</a>
+           		</c:when>
+           		<c:otherwise>
+           			첨부파일 (0)개
+           		</c:otherwise>
+           	</c:choose>
         </div>
 
         <hr>

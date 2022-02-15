@@ -33,5 +33,9 @@ public class Employee {
 	private String jobCode;
 	private String adminYn;
 	private String image;
+	
+	// 전자결재용
+	private String jobName;
+	private String deptName;
 
 }

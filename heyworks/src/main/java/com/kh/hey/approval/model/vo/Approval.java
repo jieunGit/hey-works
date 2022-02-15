@@ -62,7 +62,7 @@ public class Approval {
 	
 	// 채용요청서
 	private String recruimentDept;
-	private int employee;
+	private String employee;
 	private String workExperience;
 	private String offerDate;
 	private String qualification;
@@ -85,5 +85,7 @@ public class Approval {
 	
 	private String firstUser;
 	private String thirdUser;
+	
+	private String formNoName;
 
 }

@@ -97,6 +97,50 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.selectExpenseReport(sqlSession, ano);
 		
 	}
+
+	// 작성하기
+	@Override
+	public int insertApproval(Approval ap) {
+		
+		return aDao.insertApproval(sqlSession, ap);
+		
+	} // 공통부분
+
+	@Override
+	public int insertCertificate(Approval ap) {
+		
+		return aDao.insertCertificate(sqlSession, ap);
+		
+	}
+
+	@Override
+	public int insertConfirm(ArrayList<Approval> confirmList) {
+		
+		return aDao.insertConfirm(sqlSession, confirmList);
+		
+	}
+
+	@Override
+	public int insertRecruiment(Approval ap) {
+		
+		return aDao.insertRecruimnet(sqlSession, ap);
+		
+	}
+
+	@Override
+	public int insertExpenseReport(Approval ap) {
+		return 0;
+	}
+
+	@Override
+	public int insertBusinessDraft(Approval ap) {
+		return 0;
+	}
+
+	@Override
+	public int insertEquipmentBuy(Approval ap) {
+		return 0;
+	}
 	
 	
 

@@ -1,6 +1,10 @@
 package com.kh.hey.approval.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -10,12 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.hey.approval.model.service.ApprovalService;
 import com.kh.hey.approval.model.vo.Approval;
 import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.common.template.Pagination;
+import com.kh.hey.employee.model.service.EmployeeService;
 import com.kh.hey.employee.model.vo.Employee;
 
 @Controller
@@ -23,6 +31,9 @@ public class ApprovalController {
 	
 	@Autowired
 	private ApprovalService aService;
+	
+	@Autowired
+	private EmployeeService eService;
 	
 	@RequestMapping("main.el")
 	public String mainList() {
@@ -33,10 +44,27 @@ public class ApprovalController {
 	
 	/*작성하기 페이지*/
 	@RequestMapping("approvalFrom.el")
-	public String approvalFrom() {
+	public ModelAndView approvalFrom(ModelAndView mv) {
 		
-		return "approval/approvalEnrollFrom";
+		ArrayList<Employee> deptList = eService.selectDeptList();
+		mv.addObject("deptList", deptList);
+		mv.setViewName("approval/approvalEnrollFrom");
 		
+		return mv;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="emplist.el", produces="application/json; charset=UTF-8")
+	public String ajaxSelectEmployeeList(int dnum, int jnum) {
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("deptNum", dnum);
+		map.put("jobNum", jnum);
+		
+		ArrayList<Employee> list = eService.ajaxSelectEmployeeList(map);
+		
+		return new Gson().toJson(list);
 	}
 	
 	@RequestMapping("bdEnrollForm.el")
@@ -59,14 +87,7 @@ public class ApprovalController {
 		
 		// 조건검사할 로그인 객체 받아오기
 		String userName = ((Employee)session.getAttribute("loginUser")).getUserName();
-		
-		// 각 객체들 hashmap에 담기
-		/*
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("userNo", userNo);
-		map.put("userName", userName);
-		map.put("status", status);
-		*/
+
 		
 		int listCount = aService.selectListCount(userName);
 		
@@ -186,7 +207,118 @@ public class ApprovalController {
 		}
 		
 		return mv;
+	}
+	
+	/* 작성하기 */
+	@RequestMapping("insert.el")
+	public String insertApproval(Approval ap, MultipartFile upfile, HttpSession session, Model model) {
 		
+		ArrayList<Approval> confirmList = ap.getConfirmList();
+
+		// 첨부파일 여부 확인하기
+		if(!upfile.getOriginalFilename().contentEquals("")) {
+			
+			String changeName = saveFile(upfile, session);
+			
+			ap.setOriginName(upfile.getOriginalFilename());
+			ap.setFilePath("resources/uploadFiles/approval" + changeName);
+			
+		}
+		
+		// 전자결재 공통컬럼
+		int result = aService.insertApproval(ap);
+		System.out.println("controller : " + ap);
+		
+		if(result > 0) {
+		
+			if(ap.getFormNo().equals("3")) {
+				
+				// 전자결재 결재자
+				//ap.setFormNoName("SA-CE-");
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-CE-");
+				}
+				
+				int confirmResult = aService.insertConfirm(confirmList);
+				
+				// 증명서 신청
+				int ceResult = aService.insertCertificate(ap);
+				
+				
+				if(ceResult > 0 && confirmResult > 0) {
+					session.setAttribute("alertMsg", "증명서신청 문서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "증명서신청 문서 작성에 실패했습니다!");
+				}
+				
+				
+			}else if(ap.getFormNo().equals("4")) {
+				
+
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-RC-");
+				}
+				
+				int confirmResult = aService.insertConfirm(confirmList);
+				
+				// 증명서 신청
+				int rcResult = aService.insertRecruiment(ap);
+				
+				
+				if(rcResult > 0 && confirmResult > 0) {
+					session.setAttribute("alertMsg", "채용요청서 문서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "채용요청서 문서 작성에 실패했습니다!");
+				}
+				
+				
+			}/*else if(ap.getFormNo().equals("5")) {
+				
+				
+				
+			}else if(ap.getFormNo().equals("1")) {
+				
+				
+				
+			}else {
+				
+				
+				
+			}*/
+		
+		}
+		
+		if(result < 1) {
+			session.setAttribute("alertMsg", "문서작성실패!");
+		}
+
+		
+		return "approval/submitStandbyList";
+		
+	}
+	
+	// 첨부파일용 메소드
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+		
+		String originName = upfile.getOriginalFilename();
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int ranNum = (int)(Math.random() * 900 + 100);
+		String ext = originName.substring(originName.lastIndexOf("."));
+		String changeName = currentTime + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/approval");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+			
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
 		
 	}
 	

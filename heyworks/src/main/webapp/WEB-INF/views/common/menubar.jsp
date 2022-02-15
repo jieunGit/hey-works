@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,6 +87,14 @@
 </head>
 <body>
 
+	<c:if test="${!empty alertMsg}">
+		<script>
+			alert("${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
+
+
 	<div id="header">
         <div id="logo">
             <a href="main.do">
@@ -126,16 +135,25 @@
                 <li><a href="">
                     <img src="resources/images/calendar.png">
                 </a></li>
-                <li><a href="">
-                    <img src="resources/images/todo.png">
-                </a></li>
-                <li><a href="">
-                    <img src="resources/images/key.png">
-                </a></li>
-                <li><div id="addressbook"><a href="">
-                    <img src="resources/images/addressbook.png">
+                
+                <li>
+                	<div id="todoplus">
+                		<a href=""> <img src="resources/images/todo.png"></a>
+                	</div>
+                </li>
+                
+                	
+                <li>
+                	<div id="reservation">
+                	<a href="myReserve.re"> <img src="resources/images/key.png"></a>
                     </div>
-                </a></li>
+                </li>
+                
+                <li>
+                	<div id="addressbook">
+               		 <a href=""><img src="resources/images/addressbook.png"></a>
+                    </div>
+                </li>
                 <li><a href="">
                     <img src="resources/images/coperation.png">
                 </a></li>         

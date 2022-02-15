@@ -62,8 +62,7 @@
 	 }
 	 #reserve{
 		width: 940px;
-		 border: 1px solid red;
-		 margin-left: 30px;
+		 margin-left: 4px;
 	 }
 
 	 table th{
@@ -82,18 +81,30 @@
 	
 		<div id="detail">
 			<br>
-			<div id="toparea"><span>회의실 예약</span></div>
+			<div id="toparea"><span>${rc.categoryName} 예약</span></div>
 			
 			
 			<div id="resourceContent">
 				<div id=resourceImg>이미지</div>
 				<div id="content">
 					
-					삼조전자 본사 1층에 위치한 회의실 안내도입니다. 위치를 참조하여 예약 후 이용바랍니다.
+					${rc.categoryContent}
 				</div>
 
 			</div>
 			<br><br>
+
+			<div id="resourceList">
+
+				<a href="" style="color: black">회의실1</a>&nbsp;&nbsp;
+                <a href="" style="color: black;">회의실2</a>
+
+			</div>
+
+			<div class="line"></div>
+			<br>
+
+
 			<div id="datearea">
 				<i class="fas fa-angle-left"></i>
 				<span> 2020-01-20(목) </span>
@@ -104,7 +115,7 @@
 				<table class="table table-bordered">
 					<thead style="background: lightgrey;"> 
 					  <tr>
-						<th style="width: 130px;" ></th>
+						<th style="width: 100px;" ></th>
 						<th>7:00</th>
 						<th>8:00</th>
 						<th>9:00</th>
@@ -127,7 +138,7 @@
 					</thead>
 					<tbody>
 					  <tr>
-						<td style="font-size: 12px;">회의실1</td>
+						<td style="font-size: 12px; text-align: center;">회의실1</td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -178,9 +189,10 @@
 			
 		</div>
 		
-		
-		
+	
 	</div>
+	
+	
 	
 </body>
 </html>
