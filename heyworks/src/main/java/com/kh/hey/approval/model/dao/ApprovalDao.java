@@ -88,14 +88,42 @@ public class ApprovalDao {
 
 	public Approval selectExpenseReport(SqlSessionTemplate sqlSession, String ano) {
 	
-	return sqlSession.selectOne("approvalMapper.selectExpenseReport", ano);
+		return sqlSession.selectOne("approvalMapper.selectExpenseReport", ano);
 	
 	}
 	
+	// 작성하기
+	public int insertApproval(SqlSessionTemplate sqlSession, Approval ap) {
+		
+		return sqlSession.insert("approvalMapper.insertApproval", ap);
 	
+	}
 	
+	public int insertCertificate(SqlSessionTemplate sqlSession, Approval ap) {
+		
+		return sqlSession.insert("approvalMapper.insertCertificate", ap);
 	
+	}
 	
+	public int insertConfirm(SqlSessionTemplate sqlSession, ArrayList<Approval> confirmList) {
+		
+		int result = 0;
+		
+		for(int i=0; i<confirmList.size(); i++) {
+		
+			result = sqlSession.insert("approvalMapper.insertConfirm", confirmList.get(i));
+			
+		}
+		
+		return result;
+		
+	}
+	
+	public int insertRecruimnet(SqlSessionTemplate sqlSession, Approval ap) {
+		
+		return sqlSession.insert("approvalMapper.insertRecruiment", ap);
+		
+	}
 	
 	
 	

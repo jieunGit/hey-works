@@ -234,8 +234,8 @@
              , confirm_date confirmDate
 		  from elec_approval ea
 		  join employee e1 on (writer_no = e1.user_no)
-		  join employee e2 on (read_no = e2.user_no)
-		  join employee e3 on (reference_no = e3.user_no)
+		  left join employee e2 on (read_no = e2.user_no)
+		  left join employee e3 on (reference_no = e3.user_no)
 		  join vw_all_confirm_list vac using(elec_appr_no)
 		 where elec_appr_no = #{ano}
 	</select>
@@ -305,10 +305,125 @@
 		 where elec_appr_no = #{ano}
 	</select>
 	
+	<!-- 전자결재 공통테이블 -->
+	<insert id="insertApproval">
+		insert
+		  into elec_approval
+		  (
+		    elec_appr_no
+		  , writer_no
+		  , form_no
+		  , write_dept
+		  , elec_title
+		  , emc_yn
+		  , storage_year
+		  , grade
+		  , read_no
+		  , reference_no
+		  , origin_name
+		  , file_path
+		  )
+		  values
+		  (
+		  <choose>
+		  	<when test='formNo == "3"'>
+		  		'SA-CE-'||lpad(seq_elno.nextval,5,0)
+		  	</when>
+		  	<when test='formNo == "4"'>
+		  		'SA-RC-'||lpad(seq_elno.nextval,5,0)
+		  	</when>
+		  	<when test='formNo == "5"'>
+		  		'SA-ER-'||lpad(seq_elno.nextval,5,0)
+		  	</when>
+		  	<when test='formNo == "1"'>
+		  		'SA-BD-'||lpad(seq_elno.nextval,5,0)
+		  	</when>
+		  	<otherwise>
+		  		'SA-EB-'||lpad(seq_elno.nextval,5,0)
+		  	</otherwise>
+		  </choose>
+		  , #{userNo}
+		  , #{formNo}
+		  , #{writeDept}
+		  , #{approvalTitle}
+		  , #{emergancy}
+		  , add_months(sysdate, #{storageYear})
+		  , #{grade}
+		  , #{read}
+		  , #{reference}
+		  , #{originName}
+		  , #{filePath}
+		  )		  
+	</insert>
 	
+	<!-- 결재자 테이블에 등록 -->
+	<insert id="insertConfirm">
+		insert
+		  into confirm
+		  (
+		    confirm_no
+		  , elec_appr_no
+		  , confirm_user
+		  , procedure_no
+		  )
+		  values
+		  (
+		    seq_cfno.nextval
+		  , #{formNoName}||lpad(seq_elno.currval,5,0)
+		  , #{confirmNo}
+		  , #{procedureNo}
+		  )
+	</insert>
 	
+	<!-- 증명서 신청 -->
+	<insert id="insertCertificate">
+		insert
+		  into certificate
+		  (
+		    elec_appr_no
+		  , certificate_type
+		  , use
+		  , where_submit
+		  , submit_date
+		  , content
+		  )
+		  values
+		  (
+		    'SA-CE-'||lpad(seq_elno.currval,5,0)
+		  , #{certificateType}
+		  , #{use}
+		  , #{whereSubmit}
+		  , #{submitDate}
+		  , #{certificateContent}  
+		  )
+	</insert>
 	
-	
+	<!-- 채용요청서 -->
+	<insert id="insertRecruiment">
+		insert
+		  into recruiment
+		  (
+		    elec_appr_no
+		  , dept
+		  , employee
+		  , work_experience
+		  , offer_date
+		  , qualification
+		  , position
+		  , content
+		  )
+		  values
+		  (
+		    'SA-RC-'||lpad(seq_elno.currval,5,0)
+		  , #{recruimentDept}
+		  , #{employee}
+		  , #{workExperience}
+		  , #{offerDate}
+		  , #{qualification}
+		  , #{position}
+		  , #{recruimentContent}
+		  )
+	</insert>
 	
 	
 	

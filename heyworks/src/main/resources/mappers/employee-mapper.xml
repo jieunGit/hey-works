@@ -22,34 +22,87 @@
 		<result column="job_code" property="jobCode" />
 		<result column="admin_yn" property="adminYn" />
 		<result column="image" property="image" />
+		
+		<result column="job_name" property="jobName" />
+		<result column="dept_name" property="deptName" />
 	</resultMap>
 
 	<select id="loginEmployee" resultMap="employeeResult">
 
 	select
-	user_no
-	,user_name
-	,user_id
-	,user_pwd
-	,email
-	,birth
-	,phone
-	,call
-	,post
-	,address
-	,address_detail
-	,hire_date
-	,end_date
-	,status
-	,dept_code
-	,job_code
-	,admin_yn
-	,image
-	from employee
-	where status = 'Y'
-	and user_id = #{userId}
-<!--   and user_pwd = #{userPwd} -->		
+		   user_no
+		  ,user_name
+		  ,user_id
+		  ,user_pwd
+		  ,email
+		  ,birth
+		  ,phone
+		  ,call
+		  ,post
+		  ,address
+		  ,address_detail
+		  ,hire_date
+		  ,end_date
+		  ,status
+		  ,dept_code
+		  ,dept_name
+		  ,job_code
+		  ,admin_yn
+		  ,image
+	  from employee
+	  join department using(dept_code)
+	 where status = 'Y'
+	   and user_id = #{userId}
+	<!--   and user_pwd = #{userPwd} -->		
 	
 	</select>
+	
+	<!-- 전자결재 결재자용 사원 조회 -->
+	<select id="ajaxSelectEmployeeList" resultMap="employeeResult">
+		select
+		       user_no
+		     , user_name
+		     , dept_name dept_code
+		     , job_code
+		     , decode(job_code, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') job_name
+		  from employee
+		  join department using(dept_code)
+		 where dept_code = #{deptNum}
+		 <if test='jobNum == "9"'>
+		   and job_code = 9
+		 </if>
+		 order
+		    by job_code desc
+	</select>
+	
+	<!-- 전자결재용 부서이름 알아오기 -->
+	<select id="selectDeptList" resultMap="employeeResult">
+		select
+		       dept_code
+		     , dept_name
+		  from department
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>
