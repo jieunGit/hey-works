@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="addressMapper">
+
+	<resultMap id="addressGroupResult" type="AddressGroup">
+		<result column="group_no" property="groupNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="group_name" property="groupName"/>
+		<result column="group_status" property="groupStatus"/>
+	</resultMap>
+	
+	<resultMap id="addressResult" type="Address">
+		<result column="address_no" property="addressNo"/>
+		<result column="group_no" property="groupNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="address_name" property="addressName"/>
+		<result column="phone_group" property="phoneGroup"/>
+		<result column="address_phone" property="addressPhone"/>
+		<result column="fax" property="fax"/>
+		<result column="address_email" property="addressEmail"/>
+		<result column="company_name" property="companyName"/>
+		<result column="dept_title" property="deptTitle"/>
+		<result column="job_title" property="jobTitle"/>
+		<result column="address_Group" property="addressGroup"/>
+		<result column="address" property="address"/>
+		<result column="company_url" property="companyUrl"/>
+		<result column="company_phone" property="companyPhone"/>
+		<result column="birthday" property="birthday"/>
+		<result column="memo" property="memo"/>
+		<result column="group_name" property="groupName"/>
+	
+	</resultMap>
+
+
+	<select id="adGroupList" resultMap="addressGroupResult">
+		select
+		       group_no
+		     , user_no
+		     , group_name
+		 from address_group
+		  where user_no = #{userNo}
+	</select>
+	
+	<select id="selectListCount" resultType="_int">
+		
+          	select
+					count(*)
+			  from address
+			where user_no = #{userNo}
+	
+	
+	</select>
+
+	<select id="allAddressList" resultMap="addressResult">
+		select
+		        address_no
+		      , group_no
+		      , a.user_no
+		      , address_name
+		      , phone_group
+		      , address_phone
+		      , fax
+		      , address_email
+		      , company_name
+		      , dept_title
+		      , job_title
+		      , address_Group
+		      , address
+		      , company_url
+		      , company_phone
+		      , birthday
+		      , memo
+		      ,group_name
+		 from address a
+		 join address_group ag using(group_no)
+		 where a.user_no = #{userNo}
+		  order by address_no desc
+	
+	
+	</select>
+	
+	
+	<select id="groupListCount" resultType="_int">
+	
+		 	select
+					count(*)
+			  from address
+			 where user_no = #{userNo}
+	           and group_no = #{groupNo}
+	
+	</select>
+	
+	
+	<select id="groupAdList" resultMap="addressResult">
+     		select
+			        address_no
+			      , group_no
+			      , a.user_no
+			      , address_name
+			      , phone_group
+			      , address_phone
+			      , fax
+			      , address_email
+			      , company_name
+			      , dept_title
+			      , job_title
+			      , address_Group
+			      , address
+			      , company_url
+			      , company_phone
+			      , birthday
+			      , memo
+			      , group_name
+			 from address a
+			 join address_group ag using(group_no)
+			 where a.user_no = #{userNo}
+			   and group_no = #{groupNo}
+			   order by address_no desc
+			
+	</select>
+	
+	<insert id="insertAddress">
+		insert 
+			into address
+			(
+		        address_no
+		      , group_no
+		      , user_no
+		      , address_name
+		      , phone_group
+		      , address_phone
+		      , fax
+		      , address_email
+		      , company_name
+		      , dept_title
+		      , job_title
+		      , address_Group
+		      , address
+		      , company_url
+		      , company_phone
+		      , birthday
+		      , memo
+			)
+			values
+		    (
+    		  seq_adno.nextval
+    		, #{groupNo}
+    		, #{userNo}
+    		, #{addressName}
+    		, #{phoneGroup}
+    		, #{addressPhone}
+    		, #{fax}
+    		, #{addressEmail}
+    		, #{companyName}
+    		, #{deptTitle}
+    		, #{jobTitle}
+    		, #{addressGroup}
+    		, #{address}
+    		, #{companyUrl}
+    		, #{companyPhone}
+    		, #{birthday}
+    		, #{memo}
+    		)
+		
+		
+	</insert>
+	
+	
+	<insert id="insertAdGroup">
+		insert 
+		  into address_group
+		      (
+		        group_no
+		      , user_no
+		      , group_name
+		      , group_status
+		      )
+		      values
+		     (
+		       seq_adgroupno.nextval
+		     , #{userNo}
+		     , #{groupName}
+		     , 'Y'
+		     )
+		    
+	</insert>
+	
+	<select id="selectAddress" resultMap="addressResult">
+		select
+			        address_no
+			      , group_no
+			      , a.user_no
+			      , address_name
+			      , phone_group
+			      , address_phone
+			      , fax
+			      , address_email
+			      , company_name
+			      , dept_title
+			      , job_title
+			      , address_Group
+			      , address
+			      , company_url
+			      , company_phone
+			      , birthday
+			      , memo
+			      , group_name
+			 from address a
+			 join address_group ag using(group_no)
+			 where a.user_no = #{userNo}
+			   and address_no = #{addressNo}
+	
+	</select>
+	
+	
+	<update id="updateAddress">
+		update
+			  address
+		  set 
+		        group_no = #{groupNo}  
+			  , address_name = #{addressName}
+		      , phone_group = #{phoneGroup}
+		      , address_phone = #{addressPhone}
+		      , fax = #{fax}
+		      , address_email = #{addressEmail}
+		      , company_name = #{companyName}
+		      , dept_title = #{deptTitle}
+		      , job_title = #{jobTitle}
+		      , address_Group = #{addressGroup}
+		      , address = #{address}
+		      , company_url = #{companyUrl}
+		      , company_phone = #{companyPhone}
+		      , birthday = #{birthday}
+		      , memo = #{memo}
+		where user_no = #{userNo}
+		  and address_no = #{addressNo}
+	
+	</update>
+	
+	
+</mapper>

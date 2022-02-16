@@ -21,7 +21,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public Employee loginEmployee(Employee e) {
-		System.out.println("impl");
 		Employee loginUser = eDao.loginEmployee(sqlSession, e);
 		return loginUser;
 		

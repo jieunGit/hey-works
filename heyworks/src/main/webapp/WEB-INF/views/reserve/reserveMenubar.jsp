@@ -90,7 +90,7 @@
 		
 		 <div id="menubar">
             <p><i class="fas fa-angle-double-right"></i> 예약</p>
-			<button type="button" class="btn btn-primary" id="reservebtn">+예약하기</button>
+			<button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal">+예약하기</button>
 			<br><br>
 			<a href="myReserve.re" style="color: black;">
 			<i class="fas fa-cog" style= "margin-left: 20px;"></i> 
@@ -127,7 +127,7 @@
 				url: "menuCategoryList.re",
 				data:{},
 				success: function(clist) {
-					console.log(clist);
+		
 					
 					let value = "";
     				for(let i in clist){
@@ -144,6 +144,42 @@
 			
 		}
 	
+
+		 // (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
+		 function addRs(){
+     
+     // 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
+     $('#addRsvModal').find('form')[0].reset();
+     $('#addRsvModal').modal('show');
+     
+     $.ajax({
+      url:"<%= request.getContextPath() %>/readRsList.os",
+      type:"get",
+      dataType:"JSON",
+      success:function(json){
+         var html = "";
+         if (json.length > 0) {
+            $.each(json, function(index, item){
+               if (item.reservation_resource_no == fk_reservation_resource_no) {
+                  html += "<option value='" + item.reservation_resource_no + "' selected >" + item.name + "</option>";
+               }else{
+                  html += "<option value='" + item.reservation_resource_no + "'>" + item.name + "</option>";
+               }
+               
+            });
+         }else{
+            html += "<li style='height: 20px;'>";
+            html += "</li>";
+         }
+         
+         $("select.addRsSelect").html(html);
+      },
+      error: function(request, status, error){
+         alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+       }
+   });
+   
+  }
 	
 	</script>
 	
