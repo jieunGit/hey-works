@@ -155,13 +155,29 @@ public class ApprovalDao {
 		
 		return result;
 		
+	} // 비품 아이템들
+	
+	public int deleteApproval(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.update("approvalMapper.deleteApproval", ano);		
+		
 	}
 	
+	public int selectReadNrefListCount(SqlSessionTemplate sqlSession, String userNo) {
+		
+		return sqlSession.selectOne("approvalMapper.selectReadNrefListCount", userNo);
+		
+	}
 	
-	
-	
-	
-	
+	public ArrayList<Approval> selectReadReference(SqlSessionTemplate sqlSession, PageInfo rrpi, String userNo){
+		
+		int offset = (rrpi.getCurrentPage()-1) * rrpi.getBoardLimit();
+		int limit = rrpi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectReadReference", userNo, rowBounds);
+		
+	}
 	
 	
 	

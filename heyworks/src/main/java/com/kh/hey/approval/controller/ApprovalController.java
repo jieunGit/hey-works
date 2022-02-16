@@ -125,6 +125,7 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Approval> sbList = aService.selectSubmitStandByList(pi, map);
 		
+		model.addAttribute("status", status);
 		model.addAttribute("pi", pi);
 		model.addAttribute("sbList", sbList);
 		
@@ -149,6 +150,7 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Approval> edList = aService.selectSubmitEndList(pi, map);
 		
+		model.addAttribute("status", status);
 		model.addAttribute("pi", pi);
 		model.addAttribute("edList", edList);
 
@@ -156,8 +158,23 @@ public class ApprovalController {
 	}
 	
 	// 결재자 기준 참조/열람대기문서
-	
-	
+	@RequestMapping("readNref.el")
+	public String selectReadReference(@RequestParam(value="cpage", defaultValue="1")int currentPage, String status, Model model, HttpSession session) {
+		
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+		
+		int listCount = aService.selectReadNrefListCount(userNo);
+		
+		PageInfo rrpi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Approval> rrList = aService.selectReadReference(rrpi, userNo);
+		
+		model.addAttribute("rrpi", rrpi);
+		model.addAttribute("rrList", rrList);
+
+		return "approval/readOrReferenceList";
+		
+		
+	}
 	
 	
 	// 기안자 기준 참조/열람 끝난 문서
@@ -366,13 +383,86 @@ public class ApprovalController {
 		
 	}
 	
+	/*수정하기*/	
+	@RequestMapping("updateForm.el")
+	public ModelAndView updateFormApproval(ModelAndView mv, String ano) {
+		
+		String formNo = ano.substring(3,5); // 양식 조건비교할 값 담기
+		
+		Approval ap = aService.selectApproval(ano); // 제목~결재자까지 알아오기
+		
+		if(ap != null) {
+			
+			mv.addObject("ap", ap);	
+			
+			if(formNo.equals("BD")) { // 업무기안서 상세
+				
+				Approval bd = aService.selectBusinessDraft(ano);
+				mv.addObject("bd", bd);
+				
+			}else if(formNo.equals("EB")) { // 비품구매 상세
+				
+				Approval eb = aService.selectEquipmentBuy(ano);
+				mv.addObject("eb", eb);
+				
+			}else if(formNo.equals("CE")) { // 증명서 신청 상세
+				
+				Approval ce = aService.selectCertificate(ano);
+				mv.addObject("ce", ce);
+				
+			}else if(formNo.equals("RC")) { // 채용요청서 상세
+				
+				Approval rc = aService.selectRecruiment(ano);
+				mv.addObject("rc", rc);
+				
+			}else { // 일반품의서 상세
+				
+				Approval er = aService.selectExpenseReport(ano);
+				mv.addObject("er", er);
+				
+			}
+		
+			mv.setViewName("approval/approvalUpdate");
+			
+		}
+		return mv;
+		
+	} // 수정하기 폼으로 연결
+	
+	// 수정하기
 	
 	
+	
+	
+	/*삭제하기*/
+	@RequestMapping("delete.el")
+	public String deleteApproval(String ano, String filePath, HttpSession session) {
+		
+		int result = aService.deleteApproval(ano);
+		System.out.println(ano);
+		
+		
+		if(result > 0) {
+			
+			if(!filePath.equals("")) {
+				new File(session.getServletContext().getRealPath(filePath)).delete();
+			}
+			
+			session.setAttribute("alertMsg", "결재 문서가 삭제되었습니다.");
+			return "redirect:main.el";
+			
+		}else {
+			
+			session.setAttribute("alertMsg", "결제 문서 삭제 실패!");
+			return "redirect:detail.el";
+		}
+		
+	}
 	
 	/*전자결재 관리자 파트*/
 	
 	@RequestMapping("deleteList.el")
-	public String deleteApproval() {
+	public String deleteApprovalAdmin() {
 		
 		
 		

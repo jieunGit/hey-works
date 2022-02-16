@@ -150,6 +150,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int insertItemList(ArrayList<Approval> itemList) {
 		return aDao.insertItemList(sqlSession, itemList);
 	}
+
+	@Override
+	public int deleteApproval(String ano) {
+		
+		return aDao.deleteApproval(sqlSession, ano);
+		
+	}
+
+	@Override
+	public int selectReadNrefListCount(String userNo) {
+		return aDao.selectReadNrefListCount(sqlSession, userNo);
+	}
+
+	@Override
+	public ArrayList<Approval> selectReadReference(PageInfo rrpi, String userNo) {
+		return aDao.selectReadReference(sqlSession, rrpi, userNo);
+	}
 	
 	
 

@@ -70,25 +70,46 @@
 
             <!-- 작성자 -->
             <c:if test="${loginUser.userName eq ap.userNo}">
-	            <a href="update.el" class="btn btn-sm text-primary">내용수정</a>
-	            <a href="delete.el" class="btn btn-sm text-danger">기안취소</a>
+	            <a class="btn btn-sm text-primary" onclick="postSubmit(1)">내용수정</a>
+	            <a class="btn btn-sm text-danger" onclick="postSubmit(2)">기안취소</a>
             </c:if>
 
             <!-- 결재자 -->
             <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser}">
-	            <button type="button" class="btn btn-sm text-primary">결재</button>
-	            <button type="button" class="btn btn-sm text-danger">반려</button>
+	            <a class="btn btn-sm text-primary" onclick="postSubmit(3)">결재</a>
+	            <a class="btn btn-sm text-danger" onclick="postSubmit(4)">반려</a>
 			</c:if>
 			
             <!-- 반려시 -->
             <c:if test="${ap.status eq '반려'}">
-            	<a href="" class="btn btn-sm text-danger">재기안</a>
+            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
 			</c:if>
             <!-- 관리자가 복구시 -->
             <c:if test="${loginUser.adminYn eq 'Y' && loginUser.deptCode eq 3}">
-            	<button type="button" class="btn btn-sm text-warning">복구하기</button>
+            	<a class="btn btn-sm text-warning" onclick="postSubmit(6)">복구하기</a>
             </c:if>
         </div>
+
+        <form id="postForm" action="" method="post">
+        	<input type="hidden" name="ano" value="${ap.approvalNo}">
+        	<input type="hidden" name="filePath" value="${ap.filePath}">
+        </form>
+        
+        <script>
+        	function postSubmit(num){
+
+				switch(num){
+				case 1:	$("#postForm").attr("action", "updateForm.el").submit(); break;
+				case 2:	$("#postForm").attr("action", "delete.el").submit(); break;
+				case 3:	$("#postForm").attr("action", "confirm.el").submit(); break;
+				case 4:	$("#postForm").attr("action", "reject.el").submit(); break;
+				case 5:	$("#postForm").attr("action", "retryForm.el").submit(); break;
+				case 6:	$("#postForm").attr("action", "recover.el").submit(); break;
+				}
+				
+        	}
+        </script>
+            
 
         <hr>
 

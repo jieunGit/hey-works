@@ -200,6 +200,34 @@
 		 </if>
 	</select>
 	
+	<!-- 내가 참조, 열람자로 목록조회 -->
+	<select id="selectReadNrefListCount" resultType="_int">
+		select
+		       count(*)
+		  from elec_approval
+		 where status in ('D', 'P')
+		   and read_no = #{userNo}
+		    or status in ('D', 'P')
+		   and reference_no = #{userNo} 
+	</select>
+	
+	<select id="selectReadReference" resultMap="approvalResult">
+		select 
+		       elec_appr_no
+		     , user_name writer_name
+		     , elec_title
+		     , emc_yn
+		     , write_dept
+		     , grade
+		     , create_date
+		  from elec_approval ea
+		  join employee on(writer_no = user_no)
+		 where ea.status in ('D', 'P')
+		   and read_no = #{userNo}
+		    or ea.status in ('D', 'P')
+		   and reference_no = #{userNo}
+	</select>
+	
 	<!-- 업무기안서 상세보기 -->
 	<select id="selectApproval" resultMap="approvalResult">
 		select
@@ -509,8 +537,13 @@
 		  )
 	</insert>
 	
-	
-	
+	<!-- 문서 삭제하기 -->
+	<update id="deleteApproval">
+		update
+			   elec_approval
+		   set status = 'N'
+		 where elec_appr_no = #{ano}
+	</update>
 	
 	
 	
