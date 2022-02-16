@@ -26,7 +26,7 @@ public interface ApprovalService{
 	// 2. 모든 양식 게시글 양식종류~결재자까지 상세조회
 	Approval selectApproval(String ano);
 	
-	// 2_1. 업무기안서 상세
+	// 2_1. 상세보기
 	Approval selectBusinessDraft(String ano);
 	
 	Approval selectEquipmentBuy(String ano);
@@ -37,6 +37,17 @@ public interface ApprovalService{
 	
 	Approval selectExpenseReport(String ano);
 	
+	// 3. 작성하기
+	// 공통테이블(전자결재 + 결재자)
+	int insertApproval(Approval ap);
+	int insertConfirm(ArrayList<Approval> confirmList);
+	
+	// 증명서 신청, 채용요청서, 일반품의서, 업무기안서, 비품구매확인서
+	int insertCertificate(Approval ap);
+	int insertRecruiment(Approval ap);
+	int insertExpenseReport(Approval ap);
+	int insertBusinessDraft(Approval ap);
+	int insertEquipmentBuy(Approval ap);
 	
 	
 	
