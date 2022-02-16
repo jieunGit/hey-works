@@ -82,7 +82,7 @@ public class PersonalAddressController {
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
-		return "address/groupAddreddList";
+		return "address/groupAddressList";
 	}
 	
 	
@@ -171,6 +171,11 @@ public class PersonalAddressController {
 		}
 		
 	}
+	
+	//주소록 삭제하기
+	
+	
+	
 	
 	//즐겨찾는주소록, 전체, 부서등 
 	@RequestMapping(value="personAdList.ad")
