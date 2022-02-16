@@ -231,7 +231,7 @@ public class ApprovalController {
 			String changeName = saveFile(upfile, session);
 			
 			ap.setOriginName(upfile.getOriginalFilename());
-			ap.setFilePath("resources/uploadFiles/approval" + changeName);
+			ap.setFilePath("resources/uploadFiles/approval/" + changeName);
 			
 		}
 		
