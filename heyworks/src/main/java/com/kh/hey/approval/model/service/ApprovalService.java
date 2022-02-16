@@ -47,8 +47,9 @@ public interface ApprovalService{
 	int insertRecruiment(Approval ap);
 	int insertExpenseReport(Approval ap);
 	int insertBusinessDraft(Approval ap);
-	int insertEquipmentBuy(Approval ap);
 	
+	int insertEquipmentBuy(Approval ap);
+	int insertItemList(ArrayList<Approval> itemList);
 	
 	
 }

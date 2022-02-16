@@ -46,6 +46,12 @@
     	width:fit-content;
     	margin-left: 850px;
     }
+    .table-hover{
+    	table-layout:fixed;
+    	overflow:hidden;
+    	text-overflow:ellipsis;
+    	white-space:nowrap;	
+    }
 </style>
 </head>
 <body>

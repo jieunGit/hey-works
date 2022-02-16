@@ -129,17 +129,26 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public int insertExpenseReport(Approval ap) {
-		return 0;
+		
+		return aDao.insertExpenseReport(sqlSession, ap);
+		
 	}
 
 	@Override
 	public int insertBusinessDraft(Approval ap) {
-		return 0;
+		
+		return aDao.insertBusinessDraft(sqlSession, ap);
+		
 	}
 
 	@Override
 	public int insertEquipmentBuy(Approval ap) {
-		return 0;
+		return aDao.insertEquipmentBuy(sqlSession, ap);
+	}
+
+	@Override
+	public int insertItemList(ArrayList<Approval> itemList) {
+		return aDao.insertItemList(sqlSession, itemList);
 	}
 	
 	
