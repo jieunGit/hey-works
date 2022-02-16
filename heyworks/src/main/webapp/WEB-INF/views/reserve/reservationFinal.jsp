@@ -71,7 +71,7 @@
 		 text-align: left;
 		 width: 800px;
 		 height: 120px;
-		 margin:10px 0px 0px 0px;
+		 margin:10px 0px 0px 40px;
 		 font-size: 13px;
 		
 	 }
@@ -80,7 +80,7 @@
     background: lightgray;
     width: 900px;
     height: 1px;
-    margin-left: 50px;
+    margin-left: 40px;
 
 
     body.stop-dragging
@@ -277,7 +277,7 @@
    #toparea{
 	   width: 900px;
 	   height: 50px;
-	   margin : 30px 0px 30px 30px;
+	   margin : 50px 0px 30px 30px;
 	   font-weight: bolder;
 	   font-size: 18px;
    }
@@ -429,28 +429,31 @@
                   data:{
                       resourceNo:fk_reservation_resource_no,
                       categoryNo:${rc.categoryNo}
-                },
+                  },
                   type:"GET",
                   dataType:'JSON',
                   success:function(json){
-                   
+                	  
+                    console.log(json);
                      var events = [];
-                   $.each(json, function(index, item){
-                    
-                        
-                    if (json.length > 0) {
-                         events.push({
-                                   title: item.userName,  //표시되는제목
-                                   start: item.startDate,  //예약시작날짜 표시
-                                   end: item.endDate,      // 예약 끝날짜 표시
-                                   color: "skyblue",    
-                                   id: item.reserveNo  //고유번호
-                                });
-                      }else{
-                         // 검색된 결과가 없을 때
-                      }
-                      
-                   });
+                     
+	                   $.each(json, function(index, item){
+	                    
+	                        
+	                    if (json.length > 0) {
+	                         events.push({
+	                                   title: item.userName,  //표시되는제목
+	                                   start: item.startDate,  //예약시작날짜 표시
+	                                   end: item.endDate,      // 예약 끝날짜 표시
+	                                   color: "skyblue",    
+	                                   id: item.reserveNo  //고유번호
+	                                });
+	                      }else{
+	                         // 검색된 결과가 없을 때
+	                      }
+	                      
+	                   });
+                     
     
                     successCallback(events);  
                   },
@@ -509,8 +512,8 @@
      
 
     // 자원을 변경했을 시 자원 변수값을 변경해주는 함수
-function changeResource(rsNo) {
-    fk_reservation_resource_no = rsNo;
+    function changeResource(rsNo) {
+        fk_reservation_resource_no = rsNo;
     calendar.refetchEvents();   
   }
     </script>
@@ -537,13 +540,26 @@ function changeResource(rsNo) {
 			</div>
 			<br><br>
 
-			<div id="resourceList" style="margin-left: 50px;">
+            <ul class="nav" id="side-menu">
+                <li>
+                    <ul class="nav_ul" >
+                        <c:forEach var="r" items="${ rlist }">
+                       <li style="list-style-type: none; float: left;">
+                          <p class='nav_ul_p'>
+                             <label class='smallText firstSmallText' style="margin-top: 5px;" onclick="changeResource(${r.resourcesNo})" >${r.resourceName}</label>&nbsp;&nbsp;&nbsp;
+                          </p>
+                        </li>
+                    </c:forEach>
+                    </ul>
+                </li>
+
+			<!-- <div id="resourceList" style="margin-left: 50px;">
 
 				<c:forEach var="r" items="${ rlist }">
-				<a href="" style="color: black" >${r.resourceName}</a>&nbsp;&nbsp;
+				<label href="" style="color: black" >${r.resourceName}</label>&nbsp;&nbsp;
                 </c:forEach>
 
-			</div>
+			</div> -->
 
 			<div class="line"></div>
 			<br>
@@ -565,7 +581,14 @@ function changeResource(rsNo) {
 					<!-- <label for="drop-remove">remove after drop</label>  
 				</p> -->
 			</div>
-			<div id="toparea"><i class="fas fa-history"></i> 회의실1</div>
+           
+
+			<div id="toparea"><i class="fas fa-history"></i> 
+                
+               	회의실1
+            
+            
+            </div>
 
 			<div style="border: solid 0px red; margin-left:2%; margin-right: 0.5%;">
 				<!-- 달력위치 -->
