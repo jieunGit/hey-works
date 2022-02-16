@@ -154,14 +154,14 @@
 						<td>${a.deptTitle }</td>
 						<td>${a.jobTitle }</td>
 						<td>${a.groupName }</td>
-						<!-- <input type="hidden" id="hiddenTag" value="${a.addressNo}"> -->
+						<input type="hidden" id="hiddenTag" value="${a.addressNo}">
 						<td>
 								<!-- 상세보기&수정하기 -->
-								<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
+								<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
 								<!-- 수정하기 -->
 								<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
 								<!-- 삭제하기 -->
-								<a href=""> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+								<a href="" data-toggle="modal" data-target="#deleteModal"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
 						</td>
 					</tr>
 					
@@ -276,10 +276,8 @@
 						</div>
 						<!-- Modal footer -->
 						<div class="modal-footer">
-							<button type="reset" class="btn btn-secondary"
-								>취소</button>
-							<button type="submit" class="btn btn-primary"
-								 style="margin-right: 80px;">수정</button>
+							<button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+							<button type="submit" class="btn btn-primary" style="margin-right: 80px;">수정</button>
 
 						</div>
 					</form>
@@ -289,11 +287,38 @@
 			</div>
 		</div>
 
+		
+		
+		   
+   <%-- 취소 버튼 클릭 시 정말 취소할 것인지 묻는 모달 --%>
+   <div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content" style="width: 400px;">
+        <div class="modal-header" style="background: rgb(63, 145, 213);">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+         
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <label >주소록을 정말로 삭제하시겠습니까?</label>
+          <input class="hidden_reservation_no" type="hidden">
+        </div>
+        <div class="modal-footer" style="margin: auto;">
+          <button type="button" class="btn btn-secondary" style="width: 100px;"onclick="deleteAddress()">예</button>
+          <button type="reset" class="btn btn-primary" data-dismiss="modal" style="width: 100px;">아니오</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
 
 		<script>
 
 
-	function selectAddress(addressNo) {
+	// 클릭시 실행되는 함수
+	function selectAddress(addressNo, groupNumber) {
 		// 주소록 수정하기 정보 select
 		$.ajax({
     			url:"selectAddress.ad",
@@ -431,13 +456,20 @@
 				url : "addressGroup.ad",
 				data : {},
 				success : function(glist) {
-
+					console.log(groupNumber);
 
 				// 모달창 그룹 select
 				let group = "";
 				for ( let i in glist) {
-					group += "<option value='" + glist[i].groupNo + "'>"
-							+ glist[i].groupName + "</option>"
+					group += "<option value='" +glist[i].groupNo+ "' <c:if test='${"+ glist[i].groupNo +"eq" + groupNumber +"}'>selected='selected'</c:if>>"+ glist[i].groupName + "</option>"
+					
+					console.log(glist[i].groupNo);
+
+					
+					if(glist[i].groupNo == groupNumber) {
+						$("select[name=groupNo]").val(groupNumber).prop("selected", true);
+					}
+				
 				}
 
 				$("#groupselect").html(group);
@@ -449,8 +481,41 @@
 
 				})
 
+				
 
 
+	}
+
+	// 삭제모달에서 예 클릭시 실행되는 함수 
+
+	function deleteAddress() {
+		
+			$.ajax({
+
+				url : "deleteAddress.ad",
+				data : {addressNo : $("#hiddenTag").val()},
+				dataType:"JSON",
+				success : function(json) {
+
+					if(json.result == 1){
+
+						alertify.alert("주소록 삭제에 성공하였습니다.");
+
+					}else{
+
+						alertify.alert("주소록 삭제에 실패하였습니다.");
+					}
+					location.href="deleteAddress.ad"
+
+				},
+				error: function(request, status, error){
+            		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+         		}
+				
+				
+
+				})
+			
 
 	}
 

@@ -122,9 +122,12 @@
 			 join resources re using(resources_no)
 			where category_no = #{categoryNo}
 			  and resources_no = #{resourceNo}
-	
+			 
 	
 	</select>
+	
+	
+
 	
 	
 </mapper>

@@ -75,6 +75,7 @@ a.btnAdditional {
 	color: black;
 	font-size: 13px;
 }
+  #pagingArea{width:fit-content;margin:auto;}
 </style>
 </head>
 <body>
@@ -91,6 +92,7 @@ a.btnAdditional {
 			<!-- 제목영역 -->
 			<div id="toparea">
 				<span>삭제된 주소록</span>
+				<span style="font-size: 11px; color: grey;"> in 삭제된주소록 전체 ${listCount}개</span>
 			</div>
 			<br>
 
@@ -120,34 +122,23 @@ a.btnAdditional {
 					</tr>
 				</thead>
 				<tbody>
+				<c:forEach var="d" items="${ dlist }">
 					<tr>
 						
 						<td><input type="checkbox"></td>
-						<td>김부장</td>
-						<td>010-1111-2222</td>
-						<td>kkkk@naver.com</td>
-						<td>카카오</td>
-						<td>개발팀</td>
-						<td>부장</td>
-						<td>거래처</td>
+						<td>${d.addressName }</td>
+						<td>${d.addressPhone }</td>
+						<td>${d.addressEmail }</td>
+						<td>${d.companyName }</td>
+						<td>${d.deptTitle }</td>
+						<td>${d.jobTitle }</td>
+						<td>${d.groupName }</td>
 						<td><!-- 상세보기 -->
                             <a href=""  data-toggle="modal" data-target="#addressDetail"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>
                         </td>
 					</tr>
-					<tr>
-						
-						<td><input type="checkbox"></td>
-						<td>김부장</td>
-						<td>010-1111-2222</td>
-						<td>kkkk@naver.com</td>
-						<td>카카오</td>
-						<td>개발팀</td>
-						<td>부장</td>
-						<td>거래처</td>
-						<td><!-- 상세보기 -->
-                            <a href=""  data-toggle="modal" data-target="#addressDetail"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>
-                        </td>
-					</tr>
+				</c:forEach>
+			
 					<tr>
 						<td></td>
 						<td></td>
@@ -163,13 +154,56 @@ a.btnAdditional {
 				</tbody>
 				</table>
 			</div>
-			<!-- footer부분 -->
+		
+				
+				<!-- footer부분 -->
 			<div id="footer">
 					<a href="">영구삭제</a> |
 					<a href="">복구</a> |
 		
 			</div>
 
+			
+				<div id="pagingArea">
+				<ul class="pagination pagination-sm">
+
+					<c:choose>
+						<c:when test="${ pi.currentPage eq 1 }">
+							<li class="page-item disabled"><a class="page-link "
+								href="#"><i class="fa-solid fa-angles-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="deleteAdList.ad?cpage=${ pi.currentPage-1 }"><i
+									class="fa-solid fa-angles-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+
+
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+						<li class="page-item"><a class="page-link"
+							href="deleteAdList.ad?cpage=${ p }">${ p }</a></li>
+					</c:forEach>
+
+
+					<c:choose>
+						<c:when test="${ pi.currentPage eq pi.maxPage }">
+							<li class="page-item disabled"><a class="page-link" href="#"><i
+									class="fa-solid fa-angles-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="deleteAdList.ad?cpage=${ pi.currentPage+1 }"><i
+									class="fa-solid fa-angles-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+
+				</ul>
+			</div>
+			
+		
+			
+			
 			
 				
 			

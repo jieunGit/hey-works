@@ -87,6 +87,28 @@ public class PersonalAddressServiceImpl implements PersonalAddressService {
 	}
 
 
+	@Override
+	public int deleteAddress(HashMap<String, String> map) {
+		
+		return aDao.deleteAddress(sqlSession, map);
+	}
+
+	@Override
+	public int deleteListCount(String userNo) {
+		
+		return aDao.deleteListCount(sqlSession, userNo);
+	}
+
+	@Override
+	public ArrayList<Address> deleteAddressList(PageInfo pi, String userNo) {
+		
+		return aDao.deleteAddressList(sqlSession, pi, userNo);
+	}
+
+
+
+
+	
 
 
 	

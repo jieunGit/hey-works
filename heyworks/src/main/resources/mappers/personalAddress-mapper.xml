@@ -40,6 +40,7 @@
 		     , group_name
 		 from address_group
 		  where user_no = #{userNo}
+		    and group_status = 'Y'
 	</select>
 	
 	<select id="selectListCount" resultType="_int">
@@ -48,6 +49,7 @@
 					count(*)
 			  from address
 			where user_no = #{userNo}
+			  and address_status = 'Y'
 	
 	
 	</select>
@@ -75,6 +77,7 @@
 		 from address a
 		 join address_group ag using(group_no)
 		 where a.user_no = #{userNo}
+		   and address_status = 'Y'
 		  order by address_no desc
 	
 	
@@ -88,6 +91,7 @@
 			  from address
 			 where user_no = #{userNo}
 	           and group_no = #{groupNo}
+	           and address_status = 'Y'
 	
 	</select>
 	
@@ -116,6 +120,7 @@
 			 join address_group ag using(group_no)
 			 where a.user_no = #{userNo}
 			   and group_no = #{groupNo}
+			   and address_status = 'Y'
 			   order by address_no desc
 			
 	</select>
@@ -210,6 +215,7 @@
 			 join address_group ag using(group_no)
 			 where a.user_no = #{userNo}
 			   and address_no = #{addressNo}
+			 
 	
 	</select>
 	
@@ -239,4 +245,50 @@
 	</update>
 	
 	
+		<update id="deleteAddress">
+	
+		update
+		       address
+		   set ADDRESS_STATUS = 'N'
+		 where user_no = #{userNo}
+		   and address_no = #{addressNo}
+	
+		</update>
+		
+		<select id="deleteListCount" resultType="_int">
+			select
+					count(*)
+			  from address
+			 where user_no = #{userNo}
+	           and address_status = 'N'
+		
+		</select>
+	
+		<select id="deleteAddressList" resultMap="addressResult">
+			select
+			        address_no
+			      , group_no
+			      , a.user_no
+			      , address_name
+			      , phone_group
+			      , address_phone
+			      , fax
+			      , address_email
+			      , company_name
+			      , dept_title
+			      , job_title
+			      , address_Group
+			      , address
+			      , company_url
+			      , company_phone
+			      , birthday
+			      , memo
+			      , group_name
+			 from address a
+              join address_group ag using(group_no)
+			 where a.user_no = #{userNo}
+			   and address_status = 'N'
+			   order by address_no desc
+		
+		</select>
 </mapper>

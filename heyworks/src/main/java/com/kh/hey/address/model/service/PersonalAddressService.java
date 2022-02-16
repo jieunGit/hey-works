@@ -39,4 +39,13 @@ public interface PersonalAddressService {
 	//주소록 수정하기
 	int updateAddress(Address ad);
 
+	
+	//주소록 삭제하기
+	int deleteAddress(HashMap<String, String> map);
+	
+	//주소록 삭제 개수 조회
+	int deleteListCount(String userNo);
+	
+	//주소록 삭제 목록
+	ArrayList<Address> deleteAddressList(PageInfo pi, String userNo);
 }

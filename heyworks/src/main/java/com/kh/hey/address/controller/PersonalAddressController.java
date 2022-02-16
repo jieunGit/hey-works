@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,10 +78,10 @@ public class PersonalAddressController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		ArrayList<Address> list = aService.groupAdList(pi, map);
 		
-
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
+		
 		
 		return "address/groupAddressList";
 	}
@@ -155,9 +156,6 @@ public class PersonalAddressController {
 		ad.setAddressNo(addressNo);
 		ad.setUserNo(userNo);
 		
-		System.out.println(addressNo);
-		System.out.println(ad);
-		
 		int result = aService.updateAddress(ad);
 		
 		if(result > 0) {
@@ -173,6 +171,21 @@ public class PersonalAddressController {
 	}
 	
 	//주소록 삭제하기
+	@ResponseBody
+	@RequestMapping(value="deleteAddress.ad", produces="application/json; charset=utf-8")
+	public String deleteAddress(HttpSession session, String addressNo) {
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userNo", userNo);
+		map.put("addressNo", addressNo);
+		
+		
+		int result = aService.deleteAddress(map);
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
 	
 	
 	
@@ -185,7 +198,19 @@ public class PersonalAddressController {
 
 	//삭제목록화면
 	@RequestMapping(value="deleteAdList.ad")
-	public String deleteAddressList() {
+	public String deleteAddressList(@RequestParam(value="cpage", defaultValue="1") int currentPage, HttpSession session, Model model) {
+		
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+		
+		int listCount = aService.deleteListCount(userNo);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Address> dlist = aService.deleteAddressList(pi, userNo);
+		
+		model.addAttribute("listCount", listCount);
+		model.addAttribute("pi", pi);
+		model.addAttribute("dlist", dlist);
+		
 		return "address/deleteAddressList";
 	}
 	

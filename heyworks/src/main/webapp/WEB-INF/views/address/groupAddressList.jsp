@@ -97,7 +97,7 @@
 			<!-- 제목영역 -->
 			<div id="toparea">
 			
-				<span>${list[1].groupName}</span>
+				<span>${list[0].groupName}</span>
 			
 				<span style="font-size: 11px; color: grey;"> in 개인주소록 전체 ${listCount}개</span>
 			</div>
@@ -156,13 +156,15 @@
 						<td>${a.deptTitle }</td>
 						<td>${a.jobTitle }</td>
 						<td>${a.groupName }</td>
+						<input type="hidden" id="hiddenTag" value="${a.addressNo}">
+						<input type="hidden" id="groupNoTag" value="${a.groupNo}">
 						<td>
-								<!-- 상세보기 -->
-								<a href=""  data-toggle="modal" data-target="#addressDetail"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
+								<!-- 상세보기&수정하기 -->
+								<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
 								<!-- 수정하기 -->
-								<a href=""> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp;
+								<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
 								<!-- 삭제하기 -->
-								<a href=""> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+								<a href="" data-toggle="modal" data-target="#deleteModal"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
 						</td>
 					</tr>
 					
@@ -231,346 +233,288 @@
 
     </div>
 
-
-<!-- 연락처 상세보기 모달창 -->
-
+<!-- 상세보기 & 수정하기 모달창 -->
 <div class="container">
-            
-        
-	<!-- The Modal -->
-	<div class="modal" id="addressDetail">
-
-		<div class="modal-dialog">
-			<div class="modal-content">
-			
-			<!-- Modal Header -->
-			<div class="modal-header" style="background: rgb(63, 145, 213);">
-				<h4 class="modal-title" style="font-weight: bold; ">  주소록추가</h4>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-		
-			<!-- Modal body -->
-			<div class="modal-body">
-				<div class="content_page">
-					<form id="contactCreateId" name="formContactCreate">
-						<fieldset>
-							<table class="addressAdd">
-								<colgroup>
-									<col width="130px">
-									<col width="*">
-								</colgroup>
-								<tbody>
-								
-								<tr>
-									<th><span>이름 *</span>
-										
-									</th>
-									<td>
-										<span>
-											<input type="text" class="form-control" id="name" required readonly>
-										</span>
-									</td>
-								</tr>
-						   
-								<tr>
-									<th>
-										<span>휴대폰 *</span>
-									
-									</th>
-									<td>
-										<select name="phonegroup" id="phonegroup"  class="form-control" style="width: 100px; display: inline-block;" readonly>
-											<option>휴대폰</option>
-											<option>내선번호</option>
-
-										</select>
-										<span><input type="text" class="form-control" id="phone" name="phone" style="width: 199px; display: inline-block;" readonly></span>
-									</td>
-								</tr>
-								
-								<tr >
-									<th>
-										<span>회사 팩스</span>
-									
-									</th>
-									<td><span><input type="text" class="form-control" id="comapnyfax" name="companyfax" placeholder="" readonly></span></td>
-								</tr>
-								<tr>
-									<th><span>이메일</span>
-									</th>
-									<td><div class="input-group mb-3">
-										<input type="text" class="form-control" placeholder="Email" id="demo" name="email" readonly>
-										
-									</div></td>
-								</tr>
-								<tr>
-									<th><span>회사</span>
-									</th>
-									<td><span><input name="companyName" type="text" class="company form-control" placeholder="회사명" readonly></span> 
-									<span><input name="departmentName" type="text" class="company form-control" placeholder="부서명" readonly></span>
-									<span><input name="positionName" type="text" class="company form-control" placeholder="직위" readonly></span></td>
-								</tr>
-								
-								<tr>
-									<th><span>그룹</span></th>
-									<td>
-										<select name="group" id="group"  class="form-control" readonly>
-											<option>거래처</option>
-											<option>그룹사</option>
-
-										</select>
-									</td>
-								</tr>
-							
-							 
-							
-								<tr>
-									<th><span>회사주소</span></th>
-									<td>
-										<select name="addressgroup" id="addressgroup"  class="form-control"  style="width: 100px;" readonly>
-											<option>회사</option>
-											<option>집</option>
-										</select>
-
-										<!-- 주소찾기 api가능? -->
-										<span id="officeDetail">
-											<input name="company_basicAddress" type="text"  class="form-control" readonly>
-											<input name="company_country" type="hidden">
-											<input name="company_postalCode" type="hidden">
-											<input name="company_state" type="hidden">
-											<input name="company_city" type="hidden">
-											<input name="company_extAddress" type="hidden">
-											<span title="상세주소입력"></span>
-										</span>
-									</td>
-								</tr>
-								
-								<tr>
-									<th><span>회사 홈페이지</span>
-									</th>
-									<td><span><input name="company_homepage" type="text"  class="form-control" placeholder="http://www.naver.com" readonly></span></td>
-								</tr>
-								<tr>
-									<th><span>회사전화</span>
-									</th>
-									<td><span><input name="company_phone" type="text"  class="form-control" readonly></span></td>
-								</tr>
-								<tr >
-									<th>
-										<span>생일</span>
-									</th>
-									<td>
-										<span>
-											<input name="birthday" type="text" id="birthdayDate"  class="form-control" placeholder="YYYY-MM-DD" readonly>
-											<span id="birthdayDateIcon"></span>
-										</span>
-									</td>
-								</tr>
-							
-								<tr>
-									<th><span>메모</span></th>
-									<td>
-										<span>
-											<input name="description"  class="form-control" placeholder="내용을 입력해주세요" readonly>									
-										</span>
-									</td>
-								</tr>
-								
-													
-								</tbody>
-							</table>
-						</fieldset>
-
-				   
-				
-					
-				</div>
-
-				
-			</div>
-			<!-- Modal footer -->
-			<div class="modal-footer" >
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" style="margin-right: 80px;" data-toggle="modal" data-target="#addressUpdate">수정</button>
-				
-			</div>
-			</form>
-	   
-		
-		</div>
-	</div>
-</div>
 
 
-
-<!-- 수정하기 모달창 -->
-<div class="container">
-            
-        
 	<!-- The Modal -->
 	<div class="modal" id="addressUpdate">
 
 		<div class="modal-dialog">
 			<div class="modal-content">
-			
-			<!-- Modal Header -->
-			<div class="modal-header" style="background: rgb(63, 145, 213);">
-				<h4 class="modal-title" style="font-weight: bold; ">  주소록추가</h4>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-		
-			<!-- Modal body -->
-			<div class="modal-body">
-				<div class="content_page">
-					<form id="contactCreateId" name="formContactCreate">
-						<fieldset>
-							<table class="addressAdd">
-								<colgroup>
-									<col width="130px">
-									<col width="*">
-								</colgroup>
-								<tbody>
-								
-								<tr>
-									<th><span>이름 *</span>
-										
-									</th>
-									<td>
-										<span>
-											<input type="text" class="form-control" id="name" required>
-										</span>
-									</td>
-								</tr>
-						   
-								<tr>
-									<th>
-										<span>휴대폰 *</span>
-									
-									</th>
-									<td>
-										<select name="phonegroup" id="phonegroup"  class="form-control" style="width: 100px; display: inline-block;">
-											<option>휴대폰</option>
-											<option>내선번호</option>
 
-										</select>
-										<span><input type="text" class="form-control" id="phone" name="phone" style="width: 199px; display: inline-block;"></span>
-									</td>
-								</tr>
-								
-								<tr >
-									<th>
-										<span>회사 팩스</span>
-									
-									</th>
-									<td><span><input type="text" class="form-control" id="comapnyfax" name="companyfax" placeholder=""></span></td>
-								</tr>
-								<tr>
-									<th><span>이메일</span>
-									</th>
-									<td><div class="input-group mb-3">
-										<input type="text" class="form-control" placeholder="Email" id="demo" name="email">
-										
-									</div></td>
-								</tr>
-								<tr>
-									<th><span>회사</span>
-									</th>
-									<td><span><input name="companyName" type="text" class="company form-control" placeholder="회사명"></span> 
-									<span><input name="departmentName" type="text" class="company form-control" placeholder="부서명"></span>
-									<span><input name="positionName" type="text" class="company form-control" placeholder="직위"></span></td>
-								</tr>
-								
-								<tr class="line">
-									<th><span>그룹</span></th>
-									<td>
-										<select name="group" id="group"  class="form-control" >
-											<option>거래처</option>
-											<option>그룹사</option>
-
-										</select>
-									</td>
-								</tr>
-							
-							 
-							
-								<tr>
-									<th><span>회사주소</span></th>
-									<td>
-										<select name="addressgroup" id="addressgroup"  class="form-control"  style="width: 100px;">
-											<option>회사</option>
-											<option>집</option>
-										</select>
-
-										<!-- 주소찾기 api가능? -->
-										<span id="officeDetail">
-											<input name="company_basicAddress" type="text"  class="form-control" >
-											<input name="company_country" type="hidden">
-											<input name="company_postalCode" type="hidden">
-											<input name="company_state" type="hidden">
-											<input name="company_city" type="hidden">
-											<input name="company_extAddress" type="hidden">
-											<span title="상세주소입력"></span>
-										</span>
-									</td>
-								</tr>
-								
-								<tr>
-									<th><span>회사 홈페이지</span>
-									</th>
-									<td><span><input name="company_homepage" type="text"  class="form-control" placeholder="http://www.naver.com"></span></td>
-								</tr>
-								<tr>
-									<th><span>회사전화</span>
-									</th>
-									<td><span><input name="company_phone" type="text"  class="form-control"></span></td>
-								</tr>
-								<tr >
-									<th>
-										<span>생일</span>
-									</th>
-									<td>
-										<span>
-											<input name="birthday" type="text" id="birthdayDate"  class="form-control" placeholder="YYYY-MM-DD" >
-											<span id="birthdayDateIcon"></span>
-										</span>
-									</td>
-								</tr>
-							
-								<tr>
-									<th><span>메모</span></th>
-									<td>
-										<span>
-											<input name="description"  class="form-control" placeholder="내용을 입력해주세요" >									
-										</span>
-									</td>
-								</tr>
-								
-													
-								</tbody>
-							</table>
-						</fieldset>
-
-				   
-				
-					
+				<!-- Modal Header -->
+				<div class="modal-header" style="background: rgb(63, 145, 213);">
+					<h4 class="modal-title" style="font-weight: bold;">주소록상세보기</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
-				
+				<form action="updateAddress.ad" method="post">
+					<!-- Modal body -->
+					<div class="modal-body">
+						<div class="content_page">
+							<fieldset>
+								<table class="addressAdd">
+									<colgroup>
+										<col width="130px">
+										<col width="*">
+									</colgroup>
+									<tbody id="updateAddress">
 
+
+									</tbody>
+								</table>
+							</fieldset>
+						</div>
+
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
+						<button type="submit" class="btn btn-primary" style="margin-right: 80px;">수정</button>
+
+					</div>
+				</form>
 
 
 			</div>
-			<!-- Modal footer -->
-			<div class="modal-footer" >
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" style="margin-right: 80px;">저장</button>
-				
-			</div>
-			</form>
-	   
-		
 		</div>
 	</div>
+
+	
+	
+	   
+<%-- 취소 버튼 클릭 시 정말 취소할 것인지 묻는 모달 --%>
+<div class="modal fade" id="deleteModal" role="dialog">
+<div class="modal-dialog modal-sm">
+  <div class="modal-content" style="width: 400px;">
+	<div class="modal-header" style="background: rgb(63, 145, 213);">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	 
+	</div>
+	<div class="modal-body" style="text-align: center;">
+	  <label >주소록을 정말로 삭제하시겠습니까?</label>
+	  <input class="hidden_reservation_no" type="hidden">
+	</div>
+	<div class="modal-footer" style="margin: auto;">
+	  <button type="button" class="btn btn-secondary" style="width: 100px;"onclick="deleteAddress()">예</button>
+	  <button type="reset" class="btn btn-primary" data-dismiss="modal" style="width: 100px;">아니오</button>
+	</div>
+  </div>
 </div>
+</div>
+
+
+
+
+
+	<script>
+
+
+// 클릭시 실행되는 함수
+function selectAddress(addressNo, groupNumber) {
+	// 주소록 수정하기 정보 select
+	$.ajax({
+			url:"selectAddress.ad",
+			data:{addressNo : addressNo},
+			  dataType : "json",
+			success:function(json){
+				
+				console.log(json);
+
+				var html = "";
+				html += "<input type='hidden' name='addressNo' value='"+ json.addressNo +"'>"
+				html += "<tr>";
+				html += "<th><span>이름 *</span></th>";
+				html += "<td><span><input type='text'name='addressName' class='form-control' id='name' required value='"+json.addressName + "'></span></td>";
+				html += "</tr>";
+
+				html += "<tr>";
+				html += "<th><span>휴대폰 *</span></th>";
+				html +=	"<td><select name='phoneGroup' id='phonegroup'  class='form-control' style='width: 110px; display: inline-block;'>";
+				if(json.phoneGroup == '휴대폰') {
+					html += "<option selected>휴대폰</option><option>내선번호</option></select>";
+				}else{
+					html += "<option>휴대폰</option><option selected>내선번호</option></select>";
+				}
+				html +=	"<span><input type='text' class='form-control' id='phone' name='addressPhone' style='width: 189px; display: inline-block;' value='"+ json.addressPhone +"'></span></td>";
+				html +=	"</tr>";
+
+				html += "<tr>";
+				html += "<th><span>회사 팩스</span></th>";
+				if(json.fax == null) {
+					html += "<td><span><input type='text' class='form-control' id='comapnyfax' name='fax'></span></td>";
+				}else{
+					html += "<td><span><input type='text' class='form-control' id='comapnyfax' name='fax' value='"+json.fax +"'></span></td>";
+				}
+				html +=	"</tr>";
+			
+				html += "<tr>";
+				html +=	"<th><span>이메일</span></th>"
+				if(json.addressEmail == null) {
+					html += "<td><div class='input-group mb-3'><input type='text' class='form-control' placeholder='Email' id='demo' name='addressEmail'></div></td>"
+				}else{
+					html += "<td><div class='input-group mb-3'><input type='text' class='form-control' placeholder='Email' id='demo' name='addressEmail' value='"+ json.addressEmail+ "'></div></td>"
+				}
+				html +=	"</tr>";
+			
+				html += "<tr>";
+				html += "<th><span>회사</span></th>"
+				if(json.companyName == null || json.deptTitle == null || json.jobTitle == null) {
+					html += "<td><span><input name='companyName' type='text' class='company form-control' placeholder='회사명'></span>" 
+					html +=  "<span><input name='deptTitle' type='text' class='company form-control' placeholder='부서명'></span>"
+					html +=  "<span><input name='jobTitle' type='text' class='company form-control' placeholder='직위'></span></td>"
+				}else{
+					html += "<td><span><input name='companyName' type='text' class='company form-control' placeholder='회사명' value='"+json.companyName+"'></span>" 
+				html +=  "<span><input name='deptTitle' type='text' class='company form-control' placeholder='부서명' value='"+json.deptTitle+"'></span>"
+				html +=  "<span><input name='jobTitle' type='text' class='company form-control' placeholder='직위' value='"+json.jobTitle+"'></span></td>"
+
+				}
+				
+				html +=	"</tr>";
+					
+				// ajax select해오기
+				html += "<tr>";
+				html += "<th><span>그룹</span></th>";
+				html += "<td><select name='groupNo' id='groupselect'  class='form-control' ></select></td>"
+				html +=	"</tr>";
+
+				
+				html += "<tr>";
+				html += "<th><span>회사주소</span></th>"
+				html += "<td> <select name='addressGroup' id='addressgroup'  class='form-control'  style='width: 100px;'>"
+					if(json.addressGroup == '회사') {
+						html += "<option selected>회사</option><option>집</option></select>"
+					}else{
+						html += "<option>회사</option><option selected>집</option></select>"
+					}		
+				html += "<span id='officeDetail'>"
+				if(json.address == null) {
+					html += "<input type='text' name='address' class='form-control'> </span></td>"
+				}else{
+					html += "<input type='text' name='address' class='form-control' value='"+json.address+"'> </span></td>"
+				}
+				html +=	"</tr>";
+
+				html += "<tr>";
+				html += "<th><span>회사 홈페이지</span> </th>"
+				if(json.companyUrl==null){
+					html += "<td><span><input name='companyUrl' type='text'  class='form-control' placeholder='http://www.naver.com'></span></td>"
+				}else{
+					html += "<td><span><input name='companyUrl' type='text'  class='form-control' placeholder='http://www.naver.com' value='"+json.companyUrl+"'></span></td>"
+				}
+				html +=	"</tr>";
+
+				html += "<tr>";
+				html += "<th><span>회사전화</span></th>"
+				if(json.companyPhone == null) {
+					html +=	"<td><span><input name='companyPhone' type='text'  class='form-control'></span></td>"
+				}else{
+					html +=	"<td><span><input name='companyPhone' type='text'  class='form-control' value='"+json.companyPhone+"'></span></td>"
+				}
+				html +=	"</tr>";
+
+				html += "<tr>";
+					html += "<th> <span>생일</span> </th>"
+					if(json.birthday == null) {
+						html += "<td><span> <input name='birthday' type='text' id='birthdayDate'  class='form-control' placeholder='YYYY-MM-DD'></span></td>"
+					}else{
+						html += "<td><span> <input name='birthday' type='text' id='birthdayDate'  class='form-control' placeholder='YYYY-MM-DD' value='"+json.birthday+"'></span></td>"	
+					}
+				html +=	"</tr>";
+
+
+				html += "<tr>";
+				html += "<th><span>메모</span></th>"
+				if(json.meno == null) {
+					html += "<td><span><input name='memo'  class='form-control' placeholder='내용을 입력해주세요'></span></td>"
+				}else{
+				html += "<td><span><input name='memo'  class='form-control' placeholder='내용을 입력해주세요' value='"+json.meno+"'></span></td>"
+				}
+				html +=	"</tr>";
+
+				$("#updateAddress").html(html);
+
+			},
+			error: function(request, status, error){
+			alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+
+
+			
+			})
+
+			// 상세보기 모달창 개인주소록 그룹 select
+			$.ajax({
+
+			url : "addressGroup.ad",
+			data : {},
+			success : function(glist) {
+				console.log(groupNumber);
+
+			// 모달창 그룹 select
+			let group = "";
+			for ( let i in glist) {
+				group += "<option value='" +glist[i].groupNo+ "' <c:if test='${"+ glist[i].groupNo +"eq" + groupNumber +"}'>selected='selected'</c:if>>"+ glist[i].groupName + "</option>"
+				
+				console.log(glist[i].groupNo);
+
+				
+				if(glist[i].groupNo == groupNumber) {
+					$("select[name=groupNo]").val(groupNumber).prop("selected", true);
+				}
+			
+			}
+
+			$("#groupselect").html(group);
+
+			},
+			error : function() {
+			console.log("주소록그룹조회 ajax통신실패")
+			}
+
+			})
+
+			
+
+
+}
+
+// 삭제모달에서 예 클릭시 실행되는 함수 
+
+function deleteAddress() {
+	
+			$.ajax({
+
+				url : "deleteAddress.ad",
+				data : {addressNo : $("#hiddenTag").val()},
+				dataType:"JSON",
+				success : function(json) {
+
+					if(json.result == 1){
+
+						alertify.alert("주소록 삭제에 성공하였습니다.");
+
+					}else{
+
+						alertify.alert("주소록 삭제에 실패하였습니다.");
+					}
+
+					location.href="groupAdList.ad?gNo="+ $("#groupNoTag").val();
+
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+
+
+
+				})
+		
+
+}
+
+</script>
 
 </body>
 </html>

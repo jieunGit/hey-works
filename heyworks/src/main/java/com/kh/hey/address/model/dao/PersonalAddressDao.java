@@ -61,4 +61,23 @@ public class PersonalAddressDao {
 		
 		return sqlSession.insert("addressMapper.updateAddress", ad);
 	}
+	
+	public int deleteAddress(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.update("addressMapper.deleteAddress", map);
+		
+	}
+	
+	public int deleteListCount(SqlSessionTemplate sqlSession, String userNo) {
+		return sqlSession.selectOne("addressMapper.deleteListCount", userNo);
+	}
+	
+	public ArrayList<Address> deleteAddressList(SqlSessionTemplate sqlSession, PageInfo pi ,String userNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit(); //건너뛸게시물의갯수
+		int limit = pi.getBoardLimit();  //몇개를조회할건지
+		//mybatis에서 제공하는 클래스
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("addressMapper.deleteAddressList", userNo, rowBounds);
+	}
 }
