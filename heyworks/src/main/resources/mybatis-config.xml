@@ -14,14 +14,15 @@
 		<typeAlias type="com.kh.hey.reserve.model.vo.Resources" alias="Resources" />
 		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesCategory" alias="ResourcesCategory" />
 		<typeAlias type="com.kh.hey.reserve.model.vo.Reservation" alias="Reservation" />
-		
+		<typeAlias type="com.kh.hey.address.model.vo.Address" alias="Address" />
+		<typeAlias type="com.kh.hey.address.model.vo.AddressGroup" alias="AddressGroup" />
 	</typeAliases>
 	
 	<mappers>
 	 	<mapper resource="/mappers/approval-mapper.xml" />
 	 	<mapper resource="/mappers/employee-mapper.xml" />
 		<mapper resource="/mappers/reservation-mapper.xml"/>
-		
+		<mapper resource="/mappers/personalAddress-mapper.xml"/>
 	 </mappers>
 	 
 	 

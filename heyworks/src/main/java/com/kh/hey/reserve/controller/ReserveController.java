@@ -55,7 +55,7 @@ public class ReserveController {
 	
 	@ResponseBody
 	@RequestMapping(value="menuCategoryList.re", produces="application/json; charset=utf-8")
-	public String MenuCategoryList(Model model) {
+	public String MenuCategoryList() {
 		
 		ArrayList<ResourcesCategory> clist = rService.MenuCategoryList();
 		
@@ -93,10 +93,7 @@ public class ReserveController {
 		paraMap.put("resourceNo", resourceNo);
 		paraMap.put("categoryNo", categoryNo);
 		
-
-		System.out.println(resourceNo);
-		System.out.println(categoryNo);
-		 ArrayList<Reservation> rsvList = rService.selectRsvList(paraMap);
+		ArrayList<Reservation> rsvList = rService.selectRsvList(paraMap);
 		
 		JSONArray jsonArr = new JSONArray();
 		
@@ -110,7 +107,7 @@ public class ReserveController {
 			jsonObj.put("resourceName", rsv.getResourceName());
 			jsonObj.put("startDate", rsv.getStartDate());
 			jsonObj.put("endDate",rsv.getEndDate());
-			jsonObj.put("reserveDate", rsv.getReserveDate());
+			jsonObj.put("reserveDate", rsv.getReserveDate() + "");
 			jsonObj.put("reserveContent", rsv.getReserveContent());
 			jsonObj.put("userName", rsv.getUserName());
 			jsonObj.put("categoryNo", rsv.getCategoryNo());
@@ -118,7 +115,7 @@ public class ReserveController {
 			jsonArr.add(jsonObj);
 			
 		}
-		System.out.println(jsonArr.toJSONString());
+		
 		return jsonArr.toJSONString();
 	}
 	
