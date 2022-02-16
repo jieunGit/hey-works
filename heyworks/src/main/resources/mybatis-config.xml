@@ -14,6 +14,7 @@
 		<typeAlias type="com.kh.hey.reserve.model.vo.Resources" alias="Resources" />
 		<typeAlias type="com.kh.hey.reserve.model.vo.ResourcesCategory" alias="ResourcesCategory" />
 		<typeAlias type="com.kh.hey.reserve.model.vo.Reservation" alias="Reservation" />
+		<typeAlias type="com.kh.hey.working.model.vo.Working" alias="Working" />
 		
 	</typeAliases>
 	
@@ -21,6 +22,7 @@
 	 	<mapper resource="/mappers/approval-mapper.xml" />
 	 	<mapper resource="/mappers/employee-mapper.xml" />
 		<mapper resource="/mappers/reservation-mapper.xml"/>
+		<mapper resource="/mappers/working-mapper.xml" />
 		
 	 </mappers>
 	 
