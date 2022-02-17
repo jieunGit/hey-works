@@ -162,7 +162,7 @@
                 	</div>
                 	<div class="chart">
 	                	<c:forEach var="e" items="${ organ }">
-	                		<c:if test="${ e.deptCode = d.deptCode }">
+	                		<c:if test="${ e.deptCode eq d.deptCode }">
 			                    <dl onclick="">
 			                        <dt class="name">${ e.userName }</dt>
 			                        <dd class="picture">
@@ -177,81 +177,7 @@
                 </c:forEach>
                 
                 
-                
-                <div class="deptName">
-                    <i class="fa-solid fa-bars" style="font-size: 20px;"> 우선전체</i>
-                </div>
-                <div class="chart">
-                	<c:forEach var="e" items="${ organ }">
-	                    <dl onclick="">
-	                        <dt class="name">${ e.userName }</dt>
-	                        <dd class="picture">
-	                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-	                        </dd>
-	                        <dd class="teams">${ e.deptName }</dd>
-	                        <dd class="position">${ e.jobCode }</dd>
-	                    </dl>
-                    </c:forEach>
-                </div>
-				<!-- --------------------------------------------------- -->
-                <div class="deptName">
-                    <i class="fa-solid fa-bars" style="font-size: 20px;"> 경영팀</i>
-                </div>
-                <div class="chart">
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl data-toggle="modal" data-target="#myModal" onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-
+	<!-- 임직원 상세보기 모달창 -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
     
