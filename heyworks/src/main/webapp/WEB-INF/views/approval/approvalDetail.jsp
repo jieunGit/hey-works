@@ -66,12 +66,12 @@
         <br><br>
 
         <div id="btns">
-            <a href="standby.el" class="btn btn-sm">목록으로</a>
+            <button type="button" class="btn btn-sm" onclick="history.back();">목록으로</button>
 
             <!-- 작성자 -->
             <c:if test="${loginUser.userName eq ap.userNo}">
-	            <a href="" class="btn btn-sm text-primary">내용수정</a>
-	            <a href="" class="btn btn-sm text-danger">기안취소</a>
+	            <a href="update.el" class="btn btn-sm text-primary">내용수정</a>
+	            <a href="delete.el" class="btn btn-sm text-danger">기안취소</a>
             </c:if>
 
             <!-- 결재자 -->

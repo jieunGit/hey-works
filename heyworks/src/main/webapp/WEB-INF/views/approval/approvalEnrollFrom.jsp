@@ -184,9 +184,9 @@
                         <th colspan="3">보안 등급</th>
                         <td colspan="3">
                             <select name="grade">
-                                <option value="S">S등급</option>
-                                <option value="A">A등급</option>
                                 <option value="C">C등급</option>
+                                <option value="A">A등급</option>
+                                <option value="S">S등급</option>
                             </select>
                         </td>
                     </tr>
@@ -210,6 +210,10 @@
                             </button>
                         </td>
                     </tr>
+                    <tr>
+                        <th colspan="2">제 목</th>
+                        <td colspan="9"><input type="text" class="form-control" name="approvalTitle"></td>
+                    </tr>
                 </thead>
                 <tbody id="certificate">
                     <tr style="height: 80px;">
@@ -226,10 +230,6 @@
                         <td colspan="3"><input type="text" class="form-control" name="whereSubmit"></td>
                         <th colspan="2">제출일</th>
                         <td colspan="4"><input type="date" name="submitDate"></td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">제 목</th>
-                        <td colspan="9"><input type="text" class="form-control" name="approvalTitle"></td>
                     </tr>
                 </tbody>
                 <tbody style="display: none;" id="recruitment">
@@ -267,10 +267,6 @@
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <th colspan="2">제 목</th>
-                        <td colspan="9"><input type="text" class="form-control" name="approvalTitle"></td>
-                    </tr>
                 </tbody>
                 <tbody style="display: none;" id="expenseReport">
                     <tr style="height: 80px;">
@@ -279,10 +275,6 @@
                     <tr>
                         <th colspan="7">시행날짜</th>
                         <td colspan="4"><input type="date" class="form-control" name="imposition"></td>
-                    </tr>
-                    <tr>
-                        <th>제 목</th>
-                        <td colspan="10"><input type="text" class="form-control" name="approvalTitle"></td>
                     </tr>
                 </tbody>
             </table>
@@ -376,7 +368,8 @@
         </div>
         
       </div>
-
+	</div>
+	
         <script>
         	let count = 0;
         	let procedure = 1;
@@ -495,7 +488,7 @@
 	            
 	        })
 	    </script>
-	</div>
+
 
 </body>
 </html>

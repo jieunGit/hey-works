@@ -125,6 +125,37 @@ public class ApprovalDao {
 		
 	}
 	
+	public int insertExpenseReport(SqlSessionTemplate sqlSession, Approval ap) {
+		
+		return sqlSession.insert("approvalMapper.insertExpenseReport", ap);
+		
+	}
+	
+	public int insertBusinessDraft(SqlSessionTemplate sqlSession, Approval ap) {
+		
+		return sqlSession.insert("approvalMapper.insertBusinessDraft", ap);
+		
+	}
+	
+	public int insertEquipmentBuy(SqlSessionTemplate sqlSession, Approval ap) {
+		
+		return sqlSession.insert("approvalMapper.insertEquipmentBuy", ap);
+		
+	}
+	
+	public int insertItemList(SqlSessionTemplate sqlSession, ArrayList<Approval> itemList) {
+		
+		int result = 0;
+		
+		for(int i=0; i<itemList.size(); i++) {
+		
+			result = sqlSession.insert("approvalMapper.insertItemList", itemList.get(i));
+			
+		}
+		
+		return result;
+		
+	}
 	
 	
 	

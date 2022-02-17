@@ -425,15 +425,89 @@
 		  )
 	</insert>
 	
+	<!-- 일반품의서 -->
+	<insert id="insertExpenseReport">
+		insert
+		  into expense_report
+		  (
+		    elec_appr_no
+		  , imposition
+		  , content
+		  )
+		  values
+		  (
+		    'SA-ER-'||lpad(seq_elno.currval,5,0)
+		  , #{imposition}
+		  , #{expenseReportContent}
+		  )
+	</insert>
 	
+	<!-- 업무기안서 -->
+	<insert id="insertBusinessDraft">
+		insert
+		  into business_draft
+		  (
+		    elec_appr_no
+		  , content
+		  )
+		  values
+		  (
+		    'SA-BD-'||lpad(seq_elno.currval,5,0)
+		  , #{businessDraftContent}
+		  )
+	</insert>
 	
+	<!-- 비품구매품의서 -->
+	<insert id="insertEquipmentBuy">
+		insert
+		  into equipment_buy
+		  (
+		    elec_appr_no
+		  , buy_req_team
+		  , limit_date
+		  , pay
+		  , purpose
+		  , total_pay
+		  )
+		  values
+		  (
+		    'SA-EB-'||lpad(seq_elno.currval,5,0)
+		  , #{requestTeam}
+		  , #{limitDate}
+		  , #{pay}
+		  , #{purpose}
+		  , #{totalPay}
+		  )
+	</insert>
 	
-	
-	
-	
-	
-	
-	
+	<!-- 비품구매 아이템 -->
+	<insert id="insertItemList">
+		insert
+		  into item_list
+		  (
+		    item_no
+		  , elec_appr_no
+		  , item_seq
+		  , item_name
+		  , item_size
+		  , unit
+		  , total
+		  , amount
+		  , note
+		  )
+		  values
+		  (
+		    'ITEM-'||lpad(seq_ilno.nextval,3,0)
+		  , 'SA-EB-'||lpad(seq_elno.currval,5,0)
+		  , #{itemSeq}
+		  , #{itemName}
+		  , #{itemSize}
+		  , #{unit}
+		  , #{total}
+		  , #{amount}
+		  , #{note}
+		  )
+	</insert>
 	
 	
 	
