@@ -185,8 +185,8 @@
             <div class="modal-content">
 
                 <div class="modal-header">
+                	<h5 class="modal-title">직원정보</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title">직원정보</h5>
                 </div>
 
                 <div class="modal-body">
@@ -196,9 +196,9 @@
                         </div>
                         <div class="inform">
                             <ul>
-                                <li><b>직원명</b></li>
-                                <li>SAMJO | xx팀</li>
-                                <li>직급</li>
+                                <li><b>${ e.userName }</b></li>
+                                <li>SAMJO | ${ e.deptName }</li>
+                                <li>${ e.job_code) }</li>
                             </ul>
                         </div>
                     </div>
@@ -206,15 +206,15 @@
                         <table>
                             <tr>
                                 <th>이메일</th>
-                                <td>usermail@naver.com</td>
+                                <td>${ e.email }</td>
                             </tr>
                             <tr>
                                 <th>사내전화</th>
-                                <td>02) 123-1234</td>
+                                <td>${ e.call }</td>
                             </tr>
                             <tr>
                                 <th>휴대전화</th>
-                                <td>010-1234-1234</td>
+                                <td>${ e.phone }</td>
                             </tr>
                         </table>
                     </div>
