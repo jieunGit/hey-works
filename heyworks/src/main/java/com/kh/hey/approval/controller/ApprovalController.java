@@ -459,6 +459,109 @@ public class ApprovalController {
 		
 	}
 	
+	// 승인하기
+	@RequestMapping("confirm.el")
+	public String approvalConfirm(String ano, String userNo, String confirmStatus, HttpSession session) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("ano", ano);
+		map.put("userNo", userNo);
+		map.put("confirmStatus", confirmStatus);
+		
+		System.out.println(confirmStatus);
+		
+		
+		// 결재자 순번 알아오기
+		int procedure = aService.selectConfirmProcedure(map);
+		// 결재자 몇명인지 알아오기
+		int count = aService.selectConfirmPeopleCount(ano);
+		
+		// 결재자 순번 상관없이 결재 테이블에 상태값 변경
+		int confirmTable = aService.updateConfirmTable(map);
+
+		if(procedure == 1) {
+		
+			aService.updateConfirmApproval(map); // 첫번째 결재자 승인시 전자결재 테이블 변경
+		
+		}
+
+		if(procedure == count) {
+			
+			int last = aService.updateLastConfirm(ano);
+
+		}
+		
+		if(confirmTable > 0) {
+			
+			session.setAttribute("alertMsg", "승인되었습니다.");
+			return "redirect:standby.el";
+			
+		}else {
+			
+			session.setAttribute("alertMsg", "승인 실패!");
+			return "redirect:detail.el";
+			
+		}
+		
+	} // 승인하기 끝
+	
+	// 반려하기
+	@RequestMapping("reject.el")
+	public String rejectApproval(String ano, String userNo, String rejectReason, HttpSession session) {
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("ano", ano);
+		map.put("userNo", userNo);
+		map.put("rejectReason", rejectReason);
+
+		System.out.println(rejectReason);
+		
+		int rejectResult = aService.updateConfirmReject(map);
+		int confirmTable = aService.updateConfirmApproval(map);
+		
+		int result = confirmTable * rejectResult;
+		
+		if(result > 0) {
+			
+			session.setAttribute("alertMsg", "반려되었습니다.");
+			return "redirect:standby.el";
+			
+		}else {
+			
+			session.setAttribute("alertMsg", "반려 실패!");
+			return "redirect:detail.el";
+			
+		}
+		
+	} // 반려하기
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*전자결재 관리자 파트*/
 	
 	@RequestMapping("deleteList.el")

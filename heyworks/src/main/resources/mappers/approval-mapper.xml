@@ -250,7 +250,7 @@
 		     , e3.user_name reference_no
 		     , elec_title
 		     , create_date
-		     , to_char(storage_year, 'YYYY-DD-MM') storage_year
+		     , to_char(storage_year, 'YYYY-MM-DD') storage_year
 		     , origin_name
 		     , file_path
 		     , confirm_no confirmNo
@@ -544,6 +544,82 @@
 		   set status = 'N'
 		 where elec_appr_no = #{ano}
 	</update>
+	
+	<!-- 첫번째 결재자일때 전자결재 테이블에 진행중으로 업데이트 -->
+	<!-- 결재순서번호 알아오기 -->
+	<select id="selectConfirmProcedure" resultType="_int">
+		select
+		       procedure_no
+		  from confirm
+		 where elec_appr_no = #{ano}
+		   and confirm_user = #{userNo}
+	</select>
+	
+	<!-- 결재자  결재상태, 결재일 업데이트 -->
+	<update id="updateConfirmTable">
+		update
+			   confirm
+		   set status = '승인'
+		     , confirm_date = sysdate
+		 where elec_appr_no = #{ano}
+		   and confirm_user = #{userNo}
+	</update>
+	
+	<!-- 진행중으로 업데이트 하기 -->
+	<update id="updateConfirmApproval">
+		update
+		       elec_approval
+		<choose>
+			<when test='confirmStatus == "Y"'>
+				set status = 'P'
+			</when>
+			<otherwise>
+				set status = 'R'
+			</otherwise>
+		</choose>
+		 where elec_appr_no = #{ano}
+	</update>
+		
+	<!-- 마지막 결재자 승인시 전자결재 테이블에 승인으로 업데이트 -->
+	<!-- 결재자 총 몇명인지 알아오기 -->
+	<select id="selectConfirmPeopleCount" resultType="_int">
+		select count(*) count
+		  from confirm
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	<update id="updateLastConfirm">
+		update
+		       elec_approval
+		   set status = 'Y'
+		 where elec_appr_no = #{ano}
+	</update>
+	
+	<!-- 반려하기 결재테이블 -->
+	<update id="updateConfirmReject">
+		update
+			   confirm
+		   set status = '반려'
+             , reject_reason = #{rejectReason}
+             , confirm_date = sysdate
+         where elec_appr_no = #{ano}
+           and confirm_user = #{userNo}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

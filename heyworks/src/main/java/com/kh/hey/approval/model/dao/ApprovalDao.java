@@ -180,10 +180,43 @@ public class ApprovalDao {
 	}
 	
 	
+	// 승인시 상태 변경하기(첫번째 결재자 기준)
+	public int selectConfirmProcedure(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.selectOne("approvalMapper.selectConfirmProcedure", map);
+		
+	}
 	
+	public int updateConfirmTable(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.update("approvalMapper.updateConfirmTable", map);
+		
+	}
 	
+	public int updateConfirmApproval(SqlSessionTemplate sqlSession, HashMap<String,String> map) {
 	
+		return sqlSession.update("approvalMapper.updateConfirmApproval", map);
 	
+	}
+
+	// 마지막 결재자 승인시
+	public int selectConfirmPeopleCount(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.selectOne("approvalMapper.selectConfirmPeopleCount", ano);
+	
+	}
+	
+	public int updateLastConfirm(SqlSessionTemplate sqlSession, String ano) {
+		
+		return sqlSession.update("approvalMapper.updateLastConfirm", ano);
+	
+	}
+	
+	public int updateConfirmReject(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.update("approvalMapper.updateConfirmReject", map);
+		
+	}
 	
 	
 	

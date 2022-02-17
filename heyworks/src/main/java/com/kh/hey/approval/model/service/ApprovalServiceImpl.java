@@ -167,7 +167,38 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ArrayList<Approval> selectReadReference(PageInfo rrpi, String userNo) {
 		return aDao.selectReadReference(sqlSession, rrpi, userNo);
 	}
+
+	@Override
+	public int selectConfirmProcedure(HashMap<String, String> map) {
+		return aDao.selectConfirmProcedure(sqlSession, map);
+	}
+
+	@Override
+	public int updateConfirmTable(HashMap<String, String> map) {
+		return aDao.updateConfirmTable(sqlSession, map);
+	}
 	
+	@Override
+	public int updateConfirmApproval(HashMap<String,String> map) {
+		return aDao.updateConfirmApproval(sqlSession, map);
+	}
+
+	@Override
+	public int selectConfirmPeopleCount(String ano) {
+		return aDao.selectConfirmPeopleCount(sqlSession, ano);
+	}
+
+	@Override
+	public int updateLastConfirm(String ano) {
+		return aDao.updateLastConfirm(sqlSession, ano);
+	}
+
+	// 반려하기
+	@Override
+	public int updateConfirmReject(HashMap<String, String> map) {
+		return aDao.updateConfirmReject(sqlSession, map);
+	}
+
 	
 
 	

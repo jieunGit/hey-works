@@ -57,24 +57,21 @@ public interface ApprovalService{
 	// 4. 삭제하기
 	int deleteApproval(String ano);
 	
+	// 승인하기
+	// 결재자 순번 알아오기
+	int selectConfirmProcedure(HashMap<String,String> map);
 	
+	// 첫번째 결재자일때
+	int updateConfirmTable(HashMap<String,String> map);
+	int updateConfirmApproval(HashMap<String,String> map);
 	
+	// 마지막 결재자일때
+	int selectConfirmPeopleCount(String ano);
+	int updateLastConfirm(String ano);
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// 반려하기
+	int updateConfirmReject(HashMap<String, String> map);
+
 	
 	
 	
