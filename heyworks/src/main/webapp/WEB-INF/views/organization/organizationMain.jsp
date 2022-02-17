@@ -160,6 +160,20 @@
                 	<div class="deptName">
                     	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ d.deptName }</i>
                 	</div>
+                	<div class="chart">
+	                	<c:forEach var="e" items="${ organ }">
+	                		<c:if test="${ e.deptCode = d.deptCode }">
+			                    <dl onclick="">
+			                        <dt class="name">${ e.userName }</dt>
+			                        <dd class="picture">
+			                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
+			                        </dd>
+			                        <dd class="teams">${ e.deptName }</dd>
+			                        <dd class="position">${ e.jobCode }</dd>
+			                    </dl>
+		                    </c:if>
+	                    </c:forEach>
+                	</div>
                 </c:forEach>
                 
                 
