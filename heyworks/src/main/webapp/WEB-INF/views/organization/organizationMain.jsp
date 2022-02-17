@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,7 +135,7 @@
     <div class="outer">
    
       <jsp:include page="../common/menubar.jsp" />
-      <jsp:include page="organization_sidebar.jsp" />
+      <jsp:include page="organizationSidebar.jsp" />
    
         <div class="contents">
           
@@ -155,91 +156,21 @@
 
                 <!--소속임직원-->
                 <div class="deptName">
-                    <i class="fa-solid fa-bars" style="font-size: 20px;"> 개발팀</i>
+                    <i class="fa-solid fa-bars" style="font-size: 20px;"> 우선전체</i>
                 </div>
                 <div class="chart">
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
-                    <dl onclick="">
-                        <dt class="name">강보람</dt>
-                        <dd class="picture">
-                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-                        </dd>
-                        <dd class="teams">개발팀</dd>
-                        <dd class="position">부장</dd>
-                    </dl>
+                	<c:forEach var="e" items="${ organ }">
+	                    <dl onclick="">
+	                        <dt class="name">${ e.userName }</dt>
+	                        <dd class="picture">
+	                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
+	                        </dd>
+	                        <dd class="teams">${ e.deptName }</dd>
+	                        <dd class="position">${ e.jobName }</dd>
+	                    </dl>
+                    </c:forEach>
                 </div>
-
+				<!-- --------------------------------------------------- -->
                 <div class="deptName">
                     <i class="fa-solid fa-bars" style="font-size: 20px;"> 경영팀</i>
                 </div>

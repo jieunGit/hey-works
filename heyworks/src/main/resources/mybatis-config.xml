@@ -17,6 +17,7 @@
 		<typeAlias type="com.kh.hey.address.model.vo.Address" alias="Address" />
 		<typeAlias type="com.kh.hey.address.model.vo.AddressGroup" alias="AddressGroup" />
 		<typeAlias type="com.kh.hey.working.model.vo.Working" alias="Working" />
+		<typeAlias type="com.kh.hey.organization.model.vo.Organ" alias="Organ" />
 	</typeAliases>
 	
 	<mappers>
@@ -25,6 +26,7 @@
 		<mapper resource="/mappers/reservation-mapper.xml"/>
 		<mapper resource="/mappers/personalAddress-mapper.xml"/>
 		<mapper resource="/mappers/working-mapper.xml"/>
+		<mapper resource="/mappers/organization-mapper.xml"/>
 	 </mappers>
 	 
 	 
