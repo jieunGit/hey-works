@@ -37,7 +37,7 @@
         top:30px;
     }
     .working-box-list{
-        border:1px solid gray;
+        border:1px solid lightgray;
         border-radius:5px;
         margin-right:20px;
     }
@@ -52,13 +52,8 @@
 
     /*주간 근무 정보*/
     .week-select{font-size:18px; font-weight:500;}
-    .week-tb{
-        border:1px solid gray;
-        border-collapse:collapse;
-    }
-    .th, td{
-        border:1px solid gray;
-    }
+    .table-bordered th{font-size:14px; text-align:center;}
+    .table-bordered td{font-size:13px;}
     .tb-body tr{height:40px;}
 </style>
 </head>
@@ -80,11 +75,11 @@
                 <div class="working-box">
                     <strong><img src="resources/images/time.png" style="width: 20px; height: 20px;"> 근무시간</strong>
                     <ul class="working-box-list" style="width:300px">
-                        <li style="border-right:1px solid gray;">
+                        <li style="border-right:1px solid lightgray;">
                             <strong style="margin-left:20px;">근무일수</strong><br><br>
                             <span>1일</span>
                         </li>
-                        <li style="border-right:1px solid gray;">
+                        <li style="border-right:1px solid lightgray;">
                             <strong>총근무시간</strong><br><br>
                             <span>0시간</span>
                         </li>
@@ -96,15 +91,15 @@
     
                     <strong><img src="resources/images/to-do-list.png" style="width: 20px; height: 20px;"> 근태현황</strong>
                     <ul class="working-box-list" style="width:300px">
-                        <li style="border-right:1px solid gray;">
+                        <li style="border-right:1px solid lightgray;">
                             <strong style="margin-left:20px;">지각</strong><br><br>
-                            <span>1회</span>
+                            <span> 1회</span>
                         </li>
-                        <li style="border-right:1px solid gray;">
+                        <li style="border-right:1px solid lightgray;">
                             <strong>조기퇴근</strong><br><br>
                             <span>0회</span>
                         </li>
-                        <li style="border-right:1px solid gray;">
+                        <li style="border-right:1px solid lightgray;">
                             <strong>결근</strong><br><br>
                             <span>0회</span>
                         </li>
@@ -115,13 +110,13 @@
                     </ul>
     
                     <strong><img src="resources/images/gift.png" style="width: 20px; height: 20px;"> 휴가현황</strong>
-                    <ul class="working-box-list"  style="width:200px">
-                        <li style="border-right:1px solid gray;">
+                    <ul class="working-box-list"  style="width:205px">
+                        <li style="border-right:1px solid lightgray;">
                             <strong style="margin-left:20px;">잔여휴가</strong><br><br>
                             <span>15일</span>
                         </li>
-                        <li style="padding-top:15px;">
-                            <button type="button">휴가신청</button>
+                        <li style="padding-top:17px;">
+                            <a href="leaveApplyForm.wo" class="btn btn-primary" style="font-size:13px;">휴가신청</a>
                         </li>
                     </ul>
                 </div>
@@ -136,13 +131,12 @@
                 <div class="title-box">
                     주간 근무 정보
                 </div><br>
-                <br>
     
                 <div class="week-select" align="center">
-                    <span>&lt; 2022/02/07 ~ 2022/02/13 &gt;</span>
+                    <span>&lt; 2022-02-07 ~ 2022-02-13 &gt;</span>
                 </div><br><br>
     
-                <table class="week-tb" border="1">
+                <table class="table-bordered">
                     <thead class="tb-head">
                         <tr height="50px">
                             <th width="110">날짜</th>

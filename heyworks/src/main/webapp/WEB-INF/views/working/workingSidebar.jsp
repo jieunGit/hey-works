@@ -54,7 +54,7 @@
     <div class="sidebar">
         <br>
         <div class="sidebar-title">
-            >> 근태관리
+            <img src="resources/images/2722998.png" style="width: 25px; height: 25px;"> 근태관리
         </div><br>
 
         <p id="date" class="date"></p>
@@ -71,7 +71,7 @@
             </tr>
         </table>
         <hr style="margin-right:15px;">
-
+        
         <button class="in-btn" id="btn1" style="margin-left:15px;">출근</button> 
         <button class="out-btn" id="btn2">퇴근</button><br>
 
@@ -117,7 +117,7 @@
                     success:function(result){
     				 console.log("통신 성공");
                     },error:function(){
-                        console.log("퇴근 인서트 ajax 통신 실패");
+                        console.log("퇴근 업데이트 ajax 통신 실패");
                     }
                   })
                   
@@ -128,7 +128,7 @@
         </script>
         
 
-        <button class="ot-btn" style="margin-left:15px;">연장근무신청</button>
+        <button class="ot-btn" style="margin-left:15px;" onclick="location.href = 'otApplyForm.wo'">연장근무신청</button>
         <br><br><br>
 
         <div class="sidebar-menu">

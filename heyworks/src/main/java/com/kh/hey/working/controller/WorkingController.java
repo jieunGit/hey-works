@@ -43,4 +43,16 @@ public class WorkingController {
 		
 		int result = wService.updateClockOut(userNo);
 	}
+	
+	// 휴가신청 폼
+	@RequestMapping("leaveApplyForm.wo")
+	public String leaveApplyForm() {
+		return "working/leaveApplyForm";
+	}
+	
+	// 연장근무 신청 폼
+	@RequestMapping("otApplyForm.wo")
+	public String otApplyForm() {
+		return "working/overtimeApplyForm";
+	}
 }
