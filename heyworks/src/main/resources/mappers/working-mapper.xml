@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="workingMapper">
+
+    <!-- 출근 insert -->
+	<insert id="insertClockIn">
+		INSERT 
+		  INTO TNA 
+		  (
+		    TNA_NO
+		  , USER_NO
+		  , TNA_DATE
+		  , CLOCK_IN
+		  , CLOCK_OUT
+		  , TNA_STATUS
+		  ) 
+		  VALUES
+		  (
+		    SEQ_TNANO.NEXTVAL
+		  , #{userNo}
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		  , TO_CHAR(SYSDATE, 'HH24:MI')
+		  , NULL
+		  , NULL
+		  )
+	</insert>  
+	
+	<!-- 퇴근 insert -->
+	<insert id="insertClockOut">
+		INSERT 
+		  INTO TNA 
+		  (
+		    TNA_NO
+		  , USER_NO
+		  , TNA_DATE
+		  , CLOCK_IN
+		  , CLOCK_OUT
+		  , TNA_STATUS
+		  ) 
+		  VALUES
+		  (
+		    SEQ_TNANO.NEXTVAL
+		  , #{userNo}
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		  , NULL
+		  , TO_CHAR(SYSDATE, 'HH24:MI')
+		  , NULL
+		  )
+	</insert> 
+</mapper>
