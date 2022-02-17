@@ -11,8 +11,8 @@ public class WorkingDao {
 		return sqlSession.insert("workingMapper.insertClockIn", userNo);
 	}
 	
-	public int insertClockOut(SqlSessionTemplate sqlSession, int userNo) {
+	public int updateClockOut(SqlSessionTemplate sqlSession, int userNo) {
 		
-		return sqlSession.insert("workingMapper.insertClockOut", userNo);
+		return sqlSession.update("workingMapper.updateClockOut", userNo);
 	}
 }

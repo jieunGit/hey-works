@@ -37,10 +37,10 @@ public class WorkingController {
 	// 퇴근
 	@ResponseBody
 	@RequestMapping(value="clockout.wo")
-	public void insertClockOut(HttpSession session) {
+	public void updateClockOut(HttpSession session) {
 		
 		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
 		
-		int result = wService.insertClockOut(userNo);
+		int result = wService.updateClockOut(userNo);
 	}
 }

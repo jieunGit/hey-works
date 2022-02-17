@@ -111,7 +111,7 @@
                 
                     document.getElementById("click-td2").innerHTML = t;
 
-                    // 퇴근시간 insert 
+                    // 퇴근시간 update
                     $.ajax({
                     url:"clockout.wo",
                     success:function(result){

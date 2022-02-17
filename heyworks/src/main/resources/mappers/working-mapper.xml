@@ -26,25 +26,9 @@
 	</insert>  
 	
 	<!-- 퇴근 insert -->
-	<insert id="insertClockOut">
-		INSERT 
-		  INTO TNA 
-		  (
-		    TNA_NO
-		  , USER_NO
-		  , TNA_DATE
-		  , CLOCK_IN
-		  , CLOCK_OUT
-		  , TNA_STATUS
-		  ) 
-		  VALUES
-		  (
-		    SEQ_TNANO.NEXTVAL
-		  , #{userNo}
-		  , TO_CHAR(SYSDATE, 'YYYYMMDD')
-		  , NULL
-		  , TO_CHAR(SYSDATE, 'HH24:MI')
-		  , NULL
-		  )
-	</insert> 
+	<update id="updateClockOut">
+		UPDATE TNA
+		   SET CLOCK_OUT = TO_CHAR(SYSDATE, 'HH24:MI')
+		 WHERE USER_NO = #{userNo} 
+	</update> 
 </mapper>

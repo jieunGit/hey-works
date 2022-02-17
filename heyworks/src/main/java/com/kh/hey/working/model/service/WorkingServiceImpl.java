@@ -21,8 +21,8 @@ public class WorkingServiceImpl implements WorkingService {
 	}
 
 	@Override
-	public int insertClockOut(int userNo) {
-		return wDao.insertClockOut(sqlSession, userNo);
+	public int updateClockOut(int userNo) {
+		return wDao.updateClockOut(sqlSession, userNo);
 	}
 
 }

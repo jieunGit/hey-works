@@ -6,5 +6,5 @@ public interface WorkingService {
 	int insertClockIn(int userNo);
 	
 	// 퇴근시간 insert
-	int insertClockOut(int userNo);
+	int updateClockOut(int userNo);
 }
