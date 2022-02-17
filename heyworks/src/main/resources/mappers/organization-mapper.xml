@@ -47,7 +47,7 @@
 		  from employee
 		  join department using (dept_code)
 		 where status = 'Y'	
-		 order by dept_code asc
+		 order by dept_code desc
 	
 	</select>
 

@@ -163,7 +163,7 @@
                 	<div class="chart">
 	                	<c:forEach var="e" items="${ organ }">
 	                		<c:if test="${ e.deptCode eq d.deptCode }">
-			                    <dl onclick="">
+			                    <dl data-toggle="modal" data-target="#myModal">
 			                        <dt class="name">${ e.userName }</dt>
 			                        <dd class="picture">
 			                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
