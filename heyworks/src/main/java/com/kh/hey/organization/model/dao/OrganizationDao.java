@@ -11,7 +11,7 @@ import com.kh.hey.organization.model.vo.Organ;
 public class OrganizationDao {
 	
 	public ArrayList<Organ> selectOrgan(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectOne("organMapper.selectOrgan");
+		return (ArrayList)sqlSession.selectList("organMapper.selectOrgan");
 	}
 
 }

@@ -18,7 +18,6 @@ public class Organ {
 	private String call;
 	private String deptCode;
 	private String jobCode;
-	private String jobName;
 	private String deptName;
 	private String image;
 	private String adminYn;

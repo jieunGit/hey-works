@@ -166,7 +166,7 @@
 	                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
 	                        </dd>
 	                        <dd class="teams">${ e.deptName }</dd>
-	                        <dd class="position">${ e.jobName }</dd>
+	                        <dd class="position">${ e.jobCode }</dd>
 	                    </dl>
                     </c:forEach>
                 </div>
