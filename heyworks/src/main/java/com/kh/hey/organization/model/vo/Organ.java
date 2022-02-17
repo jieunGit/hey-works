@@ -21,6 +21,7 @@ public class Organ {
 	private String jobName;
 	private String deptName;
 	private String image;
+	private String adminYn;
 	
 	
 

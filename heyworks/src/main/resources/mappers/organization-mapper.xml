@@ -13,6 +13,7 @@
 		<result column="job_code" property="jobCode" />
 		<result column="job_name" property="jobName" />
 		<result column="dept_name" property="deptName" />
+		<result column="image" property="image" />
 		<result column="adminyn" property="adminYn" />
 	</resultMap>
 
