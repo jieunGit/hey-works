@@ -10,6 +10,10 @@ import com.kh.hey.organization.model.vo.Organ;
 @Repository
 public class OrganizationDao {
 	
+	public ArrayList<Organ> selectDept(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("organMapper.selectDept");
+	}
+	
 	public ArrayList<Organ> selectOrgan(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("organMapper.selectOrgan");
 	}

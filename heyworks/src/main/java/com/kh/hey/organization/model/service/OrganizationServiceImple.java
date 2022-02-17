@@ -20,6 +20,11 @@ public class OrganizationServiceImple implements OrganizationService {
 	
 	
 	@Override
+	public ArrayList<Organ> selectDept() {
+		return orDao.selectDept(sqlSession);
+	}
+	
+	@Override
 	public ArrayList<Organ> selectOrgan() {
 		return orDao.selectOrgan(sqlSession);
 	}
@@ -33,5 +38,7 @@ public class OrganizationServiceImple implements OrganizationService {
 	public ArrayList<Organ> DeptOrgan(int deptCode) {
 		return null;
 	}
+
+	
 
 }

@@ -15,6 +15,15 @@
 		<result column="image" property="image" />
 		<result column="adminyn" property="adminYn" />
 	</resultMap>
+	
+	<select id="selectDept" resultMap="organResult">
+
+		select
+			    dept_code
+			  , dept_name
+		  from department
+	
+	</select>
 
 	<select id="selectOrgan" resultMap="organResult">
 

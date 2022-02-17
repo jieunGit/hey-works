@@ -155,6 +155,15 @@
             <div class="chart-area">
 
                 <!--소속임직원-->
+                
+                <c:forEach var="d" items="${ dept }">
+                	<div class="deptName">
+                    	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ d.deptName }</i>
+                	</div>
+                </c:forEach>
+                
+                
+                
                 <div class="deptName">
                     <i class="fa-solid fa-bars" style="font-size: 20px;"> 우선전체</i>
                 </div>
