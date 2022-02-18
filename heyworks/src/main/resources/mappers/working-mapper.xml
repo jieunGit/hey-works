@@ -31,4 +31,33 @@
 		   SET CLOCK_OUT = TO_CHAR(SYSDATE, 'HH24:MI')
 		 WHERE USER_NO = #{userNo} 
 	</update> 
+	
+	<!-- 휴가 신청 insert -->
+	<insert id="insertLeave">
+		INSERT 
+		  INTO LEAVE_ALIST
+		  (
+		    LEAVE_ANO
+		  , USER_NO
+		  , APPLY_DATE
+		  , LEAVE_TYPE
+		  , START_DATE
+		  , END_DATE
+		  , LEAVE_USE
+		  , REASON
+		  , STATUS
+		  ) 
+		  VALUES
+		  (
+		    SEQ_LANO.NEXTVAL
+		  , #{userNo}
+		  , SYSDATE
+		  , #{leaveType}
+		  , #{startDate}
+		  , #{endDate}
+		  , #{leaveUse}
+		  , #{reason}
+		  , '대기'
+		  )	
+	</insert>
 </mapper>

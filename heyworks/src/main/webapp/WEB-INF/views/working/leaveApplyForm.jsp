@@ -46,9 +46,9 @@
         <br><br>
 
 		<div class="applyForm-outer">
-			<form action="leaveinsert.wo" method="post">
+			<form action="insertLeave.wo" method="post">
 		
-				<input type="hidden" name="userNo" value="">
+				<input type="hidden" name="userNo" value="${loginUser.userNo}">
 				
 				<!--휴가신청 버튼-->
 				<div class="leave-btn">
@@ -96,35 +96,55 @@
 						<tr>
 							<th width="130">구분</th>
 							<td width="650">
-								<input type="radio" id="leave1" name="division" value="day" checked>
-								<label for="leave1">연차</label>
+								<input type="radio" id="day" name="leaveType" value="연차" checked>
+								<label for="day">연차</label>
 		
-								<input type="radio" id="leave2" name="division" value="half">
-								<label for="leave2">반차</label>
+								<input type="radio" id="event" name="leaveType" value="경조">
+								<label for="event">경조</label>
 		
-								<input type="radio" id="leave3" name="division" value="event">
-								<label for="leave3">경조</label>
-		
-								<input type="radio" id="leave4" name="division" value="sick">
-								<label for="leave4">병가</label>
+								<input type="radio" id="sick" name="leaveType" value="병가">
+								<label for="sick">병가</label>
+
+								<input type="radio" id="baby" name="leaveType" value="출산휴가">
+								<label for="baby">출산휴가</label>
 							</td>
 						</tr>
 						<tr>
 							<th>휴가기간</th>
 							<td>
-								<input type="date"> ~
-								<input type="date">
+								<input type="date" name="startDate" id="startDate" onchange="datechange()"> ~
+								<input type="date" name="endDate" id="endDate" onchange="datechange()">
 							</td>
 						</tr>
 						<tr>
-							<th>연차일수</th>
-							<td>
-									잔여연차 : 
-								<input type="text" style="width:50px; background:lightgrey; border:none; height:20px;" readonly>
-									신청연차 : 
-								<input type="text" style="width:50px; background:lightgrey; border:none; height:20px;" readonly>
-							</td>
+							<th>신청일수</th>
+							<td id="leaveUse" readonly></td>
 						</tr>
+						<input type="hidden" name="leaveUse" id="useDay">
+
+						<script>
+							function datechange(){
+
+									var startDate = document.getElementById("startDate").value;
+									var startDate_arr = startDate.split("-");
+								
+									var endDate = document.getElementById("endDate").value;
+									var endDate_arr = endDate.split("-");
+
+									if(startDate != 0 && endDate != 0){
+										var stDate = new Date(startDate_arr[0], startDate_arr[1]-1, startDate_arr[2]);
+										var enDate = new Date(endDate_arr[0], endDate_arr[1]-1, endDate_arr[2]);
+
+										var diffDay = (enDate.getTime() - stDate.getTime())/1000/60/60/24 + 1;
+								
+										document.getElementById("leaveUse").innerHTML = diffDay; // 화면에 뿌려지는 신청일수
+										document.getElementById("useDay").value = diffDay; // 휴가테이블에 insert하는 신청일수 
+									}else{
+										document.getElementById("leaveUse").innerHTML = 0;
+									}								
+							}
+						</script>
+
 						<tr>
 							<th>사유</th>
 							<td style="height:100px;">
