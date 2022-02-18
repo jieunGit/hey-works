@@ -26,25 +26,38 @@
 	</insert>  
 	
 	<!-- 퇴근 insert -->
-	<insert id="insertClockOut">
+	<update id="updateClockOut">
+		UPDATE TNA
+		   SET CLOCK_OUT = TO_CHAR(SYSDATE, 'HH24:MI')
+		 WHERE USER_NO = #{userNo} 
+	</update> 
+	
+	<!-- 휴가 신청 insert -->
+	<insert id="insertLeave">
 		INSERT 
-		  INTO TNA 
+		  INTO LEAVE_ALIST
 		  (
-		    TNA_NO
+		    LEAVE_ANO
 		  , USER_NO
-		  , TNA_DATE
-		  , CLOCK_IN
-		  , CLOCK_OUT
-		  , TNA_STATUS
+		  , APPLY_DATE
+		  , LEAVE_TYPE
+		  , START_DATE
+		  , END_DATE
+		  , LEAVE_USE
+		  , REASON
+		  , STATUS
 		  ) 
 		  VALUES
 		  (
-		    SEQ_TNANO.NEXTVAL
+		    SEQ_LANO.NEXTVAL
 		  , #{userNo}
-		  , TO_CHAR(SYSDATE, 'YYYYMMDD')
-		  , NULL
-		  , TO_CHAR(SYSDATE, 'HH24:MI')
-		  , NULL
-		  )
-	</insert> 
+		  , SYSDATE
+		  , #{leaveType}
+		  , #{startDate}
+		  , #{endDate}
+		  , #{leaveUse}
+		  , #{reason}
+		  , '대기'
+		  )	
+	</insert>
 </mapper>
