@@ -198,7 +198,7 @@
                             <ul>
                                 <li><b>${ e.userName }</b></li>
                                 <li>SAMJO | ${ e.deptName }</li>
-                                <li>${ e.job_code) }</li>
+                                <li>${ e.job_code }</li>
                             </ul>
                         </div>
                     </div>
