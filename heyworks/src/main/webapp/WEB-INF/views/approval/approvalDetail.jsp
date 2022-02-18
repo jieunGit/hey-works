@@ -51,6 +51,11 @@
         font-weight: 600;
     }
     #replyContent{width: 730px;}
+    #form-left>*{
+    	float:left;
+    }
+    #form-left{margin-bottom:40px;}
+    #reason{width:850px;}
 </style>
 </head>
 <body>
@@ -65,33 +70,73 @@
         <div style="width: 100%;"></div>
         <br><br>
 
-        <div id="btns">
-            <button type="button" class="btn btn-sm" onclick="history.back();">목록으로</button>
+	        <div id="btns">
+	            <button type="button" class="btn btn-sm" onclick="history.back();">목록으로</button>
+	
+	            <!-- 작성자 -->
+	            <c:if test="${loginUser.userName eq ap.userNo and ap.status eq 'D' or ap.status eq 'P'}">
+		            <a class="btn btn-sm text-primary" onclick="postSubmit(1)">내용수정</a>
+		            <a class="btn btn-sm text-danger" onclick="postSubmit(2)">기안취소</a>
+	            </c:if>
+	
+	            <!-- 결재자 -->
+	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser or loginUser.userName eq ap.confirmList[1].confirmUser or loginUser.userName eq ap.confirmList[2].confirmUser}">
+		            <a class="btn btn-sm text-primary" onclick="postSubmit(3)">결재</a>
+		            <a class="btn btn-sm text-danger" onclick="deny();" id="rjbtn1">반려</a>
+				</c:if>
+				
+	            <!-- 반려시 -->
+	            <c:if test="${ap.status eq 'R'}">
+	            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
+				</c:if>
+	            <!-- 관리자가 복구시 -->
+	            <c:if test="${loginUser.adminYn eq 'Y' && loginUser.deptCode eq 3}">
+	            	<a class="btn btn-sm text-warning" onclick="postSubmit(6)">복구하기</a>
+	            </c:if>
+	        </div>
+		
+		<div id="form-left">
 
-            <!-- 작성자 -->
-            <c:if test="${loginUser.userName eq ap.userNo}">
-	            <a href="update.el" class="btn btn-sm text-primary">내용수정</a>
-	            <a href="delete.el" class="btn btn-sm text-danger">기안취소</a>
-            </c:if>
-
-            <!-- 결재자 -->
-            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser}">
-	            <button type="button" class="btn btn-sm text-primary">결재</button>
-	            <button type="button" class="btn btn-sm text-danger">반려</button>
-			</c:if>
-			
-            <!-- 반려시 -->
-            <c:if test="${ap.status eq '반려'}">
-            	<a href="" class="btn btn-sm text-danger">재기안</a>
-			</c:if>
-            <!-- 관리자가 복구시 -->
-            <c:if test="${loginUser.adminYn eq 'Y' && loginUser.deptCode eq 3}">
-            	<button type="button" class="btn btn-sm text-warning">복구하기</button>
-            </c:if>
+	        <form id="postForm" action="" method="post">
+	        	<input type="hidden" name="ano" value="${ap.approvalNo}">
+	        	<input type="hidden" name="filePath" value="${ap.filePath}">
+	        	<input type="hidden" name="userNo" value="${loginUser.userNo}">
+	        	<input type="text" class="form-control" name="rejectReason" placeholder="*반려사유입력" id="reason" required>
+	        	<input type="hidden" name="confirmStatus" value="Y">
+	        </form>
+	        <button class="btn btn-sm text-danger" id="rjbtn2" onclick="postSubmit(4);">반려</button>
         </div>
+        
+        <script>
+        	function postSubmit(num){
+
+				switch(num){
+				case 1:	$("#postForm").attr("action", "updateForm.el").submit(); break;
+				case 2:	$("#postForm").attr("action", "delete.el").submit(); break;
+				case 3:	$("#postForm").attr("action", "confirm.el").submit(); break;
+				case 4:	$("#postForm").attr("action", "reject.el").submit(); break;
+				case 5:	$("#postForm").attr("action", "retryForm.el").submit(); break;
+				case 6:	$("#postForm").attr("action", "recover.el").submit(); break;
+				}
+				
+        	}
+        	$(function(){
+        		$("#reason").hide();
+        		$("#rjbtn2").hide();
+        	})
+        	
+        	function deny(){
+        		$("#reason").show();
+        		$("#rjbtn1").hide();
+        		$("#rjbtn2").show();
+        		
+        		
+        	}
+        </script>
+            
 
         <hr>
-
+	
         <div id="form-type">${ap.formNo}</div>
         <br>
 
@@ -308,6 +353,34 @@
     </div>
 		
 	</div>
+	
+		<!-- The Modal -->
+		  <div class="modal fade" id="rejectModal">
+		    <div class="modal-dialog modal-sm">
+		      <div class="modal-content">
+		      
+		        <!-- Modal Header -->
+		        <div class="modal-header">
+		          <h4 class="modal-title">반려사유 작성</h4>
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        </div>
+		        
+		        <!-- Modal body -->
+		        <div class="modal-body">
+		          <input type="text" class="form-control" id="reason" required>
+		        </div>
+		        
+		        <!-- Modal footer -->
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-outline-secondary" id="reject" data-dismiss="modal">반려</button>
+		        </div>
+		        
+		      </div>
+		    </div>
+		  </div>
 
+		  
+		  
+		  
 </body>
 </html>

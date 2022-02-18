@@ -23,6 +23,9 @@ public interface ApprovalService{
 	// 1_1_2. 게시판 리스트-기안자 기준(승인, 반려, 임시저장)
 	ArrayList<Approval> selectSubmitEndList(PageInfo pi, HashMap<String, String> map);
 	
+	int selectReadNrefListCount(String userNo);
+	ArrayList<Approval> selectReadReference(PageInfo rrpi, String userNo);
+	
 	// 2. 모든 양식 게시글 양식종류~결재자까지 상세조회
 	Approval selectApproval(String ano);
 	
@@ -50,6 +53,27 @@ public interface ApprovalService{
 	
 	int insertEquipmentBuy(Approval ap);
 	int insertItemList(ArrayList<Approval> itemList);
+	
+	// 4. 삭제하기
+	int deleteApproval(String ano);
+	
+	// 승인하기
+	// 결재자 순번 알아오기
+	int selectConfirmProcedure(HashMap<String,String> map);
+	
+	// 첫번째 결재자일때
+	int updateConfirmTable(HashMap<String,String> map);
+	int updateConfirmApproval(HashMap<String,String> map);
+	
+	// 마지막 결재자일때
+	int selectConfirmPeopleCount(String ano);
+	int updateLastConfirm(String ano);
+	
+	// 반려하기
+	int updateConfirmReject(HashMap<String, String> map);
+
+	
+	
 	
 	
 }

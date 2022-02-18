@@ -66,7 +66,7 @@
             <li class="side-list"><img src="resources/images/3759325.png">내 결재함
                 <ul>
                     <li><a href="standby.el">결재대기</a></li>
-                    <li><a href="">&nbsp;참조/열람대기</a></li>
+                    <li><a href="readNref.el">&nbsp;참조/열람대기</a></li>
                 </ul>
             </li>
             <li class="side-list"><img src="resources/images/3759325.png">진행중인문서
