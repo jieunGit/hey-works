@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/8bf37c071b.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
 <style>
 .outer{
 		width:1200px;
@@ -55,8 +58,8 @@
 	color: #a0a5b1;
     position: absolute;
     font-size: 19px;
-    top: 8px;
-    left: 10px;
+    top: 5px;
+    right: 15px;
 }
 .search-box input {
     height: 30px;
@@ -83,9 +86,131 @@
 
   #pagingArea{width:fit-content;margin:auto;}
 
+.data {
+	display: none;
+}
+.sort{
+	display: none;
+}
 </style>
 </head>
 <body>
+
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+			
+				
+				$("span.data").hide();
+				$("span.sort").hide();
+				
+				// 정렬 아이콘 표시
+				if("${data}" == "name") {
+					$("span#nameicon").html("<i class='fa fa-sort-${sort}'></i>");
+				} else if("${data}" == "job_title") {
+					$("span#positionicon").html("<i class='fa fa-sort-${sort}'></i>");
+				} else {
+					$("span#depticon").html("<i class='fa fa-sort-${sort}'></i>");
+				}
+	
+				// 정렬
+				// 이름순
+					$("span#nameicon").click(function(){
+						var data = $(this).prev().html();
+						var sort = $(this).next().html();
+	
+						console.log(data);
+						console.log(sort);
+						
+						if(sort == "asc") {
+							sort = "desc";
+						} else {
+							sort = "asc";
+						}
+							
+						location.href = "groupAdList.ad?gNo="+ $("#groupNoTag").val() + "&data="+data+"&sort="+sort;
+					});
+	
+	
+					// 직위순
+				$("span#positionicon").click(function(){
+					var data = $(this).prev().html();
+					var sort = $(this).next().html();
+					
+					console.log(data);
+						console.log(sort);
+	
+					if(sort == "asc") {
+						sort = "desc";
+					} else {
+						sort = "asc";
+					}
+					
+					location.href = "groupAdList.ad?gNo="+ $("#groupNoTag").val() + "&data="+data+"&sort="+sort;
+				
+				});
+				// 부서순
+				$("span#depticon").click(function(){
+					var data = $(this).prev().html();
+					var sort = $(this).next().html();
+					
+					console.log(data);
+					console.log(sort);
+	
+					if(sort == "asc") {
+						sort = "desc";
+					} else {
+						sort = "asc";
+					}
+					
+					location.href = "groupAdList.ad?gNo="+ $("#groupNoTag").val() + "&data="+data+"&sort="+sort;
+				});
+	
+				//체크박스
+	
+				$("#chkAll").click(function() {
+							if($("#chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+							else $("input[name=chk]").prop("checked", false);
+						});
+
+
+	
+				});
+	
+	
+				// $(document).ready(function() 끝-------
+
+				$("#simpleContactSearch").keyup(function(event) {
+					if(event.keyCode == 13) {
+					
+					
+						var frm = document.searchContacts;
+						frm.action = "groupAdList.ad?gNo="+ $("#groupNoTag").val();
+						frm.submit();
+					
+						
+					}
+
+				});
+
+				
+				// // 주소록 검색
+				// function searchContact() {
+					
+				// 	var frm = document.searchContacts;
+				// 	frm.action = "groupAdList.ad?gNo="+ $("#groupNoTag").val();
+				// 	frm.submit();
+					
+				// }
+	
+			
+	
+	
+		
+	
+			
+		</script>
+	
 
     <div class="outer">
 		<jsp:include page="../common/menubar.jsp" />
@@ -115,40 +240,65 @@
 				</section>
 			</div>
 			
-			<!-- 검색영역 -->
-			<div class="search-box">
-				<i class="fa-solid fa-magnifying-glass"></i>
-				<input type="text" class="form-control" placeholder="Search…">
-			</div>
+			<!-- 검색영역 --> 
+			<form name="searchContacts" action="groupAdList.ad" method="post">
+				<div class="search-box">
+					<input type="text" class="form-control" placeholder="Search…" id="simpleContactSearch" name="contactInput">
+					<button type="submit" style="border: none; background: none;"><i class="fa-solid fa-magnifying-glass" id="simpleContactbtn" ></i></button>
+					<c:forEach var="a" items="${ list }" begin="0" end="0">
+						<input type="hidden" id="groupNoTag" value="${a.groupNo}" name="gNo">
+					</c:forEach>
+				</div>
+			</form>
 			
 			<!-- 테이블영역 정렬기능구현! -->
 			<div class="container" style="width: 900px;">
 				
 				<table class="table addresstable">
-				<thead>
-					<tr>
-						<th width=10px;></th>
-						<th width=10px; ><input type="checkbox"></th>
-						<th width=80px;>이름</th>
-						<th width=120px;>전화번호</th>
-						<th width=150px;>이메일</th>
-						<th width=100px;>회사명</th>
-						<th width=100px;>부서</th>
-						<th width=70px;>직위</th>
-						<th width=70px;>그룹</th>
-						<th></th>
-					</tr>
-				</thead>
+					<thead>
+						<tr>
+							<th style="width:10px;"></th>
+							<th width=10px; ><input type="checkbox" id="chkAll" name="chkAll"></th>
+							<th width=80px;>
+								<span class="title_sort">이름</span>
+								<span class="data">name</span>
+								<span id="nameicon" style="cursor: pointer;"><i class="fa fa-sort"></i></span>
+								<span class="sort">${sort}</span>
+							</th>
+							<th width=130px;>전화번호</th>
+							<th width=150px;>이메일</th>
+							<th width=100px;>회사명</th>
+							<th width=80px;>
+								<span class="title_sort">부서<ins class="ic"></ins></span>
+								<span class="data">dept_title</span>
+								<span id="depticon" style="cursor: pointer;"><i class="fa fa-sort"></i></span>
+								<span class="sort">${sort}</span>
+							</th>
+							<th width=70px;>
+								<span class="title_sort">직위<ins class="ic"></ins></span>
+								<span class="data">job_title</span>
+								<span id="positionicon" style="cursor: pointer;"><i class="fa fa-sort"></i></span>
+								<span class="sort">${sort}</span>
+							</th>
+							<th width=70px;>그룹</th>
+							<th></th>
+						</tr>
+					</thead>
 				<tbody>
 				
 				<c:forEach var="a" items="${ list }">
 					<tr>
-						<!-- 즐겨찾기 삭제 -->
-						<td><a href=""><i class="fas fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td>
-						<!-- <td><a href=""><i class="fa-regular fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td> -->
-						
-						
-						<td><input type="checkbox"></td>
+						<!-- 즐겨찾기 -->
+						<c:choose>
+							<c:when test="${a.likeCount == 1}">
+								<td><a href ="" onclick="return deleteLike(${a.addressNo}, this)"><i class="fas fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td>
+							</c:when>
+							<c:otherwise>
+								<td><a href ="" onclick="return insertLike(${a.addressNo}, this)"><i class="fa-regular fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td>
+							</c:otherwise>
+						</c:choose>
+
+						<td><input type="checkbox" id="chk" name="chk" value="${a.addressNo}"></td>
 						<td>${a.addressName }</td>
 						<td>${a.addressPhone }</td>
 						<td>${a.addressEmail }</td>
@@ -190,7 +340,7 @@
 			</div>
 			<!-- footer부분 -->
 			<div id="footer">
-					<a href="">삭제</a> |
+					<a onclick="deleteValue();">삭제</a> |
 					<a href="">그룹설정</a> |
 					<a href="">메일보내기</a>
 					
@@ -455,16 +605,16 @@ function selectAddress(addressNo, groupNumber) {
 			// 모달창 그룹 select
 			let group = "";
 			for ( let i in glist) {
-				group += "<option value='" +glist[i].groupNo+ "' <c:if test='${"+ glist[i].groupNo +"eq" + groupNumber +"}'>selected='selected'</c:if>>"+ glist[i].groupName + "</option>"
-				
-				console.log(glist[i].groupNo);
 
-				
 				if(glist[i].groupNo == groupNumber) {
-					$("select[name=groupNo]").val(groupNumber).prop("selected", true);
+				group += "<option value='" + glist[i].groupNo+ "' selected>"+ glist[i].groupName + "</option>"
+				}else {
+				group += "<option value='" + glist[i].groupNo+ "'>"+ glist[i].groupName + "</option>"
 				}
-			
-			}
+					
+						
+				
+					}
 
 			$("#groupselect").html(group);
 
@@ -493,11 +643,11 @@ function deleteAddress() {
 
 					if(json.result == 1){
 
-						alertify.alert("주소록 삭제에 성공하였습니다.");
+						alertify.alert("즐겨찾기 삭제에 성공하였습니다.");
 
 					}else{
 
-						alertify.alert("주소록 삭제에 실패하였습니다.");
+						alertify.alert("즐겨찾기 삭제에 실패하였습니다.");
 					}
 
 					location.href="groupAdList.ad?gNo="+ $("#groupNoTag").val();
@@ -512,7 +662,145 @@ function deleteAddress() {
 				})
 		
 
-}
+			}	
+
+			// 선택삭제 기능
+			function deleteValue() {
+
+					var valueArr = new Array();
+					var list = $("input[name='chk']");
+
+					for(var i=0; i<list.length; i++) {
+						if(list[i].checked) {
+
+						valueArr.push(list[i].value);
+
+						}
+
+					}
+						console.log(valueArr);
+					if(valueArr.length == 0) {
+					alertify.alert("선택된 주소록이 없습니다.");
+					}else{
+
+					 if(confirm("정말 삭제하시겠습니까?")==true) {
+
+					 
+
+					$.ajax({
+
+					url : "chkDelete.ad",
+					data : {valueArr : valueArr},
+					traditional:true,
+					dataType:"JSON",
+					success : function(json) {
+
+						if(json.result > 0){
+
+							alertify.alert("주소록 삭제에 성공하였습니다.");
+
+						}else{
+
+							alertify.alert("주소록 삭제에 실패하였습니다.");
+						}
+
+						location.href="groupAdList.ad?gNo="+ $("#groupNoTag").val();
+
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					}
+
+
+
+					});
+					}
+
+
+					}
+
+					}
+
+
+				// 즐겨찾기 추가하기
+
+				function insertLike(addressNo, aE1) {
+
+					$.ajax({
+
+							url : "insertLikeAddress.ad",
+							data : {addressNo : addressNo},
+							dataType:"JSON",
+							success : function(json) {
+
+								if(json.result == 1){
+
+									// alertify.alert("즐겨찾기 추가에 성공하였습니다.");
+									$(aEl).children().removeClass("fas");
+									$(aEl).children().addClass("fa-regular");
+									$(aEl).click(function(){
+										return deleteLike(addressNo);
+									})
+
+								}else{
+
+									alertify.alert("즐겨찾기 추가에 실패하였습니다.");
+								}
+
+								
+								
+							},
+							error: function(request, status, error){
+								alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+							}
+
+
+
+							})
+
+
+						
+				}
+
+
+				// 즐겨찾기 삭제
+				function deleteLike(addressNo, aE1) {
+
+					$.ajax({
+
+							url : "deleteLikeAddress.ad",
+							data : {addressNo : addressNo},
+							dataType:"JSON",
+							success : function(json) {
+
+								if(json.result == 1){
+
+									// alertify.alert("즐겨찾기 삭제에 성공하였습니다.");
+									$(aEl).children().removeClass("fa-regular");
+									$(aEl).children().addClass("fas");
+									$(aEl).click(function(){
+										return insertLike(addressNo);
+									})
+
+								}else{
+
+									alertify.alert("즐겨찾기 삭제에 실패하였습니다.");
+								}
+
+								
+								
+							},
+							error: function(request, status, error){
+								alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+							}
+
+
+
+							})
+
+
+						
+					}
 
 </script>
 

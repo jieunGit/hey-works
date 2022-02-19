@@ -29,7 +29,7 @@ public class Address {
 	private String birthday;
 	private String memo;
 	private String groupName;
-	
+	private String likeCount;
 	
 	
 
