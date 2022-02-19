@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,15 +52,24 @@
         <ul>
             <li><i class="fa-solid fa-sitemap" style='font-size:15px'> &nbsp;SAMJO</i>
                 <ul>
-                    <li><a href="">개발팀</a></li>
-                    <li><a href="">인사팀</a></li>
-                    <li><a href="">회개팀</a></li>
-                    <li><a href="">회개팀</a></li>
-                    <li><a href="">경영팀</a></li>
+                	<c:forEach var="d" items="${ dept }">
+                			<li class="dept"><p class="deptCode" style="display:none;">${ d.deptCode }</p><a>${ d.deptName }</a></li>
+                    </c:forEach>
                 </ul>
             </li>
         </ul>
     </div>
+    
+    <script>
+    	$(function(){
+    		$(".dept").click(function(){
+    			console.log($(this).children().prev(".deptCode").text());
+    			location.href = 'detail.organ?dno=' + $(this).children().prev(".deptCode").text();
+    		})
+    	})
+    </script>
+    
+    
 
 </body>
 </html>

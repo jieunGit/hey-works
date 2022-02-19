@@ -140,9 +140,9 @@
         <div class="contents">
           
             <!--검색바-->
-            <form class="searchbar">
+            <form class="searchbar" method="get" action="search.organ">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="사번 / 이름 검색">
+                  <input name="userName" type="text" class="form-control" placeholder=" 이름 검색">
                   <div class="input-group-btn">
                     <button class="btn btn-default" type="submit" style="height: 34px;">
                       <i class="glyphicon glyphicon-search"></i>
@@ -155,32 +155,27 @@
             <div class="chart-area">
 
                 <!--소속임직원-->
-                
-                <c:forEach var="d" items="${ dept }">
-                	<div class="deptName">
-                    	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ d.deptName }</i>
-                	</div>
-                	<div class="chart">
-	                	<c:forEach var="e" items="${ organ }">
-	                		<c:if test="${ e.deptCode eq d.deptCode }">
-			                    <dl data-toggle="modal" data-target="#myModal">
-			                        <dt class="name">${ e.userName }</dt>
-			                        <dd class="picture">
-			                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-			                        </dd>
-			                        <dd class="teams">${ e.deptName }</dd>
-			                        <dd class="position">${ e.jobCode }</dd>
-			                    </dl>
-		                    </c:if>
-	                    </c:forEach>
-                	</div>
-                </c:forEach>
+               	<div class="deptName">
+                   	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ dept.deptName }</i>
+               	</div>
+               	<div class="chart">
+                	<c:forEach var="e" items="${ organ }">
+		                    <dl data-toggle="modal" data-target="#myModal">
+		                        <dt class="name">${ e.userName }</dt>
+		                        <dd class="picture">
+		                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
+		                        </dd>
+		                        <dd class="teams">${ e.deptName }</dd>
+		                        <dd class="position">${ e.jobCode }</dd>
+		                    </dl>
+                    </c:forEach>
+               	</div>
 
-            </div>
+        	</div>
 
-        </div>
-
-    </div>
+    	</div>
+    	
+   	</div>
                 
                 
 	<!-- 임직원 상세보기 모달창 -->

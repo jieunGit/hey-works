@@ -50,6 +50,70 @@
 		 order by dept_code desc
 	
 	</select>
+	
+	<select id="deptOrgan" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_code
+			  , image
+			  , admin_yn
+		  from employee
+		  join department using (dept_code)
+		 where status = 'Y'	
+		   and dept_code = #{ dno }
+		 order by dept_code desc
+	
+	</select>
+	
+	<select id="selectDeptName" resultMap="organResult">
+
+		select
+			    dept_code
+			  , dept_name
+		  from department
+		 where dept_code = #{ dno }
+	
+	</select>
+	
+	<select id="selectEmployee" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_code
+			  , image
+			  , admin_yn
+		  from employee
+		  join department using (dept_code)
+		 where status = 'Y'	
+		   and user_name = #{ userName }
+		 order by dept_code desc
+	
+	</select>
 
 
 

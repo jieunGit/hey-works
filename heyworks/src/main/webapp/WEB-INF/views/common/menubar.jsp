@@ -167,7 +167,7 @@
                		 <a href="personAdList.ad"><img src="resources/images/addressbook.png"></a>
                     </div>
                 </li>
-                <li><a href="">
+                <li><a href="list.organ">
                     <img src="resources/images/coperation.png">
                 </a></li>         
                 

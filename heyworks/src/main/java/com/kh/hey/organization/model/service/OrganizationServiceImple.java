@@ -28,16 +28,24 @@ public class OrganizationServiceImple implements OrganizationService {
 	public ArrayList<Organ> selectOrgan() {
 		return orDao.selectOrgan(sqlSession);
 	}
-
+	
 	@Override
-	public Organ selectEmployee(int userNo) {
-		return null;
+	public ArrayList<Organ> deptOrgan(int dno) {
+		return orDao.deptOrgan(sqlSession, dno);
+	}
+	
+	@Override
+	public Organ selectDeptName(int dno) {
+		return orDao.selectDeptName(sqlSession, dno);
 	}
 
+
 	@Override
-	public ArrayList<Organ> DeptOrgan(int deptCode) {
-		return null;
+	public ArrayList<Organ> selectEmployee(String userName) {
+		return orDao.selectEmployee(sqlSession, userName);
 	}
+
+	
 
 	
 

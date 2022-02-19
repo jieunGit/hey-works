@@ -12,11 +12,15 @@ public interface OrganizationService {
 	// 1. 전체 조직도 조회
 	ArrayList<Organ> selectOrgan();
 	
-	// 2. 조직도 > 임직원 상세조회
-	Organ selectEmployee(int userNo);
-	
 	// 3. 부서별 조직도 조회
-	ArrayList<Organ> DeptOrgan(int deptCode);
+	// 3-1. 선택한 부서 조회
+	Organ selectDeptName(int dno);
+	ArrayList<Organ> deptOrgan(int dno);
+	
+	// 3. 조직도 > 임직원 상세조회
+	ArrayList<Organ> selectEmployee(String userName);
+	
+	
 	
 
 
