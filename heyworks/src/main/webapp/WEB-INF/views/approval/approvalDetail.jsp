@@ -74,11 +74,12 @@
 	            <button type="button" class="btn btn-sm" onclick="history.back();">목록으로</button>
 	
 	            <!-- 작성자 -->
-	            <c:if test="${loginUser.userName eq ap.userNo and ap.status eq 'D' or ap.status eq 'P'}">
-		            <a class="btn btn-sm text-primary" onclick="postSubmit(1)">내용수정</a>
-		            <a class="btn btn-sm text-danger" onclick="postSubmit(2)">기안취소</a>
-	            </c:if>
-	
+	            <c:if test="${loginUser.userName eq ap.userNo}">
+		            <c:if test="${ap.status eq '결재대기'}">
+			            <a class="btn btn-sm text-primary" onclick="postSubmit(1)">내용수정</a>
+			            <a class="btn btn-sm text-danger" onclick="postSubmit(2)">기안취소</a>
+		            </c:if>
+				</c:if>
 	            <!-- 결재자 -->
 	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser or loginUser.userName eq ap.confirmList[1].confirmUser or loginUser.userName eq ap.confirmList[2].confirmUser}">
 		            <a class="btn btn-sm text-primary" onclick="postSubmit(3)">결재</a>
@@ -86,11 +87,11 @@
 				</c:if>
 				
 	            <!-- 반려시 -->
-	            <c:if test="${ap.status eq 'R'}">
+	            <c:if test="${ap.status eq '반려'}">
 	            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
 				</c:if>
 	            <!-- 관리자가 복구시 -->
-	            <c:if test="${loginUser.adminYn eq 'Y' && loginUser.deptCode eq 3}">
+	            <c:if test="${loginUser.adminYn eq 'Y'}">
 	            	<a class="btn btn-sm text-warning" onclick="postSubmit(6)">복구하기</a>
 	            </c:if>
 	        </div>
@@ -353,33 +354,7 @@
     </div>
 		
 	</div>
-	
-		<!-- The Modal -->
-		  <div class="modal fade" id="rejectModal">
-		    <div class="modal-dialog modal-sm">
-		      <div class="modal-content">
-		      
-		        <!-- Modal Header -->
-		        <div class="modal-header">
-		          <h4 class="modal-title">반려사유 작성</h4>
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        </div>
-		        
-		        <!-- Modal body -->
-		        <div class="modal-body">
-		          <input type="text" class="form-control" id="reason" required>
-		        </div>
-		        
-		        <!-- Modal footer -->
-		        <div class="modal-footer">
-		          <button type="button" class="btn btn-outline-secondary" id="reject" data-dismiss="modal">반려</button>
-		        </div>
-		        
-		      </div>
-		    </div>
-		  </div>
 
-		  
 		  
 		  
 </body>

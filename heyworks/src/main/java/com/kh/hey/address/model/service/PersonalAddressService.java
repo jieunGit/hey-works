@@ -14,10 +14,10 @@ public interface PersonalAddressService {
 	
 	//주소록 개수 조회
 	
-	int selectListCount(String userNo);
+	int selectListCount(HashMap<String, String> paraMap);
 	
 	//전체 개인주소록 조회
-	ArrayList<Address> allAddressList(PageInfo pi ,String userNo);
+	ArrayList<Address> allAddressList(PageInfo pi ,HashMap<String, String> paraMap);
 	
 	//그룹별 주소록 개수조회
 	
@@ -25,7 +25,19 @@ public interface PersonalAddressService {
 	
 	// 그룹별 주소록 조회
 	ArrayList<Address> groupAdList(PageInfo pi ,HashMap<String, String> map);
+	
+	//즐겨찾는 개인주소록 개수 조회
+	int likeListCount(HashMap<String, String> paraMap);
+	
+	//즐겨찾는 개인주소록 목록 조회
+	ArrayList<Address> likeAddressList(PageInfo pi ,HashMap<String, String> paraMap);
 
+	//즐겨찾기 추가하기
+	int insertLikeAddress(HashMap<String, String> map);
+	
+	//즐겨찾기 삭제하기
+	int deleteLikeAddress(HashMap<String, String> map);
+	
 	//주소록 추가
 	int insertAddress(Address ad);
 	
@@ -39,4 +51,28 @@ public interface PersonalAddressService {
 	//주소록 수정하기
 	int updateAddress(Address ad);
 
+	
+	//주소록 삭제하기
+	int deleteAddress(HashMap<String, String> map);
+	
+	//주소록 선택 삭제하기
+	int chkDelete(HashMap<String, Object> map);
+	
+	//주소록 삭제 개수 조회
+	int deleteListCount(HashMap<String, String> map);
+	
+	
+	//주소록 삭제 목록
+	ArrayList<Address> deleteAddressList(PageInfo pi, HashMap<String, String> map);
+
+
+	//주소록 복구하기
+	int restoreAddress(HashMap<String, Object> map);
+	
+	//주소록 영구삭제하기
+	int foreverdelete(HashMap<String, Object> map);
+
+
 }
+
+

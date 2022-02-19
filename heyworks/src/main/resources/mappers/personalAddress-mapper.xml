@@ -40,6 +40,7 @@
 		     , group_name
 		 from address_group
 		  where user_no = #{userNo}
+		    and group_status = 'Y'
 	</select>
 	
 	<select id="selectListCount" resultType="_int">
@@ -48,7 +49,17 @@
 					count(*)
 			  from address
 			where user_no = #{userNo}
-	
+			  and address_status = 'Y'
+		<if test='contactInput != ""'>
+          	and
+	            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+	            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+	            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+	            )
+         </if>
 	
 	</select>
 
@@ -72,11 +83,32 @@
 		      , birthday
 		      , memo
 		      ,group_name
+		      ,(SELECT COUNT(*) FROM liked_address W WHERE user_no= 21020101 AND address_no = message_no ) AS likeCount
 		 from address a
 		 join address_group ag using(group_no)
 		 where a.user_no = #{userNo}
-		  order by address_no desc
-	
+		   and address_status = 'Y'
+		 <if test='contactInput != ""'>
+          	and
+	            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+	            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+	            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+	            )
+         </if>
+	 	<if test="data != null and data !=''">ORDER BY
+               <choose>
+                  <when test="data eq 'name'">address_name</when>
+                  <when test="data eq 'job_title'">job_title</when>
+                  <otherwise>dept_title</otherwise>
+               </choose>
+               <choose>
+                  <when test="sort eq 'desc'">DESC</when>
+                  <otherwise>ASC</otherwise>
+               </choose>
+          </if>
 	
 	</select>
 	
@@ -88,6 +120,19 @@
 			  from address
 			 where user_no = #{userNo}
 	           and group_no = #{groupNo}
+	           and address_status = 'Y'
+           <if test='contactInput != ""'>
+	         	and
+		            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+		            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+		            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+		            )
+	         </if>
+	
+	           
 	
 	</select>
 	
@@ -112,13 +157,143 @@
 			      , birthday
 			      , memo
 			      , group_name
+			      ,(SELECT COUNT(*) FROM liked_address W WHERE user_no= 21020101 AND address_no = message_no ) AS likeCount
 			 from address a
 			 join address_group ag using(group_no)
 			 where a.user_no = #{userNo}
 			   and group_no = #{groupNo}
-			   order by address_no desc
+			   and address_status = 'Y'
+			    <if test='contactInput != ""'>
+		            and
+		            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+		            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+		            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+		            )
+		         </if>
+		 	<if test="data != null and data !=''">ORDER BY
+	               <choose>
+	                  <when test="data eq 'name'">address_name</when>
+	                  <when test="data eq 'job_title'">job_title</when>
+	                  <otherwise>dept_title</otherwise>
+	               </choose>
+	               <choose>
+	                  <when test="sort eq 'desc'">DESC</when>
+	                  <otherwise>ASC</otherwise>
+	               </choose>
+	          </if>
+	
 			
 	</select>
+	
+	
+	<select id="likeListCount" resultType="_int">
+	
+		 	 select
+            count(*)
+		 from address la
+         join liked_address a on (message_no = address_no)
+		 join address_group ag using(group_no)
+		 where a.user_no = #{userNo}
+		   and address_status = 'Y'
+           <if test='contactInput != ""'>
+	         	and
+		            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+		            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+		            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+		            )
+	         </if>
+	
+	           
+	
+	</select>
+	
+	
+	<select id="likeAddressList" resultMap="addressResult">
+	select
+		        address_no
+		      , group_no
+		      , a.user_no
+		      , address_name
+		      , phone_group
+		      , address_phone
+		      , fax
+		      , address_email
+		      , company_name
+		      , dept_title
+		      , job_title
+		      , address_Group
+		      , address
+		      , company_url
+		      , company_phone
+		      , birthday
+		      , memo
+		      ,group_name
+		      ,(SELECT COUNT(*) FROM liked_address W WHERE user_no= 21020101 AND address_no = message_no ) AS likeCount
+		 from address la
+         join liked_address a on (message_no = address_no)
+		 join address_group ag using(group_no)
+		 where a.user_no = #{userNo}
+		   and address_status = 'Y'
+		 <if test='contactInput != ""'>
+          	and
+	            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+	            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+	            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+	            )
+         </if>
+	 	<if test="data != null and data !=''">ORDER BY
+               <choose>
+                  <when test="data eq 'name'">address_name</when>
+                  <when test="data eq 'job_title'">job_title</when>
+                  <otherwise>dept_title</otherwise>
+               </choose>
+               <choose>
+                  <when test="sort eq 'desc'">DESC</when>
+                  <otherwise>ASC</otherwise>
+               </choose>
+          </if>
+	
+	</select>
+	
+	
+	<insert id="insertLikeAddress">
+		
+			insert 
+			  into liked_address
+			   	 ( 
+			   	    user_no
+			      , category 
+			      , message_no 
+			      )
+			values 
+				(  
+				  #{userNo}
+				 , '개인' 
+				 , #{addressNo} 
+				 )
+
+	</insert>
+	
+	<delete id="deleteLikeAddress">
+			  delete
+	            from liked_address
+	           where user_no = #{userNo}
+			     and message_no = #{addressNo}
+		
+	
+	</delete>
+	
+	
+	
 	
 	<insert id="insertAddress">
 		insert 
@@ -210,6 +385,7 @@
 			 join address_group ag using(group_no)
 			 where a.user_no = #{userNo}
 			   and address_no = #{addressNo}
+			 
 	
 	</select>
 	
@@ -239,4 +415,126 @@
 	</update>
 	
 	
+		<update id="deleteAddress">
+	
+		update
+		       address
+		   set ADDRESS_STATUS = 'N'
+		 where user_no = #{userNo}
+		   and address_no = #{addressNo}
+	
+		</update>
+		
+		
+		<update id="chkDelete">
+	
+			update
+			       address
+			   set ADDRESS_STATUS = 'N'
+			 where user_no = #{userNo}
+			   and <foreach item="no" index="index" collection="valueArr" open="address_no in ("  separator="," close=")"> 
+
+					#{no}
+					
+					</foreach>
+		
+		</update>
+		
+		<select id="deleteListCount" resultType="_int">
+			select
+					count(*)
+			  from address
+			 where user_no = #{userNo}
+	           and address_status = 'N'
+             <if test='contactInput != ""'>
+        		and
+	            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+	            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+	            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+	            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+	            )
+        	 </if>
+		
+		</select>
+	
+		<select id="deleteAddressList" resultMap="addressResult">
+			select
+			        address_no
+			      , group_no
+			      , a.user_no
+			      , address_name
+			      , phone_group
+			      , address_phone
+			      , fax
+			      , address_email
+			      , company_name
+			      , dept_title
+			      , job_title
+			      , address_Group
+			      , address
+			      , company_url
+			      , company_phone
+			      , birthday
+			      , memo
+			      , group_name
+			 from address a
+              join address_group ag using(group_no)
+			 where a.user_no = #{userNo}
+			   and address_status = 'N'
+			  <if test='contactInput != ""'>
+		          	and
+		            (upper(address_name) like '%'||upper(#{contactInput})||'%'
+		            or upper(dept_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(job_title) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_phone) like '%'||upper(#{contactInput})||'%'
+		            or upper(address_email) like '%'||upper(#{contactInput})||'%'
+		            or upper(company_name) like '%'||upper(#{contactInput})||'%'
+		            )
+       		  </if>
+	 	<if test="data != null and data !=''">ORDER BY
+               <choose>
+                  <when test="data eq 'name'">address_name</when>
+                  <when test="data eq 'job_title'">job_title</when>
+                  <otherwise>dept_title</otherwise>
+               </choose>
+               <choose>
+                  <when test="sort eq 'desc'">DESC</when>
+                  <otherwise>ASC</otherwise>
+               </choose>
+          </if>
+		</select>
+		
+		
+		
+		
+		<update id="restoreAddress">
+	
+			update
+			       address
+			   set ADDRESS_STATUS = 'Y'
+			 where user_no = #{userNo}
+			   and <foreach item="no" index="index" collection="valueArr" open="address_no in ("  separator="," close=")"> 
+
+					#{no}
+					
+					</foreach>
+		
+		</update>
+		
+		
+		<delete id="foreverdelete">
+		
+			delete
+	           from address 
+	           where user_no = #{userNo}
+			   and <foreach item="no" index="index" collection="valueArr" open="address_no in ("  separator="," close=")"> 
+
+					#{no}
+					
+					</foreach>
+		
+		
+		</delete>
 </mapper>

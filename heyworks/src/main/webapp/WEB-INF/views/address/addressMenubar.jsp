@@ -105,7 +105,7 @@ a:hover{
     display: inline-block;
 }
 
-#adgroup a{
+.groupDetail a{
     color: black;
 }
 </style>
@@ -139,8 +139,16 @@ a:hover{
         <button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#groupadd"> <i class="fas fa-folder-plus"> 그룹추가</i></button>
         <br><br>
 
-        <i class="fas fa-star" style="margin-left: 15px; color: rgb(240, 240, 36);"><a href="" style="color: black; font-size: 13.5px;"> 즐겨찾는주소록</a></i>
-        <br>
+
+        <div class="addressgroup">
+            <div class="group" style="width: 110px;"><i class="fas fa-star" style="color: rgb(240, 240, 36);"></i>즐겨찾는주소록</div>
+            <ul class="groupDetail" style="list-style-type: none; height: 100%;">
+                <li><a href="likeAddress.ad"><i class="far fa-folder"> 개인주소록</i></a></li><br>
+                <li><a href=""><i class="far fa-folder"> 사내주소록</i></a></li><br>
+            </ul>
+         </div>
+        
+      
 
             <div class="addressgroup">
             <!-- 그룹생성에따라 만들어지게 -->
@@ -155,7 +163,7 @@ a:hover{
             <div class="addressgroup">
                 <div class="group">사내주소록</div>
                 <div class="groupDetail"><a href=""><i class="far fa-address-book"> 전체</i></a> </div>
-                <ul class="groupDetail" id="adgroup" style="list-style-type: none; height: 100%;">
+                <ul class="groupDetail" id="contanctGroup" style="list-style-type: none; height: 100%;">
                 	<li><a href=""><i class="far fa-folder"> 개발팀</i></a></li><br>
                     <li><a href=""><i class="far fa-folder"> 인사팀</i></a></li><br>
                     <li><a href=""><i class="far fa-folder"> 회계팀</i></a></li>
@@ -321,7 +329,7 @@ a:hover{
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer" >
-                            <button type="reset" class="btn btn-secondary" >취소</button>
+                            <button type="reset" class="btn btn-secondary" data-dismiss="modal" >취소</button>
                             <button type="submit" class="btn btn-primary" style="margin-right: 80px;">저장</button>
                             
                         </div>
@@ -348,7 +356,7 @@ a:hover{
 					<span style="font-size: 15px; font-weight: bolder;">주소록 그룹
 						추가</span>
 
-					<button type="button" class="close" >&times;</button>
+					<button type="button" class="close" data-dismiss="modal" >&times;</button>
 				</div>
 
 				<!-- Modal body -->
@@ -363,7 +371,7 @@ a:hover{
 
 					<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="reset" class="btn btn-secondary" >취소</button>
+						<button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
 						<button type="submit" class="btn btn-primary"  style="margin-right: 80px;">저장</button>
 					</div>
 				</form>

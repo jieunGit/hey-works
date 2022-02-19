@@ -164,7 +164,7 @@
                 
                 <li>
                 	<div id="addressbook">
-               		 <a href="personAdList.ad"><img src="resources/images/addressbook.png"></a>
+               		 <a href="likeAddress.ad"><img src="resources/images/addressbook.png"></a>
                     </div>
                 </li>
                 <li><a href="list.organ">

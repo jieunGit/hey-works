@@ -80,9 +80,6 @@
 	color: black;
 	font-size: 13px;
 }
-
-  #pagingArea{width:fit-content;margin:auto;}
-
 </style>
 </head>
 <body>
@@ -96,10 +93,8 @@
 			<br>
 			<!-- 제목영역 -->
 			<div id="toparea">
-			
-				<span>${list[1].groupName}</span>
-			
-				<span style="font-size: 11px; color: grey;"> in 개인주소록 전체 ${listCount}개</span>
+				<span> 즐겨찾는 개인주소록</span>
+				<span style="font-size: 11px; color: grey;"> in 개인주소록 2개</span>
 			</div>
 			<br>
 
@@ -115,61 +110,91 @@
 				</section>
 			</div>
 			
-			<!-- 검색영역 -->
-			<div class="search-box">
-				<i class="fa-solid fa-magnifying-glass"></i>
-				<input type="text" class="form-control" placeholder="Search…">
-			</div>
+				<!-- 검색영역 --> 
+				<form name="searchContacts" action="groupAdList.ad" method="post">
+					<div class="search-box">
+						<input type="text" class="form-control" placeholder="Search…" id="simpleContactSearch" name="contactInput">
+						<button type="submit" style="border: none; background: none;"><i class="fa-solid fa-magnifying-glass" id="simpleContactbtn" ></i></button>
+						<c:forEach var="a" items="${ list }" begin="0" end="0">
+							<input type="hidden" id="groupNoTag" value="${a.groupNo}" name="gNo">
+						</c:forEach>
+					</div>
+				</form>
 			
 			<!-- 테이블영역 정렬기능구현! -->
 			<div class="container" style="width: 900px;">
 				
 				<table class="table addresstable">
-				<thead>
-					<tr>
-						<th width=10px;></th>
-						<th width=10px; ><input type="checkbox"></th>
-						<th width=80px;>이름</th>
-						<th width=120px;>전화번호</th>
-						<th width=150px;>이메일</th>
-						<th width=100px;>회사명</th>
-						<th width=100px;>부서</th>
-						<th width=70px;>직위</th>
-						<th width=70px;>그룹</th>
-						<th></th>
-					</tr>
-				</thead>
+					<thead>
+						<tr>
+							<th style="width:10px;"></th>
+							<th width=10px; ><input type="checkbox" id="chkAll" name="chkAll"></th>
+							<th width=80px;>
+								<span class="title_sort">이름</span>
+								<span class="data">name</span>
+								<span id="nameicon" style="cursor: pointer;"><i class="fa fa-sort"></i></span>
+								<span class="sort">${sort}</span>
+							</th>
+							<th width=130px;>전화번호</th>
+							<th width=150px;>이메일</th>
+							<th width=100px;>회사명</th>
+							<th width=80px;>
+								<span class="title_sort">부서<ins class="ic"></ins></span>
+								<span class="data">dept_title</span>
+								<span id="depticon" style="cursor: pointer;"><i class="fa fa-sort"></i></span>
+								<span class="sort">${sort}</span>
+							</th>
+							<th width=70px;>
+								<span class="title_sort">직위<ins class="ic"></ins></span>
+								<span class="data">job_title</span>
+								<span id="positionicon" style="cursor: pointer;"><i class="fa fa-sort"></i></span>
+								<span class="sort">${sort}</span>
+							</th>
+							<th width=70px;>그룹</th>
+							<th></th>
+						</tr>
+					</thead>
 				<tbody>
-				
-				<c:forEach var="a" items="${ list }">
 					<tr>
 						<!-- 즐겨찾기 삭제 -->
 						<td><a href=""><i class="fas fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td>
 						<!-- <td><a href=""><i class="fa-regular fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td> -->
 						
-						
-						<td><input type="checkbox"></td>
-						<td>${a.addressName }</td>
-						<td>${a.addressPhone }</td>
-						<td>${a.addressEmail }</td>
-						<td>${a.companyName }</td>
-						<td>${a.deptTitle }</td>
-						<td>${a.jobTitle }</td>
-						<td>${a.groupName }</td>
+						<td><input type="checkbox" id="chk" name="chk" value="${a.addressNo}"></td>
+						<td>김부장</td>
+						<td>010-1111-2222</td>
+						<td>kkkk@naver.com</td>
+						<td>카카오</td>
+						<td>개발팀</td>
+						<td>부장</td>
+						<td>거래처</td>
 						<td>
 								<!-- 상세보기 -->
-								<a href=""  data-toggle="modal" data-target="#addressDetail"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
+								<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
 								<!-- 수정하기 -->
 								<a href=""> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp;
 								<!-- 삭제하기 -->
-								<a href=""> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+								<a href="" data-toggle="modal" data-target="#deleteModal"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
 						</td>
 					</tr>
-					
-				</c:forEach>	
-					
-					
-				
+					<tr>
+						<td><a href=""><i class="fas fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a></td>
+						<td><input type="checkbox"></td>
+						<td>김부장</td>
+						<td>010-1111-2222</td>
+						<td>kkkk@naver.com</td>
+						<td>카카오</td>
+						<td>개발팀</td>
+						<td>부장</td>
+						<td>거래처</td>
+						<td>	
+							<!-- 상세보기 -->
+							<a href="" data-toggle="modal" data-target="#addressDetail"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
+							<!-- 수정하기 -->
+							<a href=""  data-toggle="modal" data-target="#addressUpdate"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp;
+							<!-- 삭제하기 -->
+							<a href=""> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+					</tr>
 					<tr>
 						<td></td>
 						<td></td>
@@ -195,35 +220,7 @@
 					
 			</div>
 
-			<div id="pagingArea">
-                <ul class="pagination pagination-sm">
-                	
-                	<c:choose>
-                		<c:when test="${ pi.currentPage eq 1 }">
-                    		<li class="page-item disabled"><a class="page-link " href="#"><i class="fa-solid fa-angles-left"></i> </a></li>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="groupAdList.ad?gNo=${ pi.currentPage-1 }"><i class="fa-solid fa-angles-right"></i></a></li>
-                    	</c:otherwise>
-                    </c:choose>
-                    
-                    
-                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<li class="page-item"><a class="page-link" href="groupAdList.ad?gNo=${ p }">${ p }</a></li>
-                    </c:forEach>
-                    
-                    
-                    <c:choose>
-                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
-                    		<li class="page-item disabled"><a class="page-link" href="#"><i class="fa-solid fa-angles-right"></i></a></li>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="groupAdList.ad?gNo=${ pi.currentPage+1 }"><i class="fa-solid fa-angles-right"></i></a></li>
-                    	</c:otherwise>
-                    </c:choose>
-                    
-                </ul>
-            </div>
+			
 				
 			
 			
@@ -310,7 +307,7 @@
 									<span><input name="positionName" type="text" class="company form-control" placeholder="직위" readonly></span></td>
 								</tr>
 								
-								<tr>
+								<tr class="line">
 									<th><span>그룹</span></th>
 									<td>
 										<select name="group" id="group"  class="form-control" readonly>

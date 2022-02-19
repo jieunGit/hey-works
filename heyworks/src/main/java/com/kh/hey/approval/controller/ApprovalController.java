@@ -176,12 +176,6 @@ public class ApprovalController {
 		
 	}
 	
-	
-	// 기안자 기준 참조/열람 끝난 문서
-	
-	
-	
-	
 	// 상세보기
 	@RequestMapping("detail.el")
 	public ModelAndView selectApproval(String ano, HttpSession session, ModelAndView mv) {
@@ -189,7 +183,7 @@ public class ApprovalController {
 		String formNo = ano.substring(3,5); // 양식 조건비교할 값 담기
 		
 		Approval ap = aService.selectApproval(ano); // 제목~결재자까지 알아오기
-		
+
 		if(ap != null) {
 			
 			mv.addObject("ap", ap);	
@@ -238,10 +232,6 @@ public class ApprovalController {
 		ArrayList<Approval> confirmList = ap.getConfirmList();
 		ArrayList<Approval> itemList = ap.getItemList();
 		
-		System.out.println("controller : " + ap);
-		System.out.println("controller : " + confirmList);
-		
-
 		// 첨부파일 여부 확인하기
 		if(!upfile.getOriginalFilename().contentEquals("")) {
 			
@@ -383,7 +373,7 @@ public class ApprovalController {
 		
 	}
 	
-	/*수정하기*/	
+	/*수정하기 폼*/	
 	@RequestMapping("updateForm.el")
 	public ModelAndView updateFormApproval(ModelAndView mv, String ano) {
 		
@@ -430,7 +420,105 @@ public class ApprovalController {
 	} // 수정하기 폼으로 연결
 	
 	// 수정하기
-	
+	@RequestMapping("update.el")
+	public ModelAndView updateApproval(ModelAndView mv, Approval ap, MultipartFile reupfile, HttpSession session) {
+		
+		ArrayList<Approval> confirmList = ap.getConfirmList();
+		ArrayList<Approval> itemList = ap.getItemList();
+		String ano = ap.getApprovalNo();
+
+		String formNo = ap.getApprovalNo().substring(3,5); // 양식 조건비교할 값 담기
+		
+		int bdUpdate = 0;
+		int ebUpdate = 0; 
+		int ceUpdate = 0;
+		int rcUpdate = 0;
+		int erUpdate = 0;
+		int reConfirm = 0;
+		int listdelete = 0;
+		int insertitem = 0;
+		
+		// 새로운 첨부파일 있을경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			
+			if(ap.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(ap.getFilePath())).delete();
+			} // 기존파일 삭제
+			
+			String changeName = saveFile(reupfile, session);
+			ap.setOriginName(reupfile.getOriginalFilename());
+			ap.setFilePath("resources/uploadFiles/approval/" + changeName);
+			
+		}
+
+		int updateAp = aService.updateApproval(ap); // 공통테이블에 업데이트
+
+		if(updateAp > 0) {
+
+			if(formNo.equals("BD")) { // 업무기안서 상세
+				
+				bdUpdate = aService.updateBusinessDraft(ap);
+
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setApprovalNo(ano);
+				}
+			}else if(formNo.equals("EB")) { // 비품구매 
+				
+				ebUpdate = aService.updateEquipmentBuy(ap); // 비품구매 수정
+				listdelete = aService.deleteItemList(ano); // 기존 아이템들 삭제
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setApprovalNo(ano);
+				}
+				
+				for(int i=0; i<itemList.size(); i++){
+					itemList.get(i).setApprovalNo(ano);
+				}
+				
+				insertitem = aService.insertItemList(itemList); // 새로운 아이템 추가
+				
+			}else if(formNo.equals("CE")) { // 증명서 신청 
+				
+				ceUpdate = aService.updateCertificate(ap);
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setApprovalNo(ano);
+				}
+				
+			}else if(formNo.equals("RC")) { // 채용요청서 
+				
+				rcUpdate = aService.updateRecruiment(ap);
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setApprovalNo(ano);
+				}
+				
+			}else { // 일반품의서 상세
+				
+				erUpdate = aService.updateExpenseReport(ap);
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setApprovalNo(ano);
+				}
+				
+			}
+			
+			aService.deleteConfirm(ano); // 기존 결재자 삭제
+			reConfirm = aService.insertConfirm(confirmList); // 결재자 재 등록
+			
+		}
+
+		if(reConfirm*bdUpdate > 0 
+		   || reConfirm*ebUpdate*insertitem > 0
+		   || ceUpdate*reConfirm > 0
+		   || rcUpdate*reConfirm > 0
+		   || erUpdate*reConfirm > 0) {
+			session.setAttribute("alertMsg", "문서 수정에 성공했습니다.");
+		}else {
+			session.setAttribute("alertMsg", "문서 수정실패!");
+		}
+
+		mv.setViewName("redirect:onlist.el?status=D");
+		return mv;
+		
+	} // 수정하기 끝
 	
 	
 	
@@ -467,9 +555,6 @@ public class ApprovalController {
 		map.put("ano", ano);
 		map.put("userNo", userNo);
 		map.put("confirmStatus", confirmStatus);
-		
-		System.out.println(confirmStatus);
-		
 		
 		// 결재자 순번 알아오기
 		int procedure = aService.selectConfirmProcedure(map);
@@ -514,8 +599,6 @@ public class ApprovalController {
 		map.put("userNo", userNo);
 		map.put("rejectReason", rejectReason);
 
-		System.out.println(rejectReason);
-		
 		int rejectResult = aService.updateConfirmReject(map);
 		int confirmTable = aService.updateConfirmApproval(map);
 		
@@ -564,12 +647,22 @@ public class ApprovalController {
 	
 	/*전자결재 관리자 파트*/
 	
-	@RequestMapping("deleteList.el")
-	public String deleteApprovalAdmin() {
+	@RequestMapping("deletelist.el")
+	public String deleteApprovalAdmin(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, HttpSession session) {
 		
+		int listCount = aService.selectDeleteListCount();
 		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+	
+		ArrayList<Approval> dltlist = aService.selectDeleteList(pi);
 		
-		return "approval/deleteApproval";
+		String deptCode = ((Employee)session.getAttribute("loginUser")).getDeptCode();
+
+		model.addAttribute("depi", pi);
+		model.addAttribute("dltlist", dltlist);
+		model.addAttribute("deptCode", deptCode);
+		
+		return "approval/adminDeleteList";
 		
 	}
 	

@@ -13,6 +13,10 @@
 		<result column="grade" property="grade" />
 		<result column="read_no" property="read" />
 		<result column="reference_no" property="reference" />
+		<result column="readNo" property="readNo" />
+		<result column="refNo" property="refNo" />
+		<result column="read_job" property="readJob" />
+		<result column="reference_job" property="referenceJob" />
 		<result column="create_date" property="createDate" />
 		<result column="status" property="status" />
 		<result column="origin_name" property="originName" />
@@ -228,7 +232,7 @@
 		   and reference_no = #{userNo}
 	</select>
 	
-	<!-- 업무기안서 상세보기 -->
+	<!-- 전자결재 상세보기 -->
 	<select id="selectApproval" resultMap="approvalResult">
 		select
 		       decode(form_no, 1, '업무기안서'
@@ -247,16 +251,28 @@
 		                       , 'Y', '결재완료(승인)'
 		                       , 'T', '임시저장') status
 		     , e2.user_name read_no
+             , read_no readNo
+             , decode(e2.job_code, 1, '사원'
+                                 , 2, '주임'
+                                 , 3, '대리'
+                                 , 4, '과장'
+                                 , 9, '대표이사') read_job
 		     , e3.user_name reference_no
+             , reference_no refNo
+             , decode(e3.job_code, 1, '사원'
+                                 , 2, '주임'
+                                 , 3, '대리'
+                                 , 4, '과장'
+                                 , 9, '대표이사') reference_job
 		     , elec_title
 		     , create_date
 		     , to_char(storage_year, 'YYYY-MM-DD') storage_year
 		     , origin_name
 		     , file_path
 		     , confirm_no confirmNo
-             , confirm_user confirmUser
+		     , confirm_user confirmUser
              , vac.job_code jobCode
-             , procedure_no procedureNo
+             , vac.procedure_no procedureNo
              , vac.status confirmStatus
              , reject_reason rejectReason
              , confirm_date confirmDate
@@ -397,7 +413,14 @@
 		  values
 		  (
 		    seq_cfno.nextval
+		  <choose>
+		  <when test="approvalNo != null and !approvalNo.equals('')">
+		  , #{approvalNo}
+		  </when>
+		  <otherwise>
 		  , #{formNoName}||lpad(seq_elno.currval,5,0)
+		  </otherwise>
+		  </choose>
 		  , #{confirmNo}
 		  , #{procedureNo}
 		  )
@@ -526,7 +549,14 @@
 		  values
 		  (
 		    'ITEM-'||lpad(seq_ilno.nextval,3,0)
+		  <choose>
+		  <when test="approvalNo != null and !approvalNo.equals('')">
+		  , #{approvalNo}
+		  </when>
+		  <otherwise>
 		  , 'SA-EB-'||lpad(seq_elno.currval,5,0)
+		  </otherwise>
+		  </choose>
 		  , #{itemSeq}
 		  , #{itemName}
 		  , #{itemSize}
@@ -606,8 +636,128 @@
            and confirm_user = #{userNo}
 	</update>
 	
+	<!-- 공통테이블 수정하기 -->
+	<update id="updateApproval">
+		update
+		       elec_approval
+		   set elec_title = #{approvalTitle}
+		     , emc_yn = #{emergancy}
+		     , storage_year = add_months(sysdate, #{storageYear})
+		     , grade = #{grade}
+		     , read_no = #{read}
+		     , reference_no = #{reference}
+		     , create_date = sysdate
+		     , origin_name = #{originName}
+		     , file_path = #{filePath}
+		 where elec_appr_no = #{approvalNo}
+	</update>
+	
+	<!-- 결재자 전체삭제 -->
+	<delete id="deleteConfirm">
+		delete
+		  from confirm
+		 where elec_appr_no = #{approvalNo}
+	</delete>
+	
+	<!-- 업무기안서 수정 -->
+	<update id="updateBusinessDraft">
+		update
+			   business_draft
+		   set content = #{businessDraftContent}
+		 where elec_appr_no = #{approvalNo}
+	</update>
+	
+	<!-- 비품구매 수정 -->
+	<update id="updateEquipmentBuy">
+		update
+			   equipment_buy
+		   set buy_req_team = #{requestTeam}
+		     , limit_date = #{limitDate}
+		     , pay = #{pay}
+		     , purpose = #{purpose}
+		     , total_pay = #{totalPay}
+		 where elec_appr_no = #{approvalNo}
+	</update>
+	
+	<!-- 기존 아이템 삭제 -->
+	<delete id="deleteItemList">
+		delete
+		  from item_list
+		 where elec_appr_no = #{approvalNo}
+	</delete>
+	
+	<!-- 증명서 수정 -->
+	<update id="updateCertificate">
+		update
+			   certificate
+		   set certificate_type = #{certificateType}
+		     , use = #{use}
+		     , where_submit = #{whereSubmit}
+		     , submit_date = #{submitDate}
+		     , content = #{certificateContent}
+		 where elec_appr_no = #{approvalNo}
+	</update>
+	
+	<!-- 채용요청서 수정 -->
+	<update id="updateRecruiment">
+		update
+			   recruiment
+		   set dept = #{recruimentDept}
+		     , employee = #{employee}
+		     , work_experience = #{workExperience}
+		     , offer_date = #{offerDate}
+		     , qualification = #{qualification}
+		     , position = #{position}
+		     , content = #{recruimentContent}
+		 where elec_appr_no = #{approvalNo}
+	</update>
+	
+	<!-- 일반품의서 수정 -->
+	<update id="updateExpenseReport">
+		update
+			   expense_report
+		   set imposition = #{imposition}
+		     , content = #{expenseReportContent}
+		 where elec_appr_no = #{approvalNo}
+	</update>
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 관리자용 삭제된 문서 -->
+	<select id="selectDeleteListCount" resultType="_int">
+		select
+		       count(*) count
+		  from elec_approval
+		 where status = 'N'
+	</select>
+	
+	<select id="selectDeleteList" resultMap="approvalResult">
+		select
+		       elec_appr_no
+		     , user_name writer_name
+		     , decode(form_no, 1, '업무기안서'
+			                   , 2, '비품구매품의서'
+			                   , 3, '증명서신청'
+			                   , 4, '채용요청서'
+			                   , 5, '일반품의서') form_no
+		     , write_dept
+		     , elec_title
+		     , create_date
+		  from elec_approval ea
+		  join employee on(writer_no = user_no)
+		 where ea.status = 'N'
+	</select>
 	
 	
 	

@@ -149,8 +149,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public int insertItemList(ArrayList<Approval> itemList) {
 		return aDao.insertItemList(sqlSession, itemList);
-	}
-
+	} // 작성하기 끝
+	
+	// 삭제하기(기안취소)
 	@Override
 	public int deleteApproval(String ano) {
 		
@@ -158,6 +159,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 	}
 
+	// 결재 열람참조자 목록(열람참조자 기준)
 	@Override
 	public int selectReadNrefListCount(String userNo) {
 		return aDao.selectReadNrefListCount(sqlSession, userNo);
@@ -167,7 +169,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ArrayList<Approval> selectReadReference(PageInfo rrpi, String userNo) {
 		return aDao.selectReadReference(sqlSession, rrpi, userNo);
 	}
-
+	
+	// 승인하기
 	@Override
 	public int selectConfirmProcedure(HashMap<String, String> map) {
 		return aDao.selectConfirmProcedure(sqlSession, map);
@@ -197,6 +200,58 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public int updateConfirmReject(HashMap<String, String> map) {
 		return aDao.updateConfirmReject(sqlSession, map);
+	}
+
+	@Override
+	public int selectDeleteListCount() {
+		return aDao.selectDeleteListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Approval> selectDeleteList(PageInfo pi) {
+		return aDao.selectDeleteList(sqlSession, pi);
+	}
+	
+	// 수정하기-----------------------------------------------------
+
+	@Override
+	public int updateApproval(Approval ap) {
+		return aDao.updateApproval(sqlSession, ap);
+	}
+
+	@Override
+	public int deleteConfirm(String ano) {
+		return aDao.deleteConfirm(sqlSession, ano);
+	}
+
+	@Override
+	public int updateBusinessDraft(Approval ap) {
+		return aDao.updateBusinessDraft(sqlSession, ap);
+	}
+
+	@Override
+	public int updateEquipmentBuy(Approval ap) {
+		return aDao.updateEquipmentBuy(sqlSession, ap);
+	}
+
+	@Override
+	public int deleteItemList(String ano) {
+		return aDao.deleteItemList(sqlSession, ano);
+	}
+
+	@Override
+	public int updateCertificate(Approval ap) {
+		return aDao.updateCertificate(sqlSession, ap);
+	}
+
+	@Override
+	public int updateRecruiment(Approval ap) {
+		return aDao.updateRecruiment(sqlSession, ap);
+	}
+
+	@Override
+	public int updateExpenseReport(Approval ap) {
+		return aDao.updateExpenseReport(sqlSession, ap);
 	}
 
 	

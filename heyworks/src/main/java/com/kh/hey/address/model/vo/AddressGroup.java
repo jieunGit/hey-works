@@ -17,5 +17,6 @@ public class AddressGroup {
 	private String userNo;
 	private String groupName;
 	private String groupStatus;
+	
 
 }
