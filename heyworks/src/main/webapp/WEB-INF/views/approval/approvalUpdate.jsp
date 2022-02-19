@@ -44,6 +44,7 @@
         background-color: rgba(224, 224, 224, 0.34);
         line-height: 60px;
     }
+
      /*결재 사원 조회*/
     summary{font-weight: 700;}
     #confirm-body *{float: left;}
@@ -87,13 +88,24 @@
         margin-bottom: 10px;
     }
     #nameCheck{width: 260px;}
+    #nameCheck>*{float:left;}
     #nameCheck>p{
-        width: 100%;
+        width: 200px;
         height: 40px;
         margin-top: 5px;
         border: 1px solid lightgray;
         line-height: 40px;
         padding-left: 10px;
+    }
+    #nameCheck>button{
+    	widht:40px;
+    	height:25px;
+    	border-radius:100%;
+    	border:1px solid gray;
+    	text-align:center;
+    	margin-top:10px;
+    	margin-left:10px;
+    	line-height:10px;
     }
     .table-bordered input, .table-bordered select{
     	width: 100%;
@@ -106,6 +118,11 @@
     #line-list button{
         border: none; 
         background-color: white;
+    }
+    #form-type>input{
+    	width:100%;
+    	height:100%;
+    	text-align:center;
     }
 </style>
 </head>
@@ -120,23 +137,36 @@
 
         <div style="width: 100%;"></div>
         <br><br>
-
+	<form action="update.el" method="post" enctype="multipart/form-data">
         <div id="btns">
             <button type="button" class="btn btn-sm" onclick="history.back();">뒤로가기</button>
-            <button type="button" class="btn btn-sm text-primary" onclick="postSubmit(1)">수정완료</button>
+            <button type="submit" class="btn btn-sm text-primary">수정완료</button>
         </div>
 
         <hr>
 		
-		<form action="">
-		
-			<div id="form-type">업무기안서</div>
+			<div id="form-type"><input type="text" value="${ap.formNo}" name="formNo" readonly></div>
+            <br>
+            <div class="custom-control custom-switch" align="right">
+            	보존연한 : <input type="text" value="${ap.storageYear}" readonly>
+            	<select name="storageYear">
+                    <option value="12">1년</option>
+                    <option value="36">3년</option>
+                    <option value="60">5년</option>
+                </select>
+            	긴급여부 : 
+                <select name="emergancy" id="emergancy">
+                    <option value="N">선택안함</option>
+                    <option value="Y">긴급</option>
+                </select>
+                <input type="hidden" value="${ap.emergancy}">
+            </div>
             <br>
 
             <table align="center" class="table-bordered">
                 <tr>
                     <th colspan="2" width="200">문서번호</th>
-                    <td colspan="3" width="250">${ap.approvalNo}</td>
+                    <td colspan="3" width="250"><input type="text" name="approvalNo" style="border: none;" value="${ap.approvalNo}" required></td>
                     <th colspan="3" width="225">기안부서</th>
                     <td colspan="3" width="225">${ap.writeDept}</td>
                 </tr>
@@ -148,31 +178,36 @@
                             <option value="A">A등급</option>
                             <option value="S">S등급</option>
                         </select>
+                        <input type="hidden" id="gradeSample" value="${ap.grade}">
                     </td>
                     <th colspan="3">작성자</th>
                     <td colspan="3">${ap.userNo}</td>
                 </tr>
                 <tr>
                     <th colspan="2">참 조</th>
-                    <td colspan="3" style="border-right: none;">
-                        <input type="text" name="" style="border: none;" value="${ap.reference}" readonly required>
+                    <td colspan="3" style="border-right: none;" id="ref-line">
+                        <input type="text" style="border: none;" value="${ap.reference}&nbsp;${ap.referenceJob}" readonly id="reference">
+                        <input type="hidden" style="border: none;" value="${ap.refNo}">
                     </td>
                     <th colspan="3">열 람</th>
-                    <td colspan="3" style="border-right: none;">
-                        <input type="text" name="" style="border: none;" value="${ap.read}" required>
+                    <td colspan="3" style="border-right: none;" id="read-line">
+                        <input type="text" style="border: none;" value="${ap.read}&nbsp;${ap.readJob}" id="read">
+                        <input type="hidden" style="border: none;" value="${ap.readNo}">
                     </td>
                 </tr>
 
                 <!-- 결재라인 -->
                 <tr id="line-list">
-                    <th>결재라인</th>
-                    <td width="25" style="border-left: none;">
-                        <button type="button" data-target="#confirm-line" data-toggle="modal" >
+                    <th class="text-danger">*결재라인</th>
+                    <th width="25" style="border-left: none;">
+                        <button type="button" data-target="#confirm-line" data-toggle="modal">
                             <img src="resources/images/875068.png">
                         </button>
-                    </td>
-                    <c:forEach var="ce" items="${ap.confirmList}">
-                    	<td colspan="3"><input name="" value="${ce.confirmUser}&nbsp;${ce.jobCode}" readonly></td>
+                    </th>
+                    <c:forEach var="ce" items="${ap.confirmList}" varStatus="i">
+                    	<td colspan="3" id="line${i.count}"><input value="${ce.confirmUser}&nbsp;${ce.jobCode}" name="confirmList[${i.count}].confirmUser" readonly>
+                    	<input type="hidden" value="${ce.confirmNo}" name="confirmList[${i.count}].confirmNo" readonly>
+                    	<input type="hidden" value="${ce.procedureNo}" name="confirmList[${i.count}].procedureNo" readonly></td>
                     </c:forEach>
                 </tr>
 
@@ -180,15 +215,15 @@
                 <c:if test="${!empty ce}">
                 <tr>
                     <th colspan="2">증명서종류</th>
-                    <td colspan="3"><input type="text" class="form-control" name="" value="${ce.certificateType}"></td>
+                    <td colspan="3"><input type="text" class="form-control" name="certificateType" value="${ce.certificateType}"></td>
                     <th colspan="3">용 도</th>
-                    <td colspan="3"><input type="text" class="form-control" name="" value="${ce.use}"></td>
+                    <td colspan="3"><input type="text" class="form-control" name="use" value="${ce.use}"></td>
                 </tr>
                 <tr>
                     <th colspan="2">제출처</th>
-                    <td colspan="3"><input type="text" class="form-control" name="" value="${ce.whereSubmit}"></td>
+                    <td colspan="3"><input type="text" class="form-control" name="whereSubmit" value="${ce.whereSubmit}"></td>
                     <th colspan="3">제출일</th>
-                    <td colspan="3"><input type="date" class="form-control" name="" value="${ce.submitDate}"></td>
+                    <td colspan="3"><input type="date" class="form-control" name="submitDate" value="${ce.submitDate}"></td>
                 </tr>
                 </c:if>
 
@@ -196,19 +231,19 @@
                 <c:if test="${!empty rc}">
                 <tr>
                     <th colspan="2">부 서</th>
-                    <td colspan="3"><input type="text" class="form-control" name="" value="${rc.recruimentDept}"></td>
+                    <td colspan="3"><input type="text" class="form-control" name="recruimentDept" value="${rc.recruimentDept}"></td>
                     <th>인 원</th>
-                    <td colspan="2"><input type="text" class="form-control" name="" value="${rc.employee}"></td>
+                    <td colspan="2"><input type="text" class="form-control" name="employee" value="${rc.employee}"></td>
                     <th>실무경력(년)</th>
-                    <td colspan="2"><input type="text" class="form-control" name="" value="${rc.workExperience}"></td>
+                    <td colspan="2"><input type="text" class="form-control" name="workExperience" value="${rc.workExperience}"></td>
                 </tr>
                 <tr>
                     <th colspan="2">채용희망일</th>
-                    <td colspan="3"><input type="date" class="form-control" name="" value="${rc.offerDate}"></td>
+                    <td colspan="3"><input type="date" class="form-control" name="offerDate" value="${rc.offerDate}"></td>
                     <th>자격사항</th>
-                    <td colspan="2"><input type="text" class="form-control" name="" value="${rc.qualification}"></td>
+                    <td colspan="2"><input type="text" class="form-control" name="qualification" value="${rc.qualification}"></td>
                     <th>직위</th>
-                    <td colspan="2"><input type="text" class="form-control" name="" value="${rc.position}"></td>
+                    <td colspan="2"><input type="text" class="form-control" name="position" value="${rc.position}"></td>
                 </tr>
                 </c:if>
             
@@ -216,7 +251,7 @@
                 <c:if test="${!empty er}">
                 <tr>
                     <th>시행날짜</th>
-                    <td colspan="10"><input type="date" class="form-control" name="" value="${er.imposition}"></td>
+                    <td colspan="10"><input type="date" class="form-control" name="imposition" value="${er.imposition}"></td>
                 </tr>
                 </c:if>
 
@@ -225,34 +260,36 @@
                 <tr>
                     <th>구매요청부서</th>
                     <td colspan="4">
-                        <select name="deptCode" id="">
-                            <option value="1">개발팀</option>
-                            <option value="2">영업팀</option>
-                            <option value="3">인사팀</option>
-                            <option value="4">회계팀</option>
-                            <option value="5">경영팀</option>
+                        <select name="requestTeam" id="requestTeam">
+                            <option value="개발팀">개발팀</option>
+                            <option value="영업팀">영업팀</option>
+                            <option value="인사팀">인사팀</option>
+                            <option value="회계팀">회계팀</option>
+                            <option value="경영팀">경영팀</option>
                         </select>
+                        <input type="hidden" id="requestTeamSample" value="${eb.requestTeam}">
                     </td>
                     <th>납품요청기한</th>
-                    <td colspan="5"><input type="date" class="form-control" name="" value="${eb.limitDate}"></td>
+                    <td colspan="5"><input type="date" class="form-control" name="limitDate" value="${eb.limitDate}"></td>
                 </tr>
                 <tr>
                     <th>대금지불방법</th>
                     <td colspan="4">
-                        <select name="pay" id="">
+                        <select name="pay" id="pay">
                             <option value="법인카드">법인카드</option>
                             <option value="현금시재">현금시재</option>
                         </select>
+                        <input type="hidden" id="paySample" value="${eb.pay}">
                     </td>
                     <th>사용목적</th>
-                    <td colspan="5"><input type="text" class="form-control" name="" value="${eb.purpose}"></td>
+                    <td colspan="5"><input type="text" name="purpose" value="${eb.purpose}"></td>
                 </tr>
                 </c:if>
 
                 <!-- //////////////////////////////////////// -->
                 <tr>
                     <th>제 목</th>
-                    <td colspan="10"><input type="text" class="form-control" name="" value="${ap.approvalTitle}"></td>
+                    <td colspan="10"><input type="text" name="approvalTitle" value="${ap.approvalTitle}"></td>
                 </tr>
 
             </table>
@@ -262,25 +299,61 @@
 	            <div style="width: 100%;">
 	            	<c:choose>
 	            		<c:when test="${!empty bd}">
-			                <textarea name="" id="summernote">${bd.businessDraftContent}</textarea>
+			                <textarea name="businessDraftContent" id="summernote">${bd.businessDraftContent}</textarea>
 	            		</c:when>
 	            		<c:when test="${!empty ce}">
-	            			<textarea name="" id="summernote">${ce.certificateContent}</textarea>
+	            			<textarea name="certificateContent" id="summernote">${ce.certificateContent}</textarea>
 	            		</c:when>
 	            		<c:when test="${!empty rc}">
-	            			<textarea name="" id="summernote">${rc.recruimentContent}</textarea>
+	            			<textarea name="recruimentContent" id="summernote">${rc.recruimentContent}</textarea>
 	            		</c:when>
 	            		<c:otherwise>
-	            			<textarea name="" id="summernote">${er.expenseReportContent}</textarea>
+	            			<textarea name="expenseReportContent" id="summernote">${er.expenseReportContent}</textarea>
 	            		</c:otherwise>
 	                </c:choose>
 	            </div>
             </c:if>
             
             <script>
-		    	$(function(){
-		    		$("#grade option").each(function(){
-		    			if($(this).val() == ${ap.grade}){
+	            $(function(){  // 긴급
+		    		
+		    		var emergancy = $("#emergancy").val();
+		    		
+		    		$("#emergancy>option").each(function(){
+		    			if($(this).val() == emergancy){
+		    				$(this).attr("selected", true);
+		    			}
+		    		})
+		    	})
+		    	
+		    	$(function(){  // 등급
+		    		
+		    		var grade = $("#gradeSample").val();
+		    		
+		    		$("#grade>option").each(function(){
+		    			if($(this).val() == grade){
+		    				$(this).attr("selected", true);
+		    			}
+		    		})
+		    	})
+		    	
+		    	$(function(){  // 비품요청팀
+		    		
+		    		var request = $("#requestTeam").val();
+		    		
+		    		$("#requestTeam>option").each(function(){
+		    			if($(this).val() == request){
+		    				$(this).attr("selected", true);
+		    			}
+		    		})
+		    	})
+		    	
+		    	$(function(){  // 비품구매지급방법
+		    		
+		    		var pay = $("#paySample").val();
+		    		
+		    		$("#pay>option").each(function(){
+		    			if($(this).val() == pay){
 		    				$(this).attr("selected", true);
 		    			}
 		    		})
@@ -298,47 +371,56 @@
 
             <!-- 비품구매 내용 -->
             <c:if test="${!empty eb}">
-	            <table class="table-bordered">
-		            <tr>
-		                <th width="50">품 번</th>
-	                    <th width="250">품 명</th>
-	                    <th width="150">규 격</th>
-	                    <th width="50">수 량</th>
-	                    <th width="50">단 위</th>
-	                    <th width="150">금 액(원)</th>
-	                    <th width="200">비 고</th>
-		            </tr>
-			        <c:forEach var="it" items="${eb.itemList}">
+	            <table class="table-bordered" id="equipmentList">
+	            	<thead>
 			            <tr>
-			                <td>${it.itemSeq}</td>
-			                <td><input type="text" name="itemList[0].itemName" value="${it.itemName}"></td>
-			                <td><input type="text" name="itemList[0].itemSize" value="${it.itemSize}"></td>
-			                <td><input type="text" name="itemList[0].total" value="${it.total}"></td>
-			                <td><input type="text" name="itemList[0].unit" value="${it.unit}"></td>
-			                <td><input type="text" name="itemList[0].amount" value="${it.amount}"></td>
-			                <td><input type="text" name="itemList[0].note" value="${it.note}"></td>
+			                <th width="80">품 번<button type="button" class="btn btn-sm" onclick="addItem();">+</button></th>
+		                    <th width="220">품 명</th>
+		                    <th width="150">규 격</th>
+		                    <th width="50">수 량</th>
+		                    <th width="50">단 위</th>
+		                    <th width="150">금 액(원)</th>
+		                    <th width="200">비 고</th>
 			            </tr>
-			        </c:forEach>
-			        <tr>
-			        	<th colspan="6">총 금액</th>
-			        	<td>${eb.totalPay}</td>
-			        </tr>
+		            </thead>
+		            <tbody id="item-list">
+				        <c:forEach var="it" items="${eb.itemList}" varStatus="i">
+				            <tr>
+				                <td><input type="text" name="itemList[${i.count}].itemSeq" value="${it.itemSeq}" readonly class="itemSeq"></td>
+				                <td><input type="text" name="itemList[${i.count}].itemName" value="${it.itemName}"></td>
+				                <td><input type="text" name="itemList[${i.count}].itemSize" value="${it.itemSize}"></td>
+				                <td><input type="text" name="itemList[${i.count}].total" value="${it.total}"></td>
+				                <td><input type="text" name="itemList[${i.count}].unit" value="${it.unit}"></td>
+				                <td><input type="text" name="itemList[${i.count}].amount" value="${it.amount}"></td>
+				                <td><input type="text" name="itemList[${i.count}].note" value="${it.note}"></td>
+				            </tr>
+				        </c:forEach>
+			        </tbody>
 		        </table>
+		        <div style="width:100%;" align="right">총 금액 : <input type="text" name="totalPay" value="${eb.totalPay}"><button type="button" class="btn btn-sm" onclick="totalPay();">조회</button></div>
+		        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeList();">한 행 삭제하기</button>
+		        <br><br>
+		        <p class="text-danger" style="font-size:12px;">* 수정하신 후 추가버튼을 누르면 기존의 아이템으로 초기화 됩니다. 꼭 원하시는만큼 추가버튼을 누르고 수정해주세요.</p>
 			</c:if>
             <br><br>
 
             <div id="attachment-div">
                 &nbsp;&nbsp;
                 <img src="resources/images/124506.png" width="20px" height="20px">
-                <c:if test="${!empty ap.originName}">	
-	               	현재 업로드된 파일 : 
-	                <a href="${ap.filePath}" download="${ap.originName}">${ap.originName}</a>
-	               	<input type="hidden" name="originName" value="${ap.originName}">
-	               	<input type="hidden" name="filePath" value="${ap.filePath}">
-                </c:if>
-                <input type="file" name="upfile" class="form-control-file border" style="margin-top: 30px;">
-           		<p id="fileNotice">* 1개의 파일만 첨부할 수 있습니다</p>
+                <c:choose>
+                	<c:when test="${!empty ap.originName}">
+		               	현재 업로드된 파일 : 
+		                <a href="${ap.filePath}" download="${ap.originName}">${ap.originName}</a>
+		               	<input type="hidden" name="originName" value="${ap.originName}">
+		               	<input type="hidden" name="filePath" value="${ap.filePath}">
+                	</c:when>
+                	<c:otherwise>
+                		첨부파일 (0)개
+                	</c:otherwise>
+                </c:choose>
             </div>
+        	<input type="file" name="reupfile" class="form-control-file border" style="margin-top: 30px;">
+   			<p id="fileNotice" class="text-danger">* 1개의 파일만 첨부할 수 있습니다</p>
 		</form>
 		
 
@@ -392,26 +474,27 @@
 
                     <!-- 어느라인으로 보낼건지 -->
                     <div id="line">
-                        <button type="button" class="btn btn-sm" onclick="list(1);">열람</button>
+                        <button type="button" class="btn btn-sm" onclick="list(1);" id="readbtn">열람</button>
                         <button type="button" class="btn btn-sm" onclick="list(2);">참조</button>
                         <button type="button" class="btn btn-sm text-danger" onclick="list(3);">*결재1</button>
-                        <button type="button" class="btn btn-sm text-danger" onclick="list(4);">*결재2</button>
-                        <button type="button" class="btn btn-sm" onclick="list(5);">결재3</button>
+                        <button type="button" class="btn btn-sm" onclick="list(4);" id="sign2btn">결재2</button>
+                        <button type="button" class="btn btn-sm" onclick="list(5);" id="sign3btn">결재3</button>
                     </div>
 
                     <!-- 화면에 뿌려주기 -->
                     <div id="nameCheck">
-                        <p id="yoelam"></p>
-                        <p id="chamjo"></p>
-                        <p id="sign1" class="lineNo"></p>
-                        <p id="sign2" class="lineNo"></p>
-                        <p id="sign3" class="lineNo"></p>
+                        <p id="yoelam"></p><button type="button" class="btn btn-sm" onclick="minuspeople(1);">x</button>
+                        <p id="chamjo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(2);">x</button>
+                        <p id="sign1" class="lineNo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(3);">x</button>
+                        <p id="sign2" class="lineNo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(4);">x</button>
+                        <p id="sign3" class="lineNo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(5);">x</button>
                     </div>
 
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
+                	<button type="button" class="btn btn-sm btn-warning" onclick="minusList();">전체삭제</button>
                     <button type="button" class="btn btn-sm btn-danger" onclick="confirmList();" data-dismiss="modal">확인</button>
                     <button type="button" class="btn btn-sm btn-outline-dark" data-dismiss="modal">닫기</button>
                 </div>
@@ -425,9 +508,31 @@
 	</div> <!-- outer end -->
 	
 	<script>
-        	let count = 0;
-        	let procedure = 1;
-        
+			// 비품용
+			var count = 3;
+	
+			$(function(){
+				$("#yoelam").text($("input[id='read']").val());
+				$("#chamjo").text($("input[id='reference']").val());
+				$("#sign1").text($("input[name='confirmList[1].confirmUser']").val());
+				$("#sign2").text($("input[name='confirmList[2].confirmUser']").val());
+				$("#sign3").text($("input[name='confirmList[3].confirmUser']").val());
+			})
+			
+			$(function(){ // 
+				
+				let approvalNo = $("input[name='approvalNo']").val()
+				var ano = approvalNo.substring(3,5);
+				console.log(ano);
+				
+				if(ano == "EB"){
+            		$("#readbtn").attr("disabled", true);
+            		$("#sign2btn").attr("disabled", true);
+            		$("#sign3btn").attr("disabled", true);
+            	}
+
+			})
+
             function selectEmployeeList(dnum,jnum){
             	
             	$.ajax({
@@ -459,37 +564,101 @@
             	})
             } /*ajax끝*/
             
-            /*버튼 클릭시 화면에 뿌려질 용도*/
+            // 결재버튼 플러스 마이너스까지 일단 완성 체크박스랑 사원비교 아직,,,
+            /*버튼 클릭시 결재 화면에 뿌려질 용도*/
             function list(num){
 
                 var nameCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".nameCheck").text();
                 var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
             	var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
-
-            	if(num == 3 || num == 4 || num == 5){
-	            	/*동적으로 hidden요소 만들어내기*/
-	            	var value = "";
+            	
+            	if(num == 1){ // 열람 참조시
+            		
+            		var read = "";
+            		read += "<input type='text' style='border:none;' readonly id='read'>"
+            			  + "<input type='hidden' name='read' id='readNo'>"
+            		
+            		$("#read-line").html(read);
+            				
+            	}else if(num == 2){
+					
+            		var ref = "";
+            		ref += "<input type='text' style='border:none;' readonly id='reference'>"
+            			 + "<input type='hidden' name='reference' id='refNo'>"
+            		
+            		$("#ref-line").html(ref);	
+            			 
+            	}else if(num == 3){
+            		
+            		var value = "";
 	            	value += "<td colspan='3'>"
-	            	       + "<input type='text' style='border: none;' id='confirm" + count + "' readonly required>" 
-	            	       + "<input type='hidden' name='confirmList[" + count + "].confirmNo' id='clist"+ count +"'>"
-	            	       + "<input type='hidden' name='confirmList[" + count + "].procedureNo' value='"+ procedure +"'>"
+	            	       + "<input type='text' style='border: none;' id='confirm1' readonly>" 
+	            	       + "<input type='hidden' name='confirmList[1].confirmNo' id='clist1'>"
+	            	       + "<input type='hidden' name='confirmList[1].procedureNo' value='1'>"
 	            	       + "</td>"
-	            	       
-	            	count++;
-	            	procedure++;
-	            	       
-	            	$("#line-list").html($("#line-list").html() + value);
+	            	       	       
+            	}else if(num == 4){
+            		
+            		var value = "";
+	            	value += "<td colspan='3'>"
+	            	       + "<input type='text' style='border: none;' id='confirm2' readonly>" 
+	            	       + "<input type='hidden' name='confirmList[2].confirmNo' id='clist2'>"
+	            	       + "<input type='hidden' name='confirmList[2].procedureNo' value='2'>"
+	            	       + "</td>"
+            		
+            	}else if(num == 5){
+            		
+            		var value = "";
+	            	value += "<td colspan='3'>"
+	            	       + "<input type='text' style='border: none;' id='confirm3' readonly>" 
+	            	       + "<input type='hidden' name='confirmList[3].confirmNo' id='clist3'>"
+	            	       + "<input type='hidden' name='confirmList[3].procedureNo' value='3'>"
+	            	       + "</td>"
+            		
             	}
+            	
+	            	$("#line-list").html($("#line-list").html() + value);
 
                 switch(num){
                     case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
                     case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
-                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist0").val(noCheck); break;
-                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
-                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); return;
+                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
+                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
+                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
                 }
 	
                 
+            }
+            
+            function minuspeople(num){ // 하나씩 삭제
+            	
+            	if(num == 1){
+                	$("#yoelam").text("");
+                	$("#read-line>input").remove();
+            	}else if(num == 2){
+            		$("#chamjo").text("");
+            		$("#ref-line>input").remove(); 
+            	}else if(num == 3){
+            		$("#sign1").text("");
+            		$("#line-list>td:first").remove();
+            	}else if(num == 4){
+            		$("#sign2").text("");
+            		$("#line-list>td:first").next().remove();
+            	}else{
+            		$("#sign3").text("");
+            		$("#line-list>td:last").remove();
+            	}
+            }
+            
+            function minusList(){
+            	// 기존 결재라인 전체삭제
+            	$("#line-list>td").remove();
+            	$("#nameCheck>p").text("");
+            	$("#ref-line>input").remove();
+            	$("#read-line>input").remove();
+            	
+            	confcount = 0;
+            	confprocedure = 1;
             }
             
             function confirmList(){           	
@@ -497,9 +666,67 @@
             	// 사원+직급 뿌려주기
             	$("#read").val($("#yoelam").text());
             	$("#reference").val($("#chamjo").text());
-            	$("#confirm0").val($("#sign1").text());
-            	$("#confirm1").val($("#sign2").text());
-            	$("#confirm2").val($("#sign3").text());
+            	$("#confirm1").val($("#sign1").text());
+            	$("#confirm2").val($("#sign2").text());
+            	$("#confirm3").val($("#sign3").text());
+            	
+            	$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
+            	
+            }
+            
+            $("#confirm-line input[type='checkbox']").checked(function(){
+            	
+            	
+            	
+            })
+            
+            //------------------------------------------결재자 끝
+
+			
+            //-----------------------------------------비품
+            
+			function addItem(){
+            	
+				// 비품 추가
+					
+	
+        
+		   console.log(count);
+				
+            	var value = "";
+            	value += "<tr>"
+            	       + "<td><input type='text' name='itemList[" + count + "].itemSeq' class='form-control' value='" + count + "' readonly></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].itemName' class='form-control'></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].itemSize' class='form-control'></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].total' class='form-control num' id='num[" + count + "]'></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].unit' class='form-control' required></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].amount' class='form-control pay' id='pay[" + count + "]'></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].note' class='form-control'></td>" 
+            		   + "</tr>"
+            	
+            	$("#item-list").html($("#item-list").html() + value);
+            		   
+           		count++;
+           		procedure++;
+           		
+            }
+			
+			function removeList(){ // 한 행 삭제
+            	
+            	var tablelt = $("#equipmentList tr").length;
+            	            	
+            	if(tablelt > 1){
+            		
+            		$("#equipmentList>tbody>tr:last").remove();
+            		
+            	}else{
+            		
+            		alert("한 행은 반드시 존재해야합니다!");
+            		return false;
+            	}
+            	
+            	count--;
+            	procedure--;
             	
             }
         </script>

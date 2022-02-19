@@ -41,11 +41,12 @@
         text-decoration: none;
     }
     #pagingArea{
-	   	width:fit-content;
-	   	margin-left:400px;
+	   	margin-left:380px;
     }
     .pagination>li{
     	border-radius:10px;
+    	margin-left:5px;
+		font-size:10px;
     }
 </style>
 </head>
@@ -116,24 +117,25 @@
 	    </div>
 	
 	<div id="pagingArea">
-        <ul class="pagination">      
+        <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.currentPage eq 1}">
-            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="ongoing.el?cpage=${pi.currentPage-1}">이전</a></li>
+            		<li class="page-item"><a class="page-link" href="standby.el?cpage=${pi.currentPage-1}">◀ PREV</a></li>
             	</c:otherwise>
             </c:choose>
             <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-            	<li class="page-item"><a class="page-link" href="ongoing.el?cpage=${p}">${p}</a></li>
+            	<li class="page-item"><a class="page-link" href="standby.el?cpage=${p}">${p}</a></li>
             </c:forEach>
+            
             <c:choose>
         		<c:when test="${pi.currentPage eq pi.endPage}">
-            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="ongoing.el?cpage=${pi.currentPage+1}">다음</a></li>
+            		<li class="page-item"><a class="page-link" href="standby.el?cpage=${pi.currentPage+1}">NEXT ▶</a></li>
             	</c:otherwise>
            	</c:choose>
         </ul>
