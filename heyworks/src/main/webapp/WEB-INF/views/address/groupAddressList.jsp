@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+s<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -764,7 +764,7 @@ function deleteAddress() {
 
 
 				// 즐겨찾기 삭제
-				function deleteLike(addressNo, aE1) {
+				function deleteLike(addressNo, aE2) {
 
 					$.ajax({
 
@@ -776,9 +776,9 @@ function deleteAddress() {
 								if(json.result == 1){
 
 									// alertify.alert("즐겨찾기 삭제에 성공하였습니다.");
-									$(aEl).children().removeClass("fa-regular");
-									$(aEl).children().addClass("fas");
-									$(aEl).click(function(){
+									$(aE2).children().removeClass("fa-regular");
+									$(aE2).children().addClass("fas");
+									$(aE2).click(function(){
 										return insertLike(addressNo);
 									})
 

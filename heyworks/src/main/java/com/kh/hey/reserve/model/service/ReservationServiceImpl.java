@@ -1,6 +1,7 @@
 package com.kh.hey.reserve.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -32,6 +33,13 @@ public class ReservationServiceImpl implements ReservationService {
 		return rDao.MenuCategoryList(sqlSession);
 	}
 
+	//자원 리스트 select
+	@Override
+	public ArrayList<Resources> menuResourceList() {
+		
+		return rDao.menuResourceList(sqlSession);
+	}
+
 
 	//페이징 예약수 알아오기
 	@Override
@@ -61,9 +69,6 @@ public class ReservationServiceImpl implements ReservationService {
 		return rDao.resourceList(sqlSession, categoryNo);
 	}
 
-
-
-
 	// 예약정보 불러오기(회원번호, 자원번호로 검색)
 	@Override
 	public ArrayList<Reservation> selectRsvList(Map<String, String> paraMap) {
@@ -71,15 +76,35 @@ public class ReservationServiceImpl implements ReservationService {
 		return rDao.selectRsvList(sqlSession, paraMap);
 	}
 
-
+	// 입력받은 일시가 중복된 날짜인지 검사
+	@Override
+	public int checkOverlapRsv(HashMap<String, String> paraMap) {
+		
+		return rDao.checkOverlapRsv(sqlSession, paraMap);
+	}
+	// (modal) 예약 테이블에 예약한 값 넣어주기
+	@Override
+	public int insertReservation(HashMap<String, String> paraMap) {
+		
+		return rDao.insertReservation(sqlSession, paraMap);
+	}
 	
-	
+	// 예약상세보기
+	@Override
+	public Reservation readDetailRsvList(String reserveNo) {
+		
+		return rDao.readDetailRsvList(sqlSession, reserveNo);
+	}
+	//예약취소하기
 	
 	@Override
-	public int insertReservation(Reservation re) {
+	public int rsvCancel(HashMap<String, String> paraMap) {
 		
-		return 0;
+		return rDao.rsvCancel(sqlSession, paraMap);
 	}
+
+
+
 
 	@Override
 	public int updateReservation(Reservation re) {
@@ -92,6 +117,11 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		return 0;
 	}
+
+
+
+
+
 
 
 

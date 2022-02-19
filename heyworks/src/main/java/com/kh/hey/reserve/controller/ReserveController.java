@@ -52,7 +52,7 @@ public class ReserveController {
 		
 		return "reserve/myReserve";
 	}
-	
+//	메뉴 자원 카테고리 select
 	@ResponseBody
 	@RequestMapping(value="menuCategoryList.re", produces="application/json; charset=utf-8")
 	public String MenuCategoryList() {
@@ -61,6 +61,17 @@ public class ReserveController {
 		
 		
 		return new Gson().toJson(clist);
+	}
+	
+//  메뉴 자원 리스트 select
+	
+	@ResponseBody
+	@RequestMapping(value="menuResourceList.re", produces="application/json; charset=utf-8")
+	public String menuResourceList() {
+		
+		ArrayList<Resources> relist = rService.menuResourceList();
+		
+		return new Gson().toJson(relist);
 	}
 	
 	
@@ -72,8 +83,11 @@ public class ReserveController {
 		ResourcesCategory rc =  rService.categoryInfo(categoryNo);
 		model.addAttribute("rc", rc);
 		
+//		카테고리별 자원
 		ArrayList<Resources> rlist = rService.resourceList(categoryNo);
 		model.addAttribute("rlist", rlist);
+		
+		
 		
 	
 		return "reserve/reservationFinal";
@@ -83,10 +97,7 @@ public class ReserveController {
 	
 	@ResponseBody
 	@RequestMapping(value="selectRsvList.re", method= {RequestMethod.GET}, produces="application/json; charset=utf-8")
-	public String selectRsvList(HttpServletRequest request, HttpSession session, String resourceNo, String categoryNo) throws IOException {
-		
-		
-
+	public String selectRsvList(HttpServletRequest request, HttpSession session, @RequestParam(value="cno") String categoryNo,  @RequestParam(value="rno") String resourceNo) throws IOException {
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
 
@@ -122,12 +133,10 @@ public class ReserveController {
 	
 	// (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
 		@ResponseBody
-		@RequestMapping(value="readRsList.re", method= {RequestMethod.GET}, produces="application/json; charset=utf-8")
+		@RequestMapping(value="readRsList.re", produces="application/json; charset=utf-8")
 		public String readRsList(HttpServletRequest request, int categoryNo) {
-
 			ArrayList<Resources> rsList = rService.resourceList(categoryNo);
 		
-			
 			JSONArray jsonArr = new JSONArray();
 			
 			for (Resources rsvo : rsList) {
@@ -141,14 +150,101 @@ public class ReserveController {
 			}
 			
 			
-			
 			return jsonArr.toJSONString();
 		}
 	
 		
-	// (modal) 예약 테이블에 예약한 값 넣어주기	
 		
+		// (modal) 예약 테이블에 예약한 값 넣어주기
+		@ResponseBody
+		@RequestMapping(value="addModalRsv.re", method= {RequestMethod.POST},  produces="application/json; charset=utf-8")
+		public String insertReservation(HttpServletRequest request, HttpSession session) {
+			
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			String resourcesNo = request.getParameter("fk_reservation_resource_no");
+			String startday = request.getParameter("startday");
+			String endday = request.getParameter("endday");
+			String reason = request.getParameter("reason");
+			String categoryNo = request.getParameter("categoryNo");
+			String categoryName = request.getParameter("categoryName");
+			
+			// 예약 테이블에 넣어줄 fk_resource_no 구해오기
+			HashMap<String, String> paraMap = new HashMap<String, String>();
+			paraMap.put("resourcesNo", resourcesNo);
+			paraMap.put("userNo", userNo);
+			paraMap.put("startday", startday);
+			paraMap.put("endday", endday);
+			paraMap.put("reason", reason);
+			paraMap.put("categoryNo", categoryNo);
+			paraMap.put("categoryName", categoryName);
+
+//			String fk_resource_no = rService.findFk_resource_no(paraMap);
+//			paraMap.put("fk_resource_no", fk_resource_no);
+			
+			// 입력받은 일시가 중복된 날짜인지 검사
+			int overlap = rService.checkOverlapRsv(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			if (overlap != 0) {
+				// 사용자가 선택한 시간대에 이미 예약이 있을 경우
+				jsonObj.put("n", -1);
+				
+				return jsonObj.toString();
+				
+			}else {
+				// 예약이 가능한 경우 예약테이블에 데이터 insert 진행
+				int n = rService.insertReservation(paraMap);
+				jsonObj.put("n", n);
+				
+				return jsonObj.toString();
+			}
+			
+
+			
+			
+		}
+		//	예약상세보기
+		@ResponseBody
+		@RequestMapping(value="/readDetailRsvList.re",  produces="application/json; charset=utf-8")
+		public String readDetailRsvList(HttpServletRequest request, String reserveNo) {
+
+			Reservation rsvd = rService.readDetailRsvList(reserveNo);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("reserveNo", rsvd.getReserveNo());
+			jsonObj.put("userNo", rsvd.getUserNo());
+			jsonObj.put("resourcesNo", rsvd.getResourcesNo());
+			jsonObj.put("categoryName", rsvd.getCategoryName());
+			jsonObj.put("resourceName", rsvd.getResourceName());
+			jsonObj.put("startDate", rsvd.getStartDate());
+			jsonObj.put("endDate",rsvd.getEndDate());
+			jsonObj.put("reserveDate", rsvd.getReserveDate() + "");
+			jsonObj.put("reserveContent", rsvd.getReserveContent());
+			jsonObj.put("userName", rsvd.getUserName());
+			jsonObj.put("categoryNo", rsvd.getCategoryNo());
+			
+			return jsonObj.toString();
+		}
 		
+	//예약 취소하기
+	@ResponseBody
+	@RequestMapping(value="/rsvCancel.re", produces="application/json; charset=utf-8")
+	public String rsvCancel(HttpServletRequest request, HttpSession session) {
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+		String reserveNo = request.getParameter("reserveNo");
+		
+		HashMap<String, String> paraMap = new HashMap<String, String>();
+		paraMap.put("reserveNo", reserveNo);
+		paraMap.put("userNo", userNo);
+		
+		int result = rService.rsvCancel(paraMap);
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("result", result);
+		
+		return jsonObj.toString();
+	}
+	
 		
 	
 	//자원카테고리list 페이지

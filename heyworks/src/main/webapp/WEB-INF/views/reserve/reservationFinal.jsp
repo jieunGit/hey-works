@@ -22,6 +22,7 @@
 <!-- alertify -->
 <!-- JavaScript -->
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <!-- CSS -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
@@ -47,7 +48,7 @@
    }
 	#toparea{
 	   width: 200px;
-	   height: 50px;
+	  
 	   margin-left: 30px;
 	   font-weight: bolder;
    }
@@ -73,6 +74,7 @@
 		 height: 120px;
 		 margin:10px 0px 0px 40px;
 		 font-size: 13px;
+       
 		
 	 }
 
@@ -82,9 +84,9 @@
     height: 1px;
     margin-left: 40px;
 
-
+     }
     body.stop-dragging
-   {
+{
      -ms-user-select: none; 
      -moz-user-select: -moz-none;
      -khtml-user-select: none;
@@ -119,7 +121,7 @@
    
    .nav_ul{
       list-style-type: none;
-      margin-left: -10%;
+      /* margin-left: -10%; */
    }
    
    .nav_ul_p{
@@ -136,9 +138,10 @@
    .smallText{
       padding: 0;
       margin: 0;
-      color: black;
+      color: rgb(0, 0, 0);
       line-height: 27px;
       cursor: pointer;
+      font-size: 15px;
    }
    
    div.add_calendar_box{
@@ -166,6 +169,7 @@
      border: 1px solid #ccc;
      background: #eee;
      margin: 0;
+     
    }
    .demo-topbar + #external-events { /* will get stripped out */
      top: 60px;
@@ -179,11 +183,13 @@
      position: relative;
      z-index: 1;
      margin-left: 20px;
+    
    }
    #calendar {
      width: 100%;
      height: auto;
      margin: 0 auto;
+    
    }
    
    .dot {
@@ -228,6 +234,7 @@
    .clickSmallText{
       font-weight: bold;
       color: #97b8e0;
+      font-size: 16px;
    }
    
    /* (Modal)예약 상세보기 */
@@ -327,11 +334,11 @@
        // 처음 페이지에 들어왔을 때 1번 회의실로 설정
        $("label.firstSmallText").addClass("clickSmallText");
        
-       // 사이드바의 자원명을 선택했을 시 선택한 텍스트의 색을 변경
+       // 사이드바의 자원명을 선택했을 시 선택한 텍스트의 색을 변경  smalltext가 검정,firstSmailltest가 파랑
        $("label.smallText").click(function() {
-          $("label.smallText").removeClass("clickSmallText");
-          $(this).addClass("clickSmallText");
-       });
+      $("label.smallText").removeClass("clickSmallText");
+      $(this).addClass("clickSmallText");
+   });
     
     });
     
@@ -423,12 +430,14 @@
               
               
              },
+             
              events: function (info, successCallback, failureCallback){
+                
                 $.ajax({
                   url:"selectRsvList.re",
                   data:{
-                      resourceNo:fk_reservation_resource_no,
-                      categoryNo:${rc.categoryNo}
+                      rno:fk_reservation_resource_no,
+                      cno:$("#categoryNoTag").val()
                   },
                   type:"GET",
                   dataType:'JSON',
@@ -462,6 +471,7 @@
                    }
                });
                 
+
              }
              
             });
@@ -481,18 +491,19 @@
      $.ajax({
       url:"readRsList.re",
       data : {
-            categoryNo:${rc.categoryNo}
+         categoryNo:$("#categoryNoTag").val()
       },
       type:"get",
       dataType:"JSON",
       success:function(json){
+         console.log(json);
          var html = "";
          if (json.length > 0) {
             $.each(json, function(index, item){
-               if (item.resourceNo == fk_reservation_resource_no) {
-                  html += "<option value='" + item.resourceNo + "' selected >" + item.resourceName + "</option>";
+               if (item.resourcesNo  == fk_reservation_resource_no) {
+                  html += "<option value='" + item.resourcesNo + "' selected >" + item.resourceName + "</option>";
                }else{
-                  html += "<option value='" + item.resourceNo + "'>" + item.resourceName + "</option>";
+                  html += "<option value='" + item.resourcesNo + "'>" + item.resourceName + "</option>";
                }
                
             });
@@ -510,14 +521,178 @@
    
   }
      
+    // (modal) 예약하기에서 확인버튼을 클릭했을시 실행하는 함수
+  function addRsvModalBtn(){
+     
+     // 입력받은 값들 유효성 검사: 시작
+     var startday = $("input[name=startday]").val() + " " + $("select.startday_hour").val() + ":00";
+     var endday = "";
+     
+     // 종일 체크 시 시작 날짜를 기준으로 변경
+     if ($("input#allday:checked").val()) {
+        startday = $("input[name=startday]").val() + " 00:00:00";
+        endday = $("input[name=startday]").val() + " 23:59:59";
+     }else{
+        endday = $("input[name=endday]").val() + " " + $("select.endday_hour").val() + ":00";
+     }
+     
+     // true: 통과   false: 불통
+     if (!(startday < endday && startday != endday)) {
+        alert("올바른 일시를 선택해주세요.");
+        return false;
+     }
 
-    // 자원을 변경했을 시 자원 변수값을 변경해주는 함수
-    function changeResource(rsNo) {
-        fk_reservation_resource_no = rsNo;
-    calendar.refetchEvents();   
+     var fk_reservation_resource_no = $("select[name=fk_reservation_resource_no]").val();
+     if (fk_reservation_resource_no.trim() == "") {
+        alert("자원을 선택해주세요.");
+        return false;
+     }
+     
+     var reason = $("input[name=reason]").val();
+     if (reason.trim() == "") {
+        alert("사용용도를 입력해주세요.");
+        $("input[name=reason]").focus();
+        return false;
+     }
+     
+   // 입력받은 값들 유효성 검사: 끝
+
+
+      // db에 넣기
+   $.ajax({
+      url:"addModalRsv.re",
+      data:{startday:startday, 
+            endday:endday, 
+            fk_reservation_resource_no:fk_reservation_resource_no, 
+            reason:reason, 
+            categoryNo : $("#categoryNoTag").val(),
+            categoryName:$("#categoryName").val()},
+      type:"POST",
+      dataType:"JSON",
+      success:function(json){
+         
+         // 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
+         if (json.n == 1) {
+            // 에약이 정상적으로 등록됐을 때
+            window.closeModal();
+            calendar.refetchEvents();
+            
+         }else if (json.n == -1) {
+            // 중복된 예약(시간)으로 예약에 실패했을 때
+            alert("해당 시간에는 이미 예약이 되어있어 예약할 수 없습니다.");
+         }
+         else{
+            // db오류
+            alert("DB 오류");
+         }
+         
+      },
+      error: function(request, status, error){
+         alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+       }
+   });
+
   }
+
+
+
+    // 이벤트를 클릭시 예약 상세보기 모달 띄우기
+    function viewRsv(reserveNo){
+     $.ajax({
+         url:"readDetailRsvList.re",
+         type:"get",
+         data: {reserveNo:reserveNo},
+         dataType:"JSON",
+         success:function(json){
+            var html = "";
+            
+            html += "<tr>";
+               html += "<th>분류명</th>";
+               html += "<td>" + json.categoryName + "</td>";
+            html += "</tr>";
+            html += "<tr>";
+               html += "<th>자원명</th>";
+               html += "<td>" + json.resourceName + "</td>";
+            html += "</tr>";
+           
+            html += "<tr>";
+               html += "<th>시작시간</th>";
+               html += "<td>" + json.startDate + "</td>";
+            html += "</tr>";
+            html += "<tr>";
+               html += "<th>종료시간</th>";
+               html += "<td>" + json.endDate + "</td>";
+            html += "</tr>";
+            html += "<tr>";
+               html += "<th>등록자</th>";
+               html += "<td>" + json.userName+ "</td>";
+            html += "</tr>";
+            html += "<tr>";
+               html += "<th>사용용도</th>";
+               html += "<td>" + json.reserveContent+ "</td>";
+               html += "<input type='hidden' class='reservation_no' id='reserve_no' value='" + reserveNo + "' >";
+            html += "</tr>";
+            
+            $("tbody.detailTbody").html(html);
+            $(".rsvCancelBtn").hide();
+            if (json.userNo == "${loginUser.userNo}") {
+               
+               $(".rsvCancelBtn").show();
+            }
+         },
+         error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          }
+      });
+     
+     $("#showDetailRsvModal").modal('show');
+  }
+  
+   // 예약취소 버튼 클릭시 예약 취소하는 함수
+   function cancelRsv() {
+     var reserveNo = $("#reserve_no").val();
+      
+      $.ajax({
+         url:"rsvCancel.re",
+         type:"get",
+         data: {reserveNo:reserveNo},
+         dataType:"JSON",
+         success:function(json){
+            
+            if (json.result == 1) {
+               calendar.refetchEvents();
+               window.closeModal();
+            }else{
+               alert("DB오류");
+            }
+            
+         },
+         error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          }
+      });
+  }
+
+
+
+
+
+
+
+
+
+      // 자원을 변경했을 시 자원 변수값을 변경해주는 함수
+      function changeResource(rsNo) {
+         fk_reservation_resource_no = rsNo;
+      calendar.refetchEvents();   
+   }
     </script>
 </head>
+
+
+
+<!-- ---------------------화면구간-------------------------------------- -->
+
 <body class='stop-dragging'>
 
 
@@ -546,13 +721,17 @@
                         <c:forEach var="r" items="${ rlist }">
                        <li style="list-style-type: none; float: left;">
                           <p class='nav_ul_p'>
-                             <label class='smallText firstSmallText' style="margin-top: 5px;" onclick="changeResource(${r.resourcesNo})" >${r.resourceName}</label>&nbsp;&nbsp;&nbsp;
-                          </p>
+                             <input type="hidden" name="categoryNo" id="categoryNoTag" value="${r.categoryNo}">
+                             <input type="hidden" name="categoryName" id="categoryName" value="${r.categoryName}"> 
+                             <input type="hidden" name="resourceNo" id="resourceNoTag" value="${r.resourcesNo}">
+                            <label class="smallText" style="margin-top: 5px; cursor: pointer;" onclick="changeResource(${r.resourcesNo})">${r.resourceName}</label>&nbsp;&nbsp;&nbsp;
+                             <!-- href="reserve.re?cno=${r.categoryNo}&rno=${r.resourcesNo}" -->
+                           </p>
                         </li>
                     </c:forEach>
                     </ul>
                 </li>
-
+            </ul>
 			<!-- <div id="resourceList" style="margin-left: 50px;">
 
 				<c:forEach var="r" items="${ rlist }">
@@ -580,17 +759,12 @@
 					<!-- 드래그앤드롭후 제거하는기능 -->
 					<!-- <label for="drop-remove">remove after drop</label>  
 				</p> -->
-			</div>
+			   </div>
            
 
-			<div id="toparea"><i class="fas fa-history"></i> 
-                
-               	회의실1
-            
-            
-            </div>
+		
 
-			<div style="border: solid 0px red; margin-left:2%; margin-right: 0.5%;">
+			<div style="border: solid 0px red; margin-left:3%; margin-right: 2%;">
 				<!-- 달력위치 -->
 				<div id='calendar'>
 				</div>
@@ -607,8 +781,12 @@
 
 
 
+
+    <!-- -----------------모달구간--------------------------- -->
+
+
     
-	<%-- 예약하기 모달 --%>
+	 <!-- 예약하기 모달 -->
 	<div id="addRsvModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
 	 <div class="modal-dialog">
 	   <!-- Modal content-->
@@ -620,7 +798,7 @@
 		 <div class="modal-body">
 		 
 		   <div class="modal_container">
-				<form name="addSchFrm">
+      <form name="addSchFrm">
 				   <input type="hidden" name="bAllday">
 			  <table class="table table-borderless addRsvTable">
 				<tbody>
@@ -681,16 +859,48 @@
 			  </table>
 			 
 			 <div style="float: right;">
-				<button class="btn blueBtn" type="button" onclick="addRsvModalBtn()">확인</button>
-				<button class="btn grayBtn" type="button" onclick="window.closeModal()">취소</button>
+				<button class="btn blueBtn" type="submit" onclick="addRsvModalBtn()">확인</button>
+				<button class="btn grayBtn" type="button" data-dismiss="modal">취소</button>
 			 </div>
 			 <br style="clear: both;">
-			 </form>
+      </form>
 		  </div>
 		  
 		 </div>
 	   </div>
 	 </div>
 	</div>
+
+
+
+   
+  <!-- 예약 상세정보 보여주기 모달 --%> -->
+   <div id="showDetailRsvModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+           <h4 class="modal-title" style="font-weight: bold;">예약정보</h4>
+          <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+               <form>
+             <table class="table table-borderless">
+               <tbody class="detailTbody">
+                 
+               </tbody>
+             </table>
+         
+            <button class="btn btn-danger rsvCancelBtn" style="float: right; margin-left: 5px;" type="button" onclick="cancelRsv()">예약취소</button>
+            <button class="btn grayBtn" style="float: right;" type="button" onclick="window.closeModal()">확인</button>
+            </form>
+         </div>
+        </div>
+      </div>
+    </div>
+   </div>
+
+
 </body>
 </html>

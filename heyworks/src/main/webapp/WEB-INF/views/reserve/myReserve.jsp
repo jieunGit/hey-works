@@ -35,7 +35,7 @@
 	   font-weight: bolder;
    }
    .thead-dark th{
-		font-size: 12px;
+		font-size: 13px;
    }
    
    table>tbody>tr{
@@ -44,10 +44,99 @@
    }
   #pagingArea{width:fit-content;margin:auto;}
 
+  .table button{
+	  font-size: 11px;
+	 
+  }
 </style>
 </head>
 <body>
 
+	<script>
+		 // 이벤트를 클릭시 예약 상세보기 모달 띄우기
+		 function viewRsv(reserveNo){
+			$.ajax({
+				url:"readDetailRsvList.re",
+				type:"get",
+				data: {reserveNo:reserveNo},
+				dataType:"JSON",
+				success:function(json){
+					var html = "";
+					
+					html += "<tr>";
+					html += "<th>분류명</th>";
+					html += "<td>" + json.categoryName + "</td>";
+					html += "</tr>";
+					html += "<tr>";
+					html += "<th>자원명</th>";
+					html += "<td>" + json.resourceName + "</td>";
+					html += "</tr>";
+				
+					html += "<tr>";
+					html += "<th>시작시간</th>";
+					html += "<td>" + json.startDate + "</td>";
+					html += "</tr>";
+					html += "<tr>";
+					html += "<th>종료시간</th>";
+					html += "<td>" + json.endDate + "</td>";
+					html += "</tr>";
+					html += "<tr>";
+					html += "<th>등록자</th>";
+					html += "<td>" + json.userName+ "</td>";
+					html += "</tr>";
+					html += "<tr>";
+					html += "<th>사용용도</th>";
+					html += "<td>" + json.reserveContent+ "</td>";
+					html += "<input type='hidden' class='reservation_no' id='reserve_no' value='" + reserveNo + "' >";
+					html += "</tr>";
+					
+					$("tbody.detailTbody").html(html);
+					
+					
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			});
+			
+			$("#showDetailRsvModal").modal('show');
+  }
+
+
+
+//   // 예약 취소하기 버튼을 클릭시 실행하는 함수(모달을 띄워주기만 함)
+//   function rsvCancelBtn(reserveNo) {
+//       $("input.hidden_reservation_no").val(reserveNo);
+//       $('#cancelRsvCheckModal').modal('show');
+//    }
+
+
+    // 예약 취소를 DB에서 처리해주는 함수
+	function cancelRsv() {
+		var reserveNo = $("#reserve_no").val();
+      
+      $.ajax({
+         url:"rsvCancel.re",
+         type:"get",
+         data: {reserveNo:reserveNo},
+         dataType:"JSON",
+         success:function(json){
+            
+            if (json.result == 1) {
+               calendar.refetchEvents();
+               window.closeModal();
+            }else{
+               alert("DB오류");
+            }
+            
+         },
+         error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          }
+      });
+   }
+
+	</script>
 	<div class="outer">
 		<jsp:include page="../common/menubar.jsp" />
 		<jsp:include page="../reserve/reserveMenubar.jsp" />
@@ -74,10 +163,14 @@
 					<tbody>
 					<c:forEach var="r" items="${ list }">
 						<tr>
+							<input type="hidden" name="reserveNo" id="reserve_no" value="${r.reserveNo}">
 							<td>${ r.categoryName }</td>
 							<td>${ r.resourceName }</td>
 							<td>${ r.startDate }~${ r.endDate }</td>
-							<td>상세보기|취소</td>
+							<td>
+								<button type="button" class="btn grayBtn btn-sm" onclick="viewRsv(${r.reserveNo})">상세보기</button>
+								<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelRsvCheckModal">취소</button>
+							</td>
 						</tr>
 					</c:forEach>
 					
@@ -127,6 +220,54 @@
 	</div>
 	
 
+
+	<!-- 예약 상세정보 보여주기 모달  -->
+	<div id="showDetailRsvModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+		  <!-- Modal content-->
+		  <div class="modal-content">
+			<div class="modal-header">
+			   <h4 class="modal-title" style="font-weight: bold;">예약정보</h4>
+			  <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
+			</div>
+			<div class="modal-body">
+			  <div class="container">
+				   <form>
+				 <table class="table table-borderless">
+				   <tbody class="detailTbody">
+					 
+				   </tbody>
+				 </table>
+			 
+			
+				<button class="btn grayBtn" style="float: right;" type="button" onclick="window.closeModal()">확인</button>
+				</form>
+			 </div>
+			</div>
+		  </div>
+		</div>
+	   </div>
 	
+
+	
+	   <%-- 취소 버튼 클릭 시 정말 취소할 것인지 묻는 모달 --%>
+	   <div class="modal fade" id="cancelRsvCheckModal" role="dialog">
+		<div class="modal-dialog modal-sm">
+		  <div class="modal-content">
+			<div class="modal-header">
+				<!-- <h4 class="modal-title">예약 삭제</h4> -->
+			  <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
+			</div>
+			<div class="modal-body">
+			  <label>정말 예약을 취소하시겠습니까?</label>
+			  <input class="hidden_reservation_no" type="hidden">
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn blueBtn" onclick="cancelRsv()">예</button>
+			  <button type="button" class="btn grayBtn" onclick="window.closeModal()">아니오</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
 </body>
 </html>
