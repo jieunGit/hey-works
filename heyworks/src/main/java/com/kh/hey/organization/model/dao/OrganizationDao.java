@@ -29,5 +29,9 @@ public class OrganizationDao {
 	public ArrayList<Organ> selectEmployee(SqlSessionTemplate sqlSession, String userName) {
 		return (ArrayList)sqlSession.selectList("organMapper.selectEmployee", userName);
 	}
+	
+	public Organ detailEmployee(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("organMapper.detailEmployee", userNo);
+	}
 
 }

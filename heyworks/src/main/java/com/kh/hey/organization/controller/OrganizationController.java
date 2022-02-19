@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hey.organization.model.service.OrganizationService;
@@ -44,13 +45,12 @@ public class OrganizationController {
 	public ModelAndView DeptOrgan(int dno, HttpSession session, ModelAndView mv) {
 		
 		ArrayList<Organ> organ = orService.deptOrgan(dno);
-		Organ dept = orService.selectDeptName(dno);
+		Organ dt = orService.selectDeptName(dno);
 		
 		if(organ != null) {
 			mv.addObject("organ", organ)
-			  .addObject("dept", dept)
+			  .addObject("dt", dt)
 			  .setViewName("organization/organizationSub");
-			
 			return mv;
 		}else {
 			System.out.println("요청실패");
@@ -77,7 +77,22 @@ public class OrganizationController {
 		
 	}
 	
-	
+	// 임직원 상세보기
+	@ResponseBody
+	@RequestMapping("detail.emp")
+	public Organ detailEmployee(int userNo, HttpSession session) {
+		
+		Organ emp = orService.detailEmployee(userNo);
+		
+		if(emp != null) {
+			return emp;		
+		}else {
+			System.out.println("요청실패");
+			return emp;
+		}
+		
+		
+	}
 	
 	
 }
