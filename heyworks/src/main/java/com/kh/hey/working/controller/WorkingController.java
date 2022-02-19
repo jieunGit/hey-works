@@ -1,11 +1,14 @@
 package com.kh.hey.working.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.hey.employee.model.vo.Employee;
@@ -64,5 +67,27 @@ public class WorkingController {
 	@RequestMapping("otApplyForm.wo")
 	public String otApplyForm() {
 		return "working/overtimeApplyForm";
+	}
+	
+	// 근무/휴가현황 test
+	@RequestMapping("myWorkingStatus.wo")
+	public String myWorkingStatus() {
+		return "working/myWorkingStatus";
+	}
+	
+	// 개인 휴가현황
+	@RequestMapping("selectMyleave.wo")
+	public ModelAndView selectMyleave(HttpSession session, ModelAndView mv) {
+		
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		ArrayList<Leave> leList = wService.selectMyleave(userNo);
+		
+		mv.addObject("leList", leList);
+		mv.setViewName("working/leaveStatus");
+		
+		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘 
+		
+		return mv;
 	}
 }

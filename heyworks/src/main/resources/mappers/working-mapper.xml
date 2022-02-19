@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="workingMapper">
 
+	<resultMap id="leaveResult" type="Leave">
+		<result column="leave_ano" property="leaveAno"/>
+		<result column="user_no" property="userNo"/>
+		<result column="apply_date" property="applyDate"/>
+		<result column="leave_type" property="leaveType"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="leave_use" property="leaveUse"/>
+		<result column="reason" property="reason"/>
+		<result column="status" property="status"/>
+		<result column="user_name" property="userName"/>
+		<result column="dept_name" property="deptName"/>
+	</resultMap>
+
     <!-- 출근 insert -->
 	<insert id="insertClockIn">
 		INSERT 
@@ -60,4 +74,24 @@
 		  , '대기'
 		  )	
 	</insert>
+	
+	<!-- 내 휴가신청 내역 -->
+	<select id="selectMyleave" resultMap="leaveResult">
+	SELECT
+		        APPLY_DATE
+		      , LEAVE_TYPE
+		      , START_DATE
+		      , L.END_DATE
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE USER_NO = #{userNo}
+		 ORDER
+		    BY APPLY_DATE DESC
+	</select>
 </mapper>

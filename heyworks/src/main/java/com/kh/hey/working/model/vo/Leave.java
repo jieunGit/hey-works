@@ -25,4 +25,7 @@ public class Leave {
 	private int leaveUse; 
 	private String reason; 
 	private String status;
+	
+	private String userName;
+	private String deptName;
 }

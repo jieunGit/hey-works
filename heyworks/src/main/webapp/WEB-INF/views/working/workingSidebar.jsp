@@ -62,11 +62,11 @@
 
         <table class="click-time">
             <tr>
-                <th style="font-size:13px;">출근시간</th>
+                <th style="font-size:13px; border:none;">출근시간</th>
                 <td class="click-td" id="click-td1" width="90px"></td>
             </tr>
             <tr>
-                <th style="font-size:13px;">퇴근시간</th>
+                <th style="font-size:13px; border:none;">퇴근시간</th>
                 <td class="click-td" id="click-td2" ></td>
             </tr>
         </table>
@@ -136,7 +136,7 @@
                 <li style="font-size:15px;"><strong>내 근무</strong>
                     <ul>
                         <li style="margin-left:15px;"><a href="">근무/휴가</a></li>
-                        <li style="margin-left:15px;"><a href="">근무/휴가현황</a></li>
+                        <li style="margin-left:15px;"><a href="selectMyleave.wo">근무/휴가현황</a></li>
                         <li style="margin-left:15px;"><a href="">부서 근무현황</a></li>
                     </ul>
                 </li><br><br>

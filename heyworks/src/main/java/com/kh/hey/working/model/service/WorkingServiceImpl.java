@@ -1,5 +1,7 @@
 package com.kh.hey.working.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,11 @@ public class WorkingServiceImpl implements WorkingService {
 	@Override
 	public int insertLeave(Leave l) {
 		return wDao.insertLeave(sqlSession, l);
+	}
+
+	@Override
+	public ArrayList<Leave> selectMyleave(int userNo) {
+		return wDao.selectMyleave(sqlSession, userNo);
 	}
 
 }

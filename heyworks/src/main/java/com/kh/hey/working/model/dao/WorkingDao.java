@@ -1,5 +1,7 @@
 package com.kh.hey.working.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +23,10 @@ public class WorkingDao {
 	public int insertLeave(SqlSessionTemplate sqlSession, Leave l) {
 		
 		return sqlSession.insert("workingMapper.insertLeave", l);
+	}
+	
+	public ArrayList<Leave> selectMyleave(SqlSessionTemplate sqlSession, int userNo){
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectMyleave", userNo);
 	}
 }

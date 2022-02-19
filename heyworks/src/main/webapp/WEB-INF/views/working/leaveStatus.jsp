@@ -20,8 +20,8 @@
        padding-left:30px;
        padding-top:30px;
 	}
-    .wide-menu{margin-top:20px;}
-    a{
+    .wide-menu{margin-top:10px;}
+    .wide-menu>a{
       text-decoration: none; 
       color:black; 
       font-size:18px;
@@ -54,7 +54,7 @@
             
             <div class="leave-status">
                 <h3 style="font-size:20px;">휴가현황</h3>
-                <p style="font-size:14px;">총 휴가 : 15일 | 사용 : 0일 | 잔여 : 20일</p>
+                <p style="font-size:14px;">총 휴가 : 15일 | 사용 : 0일 | 잔여 : 15일</p>
             </div><br>
     
             <div class="leave-creation">
@@ -80,7 +80,8 @@
             <div class="leave-apply">
                 <h3 style="font-size:20px;">휴가 신청 내역</h3>
     
-                <button type="button" style="margin-left:820px;">휴가신청</button>
+                <br>
+                <a href="leaveApplyForm.wo" class="btn btn-primary" style="font-size:13px; margin-left:790px;">휴가신청</a>
                 <br>
                 <br>
     
@@ -89,38 +90,22 @@
                         <th width="120">신청일</th>
                         <th width="90">이름</th>
                         <th width="90">소속</th>
-                        <th width="70">신청일수</th>
+                        <th width="90">신청일수</th>
                         <th width="300">휴가기간</th>
                         <th width="90">구분</th>
                         <th width="90">상태</th>
                     </tr>
-                    <tr style="height:30px; text-align:center;">
-                        <td>2022/01/03</td>
-                        <td>강보람</td>
-                        <td>개발팀</td>
-                        <td>1</td>
-                        <td>2022/01/05 ~ 2022/01/06</td>
-                        <td>경조사</td>
-                        <td>대기</td>
-                    </tr>
-                    <tr style="height:30px; text-align:center;">
-                        <td>2022/01/03</td>
-                        <td>강보람</td>
-                        <td>개발팀</td>
-                        <td>1</td>
-                        <td>2022/01/05 ~ 2022/01/06</td>
-                        <td>경조사</td>
-                        <td>대기</td>
-                    </tr>
-                    <tr style="height:30px; text-align:center;">
-                        <td>2022/01/03</td>
-                        <td>강보람</td>
-                        <td>개발팀</td>
-                        <td>1</td>
-                        <td>2022/01/05 ~ 2022/01/06</td>
-                        <td>경조사</td>
-                        <td>대기</td>
-                    </tr>
+                    <c:forEach var="l" items="${leList}">
+	                    <tr style="height:30px; text-align:center;">
+	                        <td>${l.applyDate}</td>
+	                        <td>${loginUser.userName}</td>
+	                        <td>${l.deptName}</td>
+	                        <td>${l.leaveUse}</td>
+	                        <td>${l.startDate} ~ ${l.endDate}</td>
+	                        <td>${l.leaveType}</td>
+	                        <td>${l.status}</td>
+	                    </tr>
+                    </c:forEach>
                 </table>
             </div>
         </div>
