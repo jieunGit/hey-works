@@ -200,6 +200,34 @@
 		 </if>
 	</select>
 	
+	<!-- 내가 참조, 열람자로 목록조회 -->
+	<select id="selectReadNrefListCount" resultType="_int">
+		select
+		       count(*)
+		  from elec_approval
+		 where status in ('D', 'P')
+		   and read_no = #{userNo}
+		    or status in ('D', 'P')
+		   and reference_no = #{userNo} 
+	</select>
+	
+	<select id="selectReadReference" resultMap="approvalResult">
+		select 
+		       elec_appr_no
+		     , user_name writer_name
+		     , elec_title
+		     , emc_yn
+		     , write_dept
+		     , grade
+		     , create_date
+		  from elec_approval ea
+		  join employee on(writer_no = user_no)
+		 where ea.status in ('D', 'P')
+		   and read_no = #{userNo}
+		    or ea.status in ('D', 'P')
+		   and reference_no = #{userNo}
+	</select>
+	
 	<!-- 업무기안서 상세보기 -->
 	<select id="selectApproval" resultMap="approvalResult">
 		select
@@ -222,7 +250,7 @@
 		     , e3.user_name reference_no
 		     , elec_title
 		     , create_date
-		     , to_char(storage_year, 'YYYY-DD-MM') storage_year
+		     , to_char(storage_year, 'YYYY-MM-DD') storage_year
 		     , origin_name
 		     , file_path
 		     , confirm_no confirmNo
@@ -424,6 +452,161 @@
 		  , #{recruimentContent}
 		  )
 	</insert>
+	
+	<!-- 일반품의서 -->
+	<insert id="insertExpenseReport">
+		insert
+		  into expense_report
+		  (
+		    elec_appr_no
+		  , imposition
+		  , content
+		  )
+		  values
+		  (
+		    'SA-ER-'||lpad(seq_elno.currval,5,0)
+		  , #{imposition}
+		  , #{expenseReportContent}
+		  )
+	</insert>
+	
+	<!-- 업무기안서 -->
+	<insert id="insertBusinessDraft">
+		insert
+		  into business_draft
+		  (
+		    elec_appr_no
+		  , content
+		  )
+		  values
+		  (
+		    'SA-BD-'||lpad(seq_elno.currval,5,0)
+		  , #{businessDraftContent}
+		  )
+	</insert>
+	
+	<!-- 비품구매품의서 -->
+	<insert id="insertEquipmentBuy">
+		insert
+		  into equipment_buy
+		  (
+		    elec_appr_no
+		  , buy_req_team
+		  , limit_date
+		  , pay
+		  , purpose
+		  , total_pay
+		  )
+		  values
+		  (
+		    'SA-EB-'||lpad(seq_elno.currval,5,0)
+		  , #{requestTeam}
+		  , #{limitDate}
+		  , #{pay}
+		  , #{purpose}
+		  , #{totalPay}
+		  )
+	</insert>
+	
+	<!-- 비품구매 아이템 -->
+	<insert id="insertItemList">
+		insert
+		  into item_list
+		  (
+		    item_no
+		  , elec_appr_no
+		  , item_seq
+		  , item_name
+		  , item_size
+		  , unit
+		  , total
+		  , amount
+		  , note
+		  )
+		  values
+		  (
+		    'ITEM-'||lpad(seq_ilno.nextval,3,0)
+		  , 'SA-EB-'||lpad(seq_elno.currval,5,0)
+		  , #{itemSeq}
+		  , #{itemName}
+		  , #{itemSize}
+		  , #{unit}
+		  , #{total}
+		  , #{amount}
+		  , #{note}
+		  )
+	</insert>
+	
+	<!-- 문서 삭제하기 -->
+	<update id="deleteApproval">
+		update
+			   elec_approval
+		   set status = 'N'
+		 where elec_appr_no = #{ano}
+	</update>
+	
+	<!-- 첫번째 결재자일때 전자결재 테이블에 진행중으로 업데이트 -->
+	<!-- 결재순서번호 알아오기 -->
+	<select id="selectConfirmProcedure" resultType="_int">
+		select
+		       procedure_no
+		  from confirm
+		 where elec_appr_no = #{ano}
+		   and confirm_user = #{userNo}
+	</select>
+	
+	<!-- 결재자  결재상태, 결재일 업데이트 -->
+	<update id="updateConfirmTable">
+		update
+			   confirm
+		   set status = '승인'
+		     , confirm_date = sysdate
+		 where elec_appr_no = #{ano}
+		   and confirm_user = #{userNo}
+	</update>
+	
+	<!-- 진행중으로 업데이트 하기 -->
+	<update id="updateConfirmApproval">
+		update
+		       elec_approval
+		<choose>
+			<when test='confirmStatus == "Y"'>
+				set status = 'P'
+			</when>
+			<otherwise>
+				set status = 'R'
+			</otherwise>
+		</choose>
+		 where elec_appr_no = #{ano}
+	</update>
+		
+	<!-- 마지막 결재자 승인시 전자결재 테이블에 승인으로 업데이트 -->
+	<!-- 결재자 총 몇명인지 알아오기 -->
+	<select id="selectConfirmPeopleCount" resultType="_int">
+		select count(*) count
+		  from confirm
+		 where elec_appr_no = #{ano}
+	</select>
+	
+	<update id="updateLastConfirm">
+		update
+		       elec_approval
+		   set status = 'Y'
+		 where elec_appr_no = #{ano}
+	</update>
+	
+	<!-- 반려하기 결재테이블 -->
+	<update id="updateConfirmReject">
+		update
+			   confirm
+		   set status = '반려'
+             , reject_reason = #{rejectReason}
+             , confirm_date = sysdate
+         where elec_appr_no = #{ano}
+           and confirm_user = #{userNo}
+	</update>
+	
+	
 	
 	
 	

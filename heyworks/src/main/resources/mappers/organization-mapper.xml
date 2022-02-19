@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="organMapper">
+
+	<resultMap id="organResult" type="Organ">		
+		<result column="user_no" property="userNo" />
+		<result column="user_name" property="userName" />
+		<result column="email" property="email" />
+		<result column="phone" property="phone" />
+		<result column="call" property="call" />
+		<result column="dept_code" property="deptCode" />
+		<result column="job_code" property="jobCode" />
+		<result column="dept_name" property="deptName" />
+		<result column="image" property="image" />
+		<result column="adminyn" property="adminYn" />
+	</resultMap>
+	
+	<select id="selectDept" resultMap="organResult">
+
+		select
+			    dept_code
+			  , dept_name
+		  from department
+	
+	</select>
+
+	<select id="selectOrgan" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_code
+			  , image
+			  , admin_yn
+		  from employee
+		  join department using (dept_code)
+		 where status = 'Y'	
+		 order by dept_code desc
+	
+	</select>
+
+
+
+
+
+
+
+</mapper>

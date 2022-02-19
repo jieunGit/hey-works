@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="workingMapper">
+
+    <!-- 출근 insert -->
+	<insert id="insertClockIn">
+		INSERT 
+		  INTO TNA 
+		  (
+		    TNA_NO
+		  , USER_NO
+		  , TNA_DATE
+		  , CLOCK_IN
+		  , CLOCK_OUT
+		  , TNA_STATUS
+		  ) 
+		  VALUES
+		  (
+		    SEQ_TNANO.NEXTVAL
+		  , #{userNo}
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		  , TO_CHAR(SYSDATE, 'HH24:MI')
+		  , NULL
+		  , NULL
+		  )
+	</insert>  
+	
+	<!-- 퇴근 insert -->
+	<update id="updateClockOut">
+		UPDATE TNA
+		   SET CLOCK_OUT = TO_CHAR(SYSDATE, 'HH24:MI')
+		 WHERE USER_NO = #{userNo} 
+	</update> 
+	
+	<!-- 휴가 신청 insert -->
+	<insert id="insertLeave">
+		INSERT 
+		  INTO LEAVE_ALIST
+		  (
+		    LEAVE_ANO
+		  , USER_NO
+		  , APPLY_DATE
+		  , LEAVE_TYPE
+		  , START_DATE
+		  , END_DATE
+		  , LEAVE_USE
+		  , REASON
+		  , STATUS
+		  ) 
+		  VALUES
+		  (
+		    SEQ_LANO.NEXTVAL
+		  , #{userNo}
+		  , SYSDATE
+		  , #{leaveType}
+		  , #{startDate}
+		  , #{endDate}
+		  , #{leaveUse}
+		  , #{reason}
+		  , '대기'
+		  )	
+	</insert>
+</mapper>

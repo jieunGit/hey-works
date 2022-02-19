@@ -129,19 +129,76 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public int insertExpenseReport(Approval ap) {
-		return 0;
+		
+		return aDao.insertExpenseReport(sqlSession, ap);
+		
 	}
 
 	@Override
 	public int insertBusinessDraft(Approval ap) {
-		return 0;
+		
+		return aDao.insertBusinessDraft(sqlSession, ap);
+		
 	}
 
 	@Override
 	public int insertEquipmentBuy(Approval ap) {
-		return 0;
+		return aDao.insertEquipmentBuy(sqlSession, ap);
+	}
+
+	@Override
+	public int insertItemList(ArrayList<Approval> itemList) {
+		return aDao.insertItemList(sqlSession, itemList);
+	}
+
+	@Override
+	public int deleteApproval(String ano) {
+		
+		return aDao.deleteApproval(sqlSession, ano);
+		
+	}
+
+	@Override
+	public int selectReadNrefListCount(String userNo) {
+		return aDao.selectReadNrefListCount(sqlSession, userNo);
+	}
+
+	@Override
+	public ArrayList<Approval> selectReadReference(PageInfo rrpi, String userNo) {
+		return aDao.selectReadReference(sqlSession, rrpi, userNo);
+	}
+
+	@Override
+	public int selectConfirmProcedure(HashMap<String, String> map) {
+		return aDao.selectConfirmProcedure(sqlSession, map);
+	}
+
+	@Override
+	public int updateConfirmTable(HashMap<String, String> map) {
+		return aDao.updateConfirmTable(sqlSession, map);
 	}
 	
+	@Override
+	public int updateConfirmApproval(HashMap<String,String> map) {
+		return aDao.updateConfirmApproval(sqlSession, map);
+	}
+
+	@Override
+	public int selectConfirmPeopleCount(String ano) {
+		return aDao.selectConfirmPeopleCount(sqlSession, ano);
+	}
+
+	@Override
+	public int updateLastConfirm(String ano) {
+		return aDao.updateLastConfirm(sqlSession, ano);
+	}
+
+	// 반려하기
+	@Override
+	public int updateConfirmReject(HashMap<String, String> map) {
+		return aDao.updateConfirmReject(sqlSession, map);
+	}
+
 	
 
 	

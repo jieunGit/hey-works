@@ -136,7 +136,7 @@
                 <li><a href="">
                     <img src="resources/images/letter.png">
                 </a></li>
-                <li><a href="">
+                <li><a href="myWorkingList.wo">
                     <img src="resources/images/bag.png">
                 </a></li>
                 <li><a href="main.el">

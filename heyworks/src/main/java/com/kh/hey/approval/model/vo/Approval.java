@@ -48,7 +48,7 @@ public class Approval {
 	private String itemName;
 	private String itemSize;
 	private String unit;
-	private int total; // 비품수량
+	private String total; // 비품수량
 	private String amount;
 	private String note;
 	private ArrayList<Approval> itemList;
@@ -88,4 +88,5 @@ public class Approval {
 	
 	private String formNoName;
 
+	
 }

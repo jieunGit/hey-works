@@ -154,11 +154,11 @@
 		            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
 		            	</c:when>
 		            	<c:otherwise>
-		            		<li class="page-item"><a class="page-link" href="endlist.el?cpage=${pi.currentPage-1}&status="${sb.status}>이전</a></li>
+		            		<li class="page-item"><a class="page-link" href="endlist.el?cpage=${pi.currentPage-1}&status=${status}">이전</a></li>
 		            	</c:otherwise>
 		            </c:choose>
 		            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-		            	<li class="page-item"><a class="page-link" href="endlist.el?cpage=${p}&status="${sb.status}">${p}</a></li>
+		            	<li class="page-item"><a class="page-link" href="endlist.el?cpage=${p}&status=${status}">${p}</a></li>
 		            </c:forEach>
 		            
 		            <c:choose>
@@ -166,7 +166,7 @@
 		            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
 		            	</c:when>
 		            	<c:otherwise>
-		            		<li class="page-item"><a class="page-link" href="endlist.el?cpage=${pi.currentPage+1}&status="${sb.status}">다음</a></li>
+		            		<li class="page-item"><a class="page-link" href="endlist.el?cpage=${pi.currentPage+1}&status=${status}">다음</a></li>
 		            	</c:otherwise>
 		           	</c:choose>
 		        </c:otherwise>
