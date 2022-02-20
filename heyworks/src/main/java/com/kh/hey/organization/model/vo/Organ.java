@@ -19,7 +19,9 @@ public class Organ {
 	private String deptCode;
 	private String jobCode;
 	private String deptName;
+	private String jobName;
 	private String image;
+	private String status;
 	private String adminYn;
 	
 	

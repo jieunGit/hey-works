@@ -155,47 +155,41 @@
             <div class="chart-area">
 
                 <!--소속임직원-->
-                
-                <c:forEach var="d" items="${ dept }">
-                	<div class="deptName">
-                    	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ d.deptName }</i>
-                	</div>
-                	<div class="chart">
-	                	<c:forEach var="e" items="${ organ }">
-	                		<c:if test="${ e.deptCode eq d.deptCode }">
-			                    <dl class="userList" data-toggle="modal" data-target="#myModal">
-			                    	<c:choose>
-			                    		<c:when test="${e.status eq 'R '}">
-					                        <dt class="name">${ e.userName }<span style="color:rgb(147, 177, 223);">(휴직)</span></dt>
-					                    </c:when>    
-				                        <c:otherwise>
-				                        	<dt class="name">${ e.userName }</dt>
-				                        </c:otherwise>
-			                        </c:choose>
-			                        <dd class="picture">
-			                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
-			                        </dd>
-			                        <dd class="teams">${ e.deptName }</dd>
-			                        <c:choose>
+               	<div class="deptName">
+                   	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ dt.deptName }</i>
+               	</div>
+               	<div class="chart">
+                	<c:forEach var="e" items="${ organ }">
+		                    <dl data-toggle="modal" data-target="#myModal">
+		                    	<c:choose>
+		                    		<c:when test="${ e.status eq 'R' }">
+				                        <dt class="name">${ e.userName }<span style="color:rgb(147, 177, 223);">(휴직)</span></dt>
+				                    </c:when>    
+			                        <c:otherwise>
+			                        	<dt class="name">${ e.userName }</dt>
+			                        </c:otherwise>
+		                        </c:choose>
+		                        <dd class="picture">
+		                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
+		                        </dd>
+		                        <dd class="position">${ e.deptName }</dd>
+		                        <c:choose>
 			                        	<c:when test="${ e.jobCode eq '0' }">
 			                        		<dd class="position">-</dd>	
 			                        	</c:when>
 			                        	<c:otherwise>
 			                        		<dd class="position">${ e.jobName }</dd>	
 			                        	</c:otherwise>
-			                        </c:choose>
-			                        <dd class="userNo" style="display:none;">${ e.userNo }</dd>
-			                    </dl>
-		                    </c:if>
-	                    </c:forEach>
-                	</div>
-                </c:forEach>
+		                        </c:choose>
+		                    </dl>
+                   	</c:forEach>
+               	</div>
 
-            </div>
+        	</div>
 
-        </div>
-
-    </div>
+    	</div>
+    	
+   	</div>
                 
                 
 	<!-- 임직원 상세보기 모달창 -->
@@ -305,7 +299,7 @@
 		})
 	
 	</script>
-    
+
     
    
 

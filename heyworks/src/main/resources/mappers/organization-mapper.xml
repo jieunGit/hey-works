@@ -11,9 +11,11 @@
 		<result column="call" property="call" />
 		<result column="dept_code" property="deptCode" />
 		<result column="job_code" property="jobCode" />
+		<result column="job_name" property="jobName" />
 		<result column="dept_name" property="deptName" />
 		<result column="image" property="image" />
 		<result column="adminyn" property="adminYn" />
+		<result column="status" property="status" />
 	</resultMap>
 	
 	<select id="selectDept" resultMap="organResult">
@@ -41,13 +43,107 @@
 			             , 2, '주임'
 			             , 3, '대리'
 			             , 4, '과장'
-			             , 9, '대표이사') job_code
+			             , 9, '대표이사') job_name
 			  , image
 			  , admin_yn
+			  , nvl(job_code, 0) job_code
 		  from employee
 		  join department using (dept_code)
-		 where status = 'Y'	
-		 order by dept_code desc
+		 where (status = 'Y' or status = 'R')
+		 order by job_code desc
+		 		, user_name asc
+		 		
+	</select>
+	
+	<select id="deptOrgan" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_name
+			  , image
+			  , admin_yn
+			  , nvl(job_code, 0) job_code
+		  from employee
+		  join department using (dept_code)
+		 where (status = 'Y' or status = 'R')
+		   and dept_code = #{ dno }
+		 order by job_code desc
+		 		, user_name asc
+	
+	</select>
+	
+	<select id="selectDeptName" resultMap="organResult">
+
+		select
+			    dept_code
+			  , dept_name
+		  from department
+		 where dept_code = #{ dno }
+	
+	</select>
+	
+	<select id="selectEmployee" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_name
+			  , image
+			  , admin_yn
+			  , nvl(job_code, 0) job_code
+		  from employee
+		  join department using (dept_code)
+		 where (status = 'Y' or status = 'R')
+		   and user_name = #{ userName }
+	     order by job_code desc
+		 		, user_name asc
+	
+	</select>
+	
+	<select id="detailEmployee" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , dept_code
+			  , dept_name
+			  , job_code
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_name
+			  , image
+		  from employee
+		  join department using (dept_code)
+		 where user_no = #{ userNo }
 	
 	</select>
 
