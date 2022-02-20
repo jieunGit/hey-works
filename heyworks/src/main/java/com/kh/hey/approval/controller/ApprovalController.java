@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.hey.approval.model.service.ApprovalService;
 import com.kh.hey.approval.model.vo.Approval;
+import com.kh.hey.common.model.service.ReplyService;
 import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.common.template.Pagination;
 import com.kh.hey.employee.model.service.EmployeeService;
@@ -34,6 +35,9 @@ public class ApprovalController {
 	
 	@Autowired
 	private EmployeeService eService;
+	
+	@Autowired
+	private ReplyService rService;
 	
 	@RequestMapping("main.el")
 	public String mainList() {
@@ -618,6 +622,15 @@ public class ApprovalController {
 		
 	} // 반려하기
 	
+	// 결재창에서 이름으로 검색하기
+	@ResponseBody
+	@RequestMapping(value="searchConfirm.el", produces="application/json; charset=UTF-8")
+	public String ajaxSelectSearchConfirm(String keyword) {
+		
+		ArrayList<Employee> result = eService.ajaxSelectSearchConfirm(keyword);
+		
+		return new Gson().toJson(result);
+	}
 	
 	
 	

@@ -71,6 +71,7 @@
 		                      , 9, '대표이사') job_name
 		  from employee
 		  join department using(dept_code)
+		 
 		 where dept_code = #{deptNum}
 		 <if test='jobNum == "9"'>
 		   and job_code = 9
@@ -87,7 +88,29 @@
 		  from department
 	</select>
 	
+	<!-- 전자결재 결재창 이름조회 -->
+	<select id="ajaxSelectSearchConfirm" resultMap="employeeResult">
+		select
+		       user_no
+		     , user_name
+		     , dept_name dept_code
+		     , job_code
+		     , decode(job_code, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') job_name
+		  from employee
+		  join department using(dept_code)
+		 where user_name like '%'||#{keyword}||'%'
+         order
+            by job_code desc
+	</select>
+
+
+	
 	<!-- 전자결재 관리자용 사원 알아오기 -->
+	
 	
 	
 	

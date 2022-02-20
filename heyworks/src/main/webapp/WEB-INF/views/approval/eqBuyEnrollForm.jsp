@@ -102,13 +102,24 @@
         margin-bottom: 10px;
     }
     #nameCheck{width: 260px;}
+    #nameCheck>*{float:left;}
     #nameCheck>p{
-        width: 100%;
+        width: 200px;
         height: 40px;
         margin-top: 5px;
         border: 1px solid lightgray;
         line-height: 40px;
         padding-left: 10px;
+    }
+    #nameCheck>button{
+    	widht:40px;
+    	height:25px;
+    	border-radius:100%;
+    	border:1px solid gray;
+    	text-align:center;
+    	margin-top:10px;
+    	margin-left:10px;
+    	line-height:10px;
     }
     #fileNotice{
     	font-size:12px;
@@ -285,8 +296,8 @@
                     <div id="searchNsawon" style="overflow: auto;">
                         <!--ajax로 이름 검색요청-->
                         <div>
-                            <input type="text" class="form-control" placeholder="이름,사번으로 검색" style="width: 350px;">
-                            <button type="button" class="btn btn-sm btn-outline-dark">검색</button>
+                            <input type="text" class="form-control" placeholder="이름으로 검색" style="width: 350px;" name="keyword">
+                            <button type="button" class="btn btn-sm btn-outline-dark" onclick="searchConfirm();">검색</button>
                         </div>
                         <table class="table sawon-list" style="overflow: auto;">
                             <thead>
@@ -369,7 +380,35 @@
             			
             		}
             	})
-            } /*ajax끝*/
+            } 
+            
+			function searchConfirm(){
+            	
+            	var keyword = $("input[name='keyword']").val();
+            	console.log(keyword);
+            	
+            	$.ajax({
+	            	url:"searchConfirm.el",
+	            	data:{keyword:keyword},
+	            	success:function(result){
+	            		
+	            		let listresult = "";
+	            		for(let i in result){
+	            			listresult += "<tr>"
+		                         	   + "<td width='48'><input type='checkbox'></td>"
+		                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
+		                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
+		                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
+		                			   + "</tr>"
+	            		}
+	            		$(".sawon-list>tbody").html(listresult);
+	            	},error:function(){
+            			console.log("사원조회용 ajax통신 실패");
+            		}
+            	})
+            }
+            
+            /*ajax끝*/
             
          // 결재버튼 플러스 마이너스까지 일단 완성 체크박스랑 사원비교 아직,,,
             /*버튼 클릭시 결재 화면에 뿌려질 용도*/

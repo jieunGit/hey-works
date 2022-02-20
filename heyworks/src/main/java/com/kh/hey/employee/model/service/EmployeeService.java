@@ -11,7 +11,7 @@ public interface EmployeeService {
 	// 전자결재용
 	ArrayList<Employee> ajaxSelectEmployeeList(HashMap<String, Integer> map);
 	ArrayList<Employee> selectDeptList();
-	
+	ArrayList<Employee> ajaxSelectSearchConfirm(String keyword);
 	
 	
 	

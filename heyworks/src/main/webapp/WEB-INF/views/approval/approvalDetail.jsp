@@ -50,12 +50,16 @@
         line-height: 40px;
         font-weight: 600;
     }
-    #replyContent{width: 730px;}
+    #replyContent{width: 700px;}
     #form-left>*{
     	float:left;
     }
     #form-left{margin-bottom:40px;}
     #reason{width:850px;}
+    #reply-list input{
+    	width:100%;
+    	border:1px solid tomato;
+    }
 </style>
 </head>
 <body>
@@ -333,27 +337,149 @@
         <hr>
 
         <div>
-            <table>
-                <tr style="height: 40px;">
-                    <th width="120">강동원&nbsp;팀장</th>
-                    <td width="700">아주 잘 작성했어요. 이대로 진행하세요</td>
-                    <td width="100" style="font-size: 11px; color: lightgrey;">
-                        2022/02/02 16:20
-                    </td>
-                </tr>
+            <table id="reply-list"> <!-- 댓글용 테이블 -->
+            	
             </table>
         </div>
         <br>
 
         <div id="reply-insert">
-            <div id="replyName">김삼조&nbsp;사원</div>
-            <div id="replyContent"><input type="text" class="form-control" placeholder="댓글을 입력해주세요."></div>
-            <button type="submit" class="btn btn-sm">등록</button>
+            <div id="replyName">${ap.userNo}</div>
+            <div id="replyContent"><input type="text" class="form-control" placeholder="댓글을 입력해주세요." id="reply-content"></div>
+            <button type="button" class="btn btn=sm" onclick="insertReply();">등록</button>
         </div>
 
     </div>
 		
 	</div>
+	
+	<script>
+		$(function(){
+			selectReplyList();
+			//setInterval(selectReplyList, 1000);
+			
+		}) // 댓글 실시간 조회용
+	
+		function insertReply(){
+			if($("#reply-content").val().trim().length != 0){
+				$.ajax({
+					url:"rinsert.rp",
+					data:{refBoardNo:'${ap.approvalNo}',
+						replyContent:$("#reply-content").val(),
+						userNo:${loginUser.userNo}
+					},
+					success:function(){
+						
+						if(status == 'S'){
+    						selectReplyList();
+    						$("#replyContent").val("");
+							alertify.alert("댓글이 등록되었습니다.");
+    					}else{
+    						alertify.alert("댓글등록 실패!");
+    					}
+						
+					},error:function(){
+						console.log("댓글 작성용 ajax통신 실패");
+					}
+				})
+			}
+			
+		}
+		
+		function selectReplyList(){
+			$.ajax({
+				url:"rlist.rp",
+				data:{ano:'${ap.approvalNo}'},
+				success:function(rlist){
+										
+					let list = "";
+					for(let i in rlist){
+						list += "<tr style='height: 40px;' class='originReply'>"
+	                    	  + "<th width='120'>" + rlist[i].userNo + "&nbsp;" + rlist[i].jobName + "</th>"
+	                          + "<td width='600'>" + rlist[i].replyContent + "</td>"
+	                          + "<td width='100' style='font-size: 12px; color: lightgrey;'>" + rlist[i].createDate + "</td>"
+	                          + "<td width='100'>"
+	                          + "<button class='btn btn-sm' onclick='updateForm(this);'>수정</button><button class='btn btn-sm' onclick='deleteReply(this);'>삭제</button></td>"
+	                          + "</tr>" 
+	                          + "<tr style='display:none' class='updateReply'>"
+	                          + "<th width='120'>" + "<input type='text' name='replyNo' value='"+ rlist[i].replyNo + "' style='color:white; width:120px; border:none;'></th>"
+	                          + "<td width='700' colspan='2'>" + "<input type='text' name='replyContent' class='form-control' value='"+ rlist[i].replyContent + "'></td>"
+	                          + "<td width='100'>"
+	                          + "<button class='btn btn-sm' onclick='updateReply(this);'>수정</button><button class='btn btn-sm' onclick='cancleUpdate(this);'>취소</button></td>"
+	                          + "</tr>"
+					}
+
+					$("#reply-list").html(list);
+	
+				},error:function(){
+					console.log("댓글 조회용 ajax통신 실패");
+				}
+			})
+		}
+		
+		function deleteReply(){
+			
+			$.ajax({
+				url:"delete.rp",
+				data:{
+					replyNo:$("input[name='replyNo']").val()
+				},success:function(result){
+					
+					if(result == 'S'){
+						alertify.alert("댓글이 삭제되었습니다.");
+						selectReplyList();
+					}else{
+						alertify.alert("댓글삭제 실패!");
+					}
+					
+				},error:function(){
+					console.log("댓글작성용 ajax통신 실패");
+				}
+			})
+			
+		}
+		
+		function updateForm(updatebtn){ // 수정폼으로 연결
+			
+			$(updatebtn).parent().parent().attr('style', "display:none;");
+			$(updatebtn).parent().parent().next().attr('style', "display:''");
+			
+		}
+		
+		function cancleUpdate(canclebtn){ // 취소눌렀을때
+			
+			$(canclebtn).parent().parent().prev().attr('style', "display:'';");
+			$(canclebtn).parent().parent().attr('style', "display:none");
+			
+		}
+		
+		function updateReply(update){ // 수정하기
+			
+			const replyNo = $(update).parent().parent().find("input[name='replyNo']").val();
+			const replyContent = $(update).parent().parent().find("input[name='replyContent']").val();
+
+			$.ajax({
+				url:"update.rp",
+				type:"post",
+				data:{
+					replyNo:replyNo,
+					replyContent:replyContent,
+					refBoardNo:'${ap.approvalNo}'
+				},success:function(result){
+					
+					if(result == 'S'){
+						alertify.alert("댓글 수정에 성공했습니다.");
+						selectReplyList();
+					}else{
+						alertify.alert("댓글수정 실패!");
+					}
+					
+				},error:function(){
+					console.log("댓글수정용 ajax통신 실패");	
+				}
+			})
+		}
+	</script>
 
 		  
 		  

@@ -202,6 +202,8 @@
 		 <if test='status == "T"'>
 		   and ep.status = 'T'
 		 </if>
+		 order
+		    by create_date desc
 	</select>
 	
 	<!-- 내가 참조, 열람자로 목록조회 -->
@@ -646,7 +648,6 @@
 		     , grade = #{grade}
 		     , read_no = #{read}
 		     , reference_no = #{reference}
-		     , create_date = sysdate
 		     , origin_name = #{originName}
 		     , file_path = #{filePath}
 		 where elec_appr_no = #{approvalNo}
