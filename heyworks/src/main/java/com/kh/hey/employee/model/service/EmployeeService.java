@@ -15,4 +15,7 @@ public interface EmployeeService {
 	
 	
 	
+	// 회원정보수정
+	int updateEmployee(Employee e);
+	
 }

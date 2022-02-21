@@ -344,7 +344,7 @@
         <br>
 
         <div id="reply-insert">
-            <div id="replyName">${ap.userNo}</div>
+            <div id="replyName">${loginUser.userName}</div>
             <div id="replyContent"><input type="text" class="form-control" placeholder="댓글을 입력해주세요." id="reply-content"></div>
             <button type="button" class="btn btn=sm" onclick="insertReply();">등록</button>
         </div>
@@ -354,12 +354,14 @@
 	</div>
 	
 	<script>
+		const loginName = '${loginUser.userName}';
+	
 		$(function(){
 			selectReplyList();
 			//setInterval(selectReplyList, 1000);
 			
 		}) // 댓글 실시간 조회용
-	
+
 		function insertReply(){
 			if($("#reply-content").val().trim().length != 0){
 				$.ajax({
@@ -368,12 +370,12 @@
 						replyContent:$("#reply-content").val(),
 						userNo:${loginUser.userNo}
 					},
-					success:function(){
+					success:function(result){
 						
-						if(status == 'S'){
-    						selectReplyList();
-    						$("#replyContent").val("");
+						if(result == 'S'){
 							alertify.alert("댓글이 등록되었습니다.");
+    						$("#replyContent").val("");
+    						selectReplyList();
     					}else{
     						alertify.alert("댓글등록 실패!");
     					}
@@ -387,6 +389,7 @@
 		}
 		
 		function selectReplyList(){
+
 			$.ajax({
 				url:"rlist.rp",
 				data:{ano:'${ap.approvalNo}'},
@@ -395,27 +398,47 @@
 					let list = "";
 					for(let i in rlist){
 						list += "<tr style='height: 40px;' class='originReply'>"
-	                    	  + "<th width='120'>" + rlist[i].userNo + "&nbsp;" + rlist[i].jobName + "</th>"
+	                    	  + "<th width='130'>" + rlist[i].userNo + "&nbsp;" + rlist[i].jobName + "</th>"
 	                          + "<td width='600'>" + rlist[i].replyContent + "</td>"
 	                          + "<td width='100' style='font-size: 12px; color: lightgrey;'>" + rlist[i].createDate + "</td>"
-	                          + "<td width='100'>"
-	                          + "<button class='btn btn-sm' onclick='updateForm(this);'>수정</button><button class='btn btn-sm' onclick='deleteReply(this);'>삭제</button></td>"
+	                          + "<td width='100' class='updelbtn'>"
+	                          + "<button class='btn btn-sm' onclick='updateForm(this);'>수정</button><button class='btn btn-sm' onclick='deleteReply(this);'>삭제</button>"
+	                          + "<input type='hidden' name='replyName' value='"+ rlist[i].userNo + "'></td>"
 	                          + "</tr>" 
 	                          + "<tr style='display:none' class='updateReply'>"
-	                          + "<th width='120'>" + "<input type='text' name='replyNo' value='"+ rlist[i].replyNo + "' style='color:white; width:120px; border:none;'></th>"
+	                          + "<th width='130'>" + "<input type='text' name='replyNo' value='"+ rlist[i].replyNo + "' style='color:white; width:120px; border:none;'></th>"
 	                          + "<td width='700' colspan='2'>" + "<input type='text' name='replyContent' class='form-control' value='"+ rlist[i].replyContent + "'></td>"
 	                          + "<td width='100'>"
 	                          + "<button class='btn btn-sm' onclick='updateReply(this);'>수정</button><button class='btn btn-sm' onclick='cancleUpdate(this);'>취소</button></td>"
 	                          + "</tr>"
+	                          
 					}
-
+					
 					$("#reply-list").html(list);
-	
+
 				},error:function(){
 					console.log("댓글 조회용 ajax통신 실패");
 				}
 			})
 		}
+		
+		
+		$(function(){
+			
+			const replyName = document.getElementsByName('replyName').value;
+			console.log(replyName);
+
+			$("#reply-list>tr input[type='hidden']").each(function(){
+				
+				if(loginName == replyName){
+					
+				}
+				
+			})
+			
+
+			
+		})
 		
 		function deleteReply(){
 			

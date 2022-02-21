@@ -30,25 +30,25 @@
 	<select id="loginEmployee" resultMap="employeeResult">
 
 	select
-		   user_no
-		  ,user_name
-		  ,user_id
-		  ,user_pwd
-		  ,email
-		  ,birth
-		  ,phone
-		  ,call
-		  ,post
-		  ,address
-		  ,address_detail
-		  ,hire_date
-		  ,end_date
-		  ,status
-		  ,dept_code
-		  ,dept_name
-		  ,job_code
-		  ,admin_yn
-		  ,image
+		    user_no
+		  , user_name
+		  , user_id
+		  , user_pwd
+		  , email
+		  , to_char(to_date(birth), 'YYYY/MM/DD') birth
+		  , phone
+		  , call
+		  , post
+		  , address
+		  , address_detail
+		  , to_char(to_date(hire_date), 'YYYY/MM/DD') hire_date
+		  , end_date
+		  , status
+		  , dept_code
+		  , dept_name
+		  , job_code
+		  , admin_yn
+		  , image
 	  from employee
 	  join department using(dept_code)
 	 where status = 'Y'
@@ -115,7 +115,17 @@
 	
 	
 	
-	
+	<!-- 회원정보수정 -->
+	<update id="updateEmployee">
+		update
+		 	   employee
+		   set phone = #{phone}
+		     , call = #{call}
+		     , post = #{post}
+		     , address = #{address}
+		     , address_detail = #{addressDetail}
+		 where user_no = #{userNo}
+	</update>
 	
 	
 	

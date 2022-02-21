@@ -66,8 +66,9 @@
         height: 100%;
         padding: 18px;        
     }
- 
-    
+ 	#profile{
+		border-radius:100%; 	
+ 	}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -124,8 +125,8 @@
             <a href="">
                 <img src="resources/images/miniletter.png" id="letter">
             </a>
-            <a href="">
-                <img src="resources/images/profile.png">
+            <a href="myPage.em">
+                <img src="resources/images/user.jpg" id="profile">
             </a>
         </div>
     </div>
