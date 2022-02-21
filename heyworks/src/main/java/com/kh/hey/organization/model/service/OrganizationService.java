@@ -6,17 +6,22 @@ import com.kh.hey.organization.model.vo.Organ;
 
 public interface OrganizationService {
 	
-	// 0. 부서 전체 갯수 조회
+	// 1. 전체 조직도 조회
+	// 1-1. 전체 부서 조회
+	ArrayList<Organ> selectOrgan();
 	ArrayList<Organ> selectDept();
 	
-	// 1. 전체 조직도 조회
-	ArrayList<Organ> selectOrgan();
+	// 2. 부서별 조직도 조회
+	// 2-1. 선택한 부서 조회
+	Organ selectDeptName(int dno);
+	ArrayList<Organ> deptOrgan(int dno);
 	
-	// 2. 조직도 > 임직원 상세조회
-	Organ selectEmployee(int userNo);
+	// 3. 임직원 검색
+	ArrayList<Organ> selectEmployee(String userName);
 	
-	// 3. 부서별 조직도 조회
-	ArrayList<Organ> DeptOrgan(int deptCode);
+	// 4. 임직원 상세조회
+	Organ detailEmployee(int userNo);
+	
 	
 
 

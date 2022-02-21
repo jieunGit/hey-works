@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="replyMapper">
+
+	<resultMap type="Reply" id="replyResult">
+		<result column="reply_no" property="replyNo" />
+		<result column="user_no" property="userNo" />
+		<result column="reply_content" property="replyContent" />
+		<result column="create_date" property="createDate" />
+		<result column="ref_bno" property="refBoardNo" />
+		<result column="status" property="status" />
+		<result column="job_code" property="jobName" />
+	</resultMap>
+	
+	<!-- 댓글목록 조회하기 -->
+	<select id="ajaxSelectReplyList" resultMap="replyResult">
+		select
+		       reply_no
+		     , user_name user_no
+		     , reply_content
+		     , decode(job_code, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') job_code
+             , to_char(create_date, 'YY/MM/DD HH24:MI:SS') create_date
+		  from reply r
+		  join employee using(user_no)
+		 where ref_bno = #{ano}
+		   and r.status = 'Y'
+         order
+            by create_date asc
+	</select>
+	
+	<!-- 댓글 입력하기 -->
+	<insert id="ajaxInsertReply">
+		insert
+		  into reply
+		  (
+		    reply_no
+		  , user_no
+		  , reply_content
+		  , ref_bno
+		  )
+		  values
+		  (
+		    seq_rno.nextval
+		  , #{userNo}
+		  , #{replyContent}
+		  , #{refBoardNo}
+		  )
+	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<update id="ajaxDeleteReply">
+		update
+		       reply
+		   set status = 'N'
+		 where reply_no = #{replyNo}
+	</update>
+	
+	<!-- 댓글 수정 -->
+	<update id="ajaxUpdateReply">
+		update
+			   reply
+		   set reply_content = #{replyContent}
+		 where ref_bno = #{refBoardNo}
+		   and reply_no = #{replyNo}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

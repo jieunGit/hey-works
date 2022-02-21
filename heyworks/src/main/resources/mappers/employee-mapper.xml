@@ -30,25 +30,25 @@
 	<select id="loginEmployee" resultMap="employeeResult">
 
 	select
-		   user_no
-		  ,user_name
-		  ,user_id
-		  ,user_pwd
-		  ,email
-		  ,birth
-		  ,phone
-		  ,call
-		  ,post
-		  ,address
-		  ,address_detail
-		  ,hire_date
-		  ,end_date
-		  ,status
-		  ,dept_code
-		  ,dept_name
-		  ,job_code
-		  ,admin_yn
-		  ,image
+		    user_no
+		  , user_name
+		  , user_id
+		  , user_pwd
+		  , email
+		  , to_char(to_date(birth), 'YYYY/MM/DD') birth
+		  , phone
+		  , call
+		  , post
+		  , address
+		  , address_detail
+		  , to_char(to_date(hire_date), 'YYYY/MM/DD') hire_date
+		  , end_date
+		  , status
+		  , dept_code
+		  , dept_name
+		  , job_code
+		  , admin_yn
+		  , image
 	  from employee
 	  join department using(dept_code)
 	 where status = 'Y'
@@ -71,6 +71,7 @@
 		                      , 9, '대표이사') job_name
 		  from employee
 		  join department using(dept_code)
+		 
 		 where dept_code = #{deptNum}
 		 <if test='jobNum == "9"'>
 		   and job_code = 9
@@ -87,12 +88,44 @@
 		  from department
 	</select>
 	
+	<!-- 전자결재 결재창 이름조회 -->
+	<select id="ajaxSelectSearchConfirm" resultMap="employeeResult">
+		select
+		       user_no
+		     , user_name
+		     , dept_name dept_code
+		     , job_code
+		     , decode(job_code, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') job_name
+		  from employee
+		  join department using(dept_code)
+		 where user_name like '%'||#{keyword}||'%'
+         order
+            by job_code desc
+	</select>
+
+
+	
+	<!-- 전자결재 관리자용 사원 알아오기 -->
 	
 	
 	
 	
 	
-	
+	<!-- 회원정보수정 -->
+	<update id="updateEmployee">
+		update
+		 	   employee
+		   set phone = #{phone}
+		     , call = #{call}
+		     , post = #{post}
+		     , address = #{address}
+		     , address_detail = #{addressDetail}
+		 where user_no = #{userNo}
+	</update>
 	
 	
 	

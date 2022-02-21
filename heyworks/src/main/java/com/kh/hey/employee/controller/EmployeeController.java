@@ -55,6 +55,32 @@ public class EmployeeController {
 		session.invalidate();
 		return "redirect:/";
 	}
+
+	@RequestMapping("myPage.em")
+	public String myPage() {
+		
+		return "employee/myPage";	
+		
+	}
+	
+	@RequestMapping("update.em")
+	public String updateEmployee(HttpSession session, Employee e) {
+		
+		int result = eService.updateEmployee(e);
+		
+		if(result > 0) {
+			session.setAttribute("loginUser", eService.loginEmployee(e));
+			session.setAttribute("alertMsg", "회원 정보가 수정되었습니다.");
+			
+			return "redirect:myPage.em";
+		}else {
+			session.setAttribute("alertMsg", "회원 정보 수정 실패!");
+			return "redirect:myPage.em";
+		}
+		
+	}
+	
+	
 	
 	
 

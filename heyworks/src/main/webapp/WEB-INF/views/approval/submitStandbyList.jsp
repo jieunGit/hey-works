@@ -43,8 +43,12 @@
         text-decoration: none;
     }
     #pagingArea{
-    	width:fit-content;
-    	margin-left: 850px;
+	   	margin-left:850px;
+    }
+    .pagination>li{
+    	border-radius:10px;
+    	margin-left:5px;
+		font-size:10px;
     }
     .table-hover{
     	table-layout:fixed;
@@ -144,10 +148,10 @@
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.currentPage eq 1}">
-            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="onlist.el?cpage=${pi.currentPage-1}&status=${status}">이전</a></li>
+            		<li class="page-item"><a class="page-link" href="onlist.el?cpage=${pi.currentPage-1}&status=${status}">◀ PREV</a></li>
             	</c:otherwise>
             </c:choose>
             <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
@@ -156,10 +160,10 @@
             
             <c:choose>
         		<c:when test="${pi.currentPage eq pi.endPage}">
-            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="onlist.el?cpage=${pi.currentPage+1}&status=${status}">다음</a></li>
+            		<li class="page-item"><a class="page-link" href="onlist.el?cpage=${pi.currentPage+1}&status=${status}">NEXT ▶</a></li>
             	</c:otherwise>
            	</c:choose>
         </ul>

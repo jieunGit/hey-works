@@ -150,7 +150,7 @@
                 <p id="jobCode1">과장</p>
                 <table class="table" id="gwajang">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 1);" ></th>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 1);" ></td>>
                         <td width="100">200100005</td>
                         <td width="80" class="sawon-name1">박보검</td>
                     </tr>
@@ -160,7 +160,7 @@
                 <p id="jobCode2">대리</p>
                 <table class="table" id="daeli">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 2);" ></th>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 2);" ></td>>
                         <td width="100">200100005</td>
                         <td width="80" class="sawon-name2">이제훈</td>
                     </tr>
@@ -170,7 +170,7 @@
                 <p id="jobCode3">주임</p>
                 <table class="table" id="juim">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 3);" ></th>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 3);" ></td>>
                         <td width="100">200100005</td>
                         <td width="80" class="sawon-name3">조인성</td>
                     </tr>
@@ -180,7 +180,7 @@
                 <p id="jobCode4">사원</p>
                 <table class="table" id="sawon">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 4);" ></th>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 4);" ></td>>
                         <td width="100"><p>200100005</p></td>
                         <td width="80"><p class="sawon-name4">서강준</p></td>
                     </tr>

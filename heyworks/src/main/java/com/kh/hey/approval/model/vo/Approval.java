@@ -32,6 +32,11 @@ public class Approval {
 	private String originName;
 	private String filePath;
 	
+	private String readJob;
+	private String referenceJob;
+	private String readNo;
+	private String refNo;
+	
 	// 업무기안서
 	private String businessDraftContent;
 	

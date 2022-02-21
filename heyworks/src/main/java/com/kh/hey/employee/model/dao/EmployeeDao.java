@@ -36,10 +36,17 @@ public class EmployeeDao {
 		
 	} // 전자결재 인서트용 팀 조회
 	
+	public ArrayList<Employee> ajaxSelectSearchConfirm(SqlSessionTemplate sqlSession, String keyword){
+		return (ArrayList)sqlSession.selectList("employeeMapper.ajaxSelectSearchConfirm", keyword);
+	} // 전자결재 결재자 검색용
 	
 	
 	
 	
+	
+	public int updateEmployee(SqlSessionTemplate sqlSession, Employee e) {
+		return sqlSession.update("employeeMapper.updateEmployee", e);
+	} // 회원정보수정
 	
 	
 	

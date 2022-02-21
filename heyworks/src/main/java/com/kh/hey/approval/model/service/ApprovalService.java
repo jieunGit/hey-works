@@ -54,10 +54,10 @@ public interface ApprovalService{
 	int insertEquipmentBuy(Approval ap);
 	int insertItemList(ArrayList<Approval> itemList);
 	
-	// 4. 삭제하기
+	// 4. 삭제하기(기안취소)
 	int deleteApproval(String ano);
 	
-	// 승인하기
+	// 5. 승인하기
 	// 결재자 순번 알아오기
 	int selectConfirmProcedure(HashMap<String,String> map);
 	
@@ -69,9 +69,41 @@ public interface ApprovalService{
 	int selectConfirmPeopleCount(String ano);
 	int updateLastConfirm(String ano);
 	
-	// 반려하기
+	// 6. 반려하기
 	int updateConfirmReject(HashMap<String, String> map);
 
+	// 수정하기
+	int updateApproval(Approval ap); // 공통테이블 업데이트
+	int deleteConfirm(String ano); // 결제자 전체삭제
+	
+	int updateBusinessDraft(Approval ap); // 업무기안서 업데이트
+	
+	int updateEquipmentBuy(Approval ap); // 비품구매 업데이트
+	int deleteItemList(String ano); // 기존 아이템 삭제
+	
+	int updateCertificate(Approval ap);
+	int updateRecruiment(Approval ap); 
+	int updateExpenseReport(Approval ap);
+	
+	
+	
+	
+	//-----------------------------------------------------------
+	// 관리자 삭제목록조회
+	int selectDeleteListCount();
+	ArrayList<Approval> selectDeleteList(PageInfo pi);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
