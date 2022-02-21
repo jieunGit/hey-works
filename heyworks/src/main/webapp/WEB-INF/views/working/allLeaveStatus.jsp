@@ -104,7 +104,7 @@
 	                    <td>${ a.leaveUse }</td>
 	                    <td>${ a.leaveRest }</td>
 	                    <td>${ a.status }</td>
-	                    <td><a href="">>></a></td>
+	                    <td><a href=""><img src="resources/images/edit.png" style="width: 15px; height: 15px;"></a></td>
 	                </tr>
                 </c:forEach>
             </table>
