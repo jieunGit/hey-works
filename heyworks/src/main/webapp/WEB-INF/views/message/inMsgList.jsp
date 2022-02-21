@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,9 +53,13 @@
     }
     .contents .table {
         border-bottom: 2px solid rgb(223, 223, 223);
+        table-layout:fixed
     }
     .table thead {
         background-color: rgb(235, 231, 231);
+    }
+    .table .msgcontent:hover {
+    	cursor:pointer;
     }
     .contents button {
         width: 80px;
@@ -83,15 +88,15 @@
     <div class="outer">
    
         <jsp:include page="../common/menubar.jsp" />
-        <jsp:include page="sidebar.jsp" />
+        <jsp:include page="messageSidebar.jsp" />
    
         <div class="contents">
 
             <div class="top">
                 <!-- 검색바 -->
-                <form class="searchbar">
+                <form class="searchbar" action="search.msg" method="get">
                     <div class="input-group">
-                    <input type="text" class="form-control" placeholder="사번 / 이름 검색">
+                    <input type="text" class="form-control" name="userName" placeholder="발신자 이름 검색">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit" style="height: 34px;">
                         <i class="glyphicon glyphicon-search"></i>
@@ -100,59 +105,75 @@
                     </div>
                 </form>
 
-                <span id="count">받은쪽지함 n개</span>
+                <span id="count">받은쪽지함 ${ count }개</span>
             </div>
             
 
-            <!-- 받은쪽지내용 -->
+            <!-- 받은쪽지리스트 -->
             <table class="table">
                 <thead>
                     <tr>
-                        <th width="90"><input type="checkbox"></th>
+                        <th width="90"><input id="ckAll" type="checkbox"></th>
                         <th width="150">발송인</th>
                         <th width="">내용</th>
                         <th width="200">날짜</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>오늘 회의자료 이메일로 보내주세요</td>
-                        <td>2020-01-20 [11:30]</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>오늘 회의자료 이메일로 보내주세요</td>
-                        <td>2020-01-20 [11:30]</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>오늘 회의자료 이메일로 보내주세요</td>
-                        <td>2020-01-20 [11:30]</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>오늘 회의자료 이메일로 보내주세요</td>
-                        <td>2020-01-20 [11:30]</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>오늘 회의자료 이메일로 보내주세요</td>
-                        <td>2020-01-20 [11:30]</td>
-                    </tr>
+                	<c:forEach var="m" items="${ inList }">
+	                    <tr class="msgList">
+	                    	<td class="mno" style="display:none;">${ m.inMsgNo }</td>
+	                        <td><input class="ck" type="checkbox"></td>
+	                        <td>${ m.userName }</td>
+	                        <td class="msgcontent" style="text-overflow:ellipsis; overflow:hidden"><nobr>${ m.outMsgContent }</nobr></td>
+	                        <td>${ m.msgDate }</td>
+	                    </tr>
+                    </c:forEach>
                 </tbody>
             </table>
 
             <!-- 삭제|보관 버튼 -->
             <div class="buttons">
-                <button id="goDel" type="button" class="btn" style="margin-right: 10px;" data-toggle="modal" data-target="#delete">삭제</button>
+                <button id="goDel" type="button" class="btn btn-default" style="margin-right: 10px;" data-toggle="modal" data-target="#delete">삭제</button>
                 <button id="goKeep" type="button" class="btn btn-success" data-toggle="modal" data-target="#keep">보관함</button>
             </div>   
+
+			<!-- 상세보기용 script -->
+			<script>
+				$(function(){
+					$(".msgcontent").click(function(){
+						location.href = "detail.msg?mno=" + $(this).children('.mno').text();						
+					})
+				})
+			</script>
+			
+			<!-- 전체선택|전체해제 기능 -->
+		   <script>
+		         
+		         // 전체선택 클릭시 전부 선택
+		         $("#ckAll").on('click', function(){
+		            
+		            if($("#ckAll").is(':checked')) {
+		               $("input[type=checkbox]").prop("checked", true);
+		            }else {
+		               $("input[type=checkbox]").prop("checked", false);
+		            }
+		            
+		         })
+		         
+		         // 전부 선택시 전체선택 checked
+			     $("input[type=checkbox]").on('click', function(){
+			         var total = $(".ck").length;
+			         var checked = $(".ck:checked").length;
+			         
+			         if(total != checked) {
+			            $("#ckAll").prop("checked", false);
+			         }else {
+			            $("#ckAll").prop("checked", true);
+			         }
+			      })   
+		   </script>
+
 
             <!-- 삭제 Modal -->
             <div id="delete" class="modal fade" role="dialog">
@@ -188,18 +209,37 @@
                     </div>
             
                 </div>
-            </div>   
+            </div>
             
             <!-- 페이징바 -->
             <ul class="pagination" style="margin-left: 350px;">
-                <li><a href="#"><</a></li>
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">></a></li>
+            
+            	<c:choose>
+            		<c:when test="${ pi.currentPage eq 1 }">
+            			<li class="page-item disabled"><a href="#"><</a></li>
+            		</c:when>
+            		<c:otherwise>
+            			<li class="page-item"><a href="list.inMsg?cpage=${ pi.currentPage-1 }"><</a></li>
+            		</c:otherwise>
+            	</c:choose>
+            	
+            	<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+            		<li class="page-item"><a href="list.inMsg?cpage=${ p }">${ p }</a></li>
+            	</c:forEach>
+            	
+            	<c:choose>
+            		<c:when test="${ pi.currentPage eq pi.maxPage }">
+            			<li class="page-item disabled"><a href="#">></a></li>
+            		</c:when>
+            		<c:otherwise>
+            			<li class="page-item"><a href="list.inMsg?cpage=${ pi.currentPage+1 }">></a></li>
+            		</c:otherwise>
+            	</c:choose>
+            	
             </ul>
+            
+            
+            
             
             
         </div>
