@@ -78,7 +78,6 @@ public class ReserveController {
 	//카테고리별 예약 list
 	@RequestMapping(value="reserve.re")
 	public String reserveList(@RequestParam(value="cno") int categoryNo, Model model) {
-		
 		//카테고리 정보 select
 		ResourcesCategory rc =  rService.categoryInfo(categoryNo);
 		model.addAttribute("rc", rc);
@@ -86,8 +85,6 @@ public class ReserveController {
 //		카테고리별 자원
 		ArrayList<Resources> rlist = rService.resourceList(categoryNo);
 		model.addAttribute("rlist", rlist);
-		
-		
 		
 	
 		return "reserve/reservationFinal";
@@ -205,7 +202,7 @@ public class ReserveController {
 		}
 		//	예약상세보기
 		@ResponseBody
-		@RequestMapping(value="/readDetailRsvList.re",  produces="application/json; charset=utf-8")
+		@RequestMapping(value="readDetailRsvList.re",  produces="application/json; charset=utf-8")
 		public String readDetailRsvList(HttpServletRequest request, String reserveNo) {
 
 			Reservation rsvd = rService.readDetailRsvList(reserveNo);
@@ -228,12 +225,13 @@ public class ReserveController {
 		
 	//예약 취소하기
 	@ResponseBody
-	@RequestMapping(value="/rsvCancel.re", produces="application/json; charset=utf-8")
+	@RequestMapping(value="rsvCancel.re", produces="application/json; charset=utf-8")
 	public String rsvCancel(HttpServletRequest request, HttpSession session) {
 		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
 		String reserveNo = request.getParameter("reserveNo");
 		
 		HashMap<String, String> paraMap = new HashMap<String, String>();
+		
 		paraMap.put("reserveNo", reserveNo);
 		paraMap.put("userNo", userNo);
 		
@@ -247,35 +245,168 @@ public class ReserveController {
 	
 		
 	
-	//자원카테고리list 페이지
+	//관리자 - 자원카테고리list 페이지
 	@RequestMapping(value="categoryList.re")
-	public String CategoryList() {
+	public String adminCategoryList(Model model) {
+		
+		ArrayList<ResourcesCategory> list = rService.admincateogryList();
+		model.addAttribute("list", list);
+		
 		return "reserve/adminResourceCategory";
 	}
 	
+	//관리자- 카테고리명 추가 모달창
+	@RequestMapping(value="insertcategory.re")
+	public String adminInsertCategory(String categoryName, Model model, HttpSession session) {
+		
+		int result = rService. adminInsertCategory(categoryName);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 카레고리가 추가되었습니다.");
+			return "redirect:categoryList.re";
+		}else {
+			session.setAttribute("alertMsg", "카테고리 추가에 실패되었습니다.");
+			return "redirect:categoryList.re";
+		}
+		
+		
+		
+	}
 	
-	//자원카테고리 이용안내페이지
+	
+	// 관리자 - 카테고리 삭제하기 
+	
+		@ResponseBody
+		@RequestMapping(value="deleteCategory.re", produces="application/json; charset=utf-8")
+		public String adminCategoryDelete(HttpServletRequest request, HttpSession session, String categoryNo) {
+		
+			int result = rService.adminCategoryDelete(categoryNo);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("result", result);
+			
+			return jsonObj.toString();
+		}
+	
+	//자원카테고리 이용안내페이지, 카테고리 이용안내문 select해오기
 	@RequestMapping(value="categoryInfo.re")
-	public String CategoryInfo() {
+	public String CategoryInfo(HttpSession session, @RequestParam(value="cno") int categoryNo, Model model) {
+		
+		ResourcesCategory rc = rService.categoryInfo(categoryNo);
+		
+		model.addAttribute("rc", rc);
 		return "reserve/adminResourceCategoryInfo";
 	}
 	
-	//자원카테고리 자원리스트페이지
+	//자원카테고리 내용 update 하기
+	@RequestMapping(value="updateContent.re")
+	public String updateCategoryContent(String categoryNo,String categoryContent, Model model, HttpSession session) {
+		
+		
+		HashMap<String, String> paraMap = new HashMap<String, String>();
+		
+		paraMap.put("categoryNo", categoryNo);
+		paraMap.put("categoryContent", categoryContent);
+		
+		int result = rService.updateCategoryContent(paraMap);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 수정되었습니다.");
+			return "redirect:categoryInfo.re?cno="+ categoryNo;
+		}else {
+			session.setAttribute("alertMsg", "수정에 실패하였습니다.");
+			return "redirect:categoryInfo.re?cno"+ categoryNo;	
+		}
+	}
+	
+	//관리자 - 자원카테고리 자원리스트페이지
 	@RequestMapping(value="resourceList.re")
-	public String ResourceList() {
+	public String ResourceList(HttpSession session, @RequestParam(value="cno") int categoryNo, Model model) {
+		
+		ArrayList<Resources> rlist = rService.resourceList(categoryNo);
+		model.addAttribute("rlist", rlist);
+		model.addAttribute("categoryNo",categoryNo);
 		return "reserve/adminResouceList";
 	}
+
+	
 	//자원카테고리 자원추가
-		@RequestMapping(value="resourceInsert.re")
-		public String ResourceInsert() {
-			return "reserve/adminResourceAdd";
+	@RequestMapping(value="resourceInsert.re")
+	public String resourceInsert(Resources rs, HttpSession session,String resourceContent, String categoryNo, Model model) {
+		
+		rs.setCategoryNo(categoryNo);
+		rs.setResourceContent(resourceContent);
+		
+		int result = rService.resourceInsert(rs);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 추가되었습니다.");
+			return "redirect:resourceList.re?cno="+ categoryNo;	
+		}else {
+			session.setAttribute("alertMsg", "자원 추가에 실패하였습니다.");
+			return "redirect:resourceList.re?cno="+ categoryNo;	
 		}
+		
+		
+		
+	}
 				
-	//자원카테고리 자원수정
-	@RequestMapping(value="resourceUpdate.re")
-	public String ResourceUpdate() {
+	//자원카테고리 자원수정 페이지 
+	@RequestMapping(value="resourceUpdateForm.re")
+	public String ResourceUpdateForm(HttpSession session, @RequestParam(value="cno") String categoryNo,  @RequestParam(value="rno") String resourcesNo, Model model) {
+		
+		HashMap<String, String> paraMap = new HashMap<String, String>();
+		
+		paraMap.put("categoryNo", categoryNo);
+		paraMap.put("resourcesNo", resourcesNo);
+		
+		Resources rc = rService.ResourceUpdateForm(paraMap);
+		
+		model.addAttribute("rc", rc);
+		model.addAttribute("categoryNo", categoryNo);
+		model.addAttribute("resourcesNo", resourcesNo);
+		
+		
 		return "reserve/adminResourceUpdate";
 	}
 			
+	//관리자-자원 수정하기 
+	@RequestMapping(value="updateResource.re")
+	public String ResourceUpdate(String categoryNo, String resourcesNo, Resources rs, Model model, HttpSession session) {
+		
+		
+		rs.setCategoryNo(categoryNo);
+		rs.setResourcesNo(resourcesNo);
+		
+		int result = rService.ResourceUpdate(rs);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 수정되었습니다.");
+			return "redirect:resourceUpdateForm.re?cno="+ categoryNo +"&rno="+ resourcesNo;
+		}else {
+			session.setAttribute("alertMsg", "수정에 실패하였습니다.");
+			return "redirect:resourceUpdateForm.re?cno="+ categoryNo +"&rno="+ resourcesNo;
+		}
 	
+	}
+	//관리자 - 자원 삭제하기
+	@RequestMapping(value="deleteResource.re")
+	public String deleteResource(String categoryNo, String resourcesNo, Model model, HttpSession session) {
+		
+		HashMap<String, String> paraMap = new HashMap<String, String>();
+		
+		paraMap.put("categoryNo", categoryNo);
+		paraMap.put("resourcesNo", resourcesNo);
+		
+		int result = rService.deleteResource(paraMap);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 삭제되었습니다.");
+			return "redirect:categoryInfo.re?cno="+ categoryNo;
+		}else {
+			session.setAttribute("alertMsg", "삭제에 실패하였습니다.");
+			return "redirect:categoryInfo.re?cno"+ categoryNo;	
+		
+		}
+	}
+		
 }

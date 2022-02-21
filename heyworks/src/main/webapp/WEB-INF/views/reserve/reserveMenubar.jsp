@@ -11,7 +11,9 @@
 <!-- <script src="https://kit.fontawesome.com/6584921572.js" crossorigin="anonymous"></script> -->
 <script src="https://kit.fontawesome.com/8bf37c071b.js" crossorigin="anonymous"></script>
 <style>
-	
+#reservation{
+	background: rgb(25, 105, 170);
+}
 
    #menubar{
   	 border: 1px solid lightgray;
@@ -33,7 +35,7 @@
 	}
 	#categoryList{
 		
-		font-size: 14px;
+		font-size: 13.5px;
 		font-weight: bold;
 		margin-left: 30px;
 	}
@@ -116,7 +118,7 @@
 		
 		 <div id="menubar">
             <p><i class="fas fa-angle-double-right"></i> 예약</p>
-			<button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal" onclick="addRs();">+예약하기</button>
+			<button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal2" onclick="addRs();">+예약하기</button>
 			<br><br>
 			<a href="myReserve.re" style="color: black;">
 			<i class="fas fa-cog" style= "margin-left: 30px;"></i> 
@@ -130,7 +132,7 @@
 			
 			<!-- 관리자만 보일수있게 -->
 			<div id="adminSetting">
-				<a href="" style="color: black;"><i class="fa-solid fa-gear"></i> 자원관리</a>
+				<a href="categoryList.re" style="color: black;"><i class="fa-solid fa-gear"></i> 자원관리</a>
 			</div>
 
 
@@ -151,10 +153,10 @@
 			$.ajax({
 				async:false,
 				url: "menuCategoryList.re",
+				async :false,
 				data:{},
 				success: function(clist) {
-		
-					console.log(clist);
+	
 					let value = "";
     				for(let i in clist){
 						value +=  "<div id='category'>"
@@ -164,7 +166,13 @@
 						// value += "<ul class='groupDetail' id='adgroup"+ clist[i].categoryNo+"' style='list-style-type: none; height: 100%;'></ul>"
 						value += "</div>"
 					}
-					
+
+					let cate = "";
+    				for(let i in clist){ 
+						cate += "<option value='" + clist[i].categoryNo + "'>" + clist[i].categoryName + "</option>";
+					}
+
+					$("#categorySelect").html(cate);
     				$("#categoryList").html(value);
     				
 				},error:function() {
@@ -180,12 +188,17 @@
 			function addRs(){
 			
 			// 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
-			$('#addRsvModal').find('form')[0].reset();
-			$('#addRsvModal').modal('show');
+			$('#addRsvModal2').find('form')[0].reset();
+			$('#addRsvModal2').modal('show');
+
+			function categorySelected() {
+				var rNo = document.getElementById("#categorySelect").value();
+				console.log(rNo);
 			
 			$.ajax({
 			url:"menuResourceList.re",
-			data : { },
+			data : {},
+			async :false,
 			type:"get",
 			dataType:"JSON",
 			success:function(json){
@@ -203,19 +216,21 @@
 					html += "<li style='height: 20px;'>";
 					html += "</li>";
 				}
-				
+			
 				$("select.addRsSelect").html(html);
 			},
 			error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 			}
 		});
+
+		}
 		
 		}
 
 
 		  // (modal) 예약하기에서 확인버튼을 클릭했을시 실행하는 함수
-		  function addRsvModalBtn(){
+		  function addRsvModalBtn2(){
      
 			// 입력받은 값들 유효성 검사: 시작
 			var startday = $("input[name=startday]").val() + " " + $("select.startday_hour").val() + ":00";
@@ -250,7 +265,7 @@
 			
 		// 입력받은 값들 유효성 검사: 끝
 
-
+	
 			// db에 넣기
 		$.ajax({
 			url:"addModalRsv.re",
@@ -258,8 +273,8 @@
 					endday:endday, 
 					fk_reservation_resource_no:fk_reservation_resource_no, 
 					reason:reason, 
-					categoryNo : $("#categoryNoTag").val(),
-					categoryName:$("#categoryName").val()},
+					categoryNo : $("#categorySelect").val(),
+					categoryName:$("#categorySelect").text()},
 			type:"POST",
 			dataType:"JSON",
 			success:function(json){
@@ -267,9 +282,9 @@
 				// 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
 				if (json.n == 1) {
 					// 에약이 정상적으로 등록됐을 때
-					// window.closeModal();
+					window.closeModal();
 					// alertify.alert("성공적으로 예약되었습니다.")
-					location.href="myReserve.re";
+					location.reload();
 					calendar.refetchEvents();
 					
 				}else if (json.n == -1) {
@@ -295,7 +310,7 @@
 	
 
 	<%-- 예약하기 모달 --%>
-	<div id="addRsvModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+	<div id="addRsvModal2" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
 	 <div class="modal-dialog">
 	   <!-- Modal content-->
 	   <div class="modal-content" style="width: 700px;">
@@ -312,7 +327,7 @@
 				<tbody>
 				  <tr>
 					<th style="width: 100px;">예약일</th>
-					<td >
+					<td style="float: left;">
 					   <input type="date" class="datepicker" name="startday">
 
 					   <select class="startday_hour" style="width: 70px; height: 30px;">
@@ -354,8 +369,13 @@
 				  </tr>
 				  
 				  <tr>
+					<th>카테고리선택</th>
+					<td><select id="categorySelect" name="category" style="width: 300px; float: left;" onchange="categorySelected()" ></select></td>
+				  </tr>
+
+				  <tr>
 					<th>자원선택</th>
-					<td><select class="addRsSelect" name="fk_reservation_resource_no"></select></td>
+					<td><select class="addRsSelect" name="fk_reservation_resource_no"   style="width: 300px; float: left;"></select></td>
 				  </tr>
 				  
 				  <tr>
@@ -367,7 +387,7 @@
 			  </table>
 			 
 			 <div style="float: right;">
-				<button class="btn blueBtn" type="button" onclick="addRsvModalBtn()">확인</button>
+				<button class="btn blueBtn" type="button" onclick="addRsvModalBtn2()">확인</button>
 				<button class="btn grayBtn" type="button" data-dismiss="modal">취소</button>
 			 </div>
 			 <br style="clear: both;">

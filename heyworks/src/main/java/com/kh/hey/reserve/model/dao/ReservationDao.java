@@ -70,5 +70,39 @@ public class ReservationDao {
 		
 		return sqlSession.delete("reservationMapper.rsvCancel", paraMap);
 	}
+	
+	public ArrayList<ResourcesCategory> admincateogryList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("reservationMapper.admincateogryList");
+	}
+	
+	public int adminInsertCategory(SqlSessionTemplate sqlSession, String categoryName) {
+		return sqlSession.insert("reservationMapper.adminInsertCategory", categoryName);
+	}
+	
+	public int adminCategoryDelete(SqlSessionTemplate sqlSession, String categoryNo) {
+		return sqlSession.insert("reservationMapper.adminCategoryDelete", categoryNo);
+	}
+	
+	public int updateCategoryContent(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.update("reservationMapper.updateCategoryContent", paraMap);
 
+	}
+	
+	public int resourceInsert(SqlSessionTemplate sqlSession, Resources rs) {
+		return sqlSession.insert("reservationMapper.resourceInsert", rs);
+		
+	}
+	
+	public Resources ResourceUpdateForm(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.selectOne("reservationMapper.ResourceUpdateForm", paraMap);
+		
+	}
+	
+	public int ResourceUpdate(SqlSessionTemplate sqlSession, Resources rs) {
+		return sqlSession.insert("reservationMapper.ResourceUpdate", rs);
+	}
+	
+	public int deleteResource(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.selectOne("reservationMapper.deleteResource", paraMap);
+	}
 }

@@ -34,6 +34,7 @@ public interface ReservationService {
 	
 	// 입력받은 일시가 중복된 날짜인지 검사
 	int checkOverlapRsv(HashMap<String, String> paraMap);
+	
 	//예약하기(insert)
 	int insertReservation(HashMap<String, String> paraMap);
 	
@@ -44,14 +45,28 @@ public interface ReservationService {
 	//예약 취소하기
 	int rsvCancel(HashMap<String, String> paraMap);
 	
-	//예약수정하기(update)
-	int updateReservation(Reservation re);
 	
+	// 관리자 카레고리 list 
+	ArrayList<ResourcesCategory> admincateogryList();
 	
-	//예약취소하기(update)
-	int deleteReservation(Reservation re);
+	//관리자- 모달창 카레고리명 추가
+	int  adminInsertCategory(String categoryName);
 	
+	//관리자 - 카테고리 삭제
+	int adminCategoryDelete(String categoryNo);
 	
+	//관리자 - 카테고리 이용안내문 수정
+	int updateCategoryContent(HashMap<String, String> paraMap);
 	
+	//관리자 - 카테고리 자원 추가
+	int resourceInsert(Resources rs);
 	
+	// 관리자 - 카테고리 자원 수정하기 페이지
+	Resources ResourceUpdateForm(HashMap<String, String> paraMap);
+	
+	// 관리자 - 카테고리 자원 수정하기
+	int ResourceUpdate(Resources rs);
+	
+	//관리자 - 카테고리 자원 삭제하기
+	int  deleteResource(HashMap<String, String> paraMap);
 }

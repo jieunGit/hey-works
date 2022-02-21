@@ -491,7 +491,7 @@
      $.ajax({
       url:"readRsList.re",
       data : {
-         categoryNo:$("#categoryNoTag").val()
+         categoryNo:$("#cNo").val()
       },
       type:"get",
       dataType:"JSON",
@@ -571,10 +571,11 @@
       dataType:"JSON",
       success:function(json){
          
+         
          // 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
          if (json.n == 1) {
             // 에약이 정상적으로 등록됐을 때
-            window.closeModal();
+            // window.closeModal();
             calendar.refetchEvents();
             
          }else if (json.n == -1) {
@@ -705,7 +706,8 @@
 			<br>
 			<div id="toparea"><span>${rc.categoryName} 예약</span></div>
 			
-			
+			<input type="hidden" value="${rc.categoryName}" id="cName">
+         <input type="hidden" value="${rc.categoryNo}" id="cNo">
 			<div id="resourceContent">
 				<div id="content">
 					
@@ -718,7 +720,7 @@
             <ul class="nav" id="side-menu">
                 <li>
                     <ul class="nav_ul" >
-                        <c:forEach var="r" items="${ rlist }">
+                     <c:forEach var="r" items="${ rlist }">
                        <li style="list-style-type: none; float: left;">
                           <p class='nav_ul_p'>
                              <input type="hidden" name="categoryNo" id="categoryNoTag" value="${r.categoryNo}">

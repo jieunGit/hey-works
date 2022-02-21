@@ -34,6 +34,7 @@
 		<result column="category_name" property="categoryName"></result>
 		<result column="category_content" property="categoryContent"></result>
 		<result column="category_img" property="categoryImg"></result>
+		<result column="count" property="count"></result>
 	</resultMap>
 
 	<select id="MenuCategoryList" resultMap="categoryResult">
@@ -112,10 +113,10 @@
 		       , resource_name
 		       , resource_content
                , category_name
-		  from resources 
+		  from resources r
           join resource_category using(category_no)
 		  where category_no = #{categoryNo}
-	
+		   and r.status = 'Y'
 	
 	
 	</select>
@@ -199,5 +200,101 @@
 	
 	</delete>
 	
+	<select id="admincateogryList" resultMap="categoryResult">
+			  select 
+				       category_no
+				     , category_name
+				     , category_content
+				     , category_img
+		             ,   (select count(*)
+		                   from resources
+		                  where category_no = rc.category_no) as count
+				  from resource_category rc
+				  order
+				     by category_no
+	</select>
 	
+	
+	<insert id="adminInsertCategory">
+		INSERT 
+		  INTO RESOURCE_CATEGORY
+		     ( 
+		        category_no
+		      , category_name
+		      , status
+		      , category_content
+		      , category_img 
+		     )
+		VALUES 
+		     (
+		       SEQ_RECANO.NEXTVAL
+		     , #{categoryName}
+		     , 'Y'
+  		     , NULL
+		     , NULL
+		     )
+	</insert>
+	
+	
+	<delete id="adminCategoryDelete">
+		delete from resource_category
+		 where category_no = #{categoryNo}
+	
+	</delete>
+	
+	
+	<update id="updateCategoryContent">
+			
+		update resource_category
+		   set category_content = #{categoryContent}
+		 where category_no =  #{categoryNo}
+	
+	</update>
+	
+	<insert id="resourceInsert">
+	
+		INSERT INTO RESOURCES
+        ( RESOURCES_NO, CATEGORY_NO, resource_name, status, resource_content)
+		VALUES 
+		     (
+		       SEQ_RESOURCENO.NEXTVAL
+		     ,  #{categoryNo}
+		     ,  #{resourceName}
+		     , 'Y'
+		     , #{resourceContent}
+		     )
+	
+	</insert>
+	
+	<select id="ResourceUpdateForm" resultMap="resourcesResult">
+		  select
+		        resources_no
+		       , category_no
+		       , resource_name
+               , status
+		       , resource_content
+		  from resources 
+         where resources_no = #{resourcesNo}
+           and category_no = #{categoryNo}
+	
+	</select>
+	
+	<update id="ResourceUpdate">
+		update resources 
+		   set resource_name= #{resourceName},
+               resource_content = #{resourceContent},
+               status = #{status}
+		 where category_no =  #{categoryNo}
+           and resources_no = #{resourcesNo}
+	
+	
+	</update>
+	
+	<delete id="deleteResource">
+		
+		delete from resources 
+			where resources_no = #{resourcesNo} 
+			  and category_no = #{categoryNo}
+				
+	</delete>
 </mapper>

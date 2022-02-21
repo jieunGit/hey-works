@@ -103,20 +103,56 @@ public class ReservationServiceImpl implements ReservationService {
 		return rDao.rsvCancel(sqlSession, paraMap);
 	}
 
-
-
-
+	//관리자- 카레고리 리스트
 	@Override
-	public int updateReservation(Reservation re) {
+	public ArrayList<ResourcesCategory> admincateogryList() {
 		
-		return 0;
+		return rDao.admincateogryList(sqlSession);
+	}
+	// 관리자- 카테고리 추가하기
+	@Override
+	public int adminInsertCategory(String categoryName) {
+		
+		return rDao.adminInsertCategory(sqlSession, categoryName);
+	}
+	//관리자 - 카테고리 삭제하기
+	@Override
+	public int adminCategoryDelete(String categoryNo) {
+		
+		return rDao.adminCategoryDelete(sqlSession, categoryNo);
+	}
+	// 관리자- 카테고리 이용안내문 수정하기
+	@Override
+	public int updateCategoryContent(HashMap<String, String> paraMap) {
+		
+		return rDao.updateCategoryContent(sqlSession, paraMap);
 	}
 
 	@Override
-	public int deleteReservation(Reservation re) {
+	public int resourceInsert(Resources rs) {
 		
-		return 0;
+		return rDao.resourceInsert(sqlSession, rs);
 	}
+
+	@Override
+	public Resources ResourceUpdateForm(HashMap<String, String> paraMap) {
+		
+		return rDao.ResourceUpdateForm(sqlSession, paraMap);
+	}
+
+	@Override
+	public int ResourceUpdate(Resources rs) {
+		
+		return rDao.ResourceUpdate(sqlSession, rs);
+	}
+
+	@Override
+	public int deleteResource(HashMap<String, String> paraMap) {
+		
+		return rDao.deleteResource(sqlSession, paraMap);
+	}
+	
+
 
 
 

@@ -113,18 +113,25 @@
 
     // 예약 취소를 DB에서 처리해주는 함수
 	function cancelRsv() {
-		var reserveNo = $("#reserve_no").val();
+		// var reserveNo = $("#reserve_no").val();
       
       $.ajax({
          url:"rsvCancel.re",
          type:"get",
-         data: {reserveNo:reserveNo},
+         data: {
+			 	reserveNo : $("#reserveNoTag").val()
+		 
+		 },
          dataType:"JSON",
          success:function(json){
-            
+			 
             if (json.result == 1) {
-               calendar.refetchEvents();
-               window.closeModal();
+            
+			alertify.alert("성공적으로 예약이 취소되었습니다.")
+
+			window.closeModal();
+			location.reload();
+		
             }else{
                alert("DB오류");
             }
@@ -163,7 +170,7 @@
 					<tbody>
 					<c:forEach var="r" items="${ list }">
 						<tr>
-							<input type="hidden" name="reserveNo" id="reserve_no" value="${r.reserveNo}">
+							<input type="hidden" id="reserveNoTag" value="${r.reserveNo}" name="reserveNo">
 							<td>${ r.categoryName }</td>
 							<td>${ r.resourceName }</td>
 							<td>${ r.startDate }~${ r.endDate }</td>
@@ -256,7 +263,7 @@
 		  <div class="modal-content">
 			<div class="modal-header">
 				<!-- <h4 class="modal-title">예약 삭제</h4> -->
-			  <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
 			<div class="modal-body">
 			  <label>정말 예약을 취소하시겠습니까?</label>
@@ -264,7 +271,7 @@
 			</div>
 			<div class="modal-footer">
 			  <button type="button" class="btn blueBtn" onclick="cancelRsv()">예</button>
-			  <button type="button" class="btn grayBtn" onclick="window.closeModal()">아니오</button>
+			  <button type="button" class="btn grayBtn"  data-dismiss="modal">아니오</button>
 			</div>
 		  </div>
 		</div>

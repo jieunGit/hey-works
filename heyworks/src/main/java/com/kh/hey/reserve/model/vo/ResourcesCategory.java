@@ -19,6 +19,6 @@ public class ResourcesCategory {
 	private String status;
 	private String categoryContent;
 	private String categoryImg;
-	
+	private String count;
 
 }
