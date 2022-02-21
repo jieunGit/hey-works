@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,10 +57,10 @@
             <i class='fas fa-angle-double-right' style='font-size:24px'> 쪽지함</i>
         </div>
         <ul>
-            <li><i class="fa-solid fa-arrow-right-to-bracket" style='font-size:20px'><a>받은쪽지함</a></i></li>
-            <li><i class="fa-solid fa-arrow-right-from-bracket" style='font-size:20px'><a>보낸쪽지함</a></i></li>
-            <li><i class="fa-solid fa-layer-group" style='font-size:20px'><a>보관함</a></i></li>
-            <li><i class="fa-solid fa-trash-can" style='font-size:20px'><a>휴지통</a></i></li>
+            <li><i class="fa-solid fa-arrow-right-to-bracket" style='font-size:20px'><a href="inList.msg">받은쪽지함</a></i></li>
+            <li><i class="fa-solid fa-arrow-right-from-bracket" style='font-size:20px'><a href="outList.msg">보낸쪽지함</a></i></li>
+            <li><i class="fa-solid fa-layer-group" style='font-size:20px'><a href="keepList.msg">보관함</a></i></li>
+            <li><i class="fa-solid fa-trash-can" style='font-size:20px'><a href="delList.msg">휴지통</a></i></li>
         </ul>
     </div>
 
