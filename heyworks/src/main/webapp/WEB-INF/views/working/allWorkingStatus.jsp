@@ -18,11 +18,8 @@
         margin-left:20px;
         width: 1000px;
     }
-    .date-box{font-size:18px; font-weight:500;}
-    #tb-name, #tb-dept{
-        text-align:center;
-        font-weight:600;
-    }
+    .table-bordered th{font-size:14px; text-align:center;}
+    .table-bordered td{font-size:13px;}
 </style>
 </head>
 <body>
@@ -34,14 +31,15 @@
         <div class="all-status">
 
             <div class="title-box">
-                <h2>부서 근무현황</h2>
-            </div><br>
+                <h2>전사 근무현황</h2>
+            </div><br><br>
 
             <div class="date-box" style="margin-bottom:70px;">
-                <span>&lt; 2022/01/01 ~ 2022/12/31 &gt;</span>
+                <input type="date">
+                <button type="submit" class="btn btn-primary">조회</button>
             </div>
 
-            <form action="" method="Get">
+            <form action="" method="Get" style="margin-left:650px">
                 <select name="search">
                     <option value="name">이름</option>
                     <option value="dept">소속</option>
@@ -51,64 +49,36 @@
                 <button type="button">검색</button>
             </form>
 
-            <br><br><br>
+            <br><br>
 
-            <table border="1">
-                <tr style="height:40px;">
-                    <th width="100px">이름</th>
-                    <th width="100px">소속</th>
-                    <th width="100px">02/07(월)</th>
-                    <th width="100px">02/08(월)</th>
-                    <th width="100px">02/09(수)</th>
-                    <th width="100px">02/10(목)</th>
-                    <th width="100px">02/11(금)</th>
-                    <th width="100px">02/12(토)</th>
-                    <th width="100px">02/13(일)</th>
+            <table class="table-bordered" border="1">
+                <tr>
+                    <th colspan="5">사원 정보</th>
+                    <th colspan="5">출퇴근 정보</th>
                 </tr>
-                <tr style="height:100px;">
-                    <td id="tb-name">강보람</td>
-                    <td id="tb-dept">개발팀</td>
-                    <td>
-                        출근 08:00 <br>
-                        퇴근 18:00 <br><br>
-                        근무시간 08:00
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr>
+                    <th width="100px">날짜</th>
+                    <th width="90px">사번</th>
+                    <th width="80px">이름</th>
+                    <th width="80px">소속</th>
+                    <th width="70px">직급</th>
+                    <th width="90px">출근시각</th>
+                    <th width="90px">퇴근시각</th>
+                    <th width="90px">휴게시간</th>
+                    <th width="90px">근무시간</th>
+                    <th width="80px">근태상태</th>
                 </tr>
-                <tr style="height:100px;">
-                    <td id="tb-name">강보람</td>
-                    <td id="tb-dept">개발팀</td>
-                    <td>
-                        출근 08:00 <br>
-                        퇴근 18:00 <br><br>
-                        근무시간 08:00
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="height:100px;">
-                    <td id="tb-name">강보람</td>
-                    <td id="tb-dept">개발팀</td>
-                    <td>
-                        출근 08:00 <br>
-                        퇴근 18:00 <br><br>
-                        근무시간 08:00
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr>
+                    <td>2022-02-20</td>
+                    <td>210302030</td>
+                    <td>배배배</td>
+                    <td>개발팀</td>
+                    <td>과장</td>
+                    <td>08:00</td>
+                    <td>17:00</td>
+                    <td>01:00</td>
+                    <td>08:00</td>
+                    <td>정상근무</td>
                 </tr>
             </table>
             

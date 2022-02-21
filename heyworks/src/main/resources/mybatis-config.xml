@@ -19,6 +19,7 @@
 		<typeAlias type="com.kh.hey.working.model.vo.Working" alias="Working" />
 		<typeAlias type="com.kh.hey.organization.model.vo.Organ" alias="Organ" />
 		<typeAlias type="com.kh.hey.working.model.vo.Leave" alias="Leave" />
+		<typeAlias type="com.kh.hey.working.model.vo.AllLeave" alias="AllLeave" />
 	</typeAliases>
 	
 	<mappers>

@@ -10,15 +10,32 @@
     .outer{
         width:1200px;
         height:1200px;
-        margin-left:300px;
+        margin:auto;
     }
+    .outer>div{float:left;}
     .all-status{
-        margin: auto;
-        margin-top:30px;
-        margin-left:20px;
-        width: 1000px;
+       width: 950px;
+	   height:100%;
+	   display:inline-block;
+       padding-left:30px;
+       padding-top:30px;
     }
-    .date-box{font-size:18px; font-weight:500;}
+    .date-box{font-size:20px; font-weight:500;}
+    .table-bordered th{font-size:14px; text-align:center;}
+    .table-bordered td{font-size:13px;}
+    #pagingArea{width:fit-content;margin:auto;}
+    
+    #searchForm{
+        width:80%;
+        margin:auto;
+    }
+    #searchForm>*{
+        float:left;
+        margin:5px;
+    }
+    .select{width:10%;}
+    .text{width:25%;}
+    .searchBtn{Width:10%;}
 </style>
 </head>
 <body>
@@ -26,100 +43,104 @@
     <div class="outer">
 
         <jsp:include page="../common/menubar.jsp"/>
+        <jsp:include page="workingSidebar.jsp"/>
 
         <div class="all-status">
 
             <div class="title-box">
-                <h2>전사 휴가현황</h2>
+                <h3 style="font-size:20px;">전사 휴가현황</h3>
             </div><br>
 
             <div class="date-box" style="margin-bottom:70px;">
-                <span>&lt; 2022/01/01 ~ 2022/12/31 &gt;</span>
+                <span> 2022-01-01 ~ 2022-12-31 </span>
             </div>
 
-            <form action="" method="Get">
-                <select name="search">
-                    <option value="name">이름</option>
-                    <option value="dept">소속</option>
-                </select>
-
-                <input type="text" name="keyword">
-                <button type="button">검색</button>
-            </form>
-
-            <br><br><br>
-            <!--5개까지-->
-            <table border="1">
-                <tr style="height:40px;">
-                    <th width="100px">이름</th>
-                    <th width="100px">소속</th>
-                    <th width="130px">입사일</th>
-                    <th width="90px">근속연수</th>
-                    <th width="90px">총 연차</th>
-                    <th width="90px">사용 연차</th>
-                    <th width="90px">잔여 연차</th>
-                    <th width="90px">상태</th>
-                    <th width="90px">상세</th>
+			<div id="search-area">
+	            <form id="searchForm" action="AllLeaveSearch.wo" method="Get" style="margin-left:560px">
+	            	<input type="hidden" name="cpage" value="1">
+	                <div class="select">
+	                    <select class="custom-select" name="condition" >
+	                        <option value="deptName">소속</option>
+	                        <option value="userName">이름</option>
+	                    </select>
+	                </div>
+	                <div class="text">
+	                    <input type="text" class="form-control" name="keyword" value="${ keyword }">
+	                </div>
+	                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+	            </form>
+            </div>
+			<c:if test="${ not empty condition }">
+				<script>
+					$(function(){
+						$("#search-area option[value=${condition}]").attr("selected", true);
+					})
+				</script>
+			</c:if>
+			
+            <br><br><br><br>
+            
+            <table class="table-bordered">
+                <tr style="height:43px;">
+                    <th width="95px">이름</th>
+                    <th width="95px">소속</th>
+                    <th width="95px">직급</th>
+                    <th width="120px">입사일</th>
+                    <th width="85px">근속연수</th>
+                    <th width="85px">총 연차</th>
+                    <th width="85px">사용 연차</th>
+                    <th width="85px">잔여 연차</th>
+                    <th width="85px">상태</th>
+                    <th width="85px">상세</th>
                 </tr>
-                <tr style="height:30px; text-align:center">
-                    <td>강보람</td>
-                    <td>개발팀</td>
-                    <td>2015/07/11</td>
-                    <td>6</td>
-                    <td>15</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>Y</td>
-                    <td><a href="">>></a></td>
-                </tr>
-                <tr style="height:30px; text-align:center">
-                    <td>강보람</td>
-                    <td>개발팀</td>
-                    <td>2015/07/11</td>
-                    <td>6</td>
-                    <td>15</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>Y</td>
-                    <td><a href="">>></a></td>
-                </tr>
-                <tr style="height:30px; text-align:center">
-                    <td>강보람</td>
-                    <td>개발팀</td>
-                    <td>2015/07/11</td>
-                    <td>6</td>
-                    <td>15</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>Y</td>
-                    <td><a href="">>></a></td>
-                </tr>
-                <tr style="height:30px; text-align:center">
-                    <td>강보람</td>
-                    <td>개발팀</td>
-                    <td>2015/07/11</td>
-                    <td>6</td>
-                    <td>15</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>Y</td>
-                    <td><a href="">>></a></td>
-                </tr>
-                <tr style="height:30px; text-align:center">
-                    <td>강보람</td>
-                    <td>개발팀</td>
-                    <td>2015/07/11</td>
-                    <td>6</td>
-                    <td>15</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>Y</td>
-                    <td><a href="">>></a></td>
-                </tr>
+                <c:forEach var="a" items="${alist}">
+	                <tr style="height:37px; text-align:center">
+	                    <td>${ a.userName }</td>
+	                    <td>${ a.deptName }</td>
+	                    <td>${ a.jobName }</td>
+	                    <td>${ a.hireDate }</td>
+	                    <td>${ a.lengthYears }</td>
+	                    <td>${ a.leaveTotal }</td>
+	                    <td>${ a.leaveUse }</td>
+	                    <td>${ a.leaveRest }</td>
+	                    <td>${ a.status }</td>
+	                    <td><a href="">>></a></td>
+	                </tr>
+                </c:forEach>
             </table>
-
-            <div class="pagingArea">
-
+			
+			<br><br>
+            <div id="pagingArea">
+                <ul class="pagination">
+                	<c:choose>
+              			<c:when test="${ pi.currentPage eq 1 }">
+                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ pi.currentPage-1 }">Previous</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    	<c:choose>
+                    	    <c:when test="${empty condition }">
+                    			<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ p }">${ p }</a></li>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<li class="page-item"><a class="page-link" href="AllLeaveSearch.wo?cpage=${ p }$condition=${condition}&keyword=${keyword">${ p }</a></li>
+                    		</c:otherwise>
+                    	</c:choose>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ pi.currentPage+1 }">Next</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                </ul>
             </div>
 
         </div>

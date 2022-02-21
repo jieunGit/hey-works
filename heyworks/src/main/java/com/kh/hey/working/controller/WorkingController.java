@@ -1,18 +1,24 @@
 package com.kh.hey.working.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.common.template.Pagination;
 import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.working.model.service.WorkingService;
+import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
 
 @Controller
@@ -54,7 +60,7 @@ public class WorkingController {
 		return "working/leaveApplyForm";
 	}
 	
-	// 휴가 승인요청
+	// 휴가신청
 	@RequestMapping("insertLeave.wo")
 	public String insertLeave(Leave l, HttpSession session) {
 		
@@ -89,5 +95,42 @@ public class WorkingController {
 		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘 
 		
 		return mv;
+	}
+	
+	// 전사 휴가현황 리스트 
+	@RequestMapping("leaveStatusList.wo")
+	public String selectAleaveList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
+		
+		int listCount = wService.selectAleaveListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<AllLeave> alist = wService.selectAleaveList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("alist", alist);
+		
+		return "working/allLeaveStatus";
+	}
+	
+	// 전사 휴가현황 검색 요청
+	@RequestMapping("AllLeaveSearch.wo")
+	public String selectLeaveSearch(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model, String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int searchCount = wService.selectAleaveSearchCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 10, 10);
+		ArrayList<AllLeave> alist = wService.selectAleaveSearch(map, pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("alist", alist);
+		
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		
+		return "working/allLeaveStatus";
 	}
 }

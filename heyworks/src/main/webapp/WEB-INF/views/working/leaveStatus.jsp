@@ -20,14 +20,6 @@
        padding-left:30px;
        padding-top:30px;
 	}
-    .wide-menu{margin-top:10px;}
-    .wide-menu>a{
-      text-decoration: none; 
-      color:black; 
-      font-size:18px;
-      margin-right:20px;
-      font-weight:600;
-    }
     .year-select{font-size:18px; font-weight:500;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
@@ -41,15 +33,9 @@
         <jsp:include page="workingSidebar.jsp"/>
 
         <div class="status-outer">
-            <div class="wide-menu">
-                <a href="">근무현황</a>
-                <a href="">휴가현황</a>
-            </div>
-            <hr width="950px" align="left">
-            <br>
     
             <div class="year-select" align="left">
-                <span>&lt; 2022/01/01 ~ 2022/12/31 &gt;</span>
+                <span>2022-01-01 ~ 2022-12-31</span>
             </div><br><br>
             
             <div class="leave-status">

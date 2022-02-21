@@ -1,10 +1,14 @@
 package com.kh.hey.working.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
 
 @Repository
@@ -28,5 +32,29 @@ public class WorkingDao {
 	public ArrayList<Leave> selectMyleave(SqlSessionTemplate sqlSession, int userNo){
 		
 		return (ArrayList)sqlSession.selectList("workingMapper.selectMyleave", userNo);
+	}
+	
+	public int selectAleaveListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("workingMapper.selectAleaveListCount");
+	}
+	
+	public ArrayList<AllLeave> selectAleaveList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAleaveList", null, rowBounds);
+	}
+	
+	public int selectAleaveSearchCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("workingMapper.selectAleaveSearchCount", map);
+	}
+	
+	public ArrayList<AllLeave> selectAleaveSearch(SqlSessionTemplate sqlSession, HashMap<String, String> map, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAleaveSearch", map, rowBounds);
 	}
 }
