@@ -1,4 +1,4 @@
-package com.kh.hey.common.Controller;
+package com.kh.hey.common.controller;
 
 import java.util.ArrayList;
 
