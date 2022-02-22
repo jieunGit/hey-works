@@ -32,7 +32,7 @@
 		<mapper resource="/mappers/working-mapper.xml"/>
 		<mapper resource="/mappers/organization-mapper.xml"/>
 		<mapper resource="/mappers/reply-mapper.xml"/>
-		<mapper resource="/mappers/mapper-mapper.xml"/>
+		<mapper resource="/mappers/message-mapper.xml"/>
 	 </mappers>
 	 
 	 
