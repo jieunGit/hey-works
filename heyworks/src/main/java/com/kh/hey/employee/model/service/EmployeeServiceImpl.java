@@ -48,6 +48,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return eDao.ajaxSelectSearchConfirm(sqlSession, keyword);
 	} // 전자결재 결재자 검색용
 
+	@Override
+	public ArrayList<Employee> selectAdminList() {
+		return eDao.selectAdminList(sqlSession);
+	} // 전자결재 관리자 조회
 	
 	
 	
@@ -56,6 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int updateEmployee(Employee e) {
 		return eDao.updateEmployee(sqlSession, e);
 	} // 회원정보수정
+
 	
 	
 	

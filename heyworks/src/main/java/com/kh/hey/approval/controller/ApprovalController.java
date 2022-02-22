@@ -35,13 +35,34 @@ public class ApprovalController {
 	
 	@Autowired
 	private EmployeeService eService;
-	
-	@Autowired
-	private ReplyService rService;
-	
+
 	@RequestMapping("main.el")
-	public String mainList() {
+	public String mainList(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, HttpSession session) {
 		
+		// 결재--------------------------
+		String userName = ((Employee)session.getAttribute("loginUser")).getUserName();
+		
+		int listCount = aService.selectListCount(userName);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Approval> apList = aService.selectStandByList(pi, userName);
+		
+		// 참조 열람------------------------
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+		
+		ArrayList<Approval> rrList = aService.selectReadReference(pi, userNo);
+		
+		// 완료---------------------------
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userNo", userNo);
+		map.put("status", "Y");
+
+		ArrayList<Approval> edList = aService.selectSubmitEndList(pi, map);
+		
+		model.addAttribute("apList", apList); // 결재자 목록
+		model.addAttribute("rrList", rrList);
+		model.addAttribute("edList", edList);
+
 		return "approval/approvalMainList";
 		
 	}
@@ -177,7 +198,34 @@ public class ApprovalController {
 
 		return "approval/readOrReferenceList";
 		
+	}
+	
+	// 열람 참조시 Y로 변경
+	@ResponseBody
+	@RequestMapping("check.el")
+	public String updateReadReference(String approvalNo, String userNo, String read, String reference, String userName, HttpSession session) {
 		
+		int result = 0;
+		
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("approvalNo", approvalNo);
+		map.put("userNo", userNo);
+
+		if(read.equals(userName)) {
+			System.out.println("열람자");
+			
+			map.put("status", "read");
+			result = aService.updateReadReference(map);
+			
+		}else if(reference.equals(userName)){
+			
+			System.out.println("참조자");
+			
+			map.put("status", "reference");
+			result = aService.updateReadReference(map);
+		}
+
+		return result>0 ? "S" : "F";
 	}
 	
 	// 상세보기
@@ -218,8 +266,8 @@ public class ApprovalController {
 				mv.addObject("er", er);
 				
 			}
-			
 			mv.setViewName("approval/approvalDetail");
+			
 			
 		}else {
 			//mv.addObject("errorMsg", "게시글 상세조회 실패!");
@@ -531,8 +579,6 @@ public class ApprovalController {
 	public String deleteApproval(String ano, String filePath, HttpSession session) {
 		
 		int result = aService.deleteApproval(ano);
-		System.out.println(ano);
-		
 		
 		if(result > 0) {
 			
@@ -661,7 +707,7 @@ public class ApprovalController {
 	/*전자결재 관리자 파트*/
 	
 	@RequestMapping("deletelist.el")
-	public String deleteApprovalAdmin(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, HttpSession session) {
+	public String selectDeleteList(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, HttpSession session) {
 		
 		int listCount = aService.selectDeleteListCount();
 		
@@ -677,14 +723,94 @@ public class ApprovalController {
 		
 		return "approval/adminDeleteList";
 		
-	}
+	} // 삭제문서리스트
 	
+	@RequestMapping("delSearch.el")
+	public String deleteSearchList(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, String subject, String keyword) {
+		
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("subject", subject);
+		map.put("keyword", keyword);
+		
+		int searchCount = aService.selectSearchListCount(map);
+		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 5, 10);
+		
+		ArrayList<Approval> dltlist = aService.selectDeleteSearchList(pi,map);
+		System.out.println(dltlist);
+		
+		model.addAttribute("depi", pi);
+		model.addAttribute("dltlist", dltlist);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("subject", subject);
+		
+		return "approval/adminDeleteList";
+	} // 삭제문서 검색하기
+	
+	@ResponseBody
+	@RequestMapping(value="restore.el", produces="application/text; charset=UTF-8")
+	public String ajaxDeleteRestore(Approval approvalNo) {
+		
+		String[] apNum = approvalNo.getApprovalNo().split(",");
+		
+		/*
+		for(int i=0; i<apNum.length; i++) {
+			System.out.println(apNum[i]);
+		}*/
+		
+		int result = aService.ajaxDeleteRestore(apNum);
+		
+		System.out.println(result);
+		
+		return result > 0 ? "S" : "F";
+		
+	} // 문서 복구하기
+
+	// 전자결재 관리자 목록
 	@RequestMapping("approvalad.el")
-	public String approvalAdminList() {
+	public String approvalAdminList(Model model) {
+		
+		ArrayList<Employee> adlist = eService.selectAdminList();
+		
+		model.addAttribute("adlist", adlist);
 		
 		return "approval/approvalAdmin";
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

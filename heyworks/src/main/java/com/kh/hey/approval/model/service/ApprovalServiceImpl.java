@@ -254,6 +254,38 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.updateExpenseReport(sqlSession, ap);
 	}
 
+	// 삭제문서 검색하기
+	@Override
+	public int selectSearchListCount(HashMap<String,String> map) {
+		return aDao.selectSearchListCount(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<Approval> selectDeleteSearchList(PageInfo pi, HashMap<String,String> map) {
+		return aDao.selectDeleteSearchList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int ajaxDeleteRestore(String[] apNum) {
+		return aDao.ajaxDeleteRestore(sqlSession, apNum);
+	}
+
+	@Override
+	public int updateReadReference(HashMap<String, String> map) {
+		return aDao.updateReadReference(sqlSession, map);
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 
 	

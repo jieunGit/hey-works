@@ -46,11 +46,12 @@
         text-decoration: none;
     }
     #pagingArea{
-	   	width:fit-content;
-	   	margin-left:400px;
+	   	margin-left:850px;
     }
     .pagination>li{
     	border-radius:10px;
+    	margin-left:5px;
+		font-size:10px;
     }
 </style>
 </head>
@@ -78,7 +79,7 @@
                     <th width="80">작성자</th>
                     <th width="70">긴급</th>
                     <th width="350">제목</th>
-                    <th wdith="70">등급</th>
+                    <th width="70">등급</th>
                     <th width="100">기안일</th>
                 </tr>
             </thead>
@@ -139,11 +140,23 @@
 	</div>
 	
 	<script>
+		$(function(){
+			const readNo = ${rrList.read};
+			const referenceNo = ${rrList.reference};
+			const readyn = ${rrList.readStatus};
+			const referenceyn = ${rrList.referenceStatus};
+			
+			console.log(readNo);
+			console.log(referenceNo);
+			console.log(readyn);
+			console.log(referenceyn);
+		})
+	
 		$(".table-hover>tbody>tr").click(function(){
 		
 			location.href="detail.el?ano=" + $(this).children(".ano").text();
 			
-		})
+		})	
 	</script>
 	
 	

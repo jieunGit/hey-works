@@ -12,7 +12,7 @@ public interface EmployeeService {
 	ArrayList<Employee> ajaxSelectEmployeeList(HashMap<String, Integer> map);
 	ArrayList<Employee> selectDeptList();
 	ArrayList<Employee> ajaxSelectSearchConfirm(String keyword);
-	
+	ArrayList<Employee> selectAdminList();
 	
 	
 	// 회원정보수정

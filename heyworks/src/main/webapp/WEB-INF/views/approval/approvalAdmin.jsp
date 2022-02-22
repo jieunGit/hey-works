@@ -104,36 +104,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="checkbox" value="" name="userlist[0]" class="boxes"></td>
-                    <td>202000015</td>
-                    <td>강동원</td>
-                    <td>인사팀</td>
-                    <td>과장</td>
-                    <td>02-1111-1111</td>
-                    <td>kdw@samjo.com</td>
-                    <td><a class="btn btn-sm btn-outline-danger">해제하기</a></td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" value="" name="" class="boxes"></td>
-                    <td>202000015</td>
-                    <td>강동원</td>
-                    <td>인사팀</td>
-                    <td>과장</td>
-                    <td>02-1111-1111</td>
-                    <td>kdw@samjo.com</td>
-                    <td><a class="btn btn-sm btn-outline-danger">해제하기</a></td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" value="" name="" class="boxes"></td>
-                    <td>202000015</td>
-                    <td>강동원</td>
-                    <td>인사팀</td>
-                    <td>과장</td>
-                    <td>02-1111-1111</td>
-                    <td>kdw@samjo.com</td>
-                    <td><a class="btn btn-sm btn-outline-danger">해제하기</a></td>
-                </tr>
+            <c:choose>
+            	<c:when test="${!empty adlist}">
+            		<c:forEach var="ad" items="${adlist}">
+		                <tr>
+		                    <td><input type="checkbox" name="userNo" value="${ad.userNo}" class="boxes"></td>
+		                    <td>${ad.userNo}</td>
+		                    <td>${ad.userName}</td>
+		                    <td>${ad.deptName}</td>
+		                    <td>${ad.jobName}</td>
+		                    <td>${ad.class}</td>
+		                    <td>${ad.email}</td>
+		                    <td><a class="btn btn-sm btn-outline-danger">해제하기</a></td>
+		                </tr>
+	                </c:forEach>
+                </c:when>
+                <c:otherwise>
+                	<tr>
+                		<th colspan="8">조회된 사원이 없습니다.<th>
+                	</tr>
+                </c:otherwise>
+            </c:choose>    
             </tbody>
         </table>
 
@@ -143,44 +134,44 @@
 
         <div id="insert-area">
 
-            <p>&nbsp;&nbsp;&nbsp;삼조전자 인사팀 목록</p>
+            <p>&nbsp;&nbsp;&nbsp;삼조전자 관리자 목록</p>
 
             <div class="check-user" style="overflow: auto;">
 
-                <p id="jobCode1">과장</p>
+                <p id="jobCode1" onclick="jobList(4);">과장</p>
                 <table class="table" id="gwajang">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 1);" ></td>>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 1);" ></td>
                         <td width="100">200100005</td>
                         <td width="80" class="sawon-name1">박보검</td>
                     </tr>
                 </table>
             </div>
             <div class="check-user" style="overflow: auto;">
-                <p id="jobCode2">대리</p>
+                <p id="jobCode2" onclick="jobList(3);">대리</p>
                 <table class="table" id="daeli">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 2);" ></td>>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 2);" ></td>
                         <td width="100">200100005</td>
                         <td width="80" class="sawon-name2">이제훈</td>
                     </tr>
                 </table>
             </div>
             <div class="check-user" style="overflow: auto;">
-                <p id="jobCode3">주임</p>
+                <p id="jobCode3" onclick="jobList(2);">주임</p>
                 <table class="table" id="juim">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 3);" ></td>>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 3);" ></td>
                         <td width="100">200100005</td>
                         <td width="80" class="sawon-name3">조인성</td>
                     </tr>
                 </table>
             </div>
             <div class="check-user" style="overflow: auto;">
-                <p id="jobCode4">사원</p>
+                <p id="jobCode4" onclick="jobList(1);">사원</p>
                 <table class="table" id="sawon">
                     <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 4);" ></td>>
+                        <td width="20"><input type="checkbox" onclick="viewName(this, 4);" ></td>
                         <td width="100"><p>200100005</p></td>
                         <td width="80"><p class="sawon-name4">서강준</p></td>
                     </tr>
@@ -216,6 +207,10 @@
                 $(".boxes").attr("checked", false);
             }
         }
+        
+        /*직급 */
+        
+        
 
         /*체크시 이름 뿌리기*/
         function viewName(show, num){
@@ -243,21 +238,7 @@
 
         }
 
-        /*
-        $(".table input:checkbox").on("click", function(){
-            
-            const test1 = $(".table input[type=checkbox]").length;
-            console.log(test1);
-            console.log($(".table input[type=checkbox]"));
-
-            if(test1 == 1){
-
-                console.log(test.length);
-
-                $(".table input[type=checkbox]").not(this).attr("disabled", true);
-            }
-        })
-        */
+    
 
         $(function(){ //수정하기
             const test2 = $(".table input[type='checkbox']");

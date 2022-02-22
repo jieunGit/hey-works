@@ -78,7 +78,7 @@
 	                    <th width="80">작성팀</th>
 	                    <th width="80">긴급</th>
 	                    <th width="250">제목</th>
-	                    <th wdith="50">첨부</th>
+	                    <th width="50">첨부</th>
 	                    <th width="85">작성자</th>
 	                </tr>
 	            </thead>

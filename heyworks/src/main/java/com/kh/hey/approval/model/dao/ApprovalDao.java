@@ -226,12 +226,6 @@ public class ApprovalDao {
 		
 	}
 	
-	public int selectDeleteListCount(SqlSessionTemplate sqlSession) {
-		
-		return sqlSession.selectOne("approvalMapper.selectDeleteListCount");
-		
-	}
-	
 	// 수정하기
 	public int updateApproval(SqlSessionTemplate sqlSession, Approval ap) {
 		return sqlSession.update("approvalMapper.updateApproval", ap);
@@ -266,12 +260,22 @@ public class ApprovalDao {
 		return sqlSession.update("approvalMapper.updateExpenseReport", ap);
 	}
 	
-	
+	// 열람 참조 확인용
+	public int updateReadReference(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("approvalMapper.updateReadReference", map);
+	}
 	
 	
 	
 	
 	// 관리자용 삭제된 문서 페이징+조회
+	
+	public int selectDeleteListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("approvalMapper.selectDeleteListCount");
+		
+	}
+	
 	public ArrayList<Approval> selectDeleteList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
@@ -282,8 +286,33 @@ public class ApprovalDao {
 		
 	}
 	
+	public int selectSearchListCount(SqlSessionTemplate sqlSession, HashMap<String,String> map) {
+		
+		return sqlSession.selectOne("approvalMapper.selectSearchListCount", map);
+		
+	}
 	
+	public ArrayList<Approval> selectDeleteSearchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String,String> map) {
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectDeleteSearchList", map, rowBounds);
+		
+	}
 	
+	public int ajaxDeleteRestore(SqlSessionTemplate sqlSession, String[] apNum) {
+		
+		int result = 0;
+		
+		for(int i=0; i<apNum.length; i++) {
+			result = sqlSession.update("approvalMapper.ajaxDeleteRestore", apNum[i]);
+		}
+		
+		return result;
+		
+	} // 삭제문서 복구하기
 	
 	
 	

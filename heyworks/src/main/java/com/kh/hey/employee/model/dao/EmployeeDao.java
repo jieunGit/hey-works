@@ -17,12 +17,7 @@ public class EmployeeDao {
 	}
 	
 	
-	/**
-	 * @author NURI
-	 * @param sqlSession
-	 * @param num
-	 * @return ArrayList<Employee>
-	 */
+	
 	public ArrayList<Employee> ajaxSelectEmployeeList(SqlSessionTemplate sqlSession, HashMap<String, Integer> map){
 		
 		return (ArrayList)sqlSession.selectList("employeeMapper.ajaxSelectEmployeeList", map);
@@ -40,6 +35,9 @@ public class EmployeeDao {
 		return (ArrayList)sqlSession.selectList("employeeMapper.ajaxSelectSearchConfirm", keyword);
 	} // 전자결재 결재자 검색용
 	
+	public ArrayList<Employee> selectAdminList(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("employeeMapper.selectAdminList");
+	}
 	
 	
 	

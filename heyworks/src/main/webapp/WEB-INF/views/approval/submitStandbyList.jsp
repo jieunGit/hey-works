@@ -50,12 +50,6 @@
     	margin-left:5px;
 		font-size:10px;
     }
-    .table-hover{
-    	table-layout:fixed;
-    	overflow:hidden;
-    	text-overflow:ellipsis;
-    	white-space:nowrap;	
-    }
 </style>
 </head>
 <body>
@@ -93,7 +87,7 @@
                     <th width="80">작성자</th>
                     <th width="70">긴급</th>
                     <th width="200">제목</th>
-                    <th wdith="70">첨부</th>
+                    <th width="70">첨부</th>
                     <th width="100">현재결재자</th>
                     <th width="100">최종결재자</th>
                     <th width="80">결재상태</th>
@@ -112,7 +106,7 @@
 		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
 		                        </c:if>
 		                    </td>
-		                    <td>${sb.approvalTitle}</td>
+		                    <td style="text-overflow:ellipsis; overflow:hidden"><nobr>${sb.approvalTitle}</nobr></td>
 		                    <td>
 		                    	<c:if test="${!empty sb.originName}">
 		                        	<img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
