@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="workingMapper">
 
+	<resultMap id="workingResult" type="Working">
+		<result column="tna_date" property="tnaDate"/>
+		<result column="tna_day" property="tnaDay"/>
+		<result column="user_no" property="userNo"/>
+		<result column="user_name" property="userName"/>
+		<result column="clock_in" property="clockIn"/>
+		<result column="clock_out" property="clockOut"/>
+		<result column="work_time" property="workTime"/>
+		<result column="over_time" property="overTime"/>
+		<result column="tna_status" property="tnaStatus"/>
+	</resultMap>
+
 	<resultMap id="leaveResult" type="Leave">
 		<result column="leave_ano" property="leaveAno"/>
 		<result column="user_no" property="userNo"/>
@@ -221,4 +233,22 @@
 		     , LEAVE_REST = #{leaveRest}
 		 WHERE USER_NO = #{userNo}
 	</update>
+	
+	<select id="selectMyallStatus" resultMap="workingResult">
+		SELECT
+		       TO_CHAR(TO_DATE(TNA_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') "TNA_DATE"
+		     , TO_CHAR(TO_DATE(TNA_DATE, 'YYYY-MM-DD'), 'DY') "TNA_DAY"
+		     , USER_NO
+		     , USER_NAME
+		     , CLOCK_IN
+		     , CLOCK_OUT
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE(CLOCK_IN, 'HH24:MI'))))*24-1) "WORK_TIME"
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE('17:00', 'HH24:MI'))))*24) "OVER_TIME"
+		     , TNA_STATUS
+		  FROM TNA
+		  JOIN EMPLOYEE E USING(USER_NO)
+		 WHERE USER_NO = #{userNo}
+		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{startDate}
+		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{endDate}
+	</select>
 </mapper>

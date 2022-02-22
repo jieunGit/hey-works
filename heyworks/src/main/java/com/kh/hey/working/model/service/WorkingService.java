@@ -2,10 +2,12 @@ package com.kh.hey.working.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 public interface WorkingService {
 
@@ -21,6 +23,8 @@ public interface WorkingService {
 	// 휴가신청내역 select
 	ArrayList<Leave> selectMyleave(int userNo);
 	
+	// 근태/휴가 현황 select
+	ArrayList<Working> selectMyallStatus(Map<String, Object> map);
 	
 	// 전사 휴가현황 리스트 페이지 (페이징)
 	int selectAleaveListCount();

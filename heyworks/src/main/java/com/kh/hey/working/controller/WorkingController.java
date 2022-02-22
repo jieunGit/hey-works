@@ -2,7 +2,9 @@ package com.kh.hey.working.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.working.model.service.WorkingService;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Controller
 public class WorkingController {
@@ -168,4 +171,53 @@ public class WorkingController {
 			return "redirect:leaveUpdateForm.wo";
 		}
 	}
+	
+	// 근무/휴가 조회
+	/*
+	@RequestMapping("selectMyall.wo")
+	public ModelAndView selectMyallStatus(HttpSession session, ModelAndView mv) {
+		
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		ArrayList<Working> wlist = wService.selectMyallStatus(userNo);
+		
+		mv.addObject("wlist", wlist);
+		mv.setViewName("working/myWorkinglist");
+		
+		System.out.println(wlist);
+		return mv;
+	}
+	*/
+	
+	@RequestMapping("main.wo")
+	public String tnaMain() {
+		return "working/myWorkinglist";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectMyall.wo", produces="application/json; charset=UTF-8")
+	public String selectMyallStatus(String startDate, String endDate, HttpSession session) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("userNo", userNo);
+		//System.out.println(map);
+			
+		ArrayList<Working> wlist = wService.selectMyallStatus(map);
+		//System.out.println(wlist);
+		
+		return new Gson().toJson(wlist);
+		
+		
+		//mv.addObject("wlist", wlist);
+		//mv.setViewName("working/myWorkinglist");
+		
+		//System.out.println(wlist);
+		//return mv;
+	}
+	
+	
 }

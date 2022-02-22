@@ -2,6 +2,7 @@ package com.kh.hey.working.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.working.model.dao.WorkingDao;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Service
 public class WorkingServiceImpl implements WorkingService {
@@ -71,6 +73,11 @@ public class WorkingServiceImpl implements WorkingService {
 	@Override
 	public int updateLeaveStatus(AllLeave al) {
 		return wDao.updateLeaveStatus(sqlSession, al);
+	}
+
+	@Override
+	public ArrayList<Working> selectMyallStatus(Map<String, Object> map) {
+		return wDao.selectMyallStatus(sqlSession, map);
 	}
 
 

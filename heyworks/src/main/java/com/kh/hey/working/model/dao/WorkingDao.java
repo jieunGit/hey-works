@@ -2,6 +2,7 @@ package com.kh.hey.working.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Repository
 public class WorkingDao {
@@ -64,5 +66,9 @@ public class WorkingDao {
 	
 	public int updateLeaveStatus(SqlSessionTemplate sqlSession, AllLeave al) {
 		return sqlSession.update("workingMapper.updateLeaveStatus", al);
+	}
+	
+	public ArrayList<Working> selectMyallStatus(SqlSessionTemplate sqlSession, Map<String, Object> map){
+		return (ArrayList)sqlSession.selectList("workingMapper.selectMyallStatus", map);
 	}
 }
