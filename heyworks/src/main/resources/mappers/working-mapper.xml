@@ -18,6 +18,7 @@
 	
 	<resultMap id="AllLeaveResult" type="AllLeave">
 		<result column="leave_cno" property="leaveCno" />
+		<result column="user_no" property="userNo" />
 		<result column="user_name" property="userName" />
 		<result column="dept_name" property="deptName" />
 		<result column="job_name" property="jobName" />
@@ -117,7 +118,8 @@
 	
 	<select id="selectAleaveList" resultMap="AllLeaveResult">
 		SELECT
-		       USER_NAME
+		       USER_NO
+		     , USER_NAME
 		     , DEPT_NAME
              , DECODE(JOB_CODE, 1, '사원'
                               , 2, '주임'
@@ -156,7 +158,41 @@
 	
 	<select id="selectAleaveSearch" resultMap="AllLeaveResult">
 			SELECT
-		       USER_NAME
+				   USER_NO
+			     , USER_NAME
+			     , DEPT_NAME
+	             , DECODE(JOB_CODE, 1, '사원'
+	                              , 2, '주임'
+	                              , 3, '대리'
+	                              , 4, '과장'
+	                              , 9, '대표이사') "JOB_NAME"
+			     , TO_CHAR(TO_DATE(HIRE_DATE), 'YYYY-MM-DD') "HIRE_DATE"
+			     , LENGTH_YEARS
+			     , LEAVE_TOTAL
+			     , LEAVE_USE
+			     , LEAVE_REST
+			     , AL.STATUS
+			 FROM ANNUAL_LEAVE "AL"
+			 JOIN EMPLOYEE E USING(USER_NO)
+	         JOIN DEPARTMENT D USING(DEPT_CODE)
+	        WHERE AL.STATUS = 'Y'
+        <choose>
+           <when test="condition == 'userName'">
+          		AND USER_NAME
+           </when>
+           <when test="condition == 'deptName'">
+          		AND DEPT_NAME
+           </when>
+        </choose>        
+              LIKE '%' || #{keyword} || '%'
+        ORDER
+           BY HIRE_DATE
+	</select>
+	
+	<select id="selectAleaveForm" resultMap="AllLeaveResult">
+		SELECT
+		       USER_NO
+		     , USER_NAME
 		     , DEPT_NAME
              , DECODE(JOB_CODE, 1, '사원'
                               , 2, '주임'
@@ -173,16 +209,16 @@
 		 JOIN EMPLOYEE E USING(USER_NO)
          JOIN DEPARTMENT D USING(DEPT_CODE)
         WHERE AL.STATUS = 'Y'
-        <choose>
-           <when test="condition == 'userName'">
-          		AND USER_NAME
-           </when>
-           <when test="condition == 'deptName'">
-          		AND DEPT_NAME
-           </when>
-        </choose>        
-              LIKE '%' || #{keyword} || '%'
-        ORDER
-           BY HIRE_DATE
+          AND USER_NO = #{userNo}
 	</select>
+	
+	<update id="updateLeaveStatus">
+		UPDATE
+			   ANNUAL_LEAVE
+		   SET LENGTH_YEARS = #{lengthYears}
+		     , LEAVE_TOTAL = #{leaveTotal}
+		     , LEAVE_USE = #{leaveUse}
+		     , LEAVE_REST = #{leaveRest}
+		 WHERE USER_NO = #{userNo}
+	</update>
 </mapper>

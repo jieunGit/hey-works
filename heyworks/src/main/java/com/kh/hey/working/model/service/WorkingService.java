@@ -30,6 +30,9 @@ public interface WorkingService {
 	int selectAleaveSearchCount(HashMap<String, String> map);
 	ArrayList<AllLeave> selectAleaveSearch(HashMap<String, String> map, PageInfo pi);
 	
+	// 전사 휴가현황 수정폼
+	AllLeave selectAleaveForm(int userNo);
+	
 	// 전사 휴가현황 수정용 서비스 update
-	int updateAleave(Leave l);
+	int updateLeaveStatus(AllLeave al);
 }

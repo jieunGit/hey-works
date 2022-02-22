@@ -57,4 +57,12 @@ public class WorkingDao {
 		
 		return (ArrayList)sqlSession.selectList("workingMapper.selectAleaveSearch", map, rowBounds);
 	}
+	
+	public AllLeave selectAleaveForm(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("workingMapper.selectAleaveForm", userNo);
+	}
+	
+	public int updateLeaveStatus(SqlSessionTemplate sqlSession, AllLeave al) {
+		return sqlSession.update("workingMapper.updateLeaveStatus", al);
+	}
 }

@@ -133,4 +133,31 @@ public class WorkingController {
 		
 		return "working/allLeaveStatus";
 	}
+	
+	// 휴가현황 수정 폼
+	@RequestMapping("leaveUpdateForm.wo")
+	public String leaveUpdateForm(int userNo, Model model) {
+		
+		AllLeave al = wService.selectAleaveForm(userNo);
+		
+		model.addAttribute("al", al);
+		//System.out.println(userNo);
+		return "working/allLeaveStatusUpdate";
+	}
+	
+	// 휴가현황 수정 요청
+	@RequestMapping("leaveUpdate.wo")
+	public String leaveUpdate(AllLeave al, Model model, HttpSession session) {
+		
+		int result = wService.updateLeaveStatus(al);
+		
+		if(result > 0) {
+			model.addAttribute("al", al);
+			session.setAttribute("alertMsg", "휴가현황 정보가 수정되었습니다.");
+			return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
+		}else {
+			session.setAttribute("alertMsg", "휴가현황 수정 실패");
+			return "redirect:leaveUpdateForm.wo";
+		}
+	}
 }

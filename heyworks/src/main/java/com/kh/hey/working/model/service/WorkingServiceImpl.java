@@ -62,10 +62,15 @@ public class WorkingServiceImpl implements WorkingService {
 	public ArrayList<AllLeave> selectAleaveSearch(HashMap<String, String> map, PageInfo pi) {
 		return wDao.selectAleaveSearch(sqlSession, map, pi);
 	}
-	
+
 	@Override
-	public int updateAleave(Leave l) {
-		return 0;
+	public AllLeave selectAleaveForm(int userNo) {
+		return wDao.selectAleaveForm(sqlSession, userNo);
+	}
+
+	@Override
+	public int updateLeaveStatus(AllLeave al) {
+		return wDao.updateLeaveStatus(sqlSession, al);
 	}
 
 
