@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="messageMapper">
+
+	<resultMap id="messageResult" type="Message">		
+		<result column="outmessage_no" property="outMsgNo" />
+		<result column="sent_no" property="sentNo" />
+		<result column="outmessage_content" property="outMsgContent" />
+		<result column="message_date" property="msgDate" />
+		<result column="status" property="status" />
+		<result column="inmessage_no" property="inMsgNo" />
+		<result column="recv_no" property="recvNo" />
+		<result column="user_name" property="userName" />
+	</resultMap>
+	
+	<select id="countList" resultType="_int">
+		select
+		       count(*)
+		  from outmessage
+		  join inmessage using (outmessage_no)
+		 where recv_no = #{ userNo }
+	</select>
+	
+	<select id="listInMsg" resultMap="messageResult">
+		
+		select outmessage_no
+		    , inmessage_no
+		    , sent_no
+		    , user_name
+		    , outmessage_content
+		    , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		    , imsg.status
+		 from outmessage
+		 join employee on (user_no = sent_no)
+		 join inmessage imsg using (outmessage_no)
+		where recv_no = #{ userNo }
+		order by outmessage_no desc
+	
+	</select>
+	
+	<select id="detailInMsg" resultMap="messageResult">
+	
+		select outmessage_no
+		     , sent_no
+		     , inmessage_no
+		     , user_name
+		     , outmessage_content
+		     , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		     , imsg.status
+		  from outmessage
+		  join employee on (user_no = sent_no)
+		  join inmessage imsg using (outmessage_no)
+		 where inmessage_no = #{ mno }
+	
+	</select>
+
+	<select id="searchInMsg" resultMap="messageResult">
+		
+		select outmessage_no
+		     , inmessage_no
+		     , sent_no
+		     , user_name
+		     , outmessage_content
+		     , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		     , imsg.status
+		  from outmessage
+		  join employee on (user_no = sent_no)
+		  join inmessage imsg using (outmessage_no)
+		 where recv_no = #{ msg.userNo }
+           and user_name = #{ msg.userName }
+		 order by outmessage_no desc
+	
+	</select>
+	
+</mapper>
