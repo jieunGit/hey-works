@@ -66,7 +66,15 @@ public class WorkingController {
 		
 		int result = wService.insertLeave(l);
 		
-		return "working/leaveStatus";
+		//return "working/leaveStatus";
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "휴가 신청이 완료되었습니다.");
+			return "redirect:selectMyleave.wo";
+		}else {
+			session.setAttribute("alertMsg", "휴가 신청 실패");
+			return "redirect:selectMyleave.wo";
+		}
 	}
 	
 	// 연장근무 신청 폼
