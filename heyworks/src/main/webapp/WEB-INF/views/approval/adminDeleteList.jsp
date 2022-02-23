@@ -180,7 +180,7 @@
 	</div>
 	
 	<script>
-		$(".table-hover>tbody>tr>td").click(function(){
+		$(".table-hover>tbody>tr>td").siblings(".apTitle").click(function(){
 		
 			location.href="detail.el?ano=" + $(this).siblings(".ano").text();
 			

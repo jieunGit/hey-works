@@ -81,7 +81,6 @@
         margin-top: 20px;
         margin-left: 20px;
     }
-    #searchNsawon>div>button{height: 38px;}
     #line{
         width: 130px;
         height: 300px;
@@ -252,8 +251,7 @@
                     <div id="searchNsawon" style="overflow: auto;">
                         <!--ajax로 이름 검색요청-->
                         <div>
-                            <input type="text" class="form-control" placeholder="이름으로 검색" style="width: 350px;" name="keyword">
-                            <button type="button" class="btn btn-sm btn-outline-dark" onclick="searchConfirm();">검색</button>
+                            <input type="text" class="form-control" placeholder="이름으로 검색" onkeyup="searchConfirm(this.value);" style="width: 100%;" name="keyword">
                         </div>
                         <table class="table sawon-list" style="overflow: auto;">
                             <thead>
@@ -323,7 +321,7 @@
            			let value = "";
        				for(let i in list){
        					value += "<tr>"
-                           	   + "<td width='48'><input type='checkbox'></td>"
+                           	   + "<td width='48'><input type='checkbox' name='job' value='"+list[i].jobCode+"' onclick='valueCheck(this);'></td>"
                            	   + "<td width='150' class='noCheck'>" + list[i].userNo + "</td>"
                            	   + "<td width='100' class='nameCheck'>" + list[i].userName + "</td>"
                            	   + "<td width='100' class='jobCheck'>" + list[i].jobName + "</td>"
@@ -340,35 +338,51 @@
            	})
            } 
            
-           function searchConfirm(){
+           function searchConfirm(keyword){
            	
-           	var keyword = $("input[name='keyword']").val();
-           	console.log(keyword);
+        	   $("input[name='keyword']").keyup(function(e){
+                   if(e.keyCode == 13){
            	
-           	$.ajax({
-	            	url:"searchConfirm.el",
-	            	data:{keyword:keyword},
-	            	success:function(result){
-	            		
-	            		let listresult = "";
-	            		for(let i in result){
-	            			listresult += "<tr>"
-		                         	   + "<td width='48'><input type='checkbox'></td>"
-		                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
-		                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
-		                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
-		                			   + "</tr>"
-	            		}
-	            		$(".sawon-list>tbody").html(listresult);
-	            	},error:function(){
-           			console.log("사원조회용 ajax통신 실패");
-           		}
-           	})
-           }
-           
+		           	$.ajax({
+			            	url:"searchConfirm.el",
+			            	data:{keyword:keyword},
+			            	success:function(result){
+			            		
+			            		let listresult = "";
+			            		for(let i in result){
+			            			listresult += "<tr>"
+				                         	   + "<td width='48'><input type='checkbox'></td>"
+				                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
+				                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
+				                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
+				                			   + "</tr>"
+			            		}
+			            		$(".sawon-list>tbody").html(listresult);
+			            	},error:function(){
+		           			console.log("사원조회용 ajax통신 실패");
+		           		}
+		           	})
+		           }
+		       })
+		   	}
            /*ajax끝*/
            
-        // 결재버튼 플러스 마이너스까지 일단 완성 체크박스랑 사원비교 아직,,,
+           // 사원 값 비교해서 체크박스 disabled하기
+            function valueCheck(){
+            	
+            	let checkvalue = $("input:checkbox[name='job']:checked").val();
+
+            	$('input:checkbox[name="job"]').each(function(){
+            	    
+            		if(checkvalue > $(this).val()){
+            			this.disabled = true;
+            		}else{
+            			this.disabled = false;
+            		}
+            	})
+
+            }
+           
            /*버튼 클릭시 결재 화면에 뿌려질 용도*/
            function list(num){
 
