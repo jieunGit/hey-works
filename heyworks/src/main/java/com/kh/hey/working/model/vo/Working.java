@@ -21,4 +21,11 @@ public class Working {
 	private String clockOut;
 	private String tnaStatus;
 	
+	private String tnaDay; // 요일
+	private String userName;
+	private int workTime; // 근무시간
+	private int overTime; // 연장시간 
+
+	private String startDate;
+	private String endDate;
 }

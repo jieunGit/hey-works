@@ -50,12 +50,16 @@
         line-height: 40px;
         font-weight: 600;
     }
-    #replyContent{width: 730px;}
+    #replyContent{width: 700px;}
     #form-left>*{
     	float:left;
     }
     #form-left{margin-bottom:40px;}
     #reason{width:850px;}
+    #reply-list input{
+    	width:100%;
+    	border:1px solid tomato;
+    }
 </style>
 </head>
 <body>
@@ -74,11 +78,12 @@
 	            <button type="button" class="btn btn-sm" onclick="history.back();">목록으로</button>
 	
 	            <!-- 작성자 -->
-	            <c:if test="${loginUser.userName eq ap.userNo and ap.status eq 'D' or ap.status eq 'P'}">
-		            <a class="btn btn-sm text-primary" onclick="postSubmit(1)">내용수정</a>
-		            <a class="btn btn-sm text-danger" onclick="postSubmit(2)">기안취소</a>
-	            </c:if>
-	
+	            <c:if test="${loginUser.userName eq ap.userNo}">
+		            <c:if test="${ap.status eq '결재대기'}">
+			            <a class="btn btn-sm text-primary" onclick="postSubmit(1)">내용수정</a>
+			            <a class="btn btn-sm text-danger" onclick="postSubmit(2)">기안취소</a>
+		            </c:if>
+				</c:if>
 	            <!-- 결재자 -->
 	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser or loginUser.userName eq ap.confirmList[1].confirmUser or loginUser.userName eq ap.confirmList[2].confirmUser}">
 		            <a class="btn btn-sm text-primary" onclick="postSubmit(3)">결재</a>
@@ -86,11 +91,11 @@
 				</c:if>
 				
 	            <!-- 반려시 -->
-	            <c:if test="${ap.status eq 'R'}">
+	            <c:if test="${ap.status eq '반려'}">
 	            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
 				</c:if>
 	            <!-- 관리자가 복구시 -->
-	            <c:if test="${loginUser.adminYn eq 'Y' && loginUser.deptCode eq 3}">
+	            <c:if test="${loginUser.adminYn eq 'Y'}">
 	            	<a class="btn btn-sm text-warning" onclick="postSubmit(6)">복구하기</a>
 	            </c:if>
 	        </div>
@@ -332,54 +337,173 @@
         <hr>
 
         <div>
-            <table>
-                <tr style="height: 40px;">
-                    <th width="120">강동원&nbsp;팀장</th>
-                    <td width="700">아주 잘 작성했어요. 이대로 진행하세요</td>
-                    <td width="100" style="font-size: 11px; color: lightgrey;">
-                        2022/02/02 16:20
-                    </td>
-                </tr>
+            <table id="reply-list"> <!-- 댓글용 테이블 -->
+            	
             </table>
         </div>
         <br>
 
         <div id="reply-insert">
-            <div id="replyName">김삼조&nbsp;사원</div>
-            <div id="replyContent"><input type="text" class="form-control" placeholder="댓글을 입력해주세요."></div>
-            <button type="submit" class="btn btn-sm">등록</button>
+            <div id="replyName">${loginUser.userName}</div>
+            <div id="replyContent"><input type="text" class="form-control" placeholder="댓글을 입력해주세요." id="reply-content"></div>
+            <button type="button" class="btn btn=sm" onclick="insertReply();">등록</button>
         </div>
 
     </div>
 		
 	</div>
 	
-		<!-- The Modal -->
-		  <div class="modal fade" id="rejectModal">
-		    <div class="modal-dialog modal-sm">
-		      <div class="modal-content">
-		      
-		        <!-- Modal Header -->
-		        <div class="modal-header">
-		          <h4 class="modal-title">반려사유 작성</h4>
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        </div>
-		        
-		        <!-- Modal body -->
-		        <div class="modal-body">
-		          <input type="text" class="form-control" id="reason" required>
-		        </div>
-		        
-		        <!-- Modal footer -->
-		        <div class="modal-footer">
-		          <button type="button" class="btn btn-outline-secondary" id="reject" data-dismiss="modal">반려</button>
-		        </div>
-		        
-		      </div>
-		    </div>
-		  </div>
+	<script>
+		const loginName = '${loginUser.userName}';
+	
+		$(function(){
+			selectReplyList();
+			//setInterval(selectReplyList, 1000);
+			
+		}) // 댓글 실시간 조회용
 
-		  
+		function insertReply(){
+			if($("#reply-content").val().trim().length != 0){
+				$.ajax({
+					url:"rinsert.rp",
+					data:{refBoardNo:'${ap.approvalNo}',
+						replyContent:$("#reply-content").val(),
+						userNo:${loginUser.userNo}
+					},
+					success:function(result){
+						
+						if(result == 'S'){
+							alertify.alert("댓글이 등록되었습니다.");
+    						$("#replyContent").val("");
+    						selectReplyList();
+    					}else{
+    						alertify.alert("댓글등록 실패!");
+    					}
+						
+					},error:function(){
+						console.log("댓글 작성용 ajax통신 실패");
+					}
+				})
+			}
+			
+		}
+		
+		function selectReplyList(){
+
+			$.ajax({
+				url:"rlist.rp",
+				data:{ano:'${ap.approvalNo}'},
+				success:function(rlist){
+										
+					let list = "";
+					for(let i in rlist){
+						list += "<tr style='height: 40px;' class='originReply'>"
+	                    	  + "<th width='130'>" + rlist[i].userNo + "&nbsp;" + rlist[i].jobName + "</th>"
+	                          + "<td width='600'>" + rlist[i].replyContent + "</td>"
+	                          + "<td width='100' style='font-size: 12px; color: lightgrey;'>" + rlist[i].createDate + "</td>"
+	                          + "<td width='100' class='updelbtn'>"
+	                          + "<button class='btn btn-sm' onclick='updateForm(this);'>수정</button><button class='btn btn-sm' onclick='deleteReply(this);'>삭제</button>"
+	                          + "<input type='hidden' name='replyName' value='"+ rlist[i].userNo + "'></td>"
+	                          + "</tr>" 
+	                          + "<tr style='display:none' class='updateReply'>"
+	                          + "<th width='130'>" + "<input type='text' name='replyNo' value='"+ rlist[i].replyNo + "' style='color:white; width:120px; border:none;'></th>"
+	                          + "<td width='700' colspan='2'>" + "<input type='text' name='replyContent' class='form-control' value='"+ rlist[i].replyContent + "'></td>"
+	                          + "<td width='100'>"
+	                          + "<button class='btn btn-sm' onclick='updateReply(this);'>수정</button><button class='btn btn-sm' onclick='cancleUpdate(this);'>취소</button></td>"
+	                          + "</tr>"
+	                          
+					}
+					
+					$("#reply-list").html(list);
+
+				},error:function(){
+					console.log("댓글 조회용 ajax통신 실패");
+				}
+			})
+		}
+		
+		
+		$(function(){
+			
+			const replyName = document.getElementsByName('replyName').value;
+			console.log(replyName);
+
+			$("#reply-list>tr input[type='hidden']").each(function(){
+				
+				if(loginName == replyName){
+					
+				}
+				
+			})
+			
+
+			
+		})
+		
+		function deleteReply(){
+			
+			$.ajax({
+				url:"delete.rp",
+				data:{
+					replyNo:$("input[name='replyNo']").val()
+				},success:function(result){
+					
+					if(result == 'S'){
+						alertify.alert("댓글이 삭제되었습니다.");
+						selectReplyList();
+					}else{
+						alertify.alert("댓글삭제 실패!");
+					}
+					
+				},error:function(){
+					console.log("댓글작성용 ajax통신 실패");
+				}
+			})
+			
+		}
+		
+		function updateForm(updatebtn){ // 수정폼으로 연결
+			
+			$(updatebtn).parent().parent().attr('style', "display:none;");
+			$(updatebtn).parent().parent().next().attr('style', "display:''");
+			
+		}
+		
+		function cancleUpdate(canclebtn){ // 취소눌렀을때
+			
+			$(canclebtn).parent().parent().prev().attr('style', "display:'';");
+			$(canclebtn).parent().parent().attr('style', "display:none");
+			
+		}
+		
+		function updateReply(update){ // 수정하기
+			
+			const replyNo = $(update).parent().parent().find("input[name='replyNo']").val();
+			const replyContent = $(update).parent().parent().find("input[name='replyContent']").val();
+
+			$.ajax({
+				url:"update.rp",
+				type:"post",
+				data:{
+					replyNo:replyNo,
+					replyContent:replyContent,
+					refBoardNo:'${ap.approvalNo}'
+				},success:function(result){
+					
+					if(result == 'S'){
+						alertify.alert("댓글 수정에 성공했습니다.");
+						selectReplyList();
+					}else{
+						alertify.alert("댓글수정 실패!");
+					}
+					
+				},error:function(){
+					console.log("댓글수정용 ajax통신 실패");	
+				}
+			})
+		}
+	</script>
+
 		  
 		  
 </body>

@@ -11,8 +11,11 @@ public interface EmployeeService {
 	// 전자결재용
 	ArrayList<Employee> ajaxSelectEmployeeList(HashMap<String, Integer> map);
 	ArrayList<Employee> selectDeptList();
+	ArrayList<Employee> ajaxSelectSearchConfirm(String keyword);
 	
 	
 	
+	// 회원정보수정
+	int updateEmployee(Employee e);
 	
 }

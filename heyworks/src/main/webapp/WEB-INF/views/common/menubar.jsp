@@ -66,8 +66,9 @@
         height: 100%;
         padding: 18px;        
     }
- 
-    
+ 	#profile{
+		border-radius:100%; 	
+ 	}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -95,8 +96,9 @@
 <!-- Semantic UI theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
-
-
+<!-- sweetalert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -124,8 +126,8 @@
             <a href="">
                 <img src="resources/images/miniletter.png" id="letter">
             </a>
-            <a href="">
-                <img src="resources/images/profile.png">
+            <a href="myPage.em">
+                <img src="resources/images/user.jpg" id="profile">
             </a>
         </div>
     </div>
@@ -136,7 +138,7 @@
                 <li><a href="">
                     <img src="resources/images/letter.png">
                 </a></li>
-                <li><a href="myWorkingList.wo">
+                <li><a href="main.wo">
                     <img src="resources/images/bag.png">
                 </a></li>
                 <li><a href="main.el">
@@ -167,7 +169,7 @@
                		 <a href="likeAddress.ad"><img src="resources/images/addressbook.png"></a>
                     </div>
                 </li>
-                <li><a href="">
+                <li><a href="list.organ">
                     <img src="resources/images/coperation.png">
                 </a></li>         
                 

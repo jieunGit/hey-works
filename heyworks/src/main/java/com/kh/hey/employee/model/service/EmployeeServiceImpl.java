@@ -42,6 +42,20 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return eDao.selectDeptList(sqlSession);
 		
 	} // 전자결재 인서트용
+
+	@Override
+	public ArrayList<Employee> ajaxSelectSearchConfirm(String keyword) {
+		return eDao.ajaxSelectSearchConfirm(sqlSession, keyword);
+	} // 전자결재 결재자 검색용
+
+	
+	
+	
+	
+	@Override
+	public int updateEmployee(Employee e) {
+		return eDao.updateEmployee(sqlSession, e);
+	} // 회원정보수정
 	
 	
 	

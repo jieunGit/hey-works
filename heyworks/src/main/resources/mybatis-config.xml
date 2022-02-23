@@ -18,7 +18,11 @@
 		<typeAlias type="com.kh.hey.address.model.vo.AddressGroup" alias="AddressGroup" />
 		<typeAlias type="com.kh.hey.working.model.vo.Working" alias="Working" />
 		<typeAlias type="com.kh.hey.organization.model.vo.Organ" alias="Organ" />
+		<typeAlias type="com.kh.hey.message.model.vo.Message" alias="Message" />
+		<typeAlias type="com.kh.hey.common.model.vo.Reply" alias="Reply" />
+		<typeAlias type="com.kh.hey.working.model.vo.Leave" alias="Leave" />
 		<typeAlias type="com.kh.hey.todo.model.vo.Todolist" alias="Todolist" />
+
 	</typeAliases>
 	
 	<mappers>
@@ -28,7 +32,9 @@
 		<mapper resource="/mappers/personalAddress-mapper.xml"/>
 		<mapper resource="/mappers/working-mapper.xml"/>
 		<mapper resource="/mappers/organization-mapper.xml"/>
-		<mapper resource="/mappers/todolist-mapper.xml"/>
+		<mapper resource="/mappers/reply-mapper.xml"/>
+		<mapper resource="/mappers/message-mapper.xml"/>
+
 	 </mappers>
 	 
 	 

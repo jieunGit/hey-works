@@ -109,10 +109,14 @@ public class ApprovalDao {
 		
 		int result = 0;
 		
-		for(int i=0; i<confirmList.size(); i++) {
-		
-			result = sqlSession.insert("approvalMapper.insertConfirm", confirmList.get(i));
-			
+		if(confirmList.get(0).getConfirmNo() != null) { // 입력하기
+			for(int i=0; i<confirmList.size(); i++) {
+				result = sqlSession.insert("approvalMapper.insertConfirm", confirmList.get(i));
+			}
+		}else {
+			for(int i=1; i<confirmList.size(); i++) {
+				result = sqlSession.insert("approvalMapper.insertConfirm", confirmList.get(i));
+			}
 		}
 		
 		return result;
@@ -147,10 +151,14 @@ public class ApprovalDao {
 		
 		int result = 0;
 		
-		for(int i=0; i<itemList.size(); i++) {
-		
-			result = sqlSession.insert("approvalMapper.insertItemList", itemList.get(i));
-			
+		if(itemList.get(0).getItemName() != null) {
+			for(int i=0; i<itemList.size(); i++) {
+				result = sqlSession.insert("approvalMapper.insertItemList", itemList.get(i));
+			}
+		}else {
+			for(int i=1; i<itemList.size(); i++) {
+				result = sqlSession.insert("approvalMapper.insertItemList", itemList.get(i));
+			}
 		}
 		
 		return result;
@@ -218,9 +226,61 @@ public class ApprovalDao {
 		
 	}
 	
+	public int selectDeleteListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("approvalMapper.selectDeleteListCount");
+		
+	}
+	
+	// 수정하기
+	public int updateApproval(SqlSessionTemplate sqlSession, Approval ap) {
+		return sqlSession.update("approvalMapper.updateApproval", ap);
+	}
+	
+	public int deleteConfirm(SqlSessionTemplate sqlSession, String ano) {
+		return sqlSession.delete("approvalMapper.deleteConfirm", ano);
+	}
+	
+	public int updateBusinessDraft(SqlSessionTemplate sqlSession, Approval ap) {
+		return sqlSession.update("approvalMapper.updateBusinessDraft", ap);
+	}
+	
+	// 비품구매
+	public int updateEquipmentBuy(SqlSessionTemplate sqlSession, Approval ap) {
+		return sqlSession.update("approvalMapper.updateEquipmentBuy", ap);
+	}
+	
+	public int deleteItemList(SqlSessionTemplate sqlSession, String ano) {
+		return sqlSession.delete("approvalMapper.deleteItemList", ano);
+	}
+	
+	public int updateCertificate(SqlSessionTemplate sqlSession, Approval ap) {
+		return sqlSession.update("approvalMapper.updateCertificate", ap);
+	}
+	
+	public int updateRecruiment(SqlSessionTemplate sqlSession, Approval ap) {
+		return sqlSession.update("approvalMapper.updateRecruiment", ap);
+	}
+	
+	public int updateExpenseReport(SqlSessionTemplate sqlSession, Approval ap) {
+		return sqlSession.update("approvalMapper.updateExpenseReport", ap);
+	}
 	
 	
 	
+	
+	
+	
+	// 관리자용 삭제된 문서 페이징+조회
+	public ArrayList<Approval> selectDeleteList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectDeleteList", null, rowBounds);
+		
+	}
 	
 	
 	

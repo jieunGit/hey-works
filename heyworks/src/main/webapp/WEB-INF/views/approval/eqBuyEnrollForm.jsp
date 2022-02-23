@@ -102,13 +102,24 @@
         margin-bottom: 10px;
     }
     #nameCheck{width: 260px;}
+    #nameCheck>*{float:left;}
     #nameCheck>p{
-        width: 100%;
+        width: 200px;
         height: 40px;
         margin-top: 5px;
         border: 1px solid lightgray;
         line-height: 40px;
         padding-left: 10px;
+    }
+    #nameCheck>button{
+    	widht:40px;
+    	height:25px;
+    	border-radius:100%;
+    	border:1px solid gray;
+    	text-align:center;
+    	margin-top:10px;
+    	margin-left:10px;
+    	line-height:10px;
     }
     #fileNotice{
     	font-size:12px;
@@ -247,7 +258,7 @@
             <br>
             <div style="width:100%;" align="right">총 금액 : <input type="text" name="totalPay"><button type="button" class="btn btn-sm" onclick="totalPay();">조회</button></div>
             <br>
-            <button type="button" class="btn btn-sm btn-outline-dark" onclick="removeList();">삭제하기</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeList();">한 행 삭제</button>
             
 
             <input type="file" name="upfile" class="form-control-file border" style="margin-top: 30px;">
@@ -285,8 +296,8 @@
                     <div id="searchNsawon" style="overflow: auto;">
                         <!--ajax로 이름 검색요청-->
                         <div>
-                            <input type="text" class="form-control" placeholder="이름,사번으로 검색" style="width: 350px;">
-                            <button type="button" class="btn btn-sm btn-outline-dark">검색</button>
+                            <input type="text" class="form-control" placeholder="이름으로 검색" style="width: 350px;" name="keyword">
+                            <button type="button" class="btn btn-sm btn-outline-dark" onclick="searchConfirm();">검색</button>
                         </div>
                         <table class="table sawon-list" style="overflow: auto;">
                             <thead>
@@ -305,14 +316,20 @@
 
                     <!-- 어느라인으로 보낼건지 -->
                     <div id="line">
-                        <button type="button" class="btn btn-sm" onclick="list(1);">참조</button>
-                        <button type="button" class="btn btn-sm text-danger" onclick="list(2);">*결재1</button>
+                        <button type="button" class="btn btn-sm" onclick="list(1);" id="readbtn">열람</button>
+                        <button type="button" class="btn btn-sm" onclick="list(2);">참조</button>
+                        <button type="button" class="btn btn-sm text-danger" onclick="list(3);">*결재1</button>
+                        <button type="button" class="btn btn-sm" onclick="list(4);" id="sign2btn">결재2</button>
+                        <button type="button" class="btn btn-sm" onclick="list(5);" id="sign3btn">결재3</button>
                     </div>
 
                     <!-- 화면에 뿌려주기 -->
                     <div id="nameCheck">
-                        <p id="chamjo"></p>
-                        <p id="sign1" class="lineNo"></p>
+                        <p id="yoelam"></p><button type="button" class="btn btn-sm" onclick="minuspeople(1);">x</button>
+                        <p id="chamjo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(2);">x</button>
+                        <p id="sign1" class="lineNo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(3);">x</button>
+                        <p id="sign2" class="lineNo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(4);">x</button>
+                        <p id="sign3" class="lineNo"></p><button type="button" class="btn btn-sm" onclick="minuspeople(5);">x</button>
                     </div>
 
                 </div>
@@ -363,31 +380,155 @@
             			
             		}
             	})
-            } /*ajax끝*/
+            } 
             
-            /*버튼 클릭시 화면에 뿌려질 용도*/
+			function searchConfirm(){
+            	
+            	var keyword = $("input[name='keyword']").val();
+            	console.log(keyword);
+            	
+            	$.ajax({
+	            	url:"searchConfirm.el",
+	            	data:{keyword:keyword},
+	            	success:function(result){
+	            		
+	            		let listresult = "";
+	            		for(let i in result){
+	            			listresult += "<tr>"
+		                         	   + "<td width='48'><input type='checkbox'></td>"
+		                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
+		                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
+		                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
+		                			   + "</tr>"
+	            		}
+	            		$(".sawon-list>tbody").html(listresult);
+	            	},error:function(){
+            			console.log("사원조회용 ajax통신 실패");
+            		}
+            	})
+            }
+            
+            /*ajax끝*/
+            
+         // 결재버튼 플러스 마이너스까지 일단 완성 체크박스랑 사원비교 아직,,,
+            /*버튼 클릭시 결재 화면에 뿌려질 용도*/
             function list(num){
 
                 var nameCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".nameCheck").text();
                 var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
             	var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
+            	
+            	if(num == 1){ // 열람 참조시
+            		
+            		var read = "";
+            		read += "<input type='text' style='border:none;' readonly id='read'>"
+            			  + "<input type='hidden' name='read' id='readNo'>"
+            		
+            		$("#read-line").html(read);
+            				
+            	}else if(num == 2){
+					
+            		var ref = "";
+            		ref += "<input type='text' style='border:none;' readonly id='reference'>"
+            			 + "<input type='hidden' name='reference' id='refNo'>"
+            		
+            		$("#ref-line").html(ref);	
+            			 
+            	}else if(num == 3){
+            		
+            		var value = "";
+	            	value += "<td colspan='3'>"
+	            	       + "<input type='text' style='border: none;' id='confirm1' readonly>" 
+	            	       + "<input type='hidden' name='confirmList[1].confirmNo' id='clist1'>"
+	            	       + "<input type='hidden' name='confirmList[1].procedureNo' value='1'>"
+	            	       + "</td>"
+	            	       	       
+            	}else if(num == 4){
+            		
+            		var value = "";
+	            	value += "<td colspan='3'>"
+	            	       + "<input type='text' style='border: none;' id='confirm2' readonly>" 
+	            	       + "<input type='hidden' name='confirmList[2].confirmNo' id='clist2'>"
+	            	       + "<input type='hidden' name='confirmList[2].procedureNo' value='2'>"
+	            	       + "</td>"
+            		
+            	}else if(num == 5){
+            		
+            		var value = "";
+	            	value += "<td colspan='3'>"
+	            	       + "<input type='text' style='border: none;' id='confirm3' readonly>" 
+	            	       + "<input type='hidden' name='confirmList[3].confirmNo' id='clist3'>"
+	            	       + "<input type='hidden' name='confirmList[3].procedureNo' value='3'>"
+	            	       + "</td>"
+            		
+            	}
+            	
+	            	$("#line-list").html($("#line-list").html() + value);
 
                 switch(num){
-                    case 1:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
-                    case 2:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist0").val(noCheck); break;
+                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
+                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
+                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
+                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
+                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
                 }
 	
                 
             }
             
+            function minuspeople(num){ // 하나씩 삭제
+            	
+            	if(num == 1){
+                	$("#yoelam").text("");
+                	$("#read-line>input").remove();
+            	}else if(num == 2){
+            		$("#chamjo").text("");
+            		$("#ref-line>input").remove(); 
+            	}else if(num == 3){
+            		$("#sign1").text("");
+            		$("#line-list>td:first").remove();
+            	}else if(num == 4){
+            		$("#sign2").text("");
+            		$("#line-list>td:first").next().remove();
+            	}else{
+            		$("#sign3").text("");
+            		$("#line-list>td:last").remove();
+            	}
+            }
+            
+            function minusList(){
+            	// 기존 결재라인 전체삭제
+            	$("#line-list>td").remove();
+            	$("#nameCheck>p").text("");
+            	$("#ref-line>input").remove();
+            	$("#read-line>input").remove();
+            	
+            	confcount = 0;
+            	confprocedure = 1;
+            }
+            
             function confirmList(){           	
             	
             	// 사원+직급 뿌려주기
+            	$("#read").val($("#yoelam").text());
             	$("#reference").val($("#chamjo").text());
-            	$("#confirm0").val($("#sign1").text());
+            	$("#confirm1").val($("#sign1").text());
+            	$("#confirm2").val($("#sign2").text());
+            	$("#confirm3").val($("#sign3").text());
+            	
+            	$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
             	
             }
             
+            $("#confirm-line input[type='checkbox']").checked(function(){
+            	
+            	
+            	
+            })
+            
+            //------------------------------------------결재자 끝
+            
+            //----------------------비품시작
             function addItem(){
             	
             	var value = "";
@@ -427,7 +568,7 @@
             	
             }
             
-            function totalPay(){
+            function totalPay(){ // 수정하기
             	
            		var totalPay = "";
             	var tablelt = $("#equipmentList tr").length;

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,17 +80,18 @@
             <li class="side-list"><img src="resources/images/3759325.png">완료된문서
                 <ul>
                     <li><button type="button" class="onsidebtn" value="Y">결재완료문서</button></li>
-                    <li><button type="button" class="">참조/열람문서</button></li>
                     <li><button type="button" class="onsidebtn" value="R">반려문서</button></li>
                     <li><button type="button" class="onsidebtn" value="T">임시저장</button></li>
                 </ul>
             </li>
-            <li class="side-list"><img src="resources/images/3759325.png">관리자 설정
-                <ul>
-                    <li><button type="button" class="" value="N">삭제된문서</button></li>
-                    <li><a href="approvalad.el">&nbsp;전자결재관리자</a></li>
-                </ul>
-            </li>
+            <c:if test="${loginUser.adminYn eq 'Y'}">
+	            <li class="side-list"><img src="resources/images/3759325.png">관리자 설정
+	                <ul>
+	                    <li><a href="deletelist.el">삭제된문서</a></li>
+	                    <li><a href="approvalad.el">&nbsp;전자결재관리자</a></li>
+	                </ul>
+	            </li>
+            </c:if>
         </ul>
     </div>
     

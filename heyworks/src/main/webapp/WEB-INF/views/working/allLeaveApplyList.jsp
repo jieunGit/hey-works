@@ -10,15 +10,19 @@
     .outer{
         width:1200px;
         height:1200px;
-        margin-left:300px;
+        margin:auto;
     }
+    .outer>div{float:left;}
     .all-apply{
-        margin: auto;
-        margin-top:30px;
-        margin-left:20px;
-        width: 1000px;
+       width: 950px;
+	   height:100%;
+	   display:inline-block;
+       padding-left:30px;
+       padding-top:30px;
     }
     .date-box{font-size:18px; font-weight:500;}
+    .table-bordered th{font-size:14px; text-align:center;}
+    .table-bordered td{font-size:13px;}
 </style>
 </head>
 <body>
@@ -26,6 +30,7 @@
     <div class="outer">
 
         <jsp:include page="../common/menubar.jsp"/>
+        <jsp:include page="workingSidebar.jsp"/>
 
         <div class="all-apply">
 
@@ -44,7 +49,7 @@
                 </select>
 
                 <input type="text" name="keyword">
-                <button type="button">검색</button>
+                <button type="button" class="btn btn-primary">검색</button>
             </form>
 
             <br><br><br>
@@ -55,7 +60,7 @@
             </div>
             <br>
 
-            <table border="1">
+            <table class="table-bordered">
                 <tr style="height:40px;">
                     <th width="30"></th>
                     <th width="100">이름</th>

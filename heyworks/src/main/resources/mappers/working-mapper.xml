@@ -2,6 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="workingMapper">
 
+	<resultMap id="workingResult" type="Working">
+		<result column="tna_date" property="tnaDate"/>
+		<result column="tna_day" property="tnaDay"/>
+		<result column="user_no" property="userNo"/>
+		<result column="user_name" property="userName"/>
+		<result column="clock_in" property="clockIn"/>
+		<result column="clock_out" property="clockOut"/>
+		<result column="work_time" property="workTime"/>
+		<result column="over_time" property="overTime"/>
+		<result column="tna_status" property="tnaStatus"/>
+	</resultMap>
+
+	<resultMap id="leaveResult" type="Leave">
+		<result column="leave_ano" property="leaveAno"/>
+		<result column="user_no" property="userNo"/>
+		<result column="apply_date" property="applyDate"/>
+		<result column="leave_type" property="leaveType"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="leave_use" property="leaveUse"/>
+		<result column="reason" property="reason"/>
+		<result column="status" property="status"/>
+		<result column="user_name" property="userName"/>
+		<result column="dept_name" property="deptName"/>
+	</resultMap>
+	
+	<resultMap id="AllLeaveResult" type="AllLeave">
+		<result column="leave_cno" property="leaveCno" />
+		<result column="user_no" property="userNo" />
+		<result column="user_name" property="userName" />
+		<result column="dept_name" property="deptName" />
+		<result column="job_name" property="jobName" />
+		<result column="hire_date" property="hireDate" />
+		<result column="length_years" property="lengthYears" />
+		<result column="leave_total" property="leaveTotal" />
+		<result column="leave_use" property="leaveUse" />
+		<result column="leave_rest" property="leaveRest" />
+		<result column="status" property="status" />
+	</resultMap>
+
     <!-- 출근 insert -->
 	<insert id="insertClockIn">
 		INSERT 
@@ -60,4 +100,155 @@
 		  , '대기'
 		  )	
 	</insert>
+	
+	<!-- 내 휴가신청 내역 -->
+	<select id="selectMyleave" resultMap="leaveResult">
+		SELECT
+		        APPLY_DATE
+		      , LEAVE_TYPE
+		      , START_DATE
+		      , L.END_DATE
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE USER_NO = #{userNo}
+		 ORDER
+		    BY APPLY_DATE DESC
+	</select>
+	
+	<select id="selectAleaveListCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM ANNUAL_LEAVE 
+		 WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="selectAleaveList" resultMap="AllLeaveResult">
+		SELECT
+		       USER_NO
+		     , USER_NAME
+		     , DEPT_NAME
+             , DECODE(JOB_CODE, 1, '사원'
+                              , 2, '주임'
+                              , 3, '대리'
+                              , 4, '과장'
+                              , 9, '대표이사') "JOB_NAME"
+		     , TO_CHAR(TO_DATE(HIRE_DATE), 'YYYY-MM-DD') "HIRE_DATE"
+		     , LENGTH_YEARS
+		     , LEAVE_TOTAL
+		     , LEAVE_USE
+		     , LEAVE_REST
+		     , AL.STATUS
+		 FROM ANNUAL_LEAVE "AL"
+		 JOIN EMPLOYEE E USING(USER_NO)
+         JOIN DEPARTMENT D USING(DEPT_CODE)
+        WHERE AL.STATUS = 'Y'
+        ORDER
+           BY HIRE_DATE
+	</select>
+	
+	<select id="selectAleaveSearchCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM ANNUAL_LEAVE "AL"
+		  JOIN EMPLOYEE USING(USER_NO)
+		  JOIN DEPARTMENT USING(DEPT_CODE)
+		 WHERE AL.STATUS = 'Y'
+		 <if test="condition == 'userName'">
+		   AND USER_NAME  
+		 </if>
+		 <if test="condition == 'deptName'">
+		   AND DEPT_NAME
+		 </if>
+		       LIKE '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectAleaveSearch" resultMap="AllLeaveResult">
+			SELECT
+				   USER_NO
+			     , USER_NAME
+			     , DEPT_NAME
+	             , DECODE(JOB_CODE, 1, '사원'
+	                              , 2, '주임'
+	                              , 3, '대리'
+	                              , 4, '과장'
+	                              , 9, '대표이사') "JOB_NAME"
+			     , TO_CHAR(TO_DATE(HIRE_DATE), 'YYYY-MM-DD') "HIRE_DATE"
+			     , LENGTH_YEARS
+			     , LEAVE_TOTAL
+			     , LEAVE_USE
+			     , LEAVE_REST
+			     , AL.STATUS
+			 FROM ANNUAL_LEAVE "AL"
+			 JOIN EMPLOYEE E USING(USER_NO)
+	         JOIN DEPARTMENT D USING(DEPT_CODE)
+	        WHERE AL.STATUS = 'Y'
+        <choose>
+           <when test="condition == 'userName'">
+          		AND USER_NAME
+           </when>
+           <when test="condition == 'deptName'">
+          		AND DEPT_NAME
+           </when>
+        </choose>        
+              LIKE '%' || #{keyword} || '%'
+        ORDER
+           BY HIRE_DATE
+	</select>
+	
+	<select id="selectAleaveForm" resultMap="AllLeaveResult">
+		SELECT
+		       USER_NO
+		     , USER_NAME
+		     , DEPT_NAME
+             , DECODE(JOB_CODE, 1, '사원'
+                              , 2, '주임'
+                              , 3, '대리'
+                              , 4, '과장'
+                              , 9, '대표이사') "JOB_NAME"
+		     , TO_CHAR(TO_DATE(HIRE_DATE), 'YYYY-MM-DD') "HIRE_DATE"
+		     , LENGTH_YEARS
+		     , LEAVE_TOTAL
+		     , LEAVE_USE
+		     , LEAVE_REST
+		     , AL.STATUS
+		 FROM ANNUAL_LEAVE "AL"
+		 JOIN EMPLOYEE E USING(USER_NO)
+         JOIN DEPARTMENT D USING(DEPT_CODE)
+        WHERE AL.STATUS = 'Y'
+          AND USER_NO = #{userNo}
+	</select>
+	
+	<update id="updateLeaveStatus">
+		UPDATE
+			   ANNUAL_LEAVE
+		   SET LENGTH_YEARS = #{lengthYears}
+		     , LEAVE_TOTAL = #{leaveTotal}
+		     , LEAVE_USE = #{leaveUse}
+		     , LEAVE_REST = #{leaveRest}
+		 WHERE USER_NO = #{userNo}
+	</update>
+	
+	<select id="selectMyallStatus" resultMap="workingResult">
+		SELECT
+		       TO_CHAR(TO_DATE(TNA_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') "TNA_DATE"
+		     , TO_CHAR(TO_DATE(TNA_DATE, 'YYYY-MM-DD'), 'DY') "TNA_DAY"
+		     , USER_NO
+		     , USER_NAME
+		     , CLOCK_IN
+		     , CLOCK_OUT
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE(CLOCK_IN, 'HH24:MI'))))*24-1) "WORK_TIME"
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE('17:00', 'HH24:MI'))))*24) "OVER_TIME"
+		     , TNA_STATUS
+		  FROM TNA
+		  JOIN EMPLOYEE E USING(USER_NO)
+		 WHERE USER_NO = #{userNo}
+		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{startDate}
+		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{endDate}
+	</select>
 </mapper>

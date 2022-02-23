@@ -1,6 +1,5 @@
 package com.kh.hey.common.model.vo;
 
-import java.sql.Date;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,10 @@ public class Reply {
 	private String replyNo;
 	private String userNo;
 	private String replyContent;
-	private Date createDate;
+	private String createDate;
 	private String refBoardNo;
 	private String status;
+	
+	private String jobName;
 
 }

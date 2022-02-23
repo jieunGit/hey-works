@@ -1,16 +1,28 @@
 package com.kh.hey.working.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.kh.hey.common.model.vo.PageInfo;
+import com.kh.hey.common.template.Pagination;
 import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.working.model.service.WorkingService;
+import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Controller
 public class WorkingController {
@@ -51,13 +63,21 @@ public class WorkingController {
 		return "working/leaveApplyForm";
 	}
 	
-	// 휴가 승인요청
+	// 휴가신청
 	@RequestMapping("insertLeave.wo")
 	public String insertLeave(Leave l, HttpSession session) {
 		
 		int result = wService.insertLeave(l);
 		
-		return "working/leaveStatus";
+		//return "working/leaveStatus";
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "휴가 신청이 완료되었습니다.");
+			return "redirect:selectMyleave.wo";
+		}else {
+			session.setAttribute("alertMsg", "휴가 신청 실패");
+			return "redirect:selectMyleave.wo";
+		}
 	}
 	
 	// 연장근무 신청 폼
@@ -65,4 +85,139 @@ public class WorkingController {
 	public String otApplyForm() {
 		return "working/overtimeApplyForm";
 	}
+	
+	// 근무/휴가현황 test
+	@RequestMapping("myWorkingStatus.wo")
+	public String myWorkingStatus() {
+		return "working/myWorkingStatus";
+	}
+	
+	// 개인 휴가현황
+	@RequestMapping("selectMyleave.wo")
+	public ModelAndView selectMyleave(HttpSession session, ModelAndView mv) {
+		
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		ArrayList<Leave> leList = wService.selectMyleave(userNo);
+		
+		mv.addObject("leList", leList);
+		mv.setViewName("working/leaveStatus");
+		
+		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘 
+		
+		return mv;
+	}
+	
+	// 전사 휴가현황 리스트 
+	@RequestMapping("leaveStatusList.wo")
+	public String selectAleaveList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
+		
+		int listCount = wService.selectAleaveListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<AllLeave> alist = wService.selectAleaveList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("alist", alist);
+		
+		return "working/allLeaveStatus";
+	}
+	
+	// 전사 휴가현황 검색 요청
+	@RequestMapping("AllLeaveSearch.wo")
+	public String selectLeaveSearch(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model, String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int searchCount = wService.selectAleaveSearchCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 10, 10);
+		ArrayList<AllLeave> alist = wService.selectAleaveSearch(map, pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("alist", alist);
+		
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		
+		return "working/allLeaveStatus";
+	}
+	
+	// 휴가현황 수정 폼
+	@RequestMapping("leaveUpdateForm.wo")
+	public String leaveUpdateForm(int userNo, Model model) {
+		
+		AllLeave al = wService.selectAleaveForm(userNo);
+		
+		model.addAttribute("al", al);
+		//System.out.println(userNo);
+		return "working/allLeaveStatusUpdate";
+	}
+	
+	// 휴가현황 수정 요청
+	@RequestMapping("leaveUpdate.wo")
+	public String leaveUpdate(AllLeave al, Model model, HttpSession session) {
+		
+		int result = wService.updateLeaveStatus(al);
+		
+		if(result > 0) {
+			model.addAttribute("al", al);
+			session.setAttribute("alertMsg", "휴가현황 정보가 수정되었습니다.");
+			return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
+		}else {
+			session.setAttribute("alertMsg", "휴가현황 수정 실패");
+			return "redirect:leaveUpdateForm.wo";
+		}
+	}
+	
+	// 근무/휴가 조회
+	/*
+	@RequestMapping("selectMyall.wo")
+	public ModelAndView selectMyallStatus(HttpSession session, ModelAndView mv) {
+		
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		ArrayList<Working> wlist = wService.selectMyallStatus(userNo);
+		
+		mv.addObject("wlist", wlist);
+		mv.setViewName("working/myWorkinglist");
+		
+		System.out.println(wlist);
+		return mv;
+	}
+	*/
+	
+	@RequestMapping("main.wo")
+	public String tnaMain() {
+		return "working/myWorkinglist";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectMyall.wo", produces="application/json; charset=UTF-8")
+	public String selectMyallStatus(String startDate, String endDate, HttpSession session) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("userNo", userNo);
+		//System.out.println(map);
+			
+		ArrayList<Working> wlist = wService.selectMyallStatus(map);
+		//System.out.println(wlist);
+		
+		return new Gson().toJson(wlist);
+		
+		
+		//mv.addObject("wlist", wlist);
+		//mv.setViewName("working/myWorkinglist");
+		
+		//System.out.println(wlist);
+		//return mv;
+	}
+	
+	
 }

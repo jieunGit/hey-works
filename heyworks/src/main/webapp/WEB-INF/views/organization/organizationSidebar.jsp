@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,14 +32,27 @@
         width: 100%;
         height: 50px;
     }
-    .sidebar ul{padding: 15px;}
+    .sidebar ul{padding: 0px;}
     .sidebar a{
         padding-left: 15px;
         text-decoration: none;
         color: black;
     }
-    .sidebar li{
-        margin-bottom: 10px;
+    .sidebar li {
+        margin-top:10px;
+        margin-bottom: 5px;
+    }
+    .sidebar .depts>li{
+       padding: 11px 0px 11px 30px;
+    }
+    .sidebar .depts>li:hover {
+        cursor: pointer;
+        background-color: rgba(24, 121, 201, 0.2);
+    }
+    .sidebar .samjo  {
+        padding: 11px 0px 11px 10px;
+        font-size:17px;
+        
     }
 </style>
 </head>
@@ -49,17 +63,31 @@
             <i class='fas fa-angle-double-right' style='font-size:24px'> 조직도</i>
         </div>
         <ul>
-            <li><i class="fa-solid fa-sitemap" style='font-size:15px'> &nbsp;SAMJO</i>
-                <ul>
-                    <li><a href="">개발팀</a></li>
-                    <li><a href="">인사팀</a></li>
-                    <li><a href="">회개팀</a></li>
-                    <li><a href="">회개팀</a></li>
-                    <li><a href="">경영팀</a></li>
+            <li><a href="list.organ" class="samjo"><i class="fa-solid fa-sitemap"> &nbsp;SAMJO</i></a>
+                <ul class="depts">
+                    <c:forEach var="d" items="${ dept }">
+                        <li class="dept"><p class="deptCode" style="display:none;">${ d.deptCode }</p><a>${ d.deptName }</a></li>
+                    </c:forEach>
                 </ul>
             </li>
         </ul>
     </div>
+    
+    <!-- 부서 선택시 부서코드 넘기며 url이동 -->
+    <script>
+    	$(function(){
+    		$(".dept").click(function(){
+    			//console.log($(this).children().prev(".deptCode").text());
+    			location.href = 'detail.organ?dno=' + $(this).children().prev(".deptCode").text();
+    		})
+    	})
+    </script>
+    
+	  
+
+    
+    
+    
 
 </body>
 </html>

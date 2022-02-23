@@ -20,14 +20,6 @@
        padding-left:30px;
        padding-top:30px;
 	}
-    .wide-menu{margin-top:20px;}
-    a{
-      text-decoration: none; 
-      color:black; 
-      font-size:18px;
-      margin-right:20px;
-      font-weight:600;
-    }
     .year-select{font-size:18px; font-weight:500;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
@@ -41,21 +33,15 @@
         <jsp:include page="workingSidebar.jsp"/>
 
         <div class="status-outer">
-            <div class="wide-menu">
-                <a href="">근무현황</a>
-                <a href="">휴가현황</a>
-            </div>
-            <hr width="950px" align="left">
-            <br>
     
             <div class="year-select" align="left">
-                <span>&lt; 2022/01/01 ~ 2022/12/31 &gt;</span>
+                <span>2022-01-01 ~ 2022-12-31</span>
             </div><br><br>
             
             <div class="leave-status">
                 <h3 style="font-size:20px;">휴가현황</h3>
-                <p style="font-size:14px;">총 휴가 : 15일 | 사용 : 0일 | 잔여 : 20일</p>
-            </div><br>
+                <p style="font-size:14px; margin-top:25px;">총 휴가 : 15일 | 사용 : 0일 | 잔여 : 15일</p>
+            </div><br><br>
     
             <div class="leave-creation">
                 <h3 style="font-size:20px;">휴가 생성 내역</h3><br>
@@ -68,7 +54,7 @@
                         <th width="450px">비고</th>
                     </tr>
                     <tr style="height:30px; text-align:center;">
-                        <td>2022/01/01</td>
+                        <td>2022-01-01</td>
                         <td>15일</td>
                         <td>정기 휴가</td>
                         <td>연차 (15일 x 8시간 = 120시간)</td>
@@ -80,7 +66,8 @@
             <div class="leave-apply">
                 <h3 style="font-size:20px;">휴가 신청 내역</h3>
     
-                <button type="button" style="margin-left:820px;">휴가신청</button>
+                <br>
+                <a href="leaveApplyForm.wo" class="btn btn-primary" style="font-size:13px; margin-left:790px;">휴가신청</a>
                 <br>
                 <br>
     
@@ -89,38 +76,22 @@
                         <th width="120">신청일</th>
                         <th width="90">이름</th>
                         <th width="90">소속</th>
-                        <th width="70">신청일수</th>
+                        <th width="90">신청일수</th>
                         <th width="300">휴가기간</th>
                         <th width="90">구분</th>
                         <th width="90">상태</th>
                     </tr>
-                    <tr style="height:30px; text-align:center;">
-                        <td>2022/01/03</td>
-                        <td>강보람</td>
-                        <td>개발팀</td>
-                        <td>1</td>
-                        <td>2022/01/05 ~ 2022/01/06</td>
-                        <td>경조사</td>
-                        <td>대기</td>
-                    </tr>
-                    <tr style="height:30px; text-align:center;">
-                        <td>2022/01/03</td>
-                        <td>강보람</td>
-                        <td>개발팀</td>
-                        <td>1</td>
-                        <td>2022/01/05 ~ 2022/01/06</td>
-                        <td>경조사</td>
-                        <td>대기</td>
-                    </tr>
-                    <tr style="height:30px; text-align:center;">
-                        <td>2022/01/03</td>
-                        <td>강보람</td>
-                        <td>개발팀</td>
-                        <td>1</td>
-                        <td>2022/01/05 ~ 2022/01/06</td>
-                        <td>경조사</td>
-                        <td>대기</td>
-                    </tr>
+                    <c:forEach var="l" items="${leList}">
+	                    <tr style="height:30px; text-align:center;">
+	                        <td>${l.applyDate}</td>
+	                        <td>${loginUser.userName}</td>
+	                        <td>${l.deptName}</td>
+	                        <td>${l.leaveUse}</td>
+	                        <td>${l.startDate} ~ ${l.endDate}</td>
+	                        <td>${l.leaveType}</td>
+	                        <td>${l.status}</td>
+	                    </tr>
+                    </c:forEach>
                 </table>
             </div>
         </div>

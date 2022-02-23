@@ -62,11 +62,11 @@
 
         <table class="click-time">
             <tr>
-                <th style="font-size:13px;">출근시간</th>
+                <th style="font-size:13px; border:none;">출근시간</th>
                 <td class="click-td" id="click-td1" width="90px"></td>
             </tr>
             <tr>
-                <th style="font-size:13px;">퇴근시간</th>
+                <th style="font-size:13px; border:none;">퇴근시간</th>
                 <td class="click-td" id="click-td2" ></td>
             </tr>
         </table>
@@ -83,7 +83,6 @@
                 i.target.style.backgroundColor = "lightgrey";
                 alert("출근하였습니다.");
                 i.target.disabled = true;
-
                 // 출근시간 옆에 누른 시간 찍힘
                 let t = new Date().toTimeString().split(" ")[0];
                 document.getElementById("click-td1").innerHTML = t;
@@ -115,7 +114,7 @@
                     $.ajax({
                     url:"clockout.wo",
                     success:function(result){
-    				 console.log("통신 성공");
+    				 	console.log("통신 성공");
                     },error:function(){
                         console.log("퇴근 업데이트 ajax 통신 실패");
                     }
@@ -135,16 +134,17 @@
             <ul>
                 <li style="font-size:15px;"><strong>내 근무</strong>
                     <ul>
-                        <li style="margin-left:15px;"><a href="">근무/휴가</a></li>
-                        <li style="margin-left:15px;"><a href="">근무/휴가현황</a></li>
-                        <li style="margin-left:15px;"><a href="">부서 근무현황</a></li>
+                        <li style="margin-left:15px;"><a href="main.wo">근무/휴가</a></li>
+                        <li style="margin-left:15px;"><a href="">근태현황</a></li>
+                        <li style="margin-left:15px;"><a href="selectMyleave.wo">휴가현황</a></li>
                     </ul>
                 </li><br><br>
 
                 <!--관리자만-->
                 <li style="font-size:15px;"><strong>근무관리</strong>
                     <ul>
-                        <li style="margin-left:15px;"><a href="">전사 휴가현황</a></li>
+                        <li style="margin-left:15px;"><a href="">전사 근태현황</a></li>
+                        <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
                         <li style="margin-left:15px;"><a href="">휴가 신청내역</a></li>
                         <li style="margin-left:15px;"><a href="">연장근무 신청내역</a></li>
                     </ul>
