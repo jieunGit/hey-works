@@ -87,7 +87,7 @@
 
 		<div id="detail">
             <br>
-			<div id="toparea"><span>카테고리 관리</span></div>
+			<div id="toparea"><span>자원 관리</span></div>
 			<br>
 
             <div id="resourcename">
@@ -96,39 +96,53 @@
             <div class="line"></div>
             <br><br>
             <div id="resourceAddTable">
+                <form action="updateResource.re" method="post">
                 <table>
                     <tr>
                         <th width=300px>자원이름</th>
-                        <th width=500px><input class="form-control type="text" name="resource_name" id="resource_name"></th>
+                        <th width=500px><input class="form-control" type="text" name="resourceName" id="resource_name" value="${rc.resourceName}"></th>
                     </tr>
 
                     <tr>
                         <th>자원설명</th>
-                        <th><textarea type="text" class="form-control name="resource_content" id="resource_content" placeholder="내용을 입력해주세요"></textarea></th>
+                        <th><textarea type="text" class="form-control" name="resourceContent" id="resource_content" placeholder="내용을 입력해주세요">${rc.resourceContent}</textarea></th>
 
                     </tr>
 
                     <tr>
                         <th>사용여부</th>
                         <th>
-                            <input type="radio" id="use" name = "using" Value="use" checked>
+                            <input type="radio" id="use" name = "status" Value="Y">
                             <label for="use">사용함</label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="notuse" name = "using" Value="notuse">
+                            <input type="radio" id="notuse" name = "status" Value="N">
                             <label for="notuse">사용안함</label>
                         </th>
                     </tr>
+
+                     
+                    <script>
+                    	$(function() {
+                    		if("${rc.status}" != "") {
+                    		$("input[value=${rc.status}]").attr("checked",true);
+                    		}
+                    	})
+                    </script>
+                    
+                    <input type="hidden" value="${categoryNo}" name="categoryNo" >
+                    <input type="hidden" value="${resourcesNo}" name="resourcesNo" >
+
                 </table>
            
             </div>
             <br><br>
             <div id="btnarea" >
-                <button type="button" class="btn btn-primary" style="width: 80px;" >저장</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-secondary" style="width: 80px;">삭제</button>
+                <button type="submit" class="btn btn-primary" style="width: 80px;" >저장</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-danger" style="width: 80px;" onclick="">삭제</button>
             </div>
 
 
-
+        </form>
 
     </div>
 

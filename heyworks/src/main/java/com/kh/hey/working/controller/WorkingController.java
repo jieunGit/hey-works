@@ -2,7 +2,9 @@ package com.kh.hey.working.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.working.model.service.WorkingService;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Controller
 public class WorkingController {
@@ -66,7 +69,15 @@ public class WorkingController {
 		
 		int result = wService.insertLeave(l);
 		
-		return "working/leaveStatus";
+		//return "working/leaveStatus";
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "휴가 신청이 완료되었습니다.");
+			return "redirect:selectMyleave.wo";
+		}else {
+			session.setAttribute("alertMsg", "휴가 신청 실패");
+			return "redirect:selectMyleave.wo";
+		}
 	}
 	
 	// 연장근무 신청 폼
@@ -133,4 +144,80 @@ public class WorkingController {
 		
 		return "working/allLeaveStatus";
 	}
+	
+	// 휴가현황 수정 폼
+	@RequestMapping("leaveUpdateForm.wo")
+	public String leaveUpdateForm(int userNo, Model model) {
+		
+		AllLeave al = wService.selectAleaveForm(userNo);
+		
+		model.addAttribute("al", al);
+		//System.out.println(userNo);
+		return "working/allLeaveStatusUpdate";
+	}
+	
+	// 휴가현황 수정 요청
+	@RequestMapping("leaveUpdate.wo")
+	public String leaveUpdate(AllLeave al, Model model, HttpSession session) {
+		
+		int result = wService.updateLeaveStatus(al);
+		
+		if(result > 0) {
+			model.addAttribute("al", al);
+			session.setAttribute("alertMsg", "휴가현황 정보가 수정되었습니다.");
+			return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
+		}else {
+			session.setAttribute("alertMsg", "휴가현황 수정 실패");
+			return "redirect:leaveUpdateForm.wo";
+		}
+	}
+	
+	// 근무/휴가 조회
+	/*
+	@RequestMapping("selectMyall.wo")
+	public ModelAndView selectMyallStatus(HttpSession session, ModelAndView mv) {
+		
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		ArrayList<Working> wlist = wService.selectMyallStatus(userNo);
+		
+		mv.addObject("wlist", wlist);
+		mv.setViewName("working/myWorkinglist");
+		
+		System.out.println(wlist);
+		return mv;
+	}
+	*/
+	
+	@RequestMapping("main.wo")
+	public String tnaMain() {
+		return "working/myWorkinglist";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectMyall.wo", produces="application/json; charset=UTF-8")
+	public String selectMyallStatus(String startDate, String endDate, HttpSession session) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+		
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("userNo", userNo);
+		//System.out.println(map);
+			
+		ArrayList<Working> wlist = wService.selectMyallStatus(map);
+		//System.out.println(wlist);
+		
+		return new Gson().toJson(wlist);
+		
+		
+		//mv.addObject("wlist", wlist);
+		//mv.setViewName("working/myWorkinglist");
+		
+		//System.out.println(wlist);
+		//return mv;
+	}
+	
+	
 }

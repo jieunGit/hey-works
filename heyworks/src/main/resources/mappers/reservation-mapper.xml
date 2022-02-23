@@ -22,7 +22,7 @@
 		<result column="category_no" property="categoryNo"/>
 		<result column="resource_name" property="resourceName"/>
 		<result column="resource_content" property="resourceContent"/>
-	
+		<result column="category_name" property="categoryName"/>
 	
 	</resultMap>
 
@@ -34,6 +34,7 @@
 		<result column="category_name" property="categoryName"></result>
 		<result column="category_content" property="categoryContent"></result>
 		<result column="category_img" property="categoryImg"></result>
+		<result column="count" property="count"></result>
 	</resultMap>
 
 	<select id="MenuCategoryList" resultMap="categoryResult">
@@ -48,6 +49,19 @@
 		     by category_no
 	
 	</select>
+	
+	<select id="menuResourceList" resultMap="resourcesResult">
+		  select
+		        resources_no
+		       , category_no
+		       , resource_name
+		       , resource_content
+		  from resources 
+	
+	
+	
+	</select>
+	
 
 	<select id="selectListCount" resultType="_int">
 		select
@@ -58,18 +72,19 @@
 
 
 	<select id="myReserveList" resultMap="reservationResult">
-			select
+		select
 				  reserve_no
 			    , user_no
 			    , resources_no
 			    , category_name
-			    , resource_name
+			    , r.resource_name
 			    , start_date
 			    , end_date
 			    , reserve_Date
 			    , reserve_content
-			from resources_reserve
-			where user_no = #{ userNo }
+			from resources_reserve rr
+            join resources r using(resources_no)
+			where user_no = #{userNo}
 			order 
 			   by reserve_date desc
 	
@@ -92,14 +107,16 @@
 	</select>
 	
 	<select id="resourceList" resultMap="resourcesResult">
-		  select
+ select
 		        resources_no
 		       , category_no
 		       , resource_name
 		       , resource_content
-		  from resources 
+               , category_name
+		  from resources r
+          join resource_category using(category_no)
 		  where category_no = #{categoryNo}
-	
+		   and r.status = 'Y'
 	
 	
 	</select>
@@ -110,24 +127,174 @@
 			      , user_no
 			      , resources_no
 			      , category_name
-			      , rr.resource_name
+			      , re.resource_name
 			      , start_date
 			      , rr.end_date
 			      , reserve_date
 			      , reserve_content
 			      , user_name
-			      , category_no
+			      , rr.category_no
 			 from resources_reserve rr
 			 join employee e using(user_no)
 			 join resources re using(resources_no)
-			where category_no = #{categoryNo}
+			where rr.category_no = #{categoryNo}
 			  and resources_no = #{resourceNo}
 			 
 	
 	</select>
 	
+	<select id="checkOverlapRsv" resultType="_int">
+		select count(*)
+		  from
+		     ( select reserve_no
+		         from resources_reserve
+		       WHERE end_date &gt; #{startday}
+			     and start_date &lt; #{endday}
+			     and resources_no = #{resourcesNo}
+		    )
+	</select>
 	
-
+	<insert id="insertReservation">
+		INSERT INTO RESOURCES_RESERVE
+        ( RESERVE_NO, USER_NO, RESOURCES_NO, CATEGORY_NO, CATEGORY_NAME, START_DATE, END_DATE, RESERVE_DATE, RESERVE_CONTENT)
+		VALUES 
+	     (
+	       SEQ_RESERVENO.NEXTVAL
+	     , #{userNo}
+	     , #{resourcesNo}
+	     , #{categoryNo}
+	     , #{categoryName}
+	     , #{startday}
+	     , #{endday}
+	     , SYSDATE
+	     , #{reason}
+	     )
+		
+	</insert>
+	
+	<select id="readDetailRsvList" resultMap="reservationResult">
+		
+		select 
+			        reserve_no
+			      , user_no
+			      , resources_no
+			      , category_name
+			      , re.resource_name
+			      , start_date
+			      , rr.end_date
+			      , reserve_date
+			      , reserve_content
+			      , user_name
+			      , rr.category_no
+			 from resources_reserve rr
+			 join employee e using(user_no)
+			 join resources re using(resources_no)
+			where reserve_no = #{reserveNo}
+	
+	</select>
+	
+	<delete id="rsvCancel">
+		delete from resources_reserve
+		 where reserve_no = #{reserveNo}
+		   and user_no = #{userNo}
+	
+	</delete>
+	
+	<select id="admincateogryList" resultMap="categoryResult">
+			  select 
+				       category_no
+				     , category_name
+				     , category_content
+				     , category_img
+		             ,   (select count(*)
+		                   from resources
+		                  where category_no = rc.category_no) as count
+				  from resource_category rc
+				  order
+				     by category_no
+	</select>
 	
 	
+	<insert id="adminInsertCategory">
+		INSERT 
+		  INTO RESOURCE_CATEGORY
+		     ( 
+		        category_no
+		      , category_name
+		      , status
+		      , category_content
+		      , category_img 
+		     )
+		VALUES 
+		     (
+		       SEQ_RECANO.NEXTVAL
+		     , #{categoryName}
+		     , 'Y'
+  		     , NULL
+		     , NULL
+		     )
+	</insert>
+	
+	
+	<delete id="adminCategoryDelete">
+		delete from resource_category
+		 where category_no = #{categoryNo}
+	
+	</delete>
+	
+	
+	<update id="updateCategoryContent">
+			
+		update resource_category
+		   set category_content = #{categoryContent}
+		 where category_no =  #{categoryNo}
+	
+	</update>
+	
+	<insert id="resourceInsert">
+	
+		INSERT INTO RESOURCES
+        ( RESOURCES_NO, CATEGORY_NO, resource_name, status, resource_content)
+		VALUES 
+		     (
+		       SEQ_RESOURCENO.NEXTVAL
+		     ,  #{categoryNo}
+		     ,  #{resourceName}
+		     , 'Y'
+		     , #{resourceContent}
+		     )
+	
+	</insert>
+	
+	<select id="ResourceUpdateForm" resultMap="resourcesResult">
+		  select
+		        resources_no
+		       , category_no
+		       , resource_name
+               , status
+		       , resource_content
+		  from resources 
+         where resources_no = #{resourcesNo}
+           and category_no = #{categoryNo}
+	
+	</select>
+	
+	<update id="ResourceUpdate">
+		update resources 
+		   set resource_name= #{resourceName},
+               resource_content = #{resourceContent},
+               status = #{status}
+		 where category_no =  #{categoryNo}
+           and resources_no = #{resourcesNo}
+	
+	
+	</update>
+	
+	<delete id="deleteResource">
+		
+		delete from resources 
+			where resources_no = #{resourcesNo} 
+			  and category_no = #{categoryNo}
+				
+	</delete>
 </mapper>

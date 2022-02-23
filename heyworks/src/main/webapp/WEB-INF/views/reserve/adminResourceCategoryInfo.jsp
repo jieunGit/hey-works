@@ -6,10 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="/js/summernote/summernote-lite.js"></script>
-<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 
-<link rel="stylesheet" href="/css/summernote/summernote-lite.css">
 <style>
 .outer{
     width:1200px;
@@ -92,7 +89,7 @@
 
 		<div id="detail">
             <br>
-			<div id="toparea"><span>카테고리 관리</span></div>
+			<div id="toparea"><span>자원 관리</span></div>
 			<br>
 
             <div id="resourcename">
@@ -101,7 +98,7 @@
 
             <div id="settingbar">
                 <span style="font-weight: bold;">이용안내</span>&nbsp;&nbsp;
-                <a href="" style="color: black;">자원관리</a>
+                <a href="resourceList.re?cno=${rc.categoryNo}" style="color: black;">자원관리</a>
 
             </div>
 
@@ -112,36 +109,41 @@
             <br><br>
 
             <!-- 썸머노트 -->
-           <div id="note">
-                <form method="post">
-                    <textarea id="summernote" name="editordata"></textarea>
-                </form>
-            </div>
+            <form action="updateContent.re" method="post">
+                <div id="note">
+                    <input type="hidden" value="${rc.categoryNo}" name="categoryNo">
+                            <textarea id="summernote" name="categoryContent">
+                                ${rc.categoryContent}
+                            </textarea>
+                    
+                    </div>
 
-          <script>
-              $(document).ready(function() {
-                //여기 아래 부분
-                $('#summernote').summernote({
-                    width : 850,
-                    height: 500,                 // 에디터 높이
-                    minHeight: null,             // 최소 높이
-                    maxHeight: 300,             // 최대 높이
-                    focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-                    lang: "ko-KR",					// 한글 설정
-                    placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-          
-                    });
-                });
-          </script>
-
-          <br>
-          <div id="btnarea" style="margin-left: 385px;">
-            <button type="button" class="btn btn-primary">저장</button>
-
-          </div>
+                
+                <br>
+                <div id="btnarea" style="margin-left: 385px;">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
 
 
     </div>
+
+
+    <script>
+        $(document).ready(function() {
+          //여기 아래 부분
+          $('#summernote').summernote({
+              width : 850,
+              height: 500,                 // 에디터 높이
+              minHeight: null,             // 최소 높이
+              maxHeight: 300,             // 최대 높이
+              focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+              lang: "ko-KR",					// 한글 설정
+              placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+    
+              });
+          });
+    </script>
 
 
 </body>

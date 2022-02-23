@@ -138,7 +138,7 @@
                 <li><a href="">
                     <img src="resources/images/letter.png">
                 </a></li>
-                <li><a href="myWorkingList.wo">
+                <li><a href="main.wo">
                     <img src="resources/images/bag.png">
                 </a></li>
                 <li><a href="main.el">
@@ -153,7 +153,7 @@
                 
                 <li>
                 	<div id="todoplus">
-                		<a href=""> <img src="resources/images/todo.png"></a>
+                		<a href="todolist.to"> <img src="resources/images/todo.png"></a>
                 	</div>
                 </li>
                 

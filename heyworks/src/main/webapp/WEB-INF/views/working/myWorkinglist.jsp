@@ -51,7 +51,7 @@
     }
 
     /*주간 근무 정보*/
-    .week-select{font-size:18px; font-weight:500;}
+    .week-select{font-size:20px; font-weight:700;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
     .tb-body tr{height:40px;}
@@ -129,106 +129,155 @@
             <div class="week-outer" style=height:600px;>
     
                 <div class="title-box">
-                    주간 근무 정보
+                    	주간 근무 정보
                 </div><br>
     
                 <div class="week-select" align="center">
-                    <span>&lt; 2022-02-07 ~ 2022-02-13 &gt;</span>
+                    <span id="left"> < </span>
+                    <!--  
+                    <input type="text" id="startDate" value="2022-02-21"/> ~ 
+                    <input type="text" id="endDate" value="2022-02-27"/>
+                    -->
+                    <label id="startDate">2022-02-21</label> ~ 
+                    <label id="endDate">2022-02-27</label>
+                    <span id="right"> > </span>
                 </div><br><br>
     
                 <table class="table-bordered">
                     <thead class="tb-head">
                         <tr height="50px">
-                            <th width="110">날짜</th>
+                            <th width="130">날짜</th>
                             <th width="110">휴일구분</th>
                             <th width="130">근무스케줄시간</th>
-                            <th width="90">출근시각</th>
-                            <th width="90">퇴근시각</th>
-                            <th width="90">휴게시간</th>
-                            <th width="90">근무시간</th>
-                            <th width="90">초과근무</th>
+                            <th width="85">출근시각</th>
+                            <th width="85">퇴근시각</th>
+                            <th width="85">휴게시간</th>
+                            <th width="85">근무시간</th>
+                            <th width="85">연장근무</th>
                             <th width="100">근태상황</th>
                         </tr>
                     </thead>
-                    <tbody align="center" class="tb-body">
-                        <tr>
-                            <td>02/07(월)</td>
-                            <td></td>
-                            <td>08:00~17:00</td>
-                            <td>07:50</td>
-                            <td>18:00</td>
-                            <td>01:00</td>
-                            <td>08:00</td>
-                            <td></td>
-                            <td>정상근무</td>
-                        </tr>
-                        <tr>
-                            <td>02/08(화)</td>
-                            <td></td>
-                            <td>08:00~17:00</td>
-                            <td>07:50</td>
-                            <td>18:00</td>
-                            <td>01:00</td>
-                            <td>08:00</td>
-                            <td></td>
-                            <td>정상근무</td>
-                        </tr>
-                        <tr>
-                            <td>02/09(수)</td>
-                            <td></td>
-                            <td>08:00~17:00</td>
-                            <td>07:50</td>
-                            <td>18:00</td>
-                            <td>01:00</td>
-                            <td>08:00</td>
-                            <td></td>
-                            <td>정상근무</td>
-                        </tr>
-                        <tr>
-                            <td>02/10(목)</td>
-                            <td></td>
-                            <td>08:00~17:00</td>
-                            <td>07:50</td>
-                            <td>18:00</td>
-                            <td>01:00</td>
-                            <td>08:00</td>
-                            <td></td>
-                            <td>정상근무</td>
-                        </tr>
-                        <tr>
-                            <td>02/11(금)</td>
-                            <td></td>
-                            <td>08:00~17:00</td>
-                            <td>07:50</td>
-                            <td>18:00</td>
-                            <td>01:00</td>
-                            <td>08:00</td>
-                            <td></td>
-                            <td>정상근무</td>
-                        </tr>
-                        <tr>
-                            <td>02/12(토)</td>
-                            <td>공휴일</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>02/13(일)</td>
-                            <td>법정공휴일</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                    <tbody align="center" class="tb-body" id="weekTna">
+
                     </tbody>
+                    <script>
+                        $(function(){
+                            selectWeekList();
+                        });
+                        
+                        $("#left").click(function(){
+                        	
+                        	var startDate = $("#startDate").text();
+                        	var startDateArr = startDate.split("-"); 
+                        	//console.log(startDateArr); // ['2022', '02', '21']
+                        	
+                        	var stDate = new Date(startDateArr[0], startDateArr[1]-1, startDateArr[2]);    
+                        	var agoSt = new Date(stDate.setDate(stDate.getDate() -7+1)).toISOString().substring(0,10);
+                        	
+                          	//console.log(stDate); // Mon Feb 21 2022 09:00:00 GMT+0900 (한국 표준시)
+                            console.log(agoSt);
+                            
+                          	var endDate = $("#endDate").text();
+                          	var endDateArr = endDate.split("-"); 
+                        	
+                          	var edDate = new Date(endDateArr[0], endDateArr[1]-1, endDateArr[2]);    
+                        	var agoed = new Date(edDate.setDate(edDate.getDate() -7+1)).toISOString().substring(0,10);                         	
+                            
+                        	document.getElementById("startDate").innerHTML = agoSt;
+                        	document.getElementById("endDate").innerHTML = agoed;
+                        	
+                        	selectWeekList();
+                        })
+                        
+                            $("#right").click(function(){
+                        	
+                        	var startDate = $("#startDate").text();
+                        	var startDateArr = startDate.split("-"); 
+                        	//console.log(startDateArr); // ['2022', '02', '21']
+                        	
+                        	var stDate = new Date(startDateArr[0], startDateArr[1]-1, startDateArr[2]);    
+                        	var nextSt = new Date(stDate.setDate(stDate.getDate() +7+1)).toISOString().substring(0,10);	
+
+                            console.log(nextSt);
+                            
+                          	var endDate = $("#endDate").text();
+                          	var endDateArr = endDate.split("-"); 
+                        	
+                          	var edDate = new Date(endDateArr[0], endDateArr[1]-1, endDateArr[2]);    
+                        	var nexted = new Date(edDate.setDate(edDate.getDate() +7+1)).toISOString().substring(0,10);                         	
+                            
+                        	document.getElementById("startDate").innerHTML = nextSt;
+                        	document.getElementById("endDate").innerHTML = nexted;
+                        	
+                        	selectWeekList();
+                        })
+
+                        // 리스트 조회해오는 ajax
+                        function selectWeekList(){
+                            //var startDate = $("#startDate").val();
+                            //var endDate = $("#endDate").val();
+                            var startDate = $("#startDate").text();
+                            var endDate = $("#endDate").text();
+							
+                            $.ajax({
+                                url:"selectMyall.wo",
+                                data:{startDate:startDate, 
+                                      endDate:endDate}
+                                ,success:function(wlist){
+                                	
+                					let list = "";
+                					for(let i in wlist){
+                						list += "<tr>"
+										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
+										     + "<td>" 
+										     +"</td>"
+										     + "<td>" + "08:00 ~ 17:00" + "</td>"
+										     + "<td>" + wlist[i].clockIn + "</td>"
+										     + "<td>" + wlist[i].clockOut + "</td>"
+										     + "<td>" + "01:00" + "</td>"
+										     + "<td>" + wlist[i].workTime + "시간" + "</td>"
+										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
+										     + "<td>" + wlist[i].tnaStatus + "</td>"
+										     + "</tr>";
+										    	   	    	   
+									}
+                					
+									$("#weekTna").html(list);
+                                },error:function(){
+                                	console.log("ajax통신 실패");
+                                }
+                            })
+                        }
+                    </script>
+                    <!--
+                    <tbody align="center" class="tb-body">
+                    	<c:forEach var="w" items="${wlist}">
+	                        <tr>
+	                            <td>${w.tnaDate}(${w.tnaDay})</td>
+	                            <td id="holiday">
+                                    <c:if test="${w.tnaDay eq'토'}"><font color="blue">공휴일</font></c:if>
+                                    <c:if test="${w.tnaDay eq'일'}"><font color="red">법정공휴일</font></c:if>
+                                </td>
+	                            <td>08:00~17:00</td>
+	                            <td>${w.clockIn}</td>
+	                            <td>${w.clockOut}</td>
+	                            <td>01:00</td>
+	                            <td>${w.workTime}</td>
+	                            <td>${w.overTime}</td>
+	                            <td>
+                                    <c:if test="${w.tnaStatus eq'연장근무'}">
+                                    <font color="red">${w.tnaStatus}</font></c:if>
+                                    <c:if test="${w.tnaStatus eq'정상근무'}">
+                                    <font color="green">${w.tnaStatus}</font></c:if>
+                                    <c:if test="${w.tnaStatus eq'휴가'}">
+                                    <font color="blue">${w.tnaStatus}</font></c:if>
+                                </td>
+	                        </tr>
+                            
+                        </c:forEach>
+                    </tbody>
+                    -->
+
                 </table>
             </div>
         </div>

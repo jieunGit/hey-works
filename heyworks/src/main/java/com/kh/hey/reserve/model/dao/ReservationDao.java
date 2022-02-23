@@ -1,6 +1,7 @@
 package com.kh.hey.reserve.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -20,6 +21,13 @@ public class ReservationDao {
 		return (ArrayList)sqlSession.selectList("reservationMapper.MenuCategoryList");
 		
 	}
+	
+	public ArrayList<Resources> menuResourceList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("reservationMapper.menuResourceList");
+		
+	}
+	
 	public int selectListCount(SqlSessionTemplate sqlSession, String userNo) {
 		return sqlSession.selectOne("reservationMapper.selectListCount", userNo);
 	}
@@ -46,5 +54,55 @@ public class ReservationDao {
 		return(ArrayList)sqlSession.selectList("reservationMapper.selectRsvList", paraMap);
 	}
 	
+	public int checkOverlapRsv(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.selectOne("reservationMapper.checkOverlapRsv", paraMap);
+	}
+	
+	public int insertReservation(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.insert("reservationMapper.insertReservation", paraMap);
+	}
+	
+	public Reservation readDetailRsvList(SqlSessionTemplate sqlSession, String reserveNo) {
+		return sqlSession.selectOne("reservationMapper.readDetailRsvList", reserveNo);
+	}
+	
+	public int rsvCancel(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		
+		return sqlSession.delete("reservationMapper.rsvCancel", paraMap);
+	}
+	
+	public ArrayList<ResourcesCategory> admincateogryList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("reservationMapper.admincateogryList");
+	}
+	
+	public int adminInsertCategory(SqlSessionTemplate sqlSession, String categoryName) {
+		return sqlSession.insert("reservationMapper.adminInsertCategory", categoryName);
+	}
+	
+	public int adminCategoryDelete(SqlSessionTemplate sqlSession, String categoryNo) {
+		return sqlSession.insert("reservationMapper.adminCategoryDelete", categoryNo);
+	}
+	
+	public int updateCategoryContent(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.update("reservationMapper.updateCategoryContent", paraMap);
 
+	}
+	
+	public int resourceInsert(SqlSessionTemplate sqlSession, Resources rs) {
+		return sqlSession.insert("reservationMapper.resourceInsert", rs);
+		
+	}
+	
+	public Resources ResourceUpdateForm(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.selectOne("reservationMapper.ResourceUpdateForm", paraMap);
+		
+	}
+	
+	public int ResourceUpdate(SqlSessionTemplate sqlSession, Resources rs) {
+		return sqlSession.insert("reservationMapper.ResourceUpdate", rs);
+	}
+	
+	public int deleteResource(SqlSessionTemplate sqlSession, HashMap<String, String> paraMap) {
+		return sqlSession.selectOne("reservationMapper.deleteResource", paraMap);
+	}
 }

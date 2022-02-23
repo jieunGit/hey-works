@@ -89,7 +89,7 @@
 
 		<div id="detail">
             <br>
-			<div id="toparea"><span>카테고리 관리</span></div>
+			<div id="toparea"><span>자원 관리</span></div>
 			<br>
 
             <div id="resourcename">
@@ -113,30 +113,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>회의실</td>
-                    <td>3</td>
-                    <td>
-                        <a href="" style="color: gray;"><i class="fa-solid fa-gear"></i></a></i> | 
-                        <a href="" style="color:red;"><i class="fa-solid fa-trash-can"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>차량</td>
-                    <td>2</td>
-                    <td>
-                        <a href="" style="color: gray;"><i class="fa-solid fa-gear"></i></a></i> | 
-                        <a href="" style="color:red;"><i class="fa-solid fa-trash-can"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>비품</td>
-                    <td>2</td>
-                    <td>
-                        <a href="" style="color: gray;"><i class="fa-solid fa-gear"></i></a></i> | 
-                        <a href="" style="color:red;"><i class="fa-solid fa-trash-can"></i></a>
-                    </td>
-                  </tr>
+                  <c:forEach var="c" items="${ list }">
+                    <tr>
+                      <td>${ c.categoryName }</td>
+                      <td>${ c.count }</td>
+                      <td>
+                        <a href="categoryInfo.re?cno=${c.categoryNo}" style="color: gray;"><i class="fa-solid fa-gear"></i></a></i> | 
+                        <a style="color:red;" class="deletebtn"><i class="fa-solid fa-trash-can"></i></a>
+                        <input type="hidden"class="adCategoryNo" value="${c.categoryNo}">
+                      </td>
+                    </tr>
+                </c:forEach>
                 </tbody>
               </table>
             </div>
@@ -157,30 +144,87 @@
       <div class="modal" id="categoryadd">
         <div class="modal-dialog">
           <div class="modal-content">
-      
             <!-- Modal Header -->
             <div class="modal-header" style="background: rgb(63, 145, 213);">
               <span style="font-size: 15px; font-weight: bolder;">카테고리 추가</span>
-
+              
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-      
+            
+        <form action="insertcategory.re" method="post">
             <!-- Modal body -->
             <div class="modal-body">
                 <span style="display: inline-block; margin-left: 40px; "><h4 style="font-size: 15px; font-weight: bold;" >카테고리 이름 : </h4></span>&nbsp;&nbsp;
-                <input name="groupname"  class="form-control" placeholder="그룹명을 입력해주세요"style="display: inline-block; width:310px">	
+                <input name="categoryName"  class="form-control" placeholder="그룹명을 입력해주세요"style="display: inline-block; width:310px">	
+            
+            
+            
             </div>
       
             <!-- Modal footer -->
             <div class="modal-footer">
               
-                <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 100px; height: 40px; font-size: 14px;">
+                <button type="submit" class="btn btn-primary" style="width: 100px; height: 40px; font-size: 14px;">
                     추가</button>
             </div>
-      
+        </form>
           </div>
         </div>
       </div>
 
+
+
+
+
+    <script>
+
+
+        $(function(){
+            	$(document).on('click', '.deletebtn', function(){
+                var cNo = $(this).siblings(".adCategoryNo").val();
+
+                alertify.confirm('삭제','정말로 카테고리를 삭제하시겠습니까?',
+                function(){
+                  $.ajax({
+                url:"deleteCategory.re",
+                data: { categoryNo: cNo},
+                dataType:"JSON",
+                success:function(json){
+
+                    if (json.result == 1) {
+                    
+                    alertify.alert("성공적으로 카레고리를 삭제하였습니다.")
+                    location.reload();
+
+                  
+
+                    }else{
+                      alertify.alert("카테고리 삭제에 실패하였습니다..")
+                      location.reload();
+
+                    }
+                    
+                },
+                error: function(request, status, error){
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                  }
+                });
+                },
+                function(){
+                  alertify.error('Cancel');
+                });
+               
+             
+
+              })
+        })
+
+
+     
+
+
+
+
+    </script>
 </body>
 </html>

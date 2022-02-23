@@ -58,7 +58,7 @@
 
     <div class="outer">
 		<jsp:include page="../common/menubar.jsp" />
-		<jsp:include page="../todo+/todoMenubar.jsp" />
+		<jsp:include page="../todo/todoMenubar.jsp" />
 
 
         <div id="center"><br>

@@ -94,6 +94,7 @@
                     <th width="85px">상세</th>
                 </tr>
                 <c:forEach var="a" items="${alist}">
+                	<input type="hidden" name=userNo value="${a.userNo}">
 	                <tr style="height:37px; text-align:center">
 	                    <td>${ a.userName }</td>
 	                    <td>${ a.deptName }</td>
@@ -104,7 +105,7 @@
 	                    <td>${ a.leaveUse }</td>
 	                    <td>${ a.leaveRest }</td>
 	                    <td>${ a.status }</td>
-	                    <td><a href=""><img src="resources/images/edit.png" style="width: 15px; height: 15px;"></a></td>
+	                    <td><a href="leaveUpdateForm.wo?userNo=${a.userNo}"><img src="resources/images/edit.png" style="width: 15px; height: 20px;"></a></td>
 	                </tr>
                 </c:forEach>
             </table>
@@ -122,14 +123,7 @@
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<c:choose>
-                    	    <c:when test="${empty condition }">
-                    			<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ p }">${ p }</a></li>
-                    		</c:when>
-                    		<c:otherwise>
-                    			<li class="page-item"><a class="page-link" href="AllLeaveSearch.wo?cpage=${ p }$condition=${condition}&keyword=${keyword">${ p }</a></li>
-                    		</c:otherwise>
-                    	</c:choose>
+                    	<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ p }">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>
