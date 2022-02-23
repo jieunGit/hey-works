@@ -195,6 +195,8 @@ public class ApprovalController {
 		
 		model.addAttribute("rrpi", rrpi);
 		model.addAttribute("rrList", rrList);
+		
+		System.out.println(rrList);
 
 		return "approval/readOrReferenceList";
 		
@@ -759,8 +761,6 @@ public class ApprovalController {
 		
 		int result = aService.ajaxDeleteRestore(apNum);
 		
-		System.out.println(result);
-		
 		return result > 0 ? "S" : "F";
 		
 	} // 문서 복구하기
@@ -770,16 +770,49 @@ public class ApprovalController {
 	public String approvalAdminList(Model model) {
 		
 		ArrayList<Employee> adlist = eService.selectAdminList();
-		
+		ArrayList<Employee> deptList = eService.selectDeptList();
+
+		model.addAttribute("deptList", deptList);
 		model.addAttribute("adlist", adlist);
 		
 		return "approval/approvalAdmin";
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="searchAdmin.el", produces="application/json; charset=UTF-8")
+	public String ajaxAdminSearchSelect(String code, String userName) {
+		
+		System.out.println(code);
+		System.out.println(userName);
+		
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("code", code);
+		map.put("userName", userName);
+		
+		ArrayList<Employee> list = eService.ajaxAdminSearchSelect(map);
+		System.out.println(list);
+		
+		return null;
+		
+	} // 문서 복구하기
 	
-	
-	
+	@RequestMapping("deletead.el")
+	public String deletAdmin(String adno, HttpSession session) {
+		
+		System.out.println(adno);
+		String[] adNo = adno.split(",");
+		
+		int result = eService.deleteAdmin(adNo);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "관리자에서 해제되었습니다!");
+		}else {
+			session.setAttribute("alertMsg", "관리자 해제 실패!");
+		}
+		
+		return "redirect:approvalad.el";
+		
+	} // 관리자 해체하기
 	
 	
 	

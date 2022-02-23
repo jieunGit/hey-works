@@ -12,7 +12,13 @@ public interface EmployeeService {
 	ArrayList<Employee> ajaxSelectEmployeeList(HashMap<String, Integer> map);
 	ArrayList<Employee> selectDeptList();
 	ArrayList<Employee> ajaxSelectSearchConfirm(String keyword);
+	
+	// 전자결재 관리자 조회
 	ArrayList<Employee> selectAdminList();
+	ArrayList<Employee> ajaxAdminSearchSelect(HashMap<String, String> map);
+	
+	// 관리자 해제하기
+	int deleteAdmin(String[] adNo);
 	
 	
 	// 회원정보수정

@@ -99,6 +99,10 @@
 		                    <td>${rr.approvalTitle}</td>
 		                    <td>${rr.grade}</td>
 		                    <td>${rr.createDate}</td>
+		                    <td style="display:none;" class="read">${rr.read}</td>
+		                    <td style="display:none;" class="readyn">${rr.readStatus}</td>
+		                    <td style="display:none;" class="reference">${rr.reference}</td>
+		                    <td style="display:none;" class="referenceyn">${rr.referenceStatus}</td>
 		                </tr>
 		                </c:forEach>
                 	</c:when>
@@ -135,21 +139,22 @@
            	</c:choose>
         </ul>
     </div>
+    
+    <div style="display:none;">
+    	
+    </div>
 	
 		
 	</div>
 	
 	<script>
-		$(function(){
-			const readNo = ${rrList.read};
-			const referenceNo = ${rrList.reference};
-			const readyn = ${rrList.readStatus};
-			const referenceyn = ${rrList.referenceStatus};
+		const loginNo = ${loginUser.userNo};
+		
+		$(".table-hover>tbody>tr").each(function(){
 			
-			console.log(readNo);
-			console.log(referenceNo);
-			console.log(readyn);
-			console.log(referenceyn);
+			if($(".read").text() == loginNo && $(".readyn").text() == 'Y' || $(".reference").text() == loginNo && $(".referenceyn").text() == 'Y'){
+				$(".table-hover>tbody>tr").css("background-color", "gray");
+			}	
 		})
 	
 		$(".table-hover>tbody>tr").click(function(){

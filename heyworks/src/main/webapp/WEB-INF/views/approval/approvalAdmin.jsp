@@ -9,16 +9,16 @@
 <style>
 	.outer{
 		width:1200px;
-		height:1200px;
+		height:2000px;
 	    margin:auto;
 	}
 	.outer>div{float:left;}
     .elec-outer{
         margin: auto;
-        margin-left:20px;
-        margin-top:20px;
         width: 900px;
         height: 2000px;
+        margin-left:20px;
+        margin-top:20px;
     }
     #btns{width: 100%;}
     .table-striped *{
@@ -42,13 +42,15 @@
         text-decoration: none;
     }
     #insert-area{
-        border: 1px solid gray;
+        border: 1px solid lightgray;
         padding: 5px;
         padding-top: 10px;
         width: 100%;
-        height: 500px;
+        height: 800px;
     }
-    #insert-area>*{float: left;}
+    #insert-area>*{
+        float: left;
+    }
     #insert-area>p{
         width: 100%;
         font-size: 15px;
@@ -59,7 +61,8 @@
         margin-left: 10px;
         font-size: 12px;
         width: 210px;
-        height: 200px;
+        margin-bottom: 20px;
+        margin-left: 60px;
     }
     .check-user>p{
         background-color: rgb(241, 244, 248);
@@ -68,6 +71,14 @@
         text-align: center;
         line-height: 40px;
         margin-bottom: 0px;
+    }
+    .check-user>select{
+        width: 100%;
+        height: 40px;
+        text-align: center;
+    }
+    .check-user>input{
+        width: 100%;
     }
 </style>
 </head>
@@ -82,14 +93,6 @@
         <a href="" class="subject">전자결재관리자</a>
         <br><br>
 
-        <form>
-            <div align="right">
-                <input type="text" name="" value="" placeholder="검색하기">
-                <button type="submit" class="btn btn-sm">검색</button>
-            </div>
-        </form>
-        <br>
-
         <table align="center" class="table-striped">
             <thead>
                 <tr align="center">
@@ -98,33 +101,33 @@
                     <th width="100">이름</th>
                     <th width="100">팀</th>
                     <th width="100">직위</th>
-                    <th wdith="100">사내전화</th>
+                    <th width="100">사내전화</th>
                     <th width="250">이메일</th>
-                    <th width="100"><a class="btn btn-sm btn-danger">해제하기</a></th>
+                    <th width="100"><button class="btn btn-sm btn-danger" onclick="deleteAdmin();">해제하기</button></th>
                 </tr>
             </thead>
             <tbody>
             <c:choose>
             	<c:when test="${!empty adlist}">
             		<c:forEach var="ad" items="${adlist}">
-		                <tr>
-		                    <td><input type="checkbox" name="userNo" value="${ad.userNo}" class="boxes"></td>
-		                    <td>${ad.userNo}</td>
-		                    <td>${ad.userName}</td>
-		                    <td>${ad.deptName}</td>
-		                    <td>${ad.jobName}</td>
-		                    <td>${ad.class}</td>
-		                    <td>${ad.email}</td>
-		                    <td><a class="btn btn-sm btn-outline-danger">해제하기</a></td>
-		                </tr>
+	                <tr>
+	                    <td><input type="checkbox" value="${ad.userNo}" name="userlist" class="boxes"></td>
+	                    <td>${ad.userNo}</td>
+	                    <td>${ad.userName}</td>
+	                    <td>${ad.deptName}</td>
+	                    <td>${ad.jobName}</td>
+	                    <td>${ad.call}</td>
+	                    <td>${ad.email}</td>
+	                    <td><button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAdmin();">해제하기</button></td>
+	                </tr>
 	                </c:forEach>
                 </c:when>
                 <c:otherwise>
                 	<tr>
-                		<th colspan="8">조회된 사원이 없습니다.<th>
+                		<th>관리자로 지정된 사원이 없습니다.</th>
                 	</tr>
                 </c:otherwise>
-            </c:choose>    
+            </c:choose>
             </tbody>
         </table>
 
@@ -133,69 +136,59 @@
         <br><br>
 
         <div id="insert-area">
-
             <p>&nbsp;&nbsp;&nbsp;삼조전자 관리자 목록</p>
 
-            <div class="check-user" style="overflow: auto;">
-
-                <p id="jobCode1" onclick="jobList(4);">과장</p>
-                <table class="table" id="gwajang">
-                    <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 1);" ></td>
-                        <td width="100">200100005</td>
-                        <td width="80" class="sawon-name1">박보검</td>
-                    </tr>
-                </table>
+            <div class="check-user">
+                <p>소속으로 조회하기</p>
+                <select name="deptCode" onchange="selectAdmin(this.value);">
+                	<option value="0">선택안함</option>
+                	<c:if test="${!empty deptList}">
+	                	<c:forEach var="d" items="${deptList}">
+	                    	<option value="${d.deptCode}">${d.deptName}</option>
+	                    </c:forEach>
+                    </c:if>
+                </select> 
             </div>
-            <div class="check-user" style="overflow: auto;">
-                <p id="jobCode2" onclick="jobList(3);">대리</p>
-                <table class="table" id="daeli">
-                    <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 2);" ></td>
-                        <td width="100">200100005</td>
-                        <td width="80" class="sawon-name2">이제훈</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="check-user" style="overflow: auto;">
-                <p id="jobCode3" onclick="jobList(2);">주임</p>
-                <table class="table" id="juim">
-                    <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 3);" ></td>
-                        <td width="100">200100005</td>
-                        <td width="80" class="sawon-name3">조인성</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="check-user" style="overflow: auto;">
-                <p id="jobCode4" onclick="jobList(1);">사원</p>
-                <table class="table" id="sawon">
-                    <tr>
-                        <td width="20"><input type="checkbox" onclick="viewName(this, 4);" ></td>
-                        <td width="100"><p>200100005</p></td>
-                        <td width="80"><p class="sawon-name4">서강준</p></td>
-                    </tr>
-                </table>
+            <div class="check-user">
+                <p>이름으로 조회하기</p>
+                <input type="text" class="form-control" id="keyword" onkeyup="enterAdmin(this.value);">
             </div>
 
-            <br><br>
-            <div style="width: 100%; border: 1px solid lightgray; margin-top: 30px;"></div>
-            
-            <div>
-                <p id="checkName1"></p>
-                <p id="checkName2"></p>
-                <p id="checkName3"></p>
-                <p id="checkName4"></p>
-            </div>
-
-            <!-- checkbox에 체크시 나타나게 -->
-            <div id="chuga" style="display: none;">
-                <p>다음과 같은 사원들을 관리자로 추가하시겠습니까?</p>
-                <button class="btn btn-sm btn-outline-primary">추가하기</button>
+            <div style="margin-left: 60px; margin-top: 20px;">
+            <table class="table-hover">
+                <thead>
+                    <tr align="center">
+                        <th width="100">사번</th>
+                        <th width="100">이름</th>
+                        <th width="80">팀</th>
+                        <th width="60">직위</th>
+                        <th width="100">사내전화</th>
+                        <th width="250">이메일</th>
+                        <th width="80"><a class="btn btn-sm btn-primary">등록하기</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                </tbody>
+            </table>
             </div>
         </div>
 
-    </div>
+        <div>
+            <p id="checkName1"></p>
+            <p id="checkName2"></p>
+            <p id="checkName3"></p>
+            <p id="checkName4"></p>
+        </div>
+
+        <!-- checkbox에 체크시 나타나게 -->
+        <div id="chuga" style="display: none;">
+            <p>다음과 같은 사원들을 관리자로 추가하시겠습니까?</p>
+            <button class="btn btn-sm btn-outline-primary">추가하기</button>
+        </div>
+
+    	</div>
+	</div>
 
     <script>
         /*전체 체크*/
@@ -207,54 +200,87 @@
                 $(".boxes").attr("checked", false);
             }
         }
-        
-        /*직급 */
-        
-        
 
-        /*체크시 이름 뿌리기*/
-        function viewName(show, num){
-            
-            const confirm2 = show.checked;
+        function selectAdmin(value,num){
+            $.ajax({
+                url:"searchAdmin.el",
+                data:{
+                	code:value
+                },
+                success:function(result){
 
-            let name = $(".sawon-name" + num).text();
-            let code = $("#jobCode" + num).text();
+                    console.log(result);
 
-            if(confirm2){
+                    let list = "";
 
-                for(let i=1; i<5; i++){
-
-                    if(num == i){
-                        
-                        $("#checkName" + num).text(name + " " + code);                   
-                        
+                    for(let i in list){
+                        list += "<tr>"
+                              + "<td>" + list[i].userNo + "</td>"
+                              + "<td>" + list[i].userName + "</td>"
+                              + "<td>" + list[i].deptName + "</td>"
+                              + "<td>" + list[i].jobName + "</td>"
+                              + "<td>" + list[i].call + "</td>"
+                              + "<td>" + list[i].email + "</td>"
+                              + "<td><button class='btn btn-sm btn-outline-primary'>등록하기</button></td>"
+                              + "</tr>"       
                     }
-                   
+                    $(".table-hover>tbody").html(list);
+
+                },error:function(){
+                    console.log("사원조회용 ajax통신 실패!");
                 }
 
-            }else{
-                    $("#checkName" + num).text("");
-            }
+            })
+        }
+        
+        function enterAdmin(value){
+            $("#keyword").keyup(function(e){
+                if(e.keyCode == 13){
+                    $.ajax({
+                        url:"searchAdmin.el",
+                        data:{userName:value},
+                        success:function(result){
+                            console.log(result);
+                            
+                            let list = "";
 
+                            for(let i in list){
+                                list += "<tr>"
+                                    + "<td>" + list[i].userNo + "</td>"
+                                    + "<td>" + list[i].userName + "</td>"
+                                    + "<td>" + list[i].deptName + "</td>"
+                                    + "<td>" + list[i].jobName + "</td>"
+                                    + "<td>" + list[i].call + "</td>"
+                                    + "<td>" + list[i].email + "</td>"
+                                    + "<td><button class='btn btn-sm btn-outline-primary'>등록하기</button></td>"
+                                    + "</tr>"       
+                            }
+                            $(".table-hover>tbody").html(list);
+
+                        },error:function(){
+                            console.log("사원조회용 ajax통신 실패!");
+                        }
+                    })
+                }
+            })
         }
 
-    
-
-        $(function(){ //수정하기
-            const test2 = $(".table input[type='checkbox']");
-            const test3 = test2.checked;
-            console.log(test2);
-            if(test3){
-
-                console.log(test3)
-
-                $("#chuga").show();
-            }else{
-                $("#chuga").hide();
-            }
-        })
+        function deleteAdmin(){
+        	
+			var arraynum = [];
+			
+			$("input:checkbox[class='boxes']:checked").each(function(){
+				arraynum.push($(this).parent().next().text());
+			})
+			
+			console.log(arraynum);
+			
+			location.href="deletead.el?adno=" + arraynum;
+        	
+        }
+        
     </script>
-	</div>
+
 	
 </body>
 </html>

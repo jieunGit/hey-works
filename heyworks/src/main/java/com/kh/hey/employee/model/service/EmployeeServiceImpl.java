@@ -53,13 +53,22 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return eDao.selectAdminList(sqlSession);
 	} // 전자결재 관리자 조회
 	
-	
+
+	@Override
+	public int deleteAdmin(String[] adNo) {
+		return eDao.deleteAdmin(sqlSession, adNo);
+	} // 관리자 해제하기
 	
 	
 	@Override
 	public int updateEmployee(Employee e) {
 		return eDao.updateEmployee(sqlSession, e);
 	} // 회원정보수정
+
+	@Override
+	public ArrayList<Employee> ajaxAdminSearchSelect(HashMap<String, String> map) {
+		return eDao.ajaxAdminSearchSelect(sqlSession, map);
+	}
 
 	
 	

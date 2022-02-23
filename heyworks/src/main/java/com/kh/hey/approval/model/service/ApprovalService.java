@@ -100,8 +100,7 @@ public interface ApprovalService{
 	
 	// 삭제문서 복구하기
 	int ajaxDeleteRestore(String[] apNum);
-	
-	
+
 	
 	
 	

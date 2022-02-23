@@ -39,7 +39,20 @@ public class EmployeeDao {
 		return (ArrayList)sqlSession.selectList("employeeMapper.selectAdminList");
 	}
 	
+	public ArrayList<Employee> ajaxAdminSearchSelect(SqlSessionTemplate sqlSession, HashMap<String, String> map){
+		return (ArrayList)sqlSession.selectList("employeeMapper.ajaxAdminSearchSelect");
+	} // 전자결재 관리자 검색용
 	
+	public int deleteAdmin(SqlSessionTemplate sqlSession, String[] adNo) {
+		int result = 0;
+		
+		for(int i=0; i<adNo.length; i++) {
+			result = sqlSession.update("employeeMapper.deleteAdmin", adNo[i]);
+		}
+		
+		return result;
+		
+	} // 관리자 해제하기
 	
 	
 	public int updateEmployee(SqlSessionTemplate sqlSession, Employee e) {
