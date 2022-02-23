@@ -437,7 +437,7 @@
                   url:"selectRsvList.re",
                   data:{
                       rno:fk_reservation_resource_no,
-                      cno:$("#categoryNoTag").val()
+                      cno:$("#cNo").val()
                   },
                   type:"GET",
                   dataType:'JSON',

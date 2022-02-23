@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class todolist {
+public class Todolist {
 	
 	private String checkNo;
 	private String todoContent;

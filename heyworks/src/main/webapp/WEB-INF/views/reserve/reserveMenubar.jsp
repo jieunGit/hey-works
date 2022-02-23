@@ -118,7 +118,7 @@
 		
 		 <div id="menubar">
             <p><i class="fas fa-angle-double-right"></i> 예약</p>
-			<button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal2" onclick="addRs();">+예약하기</button>
+			<!-- <button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal2" onclick="addRs2();">+예약하기</button> -->
 			<br><br>
 			<a href="myReserve.re" style="color: black;">
 			<i class="fas fa-cog" style= "margin-left: 30px;"></i> 
@@ -185,48 +185,48 @@
 
 	
 		 // (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
-			function addRs(){
+		// 	function addRs(){
 			
-			// 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
-			$('#addRsvModal2').find('form')[0].reset();
-			$('#addRsvModal2').modal('show');
+		// 	// 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
+		// 	$('#addRsvModal2').find('form')[0].reset();
+		// 	$('#addRsvModal2').modal('show');
 
-			function categorySelected() {
-				var rNo = document.getElementById("#categorySelect").value();
-				console.log(rNo);
+		// 	function categorySelected() {
+		// 		var rNo = document.getElementById("#categorySelect").value();
+		// 		console.log(rNo);
 			
-			$.ajax({
-			url:"menuResourceList.re",
-			data : {},
-			async :false,
-			type:"get",
-			dataType:"JSON",
-			success:function(json){
-				var html = "";
-				if (json.length > 0) {
+		// 	$.ajax({
+		// 	url:"menuResourceList.re",
+		// 	data : {},
+		// 	async :false,
+		// 	type:"get",
+		// 	dataType:"JSON",
+		// 	success:function(json){
+		// 		var html = "";
+		// 		if (json.length > 0) {
 						
 					
-					$.each(json, function(index, item){
+		// 			$.each(json, function(index, item){
 					
-						html += "<option value='" + item.resourcesNo+ "' >" + item.resourceName + "</option>";
+		// 				html += "<option value='" + item.resourcesNo+ "' >" + item.resourceName + "</option>";
 					
 					
-					});
-				}else{
-					html += "<li style='height: 20px;'>";
-					html += "</li>";
-				}
+		// 			});
+		// 		}else{
+		// 			html += "<li style='height: 20px;'>";
+		// 			html += "</li>";
+		// 		}
 			
-				$("select.addRsSelect").html(html);
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			}
-		});
+		// 		$("select.addRsSelect").html(html);
+		// 	},
+		// 	error: function(request, status, error){
+		// 		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		// 	}
+		// });
 
-		}
+		// }
 		
-		}
+		// }
 
 
 		  // (modal) 예약하기에서 확인버튼을 클릭했을시 실행하는 함수

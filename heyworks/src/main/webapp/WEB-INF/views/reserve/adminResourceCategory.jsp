@@ -182,7 +182,6 @@
         $(function(){
             	$(document).on('click', '.deletebtn', function(){
                 var cNo = $(this).siblings(".adCategoryNo").val();
-                console.log(cNo);
 
                 alertify.confirm('삭제','정말로 카테고리를 삭제하시겠습니까?',
                 function(){

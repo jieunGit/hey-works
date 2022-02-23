@@ -4,5 +4,93 @@
 <mapper namespace="todolistMapper">
 
 	
+	<resultMap id="todolistResult" type="Todolist">
+		<result column="check_no" property="checkNo"/>
+		<result column="todo_content" property="todoContent"/>
+		<result column="check_status" property="checkStatus"/>
+		<result column="user_no" property="userNo"/>
+		<result column="todo_date" property="todoDate"/>
+	</resultMap>
+	
+	<select id="todolistCount" resultType="_int">
+				select 
+				      count(*)
+				  from todolist
+				  where user_no = #{userNo}
+	               and check_status = 'Y'
+	
+	
+	</select>
+	
+	
+	<select id="todolistSelect" resultMap="todolistResult">
+	
+				select 
+			       check_no
+			     , todo_content
+			     , check_status
+			     , user_no
+	             , todo_date
+			  from todolist
+			  where user_no = #{userNo}
+			  order
+			     by check_no desc
+	
+	
+	</select>
+	
+	
+	<insert id="todolistInsert">
+		 INSERT INTO todolist
+        ( check_no, todo_content, check_status, user_no, todo_date )
+		VALUES 
+		     (
+		       SEQ_TODONO.NEXTVAL
+		     , #{todoContent}
+		     , 'Y'
+		     , #{userNo}
+		     , sysdate
+		     )
+	</insert>
+	
+	
+	<delete id="deleteTodolist">
+		
+		delete 
+		  from todolist 
+		 where user_no = #{userNo}
+		   and check_no = #{checkNo}
+	
+	
+	</delete>
+	
+	<update id="completeTodolist">
+			
+		update todolist
+		   set check_status= 'N'
+		 where user_no = #{userNo}
+		   and check_no = #{checkNo}
+		
+	</update>
+	
+	<update id="restoreTodolist">
+			
+		update todolist
+		   set check_status= 'Y'
+		 where user_no = #{userNo}
+		   and check_no = #{checkNo}
+		
+	</update>
+	
+	<update id="updateTodolist">
+			
+		update todolist
+		   set todo_content = #{todoContent}
+		 where user_no = #{userNo}
+		   and check_no = #{checkNo}
+		
+	</update>
+	
+	
 	
 </mapper>

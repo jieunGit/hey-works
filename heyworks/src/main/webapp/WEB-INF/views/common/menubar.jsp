@@ -151,7 +151,7 @@
                 
                 <li>
                 	<div id="todoplus">
-                		<a href=""> <img src="resources/images/todo.png"></a>
+                		<a href="todolist.to"> <img src="resources/images/todo.png"></a>
                 	</div>
                 </li>
                 
