@@ -46,7 +46,7 @@
         padding: 5px;
         padding-top: 10px;
         width: 100%;
-        height: 800px;
+        height: 1800px;
     }
     #insert-area>*{
         float: left;
@@ -80,6 +80,8 @@
     .check-user>input{
         width: 100%;
     }
+    .table{font-size:12px;}
+    .table a{width:100%; font-size:12px;}
 </style>
 </head>
 <body>
@@ -118,7 +120,7 @@
 	                    <td>${ad.jobName}</td>
 	                    <td>${ad.call}</td>
 	                    <td>${ad.email}</td>
-	                    <td><button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAdmin();">해제하기</button></td>
+	                    <td>${ad.adminYn}</td>
 	                </tr>
 	                </c:forEach>
                 </c:when>
@@ -139,8 +141,8 @@
             <p>&nbsp;&nbsp;&nbsp;삼조전자 관리자 목록</p>
 
             <div class="check-user">
-                <p>소속으로 조회하기</p>
-                <select name="deptCode" onchange="selectAdmin(this.value);">
+                <p>소속을 선택하세요</p>
+                <select name="deptCode" onchange="selectAdmin(this.value);" id="deptCode">
                 	<option value="0">선택안함</option>
                 	<c:if test="${!empty deptList}">
 	                	<c:forEach var="d" items="${deptList}">
@@ -150,21 +152,21 @@
                 </select> 
             </div>
             <div class="check-user">
-                <p>이름으로 조회하기</p>
+                <p>이름을 작성해주세요</p>
                 <input type="text" class="form-control" id="keyword" onkeyup="enterAdmin(this.value);">
             </div>
 
             <div style="margin-left: 60px; margin-top: 20px;">
-            <table class="table-hover">
+            <table class="table" style="border-bottom:1px; solid; lightgray; overflow: auto; height:500px;">
                 <thead>
                     <tr align="center">
                         <th width="100">사번</th>
                         <th width="100">이름</th>
                         <th width="80">팀</th>
-                        <th width="60">직위</th>
+                        <th width="80">직위</th>
                         <th width="100">사내전화</th>
-                        <th width="250">이메일</th>
-                        <th width="80"><a class="btn btn-sm btn-primary">등록하기</a></th>
+                        <th width="220">이메일</th>
+                        <th width="80"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -205,26 +207,25 @@
             $.ajax({
                 url:"searchAdmin.el",
                 data:{
-                	code:value
+                	deptCode:value,
+                	userName:"n"
                 },
                 success:function(result){
 
-                    console.log(result);
-
                     let list = "";
 
-                    for(let i in list){
-                        list += "<tr>"
-                              + "<td>" + list[i].userNo + "</td>"
-                              + "<td>" + list[i].userName + "</td>"
-                              + "<td>" + list[i].deptName + "</td>"
-                              + "<td>" + list[i].jobName + "</td>"
-                              + "<td>" + list[i].call + "</td>"
-                              + "<td>" + list[i].email + "</td>"
-                              + "<td><button class='btn btn-sm btn-outline-primary'>등록하기</button></td>"
+                    for(let i in result){
+                        list += "<tr align='center'>"
+                              + "<td class='uno'>" + result[i].userNo + "</td>"
+                              + "<td>" + result[i].userName + "</td>"
+                              + "<td>" + result[i].deptName + "</td>"
+                              + "<td>" + result[i].jobName + "</td>"
+                              + "<td>" + result[i].call + "</td>"
+                              + "<td>" + result[i].email + "</td>"
+                              + "<td><a href='registerad.el?uno=" + result[i].userNo + "' class='btn btn-sm btn-outline-primary'>등록</a></td>"
                               + "</tr>"       
                     }
-                    $(".table-hover>tbody").html(list);
+                    $(".table>tbody").html(list);
 
                 },error:function(){
                     console.log("사원조회용 ajax통신 실패!");
@@ -238,24 +239,26 @@
                 if(e.keyCode == 13){
                     $.ajax({
                         url:"searchAdmin.el",
-                        data:{userName:value},
+                        data:{
+                        	userName:value,
+                        	deptCode:$("#deptCode").val()
+                        },
                         success:function(result){
-                            console.log(result);
                             
                             let list = "";
 
-                            for(let i in list){
-                                list += "<tr>"
-                                    + "<td>" + list[i].userNo + "</td>"
-                                    + "<td>" + list[i].userName + "</td>"
-                                    + "<td>" + list[i].deptName + "</td>"
-                                    + "<td>" + list[i].jobName + "</td>"
-                                    + "<td>" + list[i].call + "</td>"
-                                    + "<td>" + list[i].email + "</td>"
-                                    + "<td><button class='btn btn-sm btn-outline-primary'>등록하기</button></td>"
-                                    + "</tr>"       
+                            for(let i in result){
+                                list += "<tr align='center'>"
+                                      + "<td class='uno'>" + result[i].userNo + "</td>"
+                                      + "<td>" + result[i].userName + "</td>"
+                                      + "<td>" + result[i].deptName + "</td>"
+                                      + "<td>" + result[i].jobName + "</td>"
+                                      + "<td>" + result[i].call + "</td>"
+                                      + "<td>" + result[i].email + "</td>"
+                                      + "<td><a href='registerad.el?uno=" + result[i].userNo + "' class='btn btn-sm btn-outline-primary'>등록</a></td>"
+                                      + "</tr>"       
                             }
-                            $(".table-hover>tbody").html(list);
+                            $(".table>tbody").html(list);
 
                         },error:function(){
                             console.log("사원조회용 ajax통신 실패!");
@@ -264,21 +267,6 @@
                 }
             })
         }
-
-        function deleteAdmin(){
-        	
-			var arraynum = [];
-			
-			$("input:checkbox[class='boxes']:checked").each(function(){
-				arraynum.push($(this).parent().next().text());
-			})
-			
-			console.log(arraynum);
-			
-			location.href="deletead.el?adno=" + arraynum;
-        	
-        }
-        
     </script>
 
 	

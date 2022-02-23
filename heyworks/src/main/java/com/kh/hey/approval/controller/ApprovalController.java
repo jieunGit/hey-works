@@ -766,19 +766,15 @@ public class ApprovalController {
 	
 	@ResponseBody
 	@RequestMapping(value="searchAdmin.el", produces="application/json; charset=UTF-8")
-	public String ajaxAdminSearchSelect(String code, String userName) {
-		
-		System.out.println(code);
-		System.out.println(userName);
-		
+	public String ajaxAdminSearchSelect(String deptCode, String userName) {
+
 		HashMap<String,String> map = new HashMap<String,String>();
-		map.put("code", code);
+		map.put("deptCode", deptCode);
 		map.put("userName", userName);
 		
 		ArrayList<Employee> list = eService.ajaxAdminSearchSelect(map);
-		System.out.println(list);
 		
-		return null;
+		return new Gson().toJson(list);
 		
 	} // 문서 복구하기
 	
@@ -798,7 +794,19 @@ public class ApprovalController {
 		
 	} // 관리자 해체하기
 	
-	
+	@RequestMapping("registerad.el")
+	public String approvalAdminUpdate(String uno, HttpSession session) {
+		
+		int result = eService.approvalAdminUpdate(uno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "전자결재 관리자로 등록되었습니다.");
+		}else {
+			session.setAttribute("alertMsg", "관리자 등록 실패!");
+		}
+		
+		return "redirect:approvalad.el";
+	} // 관리자 등록하기
 	
 	
 	

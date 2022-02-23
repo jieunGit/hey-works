@@ -408,22 +408,6 @@
         	}
             /*ajax끝*/
             
-            // 사원 값 비교해서 체크박스 disabled하기
-            function valueCheck(){
-            	
-            	let checkvalue = $("input:checkbox[name='job']:checked").val();
-
-            	$('input:checkbox[name="job"]').each(function(){
-            	    
-            		if(checkvalue > $(this).val()){
-            			this.disabled = true;
-            		}else{
-            			this.disabled = false;
-            		}
-            	})
-
-            }
-            
             /*버튼 클릭시 결재 화면에 뿌려질 용도*/
             function list(num){
 
@@ -431,6 +415,14 @@
                 var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
             	var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
             	
+                switch(num){
+                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
+                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
+                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
+                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
+                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
+                }
+                
             	if(num == 1){ // 열람 참조시
             		
             		var read = "";
@@ -476,15 +468,37 @@
             		
             	}
             	
-	            	$("#line-list").html($("#line-list").html() + value);
-
-                switch(num){
-                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
-                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
-                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
-                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
-                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
-                }
+            	$("#line-list").html($("#line-list").html() + value);
+			
+            	// 결재자 값 비교해서 선택 불가하게 하기
+               	let sign1 = $("#sign1").text();
+               	let fsign = sign1.slice(-2);
+               	
+               	if(fsign == '이사'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 4 || $(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '과장'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '대리'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '주임'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	} // 결재비교 끝
 	
                 
             }

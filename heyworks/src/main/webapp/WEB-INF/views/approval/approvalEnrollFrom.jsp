@@ -451,6 +451,7 @@
             /*ajax끝*/
             
             // 사원 값 비교해서 체크박스 disabled하기
+            /* 사용안함
             function valueCheck(){
             	
             	let checkvalue = $("input:checkbox[name='job']:checked").val();
@@ -464,7 +465,7 @@
             		}
             	})
 
-            }
+            }*/
 
             /*버튼 클릭시 결재 화면에 뿌려질 용도*/
             function list(num){
@@ -473,6 +474,14 @@
                 var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
             	var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
             	
+                switch(num){
+                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
+                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
+                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
+                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
+                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
+                }
+	
             	if(num == 1){ // 열람 참조시
             		
             		var read = "";
@@ -480,7 +489,7 @@
             			  + "<input type='hidden' name='read' id='readNo'>"
             		
             		$("#read-line").html(read);
-            				
+            			  
             	}else if(num == 2){
 					
             		var ref = "";
@@ -497,7 +506,7 @@
 	            	       + "<input type='hidden' name='confirmList[1].confirmNo' id='clist1'>"
 	            	       + "<input type='hidden' name='confirmList[1].procedureNo' value='1'>"
 	            	       + "</td>"
-	            	       	       
+     	       
             	}else if(num == 4){
             		
             		var value = "";
@@ -517,17 +526,39 @@
 	            	       + "</td>"
             		
             	}
+           		// 결재자 리스트 누적해서 뿌려주기
+            	$("#line-list").html($("#line-list").html() + value); 
             	
-	            	$("#line-list").html($("#line-list").html() + value);
+            	// 결재자 값 비교해서 선택 불가하게 하기
+               	let sign1 = $("#sign1").text();
+               	let fsign = sign1.slice(-2);
+               	
+               	if(fsign == '이사'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 4 || $(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '과장'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '대리'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '주임'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	} // 결재비교 끝
 
-                switch(num){
-                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
-                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
-                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
-                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
-                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
-                }
-	
                 
             }
             
@@ -570,8 +601,6 @@
             	$("#confirm1").val($("#sign1").text());
             	$("#confirm2").val($("#sign2").text());
             	$("#confirm3").val($("#sign3").text());
-            	
-            	//$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
             	
             }
             

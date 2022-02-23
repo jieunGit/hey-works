@@ -119,7 +119,7 @@
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${rrpi.currentPage eq 1}">
-            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
             	</c:when>
             	<c:otherwise>
             		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage-1}">이전</a></li>
@@ -131,10 +131,10 @@
             
             <c:choose>
         		<c:when test="${rrpi.currentPage eq rrpi.endPage}">
-            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage+1}">다음</a></li>
+            		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage+1}">NEXT ▶</a></li>
             	</c:otherwise>
            	</c:choose>
         </ul>
