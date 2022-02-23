@@ -128,7 +128,7 @@
             by job_code desc
 	</select>
 	
-	<!-- 관리자용 검색 -->
+	<!-- 관리자용 검색(수정중) -->
 	<select id="ajaxAdminSearchSelect" resultMap="employeeResult">
 		select
 		       user_no

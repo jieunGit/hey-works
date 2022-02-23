@@ -192,8 +192,10 @@
 		     , origin_name
 		     , ep.status status
 		     , create_date
+		     , reject_reason rejectReason
 		  from elec_approval ep
 		  join employee on (writer_no = user_no)
+		  join confirm using(elec_appr_no)
 		 where writer_no = #{userNo}
 	   	 <if test='status == "Y"'>
 		   and ep.status = 'Y'
@@ -841,7 +843,30 @@
 		 where elec_appr_no = #{apNum}
 	</update>
 	
-	
+	<select id="selectDoneConfirmList" resultMap="approvalResult">
+		select 
+		  		 elec_appr_no
+		       , user_name writer_name
+		       , decode(form_no, 1, '업무기안서'
+                               , 2, '비품구매품의서'
+                               , 3, '증명서신청'
+                               , 4, '채용요청서'
+                               , 5, '일반품의서') form_no
+		       , write_dept
+		       , elec_title
+		       , emc_yn
+		       , create_date
+		       , ea.status status
+		       , origin_name
+		       , confirm_user confirmUser
+            from elec_approval ea
+            join employee on(user_no = writer_no)
+            join confirm using(elec_appr_no)
+           where confirm_user = #{userNo}
+             and ea.status = 'Y'
+           order
+              by create_date desc
+	</select>
 	
 	
 	

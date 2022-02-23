@@ -314,7 +314,9 @@ public class ApprovalDao {
 		
 	} // 삭제문서 복구하기
 	
-	
+	public ArrayList<Approval> selectDoneConfirmList(SqlSessionTemplate sqlSession, String userNo){
+		return (ArrayList)sqlSession.selectList("approvalMapper.selectDoneConfirmList", userNo);
+	}
 	
 	
 	

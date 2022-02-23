@@ -178,7 +178,7 @@ public class ApprovalController {
 		model.addAttribute("status", status);
 		model.addAttribute("pi", pi);
 		model.addAttribute("edList", edList);
-
+		
 		return "approval/submitEndList";
 	}
 	
@@ -214,14 +214,11 @@ public class ApprovalController {
 		map.put("userNo", userNo);
 
 		if(read.equals(userName)) {
-			System.out.println("열람자");
 			
 			map.put("status", "read");
 			result = aService.updateReadReference(map);
 			
 		}else if(reference.equals(userName)){
-			
-			System.out.println("참조자");
 			
 			map.put("status", "reference");
 			result = aService.updateReadReference(map);
@@ -680,28 +677,22 @@ public class ApprovalController {
 		return new Gson().toJson(result);
 	}
 	
+	// 승인완료된 문서목록(결재자기준)
+	@RequestMapping("doneConf.el")
+	public String selectDoneConfirmList(Model model, HttpSession session) {
+		
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+		
+		ArrayList<Approval> donelist = aService.selectDoneConfirmList(userNo);
+		
+		model.addAttribute("donelist", donelist);
+		System.out.println(donelist);
+		
+		return "approval/doneConfirmList";
+		
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -738,7 +729,6 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 5, 10);
 		
 		ArrayList<Approval> dltlist = aService.selectDeleteSearchList(pi,map);
-		System.out.println(dltlist);
 		
 		model.addAttribute("depi", pi);
 		model.addAttribute("dltlist", dltlist);
@@ -753,11 +743,6 @@ public class ApprovalController {
 	public String ajaxDeleteRestore(Approval approvalNo) {
 		
 		String[] apNum = approvalNo.getApprovalNo().split(",");
-		
-		/*
-		for(int i=0; i<apNum.length; i++) {
-			System.out.println(apNum[i]);
-		}*/
 		
 		int result = aService.ajaxDeleteRestore(apNum);
 		
@@ -800,7 +785,6 @@ public class ApprovalController {
 	@RequestMapping("deletead.el")
 	public String deletAdmin(String adno, HttpSession session) {
 		
-		System.out.println(adno);
 		String[] adNo = adno.split(",");
 		
 		int result = eService.deleteAdmin(adNo);

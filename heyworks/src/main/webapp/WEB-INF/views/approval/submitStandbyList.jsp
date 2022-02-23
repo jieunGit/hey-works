@@ -65,12 +65,6 @@
         <br><br>
 
         <div id="btnNsearch">
-            <div id="btns">
-                <button type="button" class="btn btn-sm">전체</button>
-                <button type="button" class="btn btn-sm">결재대기</button>
-                <button type="button" class="btn btn-sm">진행중</button>
-            </div>
-
             <form>
                 <div align="right">
                     <input type="text" name="" value="" placeholder="검색하기">

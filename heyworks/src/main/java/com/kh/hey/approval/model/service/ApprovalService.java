@@ -89,6 +89,8 @@ public interface ApprovalService{
 	// 열람 참조시 Y로 업데이트
 	int updateReadReference(HashMap<String, String> map);
 	
+	// 승인완료된 결재문서들 조회(결재자 기준)
+	ArrayList<Approval> selectDoneConfirmList(String userNo);
 	
 	//-----------------------------------------------------------
 	// 관리자 삭제목록조회

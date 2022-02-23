@@ -65,13 +65,6 @@
         <br><br>
 
         <div id="btnNsearch">
-            <div id="btns">
-                <button type="button" class="btn btn-sm">결재완료문서</button>
-                <button type="button" class="btn btn-sm">참조/열람문서</button>
-                <button type="button" class="btn btn-sm">반려문서</button>
-                <button type="button" class="btn btn-sm">임시저장</button>
-            </div>
-
             <form>
                 <div align="right">
                     <input type="text" name="" value="" placeholder="검색하기">
@@ -91,7 +84,7 @@
                     <th width="80">작성자</th>
                     <th width="70">긴급</th>
                     <th width="275">제목</th>
-                    <th wdith="70">첨부</th>
+                    <th width="70">첨부</th>
                     <th width="80">결재상태</th>
                     <th width="100">기안일</th>
                 </tr>
@@ -106,13 +99,13 @@
 		                    <td>${ed.userNo}</td>
 		                    <td>
 		                    	<c:if test="${!empty ed.emergancy}">
-		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+		                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
 		                    <td>${ed.approvalTitle}</td>
 		                    <td>
 		                    	<c:if test="${!empty ed.originName}">
-		                        	<img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
+		                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
 		                    <td>
@@ -121,7 +114,7 @@
 		                        		<button class="btn btn-sm" style="background-color: lightgray;">완료</button>
 									</c:when>
 									<c:when test="${ed.status eq 'R'}">
-				                        <button class="btn btn-sm" style="background-color: red; color: white;">반려</button>
+				                        <button class="btn btn-sm" data-toggle="tooltip" data-placement="right" title="${ed.confirmList[0].rejectReason}" style="background-color: red; color: white;">반려</button>
 									</c:when>
 									<c:otherwise>
 		                        		<button class="btn btn-sm">임시저장</button>
@@ -170,6 +163,10 @@
 	</div>
 	
 	<script>
+		$(document).ready(function(){
+		  $('[data-toggle="tooltip"]').tooltip();
+		});
+	
 		$(".table-hover>tbody>tr").click(function(){
 		
 			location.href="detail.el?ano=" + $(this).children(".ano").text();

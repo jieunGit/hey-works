@@ -85,7 +85,9 @@
 		            </c:if>
 				</c:if>
 	            <!-- 결재자 -->
-	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser or loginUser.userName eq ap.confirmList[1].confirmUser or loginUser.userName eq ap.confirmList[2].confirmUser}">
+	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser and ap.confirmList[0].confirmStatus eq '결재예정'
+	            or loginUser.userName eq ap.confirmList[1].confirmUser and ap.confirmList[1].confirmStatus eq '결재예정'
+	            or loginUser.userName eq ap.confirmList[2].confirmUser and ap.confirmList[2].confirmStatus eq '결재예정'}">
 		            <a class="btn btn-sm text-primary" onclick="postSubmit(3)">결재</a>
 		            <a class="btn btn-sm text-danger" onclick="deny();" id="rjbtn1">반려</a>
 				</c:if>

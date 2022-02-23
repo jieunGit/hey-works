@@ -275,6 +275,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.updateReadReference(sqlSession, map);
 	}
 
+	@Override
+	public ArrayList<Approval> selectDoneConfirmList(String userNo) {
+		return aDao.selectDoneConfirmList(sqlSession, userNo);
+	}
+
 
 
 	
