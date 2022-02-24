@@ -53,6 +53,20 @@
     	margin-left:5px;
 		font-size:10px;
     }
+    select {
+		width: 100px;
+		padding: .1em;
+		border: 1px solid #999;
+		font-family: inherit;
+		border-radius: 0px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		text-align:center;
+	}
+	select::-ms-expand {
+		display: none;
+	}
 </style>
 </head>
 <body>

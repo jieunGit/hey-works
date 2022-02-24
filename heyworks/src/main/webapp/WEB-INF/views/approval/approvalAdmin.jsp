@@ -57,7 +57,7 @@
         font-weight: 700;
     }
     .check-user{
-        border: 1px solid gray;
+        border: 1px solid lightgray;
         margin-left: 10px;
         font-size: 12px;
         width: 210px;
@@ -82,6 +82,20 @@
     }
     .table{font-size:12px;}
     .table a{width:100%; font-size:12px;}
+    select {
+		width: 100px;
+		padding: .1em;
+		border: 1px solid #999;
+		font-family: inherit;
+		border-radius: 0px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		text-align:center;
+	}
+	select::-ms-expand {
+		display: none;
+	}
 </style>
 </head>
 <body>

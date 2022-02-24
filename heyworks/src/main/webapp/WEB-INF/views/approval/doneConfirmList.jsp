@@ -48,6 +48,9 @@
     	margin-left:5px;
 		font-size:10px;
     }
+    .table-hover tr:hover{
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -62,12 +65,6 @@
 	        <a href="#" class="subject">승인결재문서</a>
 	        <P class="text-primary" style="font-size:12px;">* 마지막결재자의 승인이 완료되어야 목록에서 확인할 수 있습니다.</P>
 	        <br>
-	        
-	        <form>
-            <div align="right">
-                <input type="text" name="" value="" placeholder="검색하기">
-            </div>
-            </form> <br>
 	
 	        <table align="center" class="table-hover">
 	            <thead>
@@ -98,13 +95,13 @@
 					                    <td>${d.writeDept}</td>
 					                    <td>
 					                    	<c:if test="${d.emergancy eq 'Y'}">
-					                        	<img src="resources/images/179386.png" style="width: 25%; height: 55%;" >
+					                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${d.approvalTitle}</td>
 					                    <td>
 					                    	<c:if test="${!empty d.originName}">
-					                        	<img src="resources/images/2586886.png" style="width: 80%; height: 70%;" >
+					                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${d.userNo}</td>

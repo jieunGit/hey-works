@@ -50,6 +50,9 @@
     	margin-left:5px;
 		font-size:10px;
     }
+    .table-hover tr:hover{
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -61,18 +64,14 @@
 		
 		<div class="elec-outer">
         <!-- 진행중인문서 -->
-        <a href="" class="subject">진행중인문서</a>
+        <a href="#" class="subject">진행중인문서(
+        <c:if test="${status eq 'A'}">전체</c:if>
+        <c:if test="${status eq 'D'}">결재대기</c:if>
+        <c:if test="${status eq 'P'}">진행중</c:if>
+        )
+        </a>
         <br><br>
 
-        <div id="btnNsearch">
-            <form>
-                <div align="right">
-                    <input type="text" name="" value="" placeholder="검색하기">
-                    <button type="submit" class="btn btn-sm">검색</button>
-                </div>
-            </form>
-        </div>
-        <br><br>
 
         <table align="center" class="table-hover">
             <thead>
@@ -97,13 +96,13 @@
 		                    <td>${sb.userNo}</td>
 		                    <td>
 		                    	<c:if test="${sb.emergancy eq 'Y'}">
-		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+		                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
 		                    <td style="text-overflow:ellipsis; overflow:hidden"><nobr>${sb.approvalTitle}</nobr></td>
 		                    <td>
 		                    	<c:if test="${!empty sb.originName}">
-		                        	<img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
+		                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
 		                       	</c:if>
 		                    </td>
 		                    <td>${sb.firstUser}</td>
@@ -133,6 +132,7 @@
 	</div>
 	
 	<div id="pagingArea">
+		<c:if test="${pi.endPage > 0}">
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.currentPage eq 1}">
@@ -155,6 +155,7 @@
             	</c:otherwise>
            	</c:choose>
         </ul>
+        </c:if>
     </div>
     
     <script>

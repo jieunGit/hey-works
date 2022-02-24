@@ -160,7 +160,7 @@ public class ApprovalController {
 	
 	// 기안자 기준 승인, 반려, 임시저장목록
 	@RequestMapping("endlist.el")
-	public String selectEndList(@RequestParam(value="cpage", defaultValue="1")int currentPage, String status, Model model, HttpSession session) {
+	public String selectEndList(@RequestParam(value="cpage", defaultValue="1")int currentPage, String status, Model model, HttpSession session, String keyword, String subject, String type) {
 		
 		// 조건검사할 로그인 객체 받아오기
 		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
@@ -168,6 +168,9 @@ public class ApprovalController {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("userNo", userNo);
 		map.put("status", status);
+		map.put("keyword", keyword);
+		map.put("subject", subject);
+		map.put("type", type);
 		
 		
 		int listCount = aService.selectSubmitListCount(map);
@@ -176,6 +179,9 @@ public class ApprovalController {
 		ArrayList<Approval> edList = aService.selectSubmitEndList(pi, map);
 		
 		model.addAttribute("status", status);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("subject", subject);
+		model.addAttribute("type", type);
 		model.addAttribute("pi", pi);
 		model.addAttribute("edList", edList);
 		
@@ -196,8 +202,6 @@ public class ApprovalController {
 		model.addAttribute("rrpi", rrpi);
 		model.addAttribute("rrList", rrList);
 		
-		System.out.println(rrList);
-
 		return "approval/readOrReferenceList";
 		
 	}
@@ -686,13 +690,43 @@ public class ApprovalController {
 		ArrayList<Approval> donelist = aService.selectDoneConfirmList(userNo);
 		
 		model.addAttribute("donelist", donelist);
-		System.out.println(donelist);
 		
 		return "approval/doneConfirmList";
 		
 	}
 	
+	// 완료된 문서 검색하기
+	@RequestMapping("searchend.el")
+	public String selectSearchEndList(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, String keyword, String subject, String status, String type, HttpSession session) {
+		
+		System.out.println(keyword);
+		System.out.println(subject);
+		System.out.println(status);
+		System.out.println(type);
+		
+		// 조건검사할 로그인 객체 받아오기
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
 
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userNo", userNo);
+		map.put("status", status);
+		map.put("keyword", keyword);
+		map.put("subject", subject);
+		map.put("type", type);
+		
+		
+		//int listCount = aService.selectSubmitListCount(map);
+		
+		//PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		//ArrayList<Approval> edList = aService.selectSubmitEndList(pi, map);
+		
+		//model.addAttribute("status", status);
+		//model.addAttribute("pi", pi);
+		//model.addAttribute("edList", edList);
+		
+		return null;
+		//return "approval/submitEndList";
+	}
 	
 	
 	
