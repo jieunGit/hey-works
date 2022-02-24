@@ -85,7 +85,9 @@
 		            </c:if>
 				</c:if>
 	            <!-- 결재자 -->
-	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser or loginUser.userName eq ap.confirmList[1].confirmUser or loginUser.userName eq ap.confirmList[2].confirmUser}">
+	            <c:if test="${loginUser.userName eq ap.confirmList[0].confirmUser and ap.confirmList[0].confirmStatus eq '결재예정'
+	            or loginUser.userName eq ap.confirmList[1].confirmUser and ap.confirmList[1].confirmStatus eq '결재예정'
+	            or loginUser.userName eq ap.confirmList[2].confirmUser and ap.confirmList[2].confirmStatus eq '결재예정'}">
 		            <a class="btn btn-sm text-primary" onclick="postSubmit(3)">결재</a>
 		            <a class="btn btn-sm text-danger" onclick="deny();" id="rjbtn1">반려</a>
 				</c:if>
@@ -94,9 +96,15 @@
 	            <c:if test="${ap.status eq '반려'}">
 	            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
 				</c:if>
+				
 	            <!-- 관리자가 복구시 -->
 	            <c:if test="${loginUser.adminYn eq 'Y'}">
-	            	<a class="btn btn-sm text-warning" onclick="postSubmit(6)">복구하기</a>
+	            	<a class="btn btn-sm text-warning" onclick="restoration();">복구하기</a>
+	            </c:if>
+	            
+				<!-- 열람/참조 -->
+	            <c:if test="${loginUser.userName eq ap.read and ap.readStatus eq 'N' or loginUser.userName eq ap.reference and ap.referenceStatus eq 'N'}">
+	            	<a class="btn btn-sm text-success" onclick="check();">열람/참조</a>
 	            </c:if>
 	        </div>
 		
@@ -121,7 +129,6 @@
 				case 3:	$("#postForm").attr("action", "confirm.el").submit(); break;
 				case 4:	$("#postForm").attr("action", "reject.el").submit(); break;
 				case 5:	$("#postForm").attr("action", "retryForm.el").submit(); break;
-				case 6:	$("#postForm").attr("action", "recover.el").submit(); break;
 				}
 				
         	}
@@ -134,9 +141,58 @@
         		$("#reason").show();
         		$("#rjbtn1").hide();
         		$("#rjbtn2").show();
-        		
-        		
         	}
+        	
+        	function restoration(){
+    			
+    			var arraynum = $("input[name='ano']").val();
+    			
+    			console.log(arraynum);
+    			
+    			if(confirm("문서를 복구하시겠습니까?") == true){
+
+    				$.ajax({
+    					url:"restore.el",
+    					type:"post",
+    					data:{approvalNo:arraynum},
+    					success:function(result){
+    						
+    						if(result == 'S'){
+    							return new swal({
+    								title:"문서가 정상적으로 복구되었습니다!",
+    								icon:"success",
+    								closeOnClickOutside:false
+    							})
+    							.then((value) => {
+    								if(value){
+    									location.href="deletelist.el"
+    								}
+    							})
+    						}else{
+    							return new swal({
+    								title:"문서 삭제 실패",
+    								icon:"error",
+    								closeOnClickOutside:false
+    							})
+    							.then((value) => {
+    								if(value){
+    									location.reload();
+    								}
+    							})
+    							
+    						}
+    					},error:function(request, error){
+    						alert(error);
+    						console.log(error);
+    						console.log("삭제문서 복구용 ajax통신 실패");
+    					}
+    				})
+    			
+    			}else{
+    				return;
+    			}
+    			
+    		}
         </script>
             
 
@@ -389,7 +445,7 @@
 		}
 		
 		function selectReplyList(){
-
+			
 			$.ajax({
 				url:"rlist.rp",
 				data:{ano:'${ap.approvalNo}'},
@@ -401,8 +457,9 @@
 	                    	  + "<th width='130'>" + rlist[i].userNo + "&nbsp;" + rlist[i].jobName + "</th>"
 	                          + "<td width='600'>" + rlist[i].replyContent + "</td>"
 	                          + "<td width='100' style='font-size: 12px; color: lightgrey;'>" + rlist[i].createDate + "</td>"
-	                          + "<td width='100' class='updelbtn'>"
-	                          + "<button class='btn btn-sm' onclick='updateForm(this);'>수정</button><button class='btn btn-sm' onclick='deleteReply(this);'>삭제</button>"
+	                          + "<td width='100' class='updelbtn'>";
+	                    if(loginName == rlist[i].userNo){      
+	                    list += "<button class='btn btn-sm' onclick='updateForm(this);'>수정</button><button class='btn btn-sm' onclick='deleteReply(this);'>삭제</button>"
 	                          + "<input type='hidden' name='replyName' value='"+ rlist[i].userNo + "'></td>"
 	                          + "</tr>" 
 	                          + "<tr style='display:none' class='updateReply'>"
@@ -412,7 +469,11 @@
 	                          + "<button class='btn btn-sm' onclick='updateReply(this);'>수정</button><button class='btn btn-sm' onclick='cancleUpdate(this);'>취소</button></td>"
 	                          + "</tr>"
 	                          
+	                    }else{
+	                    	list += "</td></tr>"
+	                    }     
 					}
+					
 					
 					$("#reply-list").html(list);
 
@@ -501,6 +562,48 @@
 					console.log("댓글수정용 ajax통신 실패");	
 				}
 			})
+		}
+		
+
+		function check(){
+			$.ajax({
+					url:"check.el",
+					data:{
+						approvalNo:'${ap.approvalNo}',
+						userNo:${loginUser.userNo},
+						read:'${ap.read}',
+						reference:'${ap.reference}',
+						userName:'${loginUser.userName}'
+					},
+					success:function(result){
+						
+						if(result == 'S'){
+							return new swal({
+								title:"문서가 열람/참조 되었습니다.",
+								icon:"success",
+								closeOnClickOutside:false
+							})
+							.then((value) => {
+								if(value){
+									location.reload();
+								}
+							})
+						}else{
+							return new swal({
+								title:"문서 처리 실패!",
+								icon:"error",
+								closeOnClickOutside:false
+							})
+							.then((value) => {
+								if(value){
+									location.reload();
+								}
+							})
+						}
+					},error:function(){
+						cosole.log("열람 참조용 ajax통신 실패")
+					}
+				})
 		}
 	</script>
 

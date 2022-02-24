@@ -12,7 +12,7 @@ public interface ApprovalService{
 	
 	// 1. 게시판 리스트 페이지(페이징처리)-결재자 기준(결재대기)
 	int selectListCount(String userName);
-	ArrayList<Approval> selectStandByList(PageInfo pi, String userName);
+	ArrayList<Approval> selectStandByList(PageInfo pi, String userName); // 결재자 리스트용
 	
 	// 1_1. 게시판 리스트 페이지(페이징처리)-기안자 기준(전체, 대기, 진행, 승인, 반려, 임시저장)
 	int selectSubmitListCount(HashMap<String, String> map);
@@ -23,6 +23,7 @@ public interface ApprovalService{
 	// 1_1_2. 게시판 리스트-기안자 기준(승인, 반려, 임시저장)
 	ArrayList<Approval> selectSubmitEndList(PageInfo pi, HashMap<String, String> map);
 	
+	// 1_1_3. 게시판 리스트-열람참조자 기준 열람참조문서
 	int selectReadNrefListCount(String userNo);
 	ArrayList<Approval> selectReadReference(PageInfo rrpi, String userNo);
 	
@@ -85,19 +86,23 @@ public interface ApprovalService{
 	int updateRecruiment(Approval ap); 
 	int updateExpenseReport(Approval ap);
 	
+	// 열람 참조시 Y로 업데이트
+	int updateReadReference(HashMap<String, String> map);
 	
-	
+	// 승인완료된 결재문서들 조회(결재자 기준)
+	ArrayList<Approval> selectDoneConfirmList(String userNo);
 	
 	//-----------------------------------------------------------
 	// 관리자 삭제목록조회
 	int selectDeleteListCount();
 	ArrayList<Approval> selectDeleteList(PageInfo pi);
 	
+	int selectSearchListCount(HashMap<String,String> map);
+	ArrayList<Approval> selectDeleteSearchList(PageInfo pi, HashMap<String,String> map);
 	
-	
-	
-	
-	
+	// 삭제문서 복구하기
+	int ajaxDeleteRestore(String[] apNum);
+
 	
 	
 	

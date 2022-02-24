@@ -15,6 +15,8 @@
 		<result column="reference_no" property="reference" />
 		<result column="readNo" property="readNo" />
 		<result column="refNo" property="refNo" />
+		<result column="read_yn" property="readStatus" />
+		<result column="reference_yn" property="referenceStatus" />
 		<result column="read_job" property="readJob" />
 		<result column="reference_job" property="referenceJob" />
 		<result column="create_date" property="createDate" />
@@ -190,8 +192,10 @@
 		     , origin_name
 		     , ep.status status
 		     , create_date
+		     , reject_reason rejectReason
 		  from elec_approval ep
 		  join employee on (writer_no = user_no)
+		  join confirm using(elec_appr_no)
 		 where writer_no = #{userNo}
 	   	 <if test='status == "Y"'>
 		   and ep.status = 'Y'
@@ -211,9 +215,9 @@
 		select
 		       count(*)
 		  from elec_approval
-		 where status in ('D', 'P')
+		 where status in ('D', 'P', 'Y')
 		   and read_no = #{userNo}
-		    or status in ('D', 'P')
+		    or status in ('D', 'P', 'Y')
 		   and reference_no = #{userNo} 
 	</select>
 	
@@ -226,12 +230,19 @@
 		     , write_dept
 		     , grade
 		     , create_date
+             , ea.status status
+             , read_no
+             , read_yn
+             , reference_no
+             , reference_yn
 		  from elec_approval ea
 		  join employee on(writer_no = user_no)
-		 where ea.status in ('D', 'P')
+		 where ea.status in ('D', 'P', 'Y')
 		   and read_no = #{userNo}
-		    or ea.status in ('D', 'P')
+		    or ea.status in ('D', 'P', 'Y')
 		   and reference_no = #{userNo}
+		 order
+		    by create_date desc
 	</select>
 	
 	<!-- 전자결재 상세보기 -->
@@ -254,6 +265,7 @@
 		                       , 'T', '임시저장') status
 		     , e2.user_name read_no
              , read_no readNo
+             , read_yn
              , decode(e2.job_code, 1, '사원'
                                  , 2, '주임'
                                  , 3, '대리'
@@ -261,6 +273,7 @@
                                  , 9, '대표이사') read_job
 		     , e3.user_name reference_no
              , reference_no refNo
+             , reference_yn
              , decode(e3.job_code, 1, '사원'
                                  , 2, '주임'
                                  , 3, '대리'
@@ -282,7 +295,7 @@
 		  join employee e1 on (writer_no = e1.user_no)
 		  left join employee e2 on (read_no = e2.user_no)
 		  left join employee e3 on (reference_no = e3.user_no)
-		  join vw_all_confirm_list vac using(elec_appr_no)
+		  left join vw_all_confirm_list vac using(elec_appr_no)
 		 where elec_appr_no = #{ano}
 	</select>
 	
@@ -722,7 +735,20 @@
 		 where elec_appr_no = #{approvalNo}
 	</update>
 	
-	
+	<!-- 열람/참조 승인처리 -->
+	<update id="updateReadReference">
+		update
+			   elec_approval
+		<if test="status == 'read'">
+		   set read_yn = 'Y'
+		 where read_no = #{userNo}
+	 	</if>
+	 	<if test="status == 'reference'">
+		   set reference_yn = 'Y'
+		 where reference_no = #{userNo}
+	 	</if>
+	 	   and elec_appr_no = #{approvalNo}
+	</update>
 	
 	
 	
@@ -760,13 +786,87 @@
 		 where ea.status = 'N'
 	</select>
 	
+	<!-- 삭제문서 검색하기 -->
+	<select id="selectSearchListCount" resultType="_int">
+		select 
+		       count(*) count
+		  from(select 
+		               user_name writer_name
+		             , decode(form_no, 1, '업무기안서'
+	                               , 2, '비품구매품의서'
+	                               , 3, '증명서신청'
+	                               , 4, '채용요청서'
+	                               , 5, '일반품의서') form_no
+		             , write_dept
+		             , elec_title
+		             , create_date
+		             , ea.status status
+		          from elec_approval ea
+		          join employee on(user_no = writer_no))
+		  where status = 'N'
+		    <if test='subject == "writer"'>
+		    and writer_name = #{keyword}
+		 	</if>
+		 	<if test='subject == "title"'>
+		    and elec_title like '%'||#{keyword}||'%'
+		 	</if>
+	</select>
 	
+	<select id="selectDeleteSearchList" resultMap="approvalResult">
+		select 
+               user_name writer_name
+             , decode(form_no, 1, '업무기안서'
+                             , 2, '비품구매품의서'
+                             , 3, '증명서신청'
+                             , 4, '채용요청서'
+                             , 5, '일반품의서') form_no
+             , write_dept
+             , elec_title
+             , create_date
+             , elec_appr_no
+             , ea.status status
+          from elec_approval ea
+          join employee on(user_no = writer_no)
+         where ea.status = 'N'
+         <if test='subject == "writer"'>
+		    and user_name = #{keyword}
+		 </if>
+		 <if test='subject == "title"'>
+		    and elec_title like '%'||#{keyword}||'%'
+		 </if>
+	</select>
 	
+	<update id="ajaxDeleteRestore">
+		update
+		  	   elec_approval
+		   set status = 'D'
+		 where elec_appr_no = #{apNum}
+	</update>
 	
-	
-	
-	
-	
+	<select id="selectDoneConfirmList" resultMap="approvalResult">
+		select 
+		  		 elec_appr_no
+		       , user_name writer_name
+		       , decode(form_no, 1, '업무기안서'
+                               , 2, '비품구매품의서'
+                               , 3, '증명서신청'
+                               , 4, '채용요청서'
+                               , 5, '일반품의서') form_no
+		       , write_dept
+		       , elec_title
+		       , emc_yn
+		       , create_date
+		       , ea.status status
+		       , origin_name
+		       , confirm_user confirmUser
+            from elec_approval ea
+            join employee on(user_no = writer_no)
+            join confirm using(elec_appr_no)
+           where confirm_user = #{userNo}
+             and ea.status = 'Y'
+           order
+              by create_date desc
+	</select>
 	
 	
 	

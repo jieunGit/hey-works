@@ -59,14 +59,15 @@
 	
 		<div class="elec-outer">
 	        <!-- 결재 대기 문서 -->
-	        <a href="#" class="subject">내 결재 대기 문서</a>
-	        <br><br>
+	        <a href="#" class="subject">승인결재문서</a>
+	        <P class="text-primary" style="font-size:12px;">* 마지막결재자의 승인이 완료되어야 목록에서 확인할 수 있습니다.</P>
+	        <br>
 	        
-        <div>
 	        <form>
-                    <input type="text" name="" value="" placeholder="검색하기">
+            <div align="right">
+                <input type="text" name="" value="" placeholder="검색하기">
+            </div>
             </form> <br>
-        </div>
 	
 	        <table align="center" class="table-hover">
 	            <thead>
@@ -83,30 +84,30 @@
 	            </thead>
 	            <tbody>
 	            	<c:choose>
-	            		<c:when test="${empty apList}">
+	            		<c:when test="${empty donelist}">
             				<tr align="center">
 			            		<td colspan="7">결재 대기중인 문서가 없습니다.</td>
 			            	</tr>
 			            </c:when>
 			            <c:otherwise>
-				            <c:forEach var="ap" items="${apList}">
+				            <c:forEach var="d" items="${donelist}">
 					                <tr>
-					                    <td>${ap.createDate}</td>
-					                	<td class="ano">${ap.approvalNo}</td>
-					                    <td>${ap.formNo}</td>
-					                    <td>${ap.writeDept}</td>
+					                    <td>${d.createDate}</td>
+					                	<td class="ano">${d.approvalNo}</td>
+					                    <td>${d.formNo}</td>
+					                    <td>${d.writeDept}</td>
 					                    <td>
-					                    	<c:if test="${ap.emergancy eq 'Y'}">
+					                    	<c:if test="${d.emergancy eq 'Y'}">
 					                        	<img src="resources/images/179386.png" style="width: 25%; height: 55%;" >
 					                    	</c:if>
 					                    </td>
-					                    <td>${ap.approvalTitle}</td>
+					                    <td>${d.approvalTitle}</td>
 					                    <td>
-					                    	<c:if test="${!empty ap.originName}">
+					                    	<c:if test="${!empty d.originName}">
 					                        	<img src="resources/images/2586886.png" style="width: 80%; height: 70%;" >
 					                    	</c:if>
 					                    </td>
-					                    <td>${ap.userNo}</td>
+					                    <td>${d.userNo}</td>
 					                </tr>
 	                			</c:forEach>
 			            </c:otherwise>
@@ -114,32 +115,6 @@
 	            </tbody>
 	        </table>
 	    </div>
-	
-	<div id="pagingArea">
-        <ul class="pagination">
-        	<c:choose>
-        		<c:when test="${pi.currentPage eq 1}">
-            		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
-            	</c:when>
-            	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="standby.el?cpage=${pi.currentPage-1}">◀ PREV</a></li>
-            	</c:otherwise>
-            </c:choose>
-            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-            	<li class="page-item"><a class="page-link" href="standby.el?cpage=${p}">${p}</a></li>
-            </c:forEach>
-            
-            <c:choose>
-        		<c:when test="${pi.currentPage eq pi.endPage}">
-            		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
-            	</c:when>
-            	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="standby.el?cpage=${pi.currentPage+1}">NEXT ▶</a></li>
-            	</c:otherwise>
-           	</c:choose>
-        </ul>
-    </div>
-	
 
 	</div>
 	
