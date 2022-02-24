@@ -20,7 +20,7 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .date-box{font-size:20px; font-weight:500;}
+    .date-box{font-size:25px; font-weight:700;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
     #pagingArea{width:fit-content;margin:auto;}
@@ -51,7 +51,7 @@
                 <h3 style="font-size:20px;">전사 휴가현황</h3>
             </div><br>
 
-            <div class="date-box" style="margin-bottom:70px;">
+            <div class="date-box" style="margin-bottom:50px;" align="center">
                 <span> 2022-01-01 ~ 2022-12-31 </span>
             </div>
 

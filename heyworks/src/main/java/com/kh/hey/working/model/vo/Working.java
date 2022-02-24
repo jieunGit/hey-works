@@ -28,4 +28,11 @@ public class Working {
 
 	private String startDate;
 	private String endDate;
+	private String start;
+	private String end;
+	
+	private String deptName;
+	private String jobName;
+	
+	private int rowNum;
 }
