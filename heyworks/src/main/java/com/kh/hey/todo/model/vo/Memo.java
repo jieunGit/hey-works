@@ -1,4 +1,4 @@
-package com.kh.hey.reserve.model.vo;
+package com.kh.hey.todo.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,14 +11,15 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-//package explore 에서 확인가능
-public class ResourcesCategory {
+public class Memo {
 	
-	private String categoryNo;
-	private String categoryName;
+	private String memoNo;
+	private String userNo;
+	private String memoContent;
 	private String status;
-	private String categoryContent;
-	private String categoryImg;
-	private String count;
+	private String memoColor;
+	private String memoDate;
+	
+	
 
 }

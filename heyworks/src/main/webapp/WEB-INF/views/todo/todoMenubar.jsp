@@ -8,7 +8,9 @@
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/8bf37c071b.js" crossorigin="anonymous"></script>
 <style>
-
+#todoplus{
+    background: rgb(25, 105, 170);
+}
 #menubar{
     border: 1px solid lightgray;
     width: 180px;
@@ -43,10 +45,10 @@
         
 
         <div id="todolist">
-            <a href=""><i class="fa-solid fa-list-check"> </i>ToDoList</a>
+            <a href="todolist.to"><i class="fa-solid fa-list-check"> </i> ToDoList</a>
         </div>
         <div id="board">
-            <a href=""><i class="fa-solid fa-chalkboard-user"></i> Board</a>
+            <a href="memoSelect.to"><i class="fa-solid fa-chalkboard-user"></i> MEMO</a>
 
         </div>
     </div>  

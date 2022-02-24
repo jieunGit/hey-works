@@ -11,7 +11,9 @@
 <!-- <script src="https://kit.fontawesome.com/6584921572.js" crossorigin="anonymous"></script> -->
 <script src="https://kit.fontawesome.com/8bf37c071b.js" crossorigin="anonymous"></script>
 <style>
-	
+#reservation{
+	background: rgb(25, 105, 170);
+}
 
    #menubar{
   	 border: 1px solid lightgray;
@@ -31,8 +33,18 @@
 		height: 40px;
 		margin: 10px 0px 0px 15px;
 	}
-	
-	 #resources{
+	#categoryList{
+		
+		font-size: 13.5px;
+		font-weight: bold;
+		margin-left: 30px;
+	}
+
+	#categoryList a{
+		color: black;
+	}
+
+   #resources{
 	list-style-type :none;
 	
    }
@@ -82,7 +94,23 @@
       background-color: #D8D8D8;
       color: gray;
    }
+
+   .relist{
+	 list-style-type: none; height: 100%;
+   }
+
+
+
 </style>
+<script>
+	 //전체 모달 닫기
+	 window.closeModal = function(){
+        $('.modal').modal('hide');
+        
+    };
+    
+
+</script>	
 </head>
 <body>
 
@@ -90,24 +118,24 @@
 		
 		 <div id="menubar">
             <p><i class="fas fa-angle-double-right"></i> 예약</p>
-			<button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal">+예약하기</button>
-			<br><br>
+			<!-- <button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal2" onclick="addRs();">+예약하기</button> -->
+			<br>
 			<a href="myReserve.re" style="color: black;">
-			<i class="fas fa-cog" style= "margin-left: 20px;"></i> 
+			<i class="fas fa-cog" style= "margin-left: 30px;"></i> 
 			<span style="font-weight: bold; font-size: 13px;">나의 예약 목록</span><br><br></a>
 			
 			<!-- 자원카테고리불러오기 -->
-			<ul id="resources">
-				<!-- <c:forEach var="c" items="${ clist }">
-				<li><a href="reserve.re"><i class="fas fa-history"></i> ${c.categoryName }</li></a> <br>
-				</c:forEach> -->
-			</ul>
+			<div id="categoryList">
+	
+			</div>
 
-
+			
 			<!-- 관리자만 보일수있게 -->
 			<div id="adminSetting">
-				<a href="" style="color: black;"><i class="fa-solid fa-gear"></i> 자원관리</a>
+				<a href="categoryList.re" style="color: black;"><i class="fa-solid fa-gear"></i> 자원관리</a>
 			</div>
+
+
         </div>
 		 
 		 
@@ -119,77 +147,160 @@
 	 		MenuCategoryList();
 		})
 		
-		
+	
 		function MenuCategoryList() {
 			
 			$.ajax({
-			
+				async:false,
 				url: "menuCategoryList.re",
 				data:{},
 				success: function(clist) {
 		
-					
+					console.log(clist);
 					let value = "";
     				for(let i in clist){
-    					value += "<li><a href='reserve.re?cno="+ clist[i].categoryNo + "'><i class='fas fa-history'></i>" + clist[i].categoryName + "</li></a><br>"
-    				}
+						value +=  "<div id='category'>"
+    					value += "<div class='group'><a href='reserve.re?cno="+ clist[i].categoryNo + "'><i class='fas fa-history'></i>&nbsp&nbsp" +  clist[i].categoryName + "</a></div><br>"
+						value += "<input type='hidden' id='categoryNoTag' value='"+clist[i].categoryNo+"'>"
+						value += "<input type='hidden' id='categoryName' value='"+clist[i].categoryName+"'>"
+						// value += "<ul class='groupDetail' id='adgroup"+ clist[i].categoryNo+"' style='list-style-type: none; height: 100%;'></ul>"
+						value += "</div>"
+					}
 					
-    				$("#resources").html(value);
+    				$("#categoryList").html(value);
     				
 				},error:function() {
 					console.log("카테고리조회 ajax통신실패")
 				}
-				
 			})
 			
-		}
-	
 
-		 // (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
-		 function addRs(){
-     
-     // 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
-     $('#addRsvModal').find('form')[0].reset();
-     $('#addRsvModal').modal('show');
-     
-     $.ajax({
-      url:"<%= request.getContextPath() %>/readRsList.os",
-      type:"get",
-      dataType:"JSON",
-      success:function(json){
-         var html = "";
-         if (json.length > 0) {
-            $.each(json, function(index, item){
-               if (item.reservation_resource_no == fk_reservation_resource_no) {
-                  html += "<option value='" + item.reservation_resource_no + "' selected >" + item.name + "</option>";
-               }else{
-                  html += "<option value='" + item.reservation_resource_no + "'>" + item.name + "</option>";
-               }
-               
-            });
-         }else{
-            html += "<li style='height: 20px;'>";
-            html += "</li>";
-         }
-         
-         $("select.addRsSelect").html(html);
-      },
-      error: function(request, status, error){
-         alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-       }
-   });
-   
-  }
+		}
+
 	
+		//  // (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
+		// 	function addRs(){
+			
+		// 	// 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
+		// 	$('#addRsvModal2').find('form')[0].reset();
+		// 	$('#addRsvModal2').modal('show');
+			
+		// 	$.ajax({
+		// 	url:"menuResourceList.re",
+		// 	data : { },
+		// 	type:"get",
+		// 	dataType:"JSON",
+		// 	success:function(json){
+		// 		var html = "";
+		// 		if (json.length > 0) {
+						
+					
+		// 			$.each(json, function(index, item){
+					
+		// 				html += "<option value='" + item.resourcesNo+ "' >" + item.resourceName + "</option>";
+					
+					
+		// 			});
+		// 		}else{
+		// 			html += "<li style='height: 20px;'>";
+		// 			html += "</li>";
+		// 		}
+				
+		// 		$("select.addRsSelect").html(html);
+		// 	},
+		// 	error: function(request, status, error){
+		// 		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		// 	}
+		// });
+		
+		// }
+
+
+		//   // (modal) 예약하기에서 확인버튼을 클릭했을시 실행하는 함수
+		//   function addRsvModalBtn2(){
+     
+		// 	// 입력받은 값들 유효성 검사: 시작
+		// 	var startday = $("input[name=startday]").val() + " " + $("select.startday_hour").val() + ":00";
+		// 	var endday = "";
+			
+		// 	// 종일 체크 시 시작 날짜를 기준으로 변경
+		// 	if ($("input#allday:checked").val()) {
+		// 		startday = $("input[name=startday]").val() + " 00:00:00";
+		// 		endday = $("input[name=startday]").val() + " 23:59:59";
+		// 	}else{
+		// 		endday = $("input[name=endday]").val() + " " + $("select.endday_hour").val() + ":00";
+		// 	}
+			
+		// 	// true: 통과   false: 불통
+		// 	if (!(startday < endday && startday != endday)) {
+		// 		alert("올바른 일시를 선택해주세요.");
+		// 		return false;
+		// 	}
+
+		// 	var fk_reservation_resource_no = $("select[name=fk_reservation_resource_no]").val();
+		// 	if (fk_reservation_resource_no.trim() == "") {
+		// 		alert("자원을 선택해주세요.");
+		// 		return false;
+		// 	}
+			
+		// 	var reason = $("input[name=reason]").val();
+		// 	if (reason.trim() == "") {
+		// 		alert("사용용도를 입력해주세요.");
+		// 		$("input[name=reason]").focus();
+		// 		return false;
+		// 	}
+			
+		// // 입력받은 값들 유효성 검사: 끝
+
+
+		// 	// db에 넣기
+		// $.ajax({
+		// 	url:"addModalRsv.re",
+		// 	data:{startday:startday, 
+		// 			endday:endday, 
+		// 			fk_reservation_resource_no:fk_reservation_resource_no, 
+		// 			reason:reason, 
+		// 			categoryNo : $("#categoryNoTag").val(),
+		// 			categoryName:$("#categoryName").val()},
+		// 	type:"POST",
+		// 	dataType:"JSON",
+		// 	success:function(json){
+				
+		// 		// 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
+		// 		if (json.n == 1) {
+		// 			// 에약이 정상적으로 등록됐을 때
+		// 			window.closeModal();
+		// 			// alertify.alert("성공적으로 예약되었습니다.")
+		// 			location.reload();
+		// 			calendar.refetchEvents();
+					
+		// 		}else if (json.n == -1) {
+		// 			// 중복된 예약(시간)으로 예약에 실패했을 때
+		// 			alert("해당 시간에는 이미 예약이 되어있어 예약할 수 없습니다.");
+		// 		}
+		// 		else{
+		// 			// db오류
+		// 			alert("DB 오류");
+		// 		}
+				
+		// 	},
+		// 	error: function(request, status, error){
+		// 		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		// 	}
+		// });
+
+		// }
+
+			
 	</script>
 	
 	
 
 	<%-- 예약하기 모달 --%>
-	<div id="addRsvModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-	 <div class="modal-dialog">
+	<!-- <div id="addRsvModal2" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+	 <div class="modal-dialog"> -->
 	   <!-- Modal content-->
-	   <div class="modal-content" style="width: 700px;">
+	   <!-- <div class="modal-content" style="width: 700px;">
 		 <div class="modal-header" style=" background: rgb(63, 145, 213);">
 			 <h4 class="modal-title" style="font-weight: bold;">예약하기</h4>
 		   <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
@@ -246,7 +357,7 @@
 				  
 				  <tr>
 					<th>자원선택</th>
-					<td><select class="addRsSelect" name="fk_reservation_resource_no"></select></td>
+					<td><select class="addRsSelect" name="fk_reservation_resource_no" style="width: 300px; float: left;"></select></td>
 				  </tr>
 				  
 				  <tr>
@@ -258,8 +369,8 @@
 			  </table>
 			 
 			 <div style="float: right;">
-				<button class="btn blueBtn" type="button" onclick="addRsvModalBtn()">확인</button>
-				<button class="btn grayBtn" type="button" onclick="window.closeModal()">취소</button>
+				<button class="btn blueBtn" type="button" onclick="addRsvModalBtn2()">확인</button>
+				<button class="btn grayBtn" type="button" data-dismiss="modal">취소</button>
 			 </div>
 			 <br style="clear: both;">
 			 </form>
@@ -268,7 +379,7 @@
 		 </div>
 	   </div>
 	 </div>
-	</div>
+	</div> -->
 	
 
 	 <!-- (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴 -->

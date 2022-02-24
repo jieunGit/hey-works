@@ -42,7 +42,7 @@
     height: 600px;
 }
 .each_card{
-        border: solid 1px gray;
+        /* border: solid 1px gray; */
 		display: inline-block;
 		width: 250px;
 		height: 150px;
@@ -51,10 +51,18 @@
 		margin: 0 20px;
 		margin-bottom: 30px;
 		float: left;
+        background: lightgray;
 }
 .each_card_box{
 
 
+}
+.add_each_todo{
+		border: dashed 1px gray;
+		display: table;
+	}
+.add_todo_box{
+    text-align: center;
 }
 </style>
 </head>
@@ -63,19 +71,19 @@
     
     <div class="outer">
 		<jsp:include page="../common/menubar.jsp" />
-		<jsp:include page="../todo+/todoMenubar.jsp" />
+		<jsp:include page="../todo/todoMenubar.jsp" />
 
 
         <div id="center"><br>
 
             <!-- 제목영역 -->
 			<div id="toparea">
-				<span>Board</span>
+				<span>Card</span>
 				
 			</div>
 
             <div id="cardname">
-                <span>즐겨찾는보드</span>
+                <span>카드이름</span>
                 <!-- 즐겨찾기 유무 -->
                <i class="fas fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i></a>
                <!-- <i class="fa-regular fa-star fa-lg" style="margin-left: 15px; color: rgb(240, 240, 36);"></i> -->
@@ -92,9 +100,36 @@
 
 
                         </div>
-
-
                     </li>
+
+                    <li class="each_card">
+                        <div class="each_card_box">
+
+
+
+                        </div>
+                    </li>
+                    <li class="each_card">
+                        <div class="each_card_box">
+
+
+
+                        </div>
+                    </li>
+                    <li class="each_card">
+                        <div class="each_card_box">
+
+
+
+                        </div>
+                    </li>
+
+                    <li class="each_card add_each_todo" data-toggle="modal" data-target="#addTodoModal">
+                        <div class="add_todo_box" style="display: table-cell; vertical-align: middle;">
+                            <i class="fa fa-plus" style="color: gray; font-size: 25px;"></i>
+                        </div>
+                    </li>
+    
                 </ul>
 
 

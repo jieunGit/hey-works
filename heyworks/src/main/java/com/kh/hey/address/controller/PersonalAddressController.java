@@ -69,7 +69,7 @@ public class PersonalAddressController {
          paraMap.put("data", data);
          paraMap.put("sort", sort);
          paraMap.put("userNo", userNo);
-        
+        System.out.println(paraMap);
         
 		//주소록 몇개인지 알아오기
 		int listCount = aService.selectListCount(paraMap);

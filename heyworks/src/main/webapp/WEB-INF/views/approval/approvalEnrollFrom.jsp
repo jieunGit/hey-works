@@ -291,7 +291,7 @@
                 </tbody>
             </table>
 
-            <div style="width: 100%;">
+            <div style="width: 100%;" id="content-area">
                 <textarea name="" id="summernote"></textarea>
             </div>
 			<br><br>
@@ -573,14 +573,21 @@
 	          width: 898,
 	          height: 300
 	        });
-	
+			
+	        $(function(){ // 아무양식도 안보이게
+	        	$(".table-bordered>tbody").hide();
+	        	$("#content-area").hide();
+	        })
+	        
 	        /*카테고리별로 다르게보이기*/
 	        $("#category").change(function(){
-	            if($(this).find("option:selected").val() == 3){
+	        	
+	        	if($(this).find("option:selected").val() == 3){
 	                
 	                $("#recruitment").hide();
 	                $("#expenseReport").hide();
 	                $("#certificate").show();
+	                $("#content-area").show();
 	                
 	                document.getElementById("summernote").setAttribute('name', "certificateContent");
 	
@@ -589,6 +596,7 @@
 	                $("#certificate").hide();
 	                $("#expenseReport").hide();
 	                $("#recruitment").show();
+	                $("#content-area").show();
 	                
 	                document.getElementById("summernote").setAttribute('name', "recruimentContent");
 	
@@ -597,6 +605,7 @@
 	                $("#certificate").hide();
 	                $("#recruitment").hide();
 	                $("#expenseReport").show();
+	                $("#content-area").show();
 	                
 	                document.getElementById("summernote").setAttribute('name', "expenseReportContent");
 	

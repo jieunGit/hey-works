@@ -1,4 +1,6 @@
-package com.kh.hey.reserve.model.vo;
+package com.kh.hey.todo.model.vo;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +13,13 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Resources {
+public class Todolist {
 	
-	private String resourcesNo;
-	private String categoryNo;
-	private String resourceName;
-	private String status;
-	private String resourceContent;
-	private String categoryName;
+	private String checkNo;
+	private String todoContent;
+	private String checkStatus;
+	private String userNo;
+	private String todoDate;
 	
+
 }
