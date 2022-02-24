@@ -12,6 +12,15 @@
 		<result column="todo_date" property="todoDate"/>
 	</resultMap>
 	
+		<resultMap id="memoResult" type="Memo">
+		<result column="memo_no" property="memoNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="memo_content" property="memoContent"/>
+		<result column="status" property="status"/>
+		<result column="memo_color" property="memoColor"/>
+		<result column="memo_date" property="memoDate"/>
+	</resultMap>
+	
 	<select id="todolistCount" resultType="_int">
 				select 
 				      count(*)
@@ -91,6 +100,70 @@
 		
 	</update>
 	
+	<delete id="deleteComleteTodo">
+		delete 
+		  from todolist 
+		 where check_status = 'N'
+		  and user_no = #{userNo}
+	
+	</delete>
+	
+		
+		<select id="memoSelect" resultMap="memoResult">
+			select
+			  	   memo_no
+			  	 , user_no
+			  	 , memo_content
+			  	 , status
+			  	 , memo_color
+			  	 , memo_date
+			 from memo
+			where user_no = #{userNo}
+			 order by memo_no desc
+		</select>
+		
+		
+		<insert id="memoInsert" >
+		
+			 INSERT
+  				INTO MEMO 
+  				     (
+  				       MEMO_NO
+  				     , USER_NO
+  				     , MEMO_CONTENT
+  				     , STATUS
+  				     , MEMO_COLOR
+  				     , MEMO_DATE
+  				     )
+  				VALUES
+  				(
+  				   SEQ_MEMONO.nextval
+  				  , #{userNo}
+  				  , '                            '
+  				  , 'Y'
+  				  , #{memoColor} 
+  				  , sysdate
+  				  )
+  
+		</insert>
+		
+		
+		<update id="memoUpdate">
+			
+		update memo
+		   set memo_content = #{memoContent}
+		 where user_no = #{userNo}
+		   and memo_no = #{memoNo}
+		
+	</update>
+	
+	<delete id="memoDelete">
+		delete 
+		  from memo
+		 where memo_no = ${memoNo}
+		  and user_no = #{userNo}
+	
+	</delete>
 	
 	
 </mapper>

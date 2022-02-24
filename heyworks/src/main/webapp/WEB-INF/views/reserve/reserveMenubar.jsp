@@ -118,8 +118,8 @@
 		
 		 <div id="menubar">
             <p><i class="fas fa-angle-double-right"></i> 예약</p>
-			<!-- <button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal2" onclick="addRs2();">+예약하기</button> -->
-			<br><br>
+			<!-- <button type="button" class="btn btn-primary" id="reservebtn" data-toggle="modal" data-target="#addRsvModal2" onclick="addRs();">+예약하기</button> -->
+			<br>
 			<a href="myReserve.re" style="color: black;">
 			<i class="fas fa-cog" style= "margin-left: 30px;"></i> 
 			<span style="font-weight: bold; font-size: 13px;">나의 예약 목록</span><br><br></a>
@@ -153,26 +153,20 @@
 			$.ajax({
 				async:false,
 				url: "menuCategoryList.re",
-				async :false,
 				data:{},
 				success: function(clist) {
-	
+		
+					console.log(clist);
 					let value = "";
     				for(let i in clist){
 						value +=  "<div id='category'>"
-    					value += "<div class='group'><a href='reserve.re?cno="+ clist[i].categoryNo + "&rno=1'><i class='fas fa-history'></i>&nbsp&nbsp" +  clist[i].categoryName + "</a></div><br>"
+    					value += "<div class='group'><a href='reserve.re?cno="+ clist[i].categoryNo + "'><i class='fas fa-history'></i>&nbsp&nbsp" +  clist[i].categoryName + "</a></div><br>"
 						value += "<input type='hidden' id='categoryNoTag' value='"+clist[i].categoryNo+"'>"
 						value += "<input type='hidden' id='categoryName' value='"+clist[i].categoryName+"'>"
 						// value += "<ul class='groupDetail' id='adgroup"+ clist[i].categoryNo+"' style='list-style-type: none; height: 100%;'></ul>"
 						value += "</div>"
 					}
-
-					let cate = "";
-    				for(let i in clist){ 
-						cate += "<option value='" + clist[i].categoryNo + "'>" + clist[i].categoryName + "</option>";
-					}
-
-					$("#categorySelect").html(cate);
+					
     				$("#categoryList").html(value);
     				
 				},error:function() {
@@ -184,21 +178,16 @@
 		}
 
 	
-		 // (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
+		//  // (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴
 		// 	function addRs(){
 			
 		// 	// 모달 form에 입력돼있는 정보를 모두 삭제하고 모달을 보이게 함(모달 초기화)
 		// 	$('#addRsvModal2').find('form')[0].reset();
 		// 	$('#addRsvModal2').modal('show');
-
-		// 	function categorySelected() {
-		// 		var rNo = document.getElementById("#categorySelect").value();
-		// 		console.log(rNo);
 			
 		// 	$.ajax({
 		// 	url:"menuResourceList.re",
-		// 	data : {},
-		// 	async :false,
+		// 	data : { },
 		// 	type:"get",
 		// 	dataType:"JSON",
 		// 	success:function(json){
@@ -216,8 +205,84 @@
 		// 			html += "<li style='height: 20px;'>";
 		// 			html += "</li>";
 		// 		}
-			
+				
 		// 		$("select.addRsSelect").html(html);
+		// 	},
+		// 	error: function(request, status, error){
+		// 		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		// 	}
+		// });
+		
+		// }
+
+
+		//   // (modal) 예약하기에서 확인버튼을 클릭했을시 실행하는 함수
+		//   function addRsvModalBtn2(){
+     
+		// 	// 입력받은 값들 유효성 검사: 시작
+		// 	var startday = $("input[name=startday]").val() + " " + $("select.startday_hour").val() + ":00";
+		// 	var endday = "";
+			
+		// 	// 종일 체크 시 시작 날짜를 기준으로 변경
+		// 	if ($("input#allday:checked").val()) {
+		// 		startday = $("input[name=startday]").val() + " 00:00:00";
+		// 		endday = $("input[name=startday]").val() + " 23:59:59";
+		// 	}else{
+		// 		endday = $("input[name=endday]").val() + " " + $("select.endday_hour").val() + ":00";
+		// 	}
+			
+		// 	// true: 통과   false: 불통
+		// 	if (!(startday < endday && startday != endday)) {
+		// 		alert("올바른 일시를 선택해주세요.");
+		// 		return false;
+		// 	}
+
+		// 	var fk_reservation_resource_no = $("select[name=fk_reservation_resource_no]").val();
+		// 	if (fk_reservation_resource_no.trim() == "") {
+		// 		alert("자원을 선택해주세요.");
+		// 		return false;
+		// 	}
+			
+		// 	var reason = $("input[name=reason]").val();
+		// 	if (reason.trim() == "") {
+		// 		alert("사용용도를 입력해주세요.");
+		// 		$("input[name=reason]").focus();
+		// 		return false;
+		// 	}
+			
+		// // 입력받은 값들 유효성 검사: 끝
+
+
+		// 	// db에 넣기
+		// $.ajax({
+		// 	url:"addModalRsv.re",
+		// 	data:{startday:startday, 
+		// 			endday:endday, 
+		// 			fk_reservation_resource_no:fk_reservation_resource_no, 
+		// 			reason:reason, 
+		// 			categoryNo : $("#categoryNoTag").val(),
+		// 			categoryName:$("#categoryName").val()},
+		// 	type:"POST",
+		// 	dataType:"JSON",
+		// 	success:function(json){
+				
+		// 		// 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
+		// 		if (json.n == 1) {
+		// 			// 에약이 정상적으로 등록됐을 때
+		// 			window.closeModal();
+		// 			// alertify.alert("성공적으로 예약되었습니다.")
+		// 			location.reload();
+		// 			calendar.refetchEvents();
+					
+		// 		}else if (json.n == -1) {
+		// 			// 중복된 예약(시간)으로 예약에 실패했을 때
+		// 			alert("해당 시간에는 이미 예약이 되어있어 예약할 수 없습니다.");
+		// 		}
+		// 		else{
+		// 			// db오류
+		// 			alert("DB 오류");
+		// 		}
+				
 		// 	},
 		// 	error: function(request, status, error){
 		// 		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -225,84 +290,6 @@
 		// });
 
 		// }
-		
-		// }
-
-
-		  // (modal) 예약하기에서 확인버튼을 클릭했을시 실행하는 함수
-		  function addRsvModalBtn2(){
-     
-			// 입력받은 값들 유효성 검사: 시작
-			var startday = $("input[name=startday]").val() + " " + $("select.startday_hour").val() + ":00";
-			var endday = "";
-			
-			// 종일 체크 시 시작 날짜를 기준으로 변경
-			if ($("input#allday:checked").val()) {
-				startday = $("input[name=startday]").val() + " 00:00:00";
-				endday = $("input[name=startday]").val() + " 23:59:59";
-			}else{
-				endday = $("input[name=endday]").val() + " " + $("select.endday_hour").val() + ":00";
-			}
-			
-			// true: 통과   false: 불통
-			if (!(startday < endday && startday != endday)) {
-				alert("올바른 일시를 선택해주세요.");
-				return false;
-			}
-
-			var fk_reservation_resource_no = $("select[name=fk_reservation_resource_no]").val();
-			if (fk_reservation_resource_no.trim() == "") {
-				alert("자원을 선택해주세요.");
-				return false;
-			}
-			
-			var reason = $("input[name=reason]").val();
-			if (reason.trim() == "") {
-				alert("사용용도를 입력해주세요.");
-				$("input[name=reason]").focus();
-				return false;
-			}
-			
-		// 입력받은 값들 유효성 검사: 끝
-
-	
-			// db에 넣기
-		$.ajax({
-			url:"addModalRsv.re",
-			data:{startday:startday, 
-					endday:endday, 
-					fk_reservation_resource_no:fk_reservation_resource_no, 
-					reason:reason, 
-					categoryNo : $("#categorySelect").val(),
-					categoryName:$("#categorySelect").text()},
-			type:"POST",
-			dataType:"JSON",
-			success:function(json){
-				
-				// 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
-				if (json.n == 1) {
-					// 에약이 정상적으로 등록됐을 때
-					window.closeModal();
-					// alertify.alert("성공적으로 예약되었습니다.")
-					location.reload();
-					calendar.refetchEvents();
-					
-				}else if (json.n == -1) {
-					// 중복된 예약(시간)으로 예약에 실패했을 때
-					alert("해당 시간에는 이미 예약이 되어있어 예약할 수 없습니다.");
-				}
-				else{
-					// db오류
-					alert("DB 오류");
-				}
-				
-			},
-			error: function(request, status, error){
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			}
-		});
-
-		}
 
 			
 	</script>
@@ -310,10 +297,10 @@
 	
 
 	<%-- 예약하기 모달 --%>
-	<div id="addRsvModal2" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-	 <div class="modal-dialog">
+	<!-- <div id="addRsvModal2" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+	 <div class="modal-dialog"> -->
 	   <!-- Modal content-->
-	   <div class="modal-content" style="width: 700px;">
+	   <!-- <div class="modal-content" style="width: 700px;">
 		 <div class="modal-header" style=" background: rgb(63, 145, 213);">
 			 <h4 class="modal-title" style="font-weight: bold;">예약하기</h4>
 		   <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
@@ -327,7 +314,7 @@
 				<tbody>
 				  <tr>
 					<th style="width: 100px;">예약일</th>
-					<td style="float: left;">
+					<td >
 					   <input type="date" class="datepicker" name="startday">
 
 					   <select class="startday_hour" style="width: 70px; height: 30px;">
@@ -369,13 +356,8 @@
 				  </tr>
 				  
 				  <tr>
-					<th>카테고리선택</th>
-					<td><select id="categorySelect" name="category" style="width: 300px; float: left;" onchange="categorySelected()" ></select></td>
-				  </tr>
-
-				  <tr>
 					<th>자원선택</th>
-					<td><select class="addRsSelect" name="fk_reservation_resource_no"   style="width: 300px; float: left;"></select></td>
+					<td><select class="addRsSelect" name="fk_reservation_resource_no" style="width: 300px; float: left;"></select></td>
 				  </tr>
 				  
 				  <tr>
@@ -397,7 +379,7 @@
 		 </div>
 	   </div>
 	 </div>
-	</div>
+	</div> -->
 	
 
 	 <!-- (modal) 예약하기 모달에 이용가능한 자원명 리스트를 select 해옴 -->

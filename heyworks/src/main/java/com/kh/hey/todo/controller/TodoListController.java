@@ -2,7 +2,6 @@ package com.kh.hey.todo.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.todo.model.service.todolistService;
+import com.kh.hey.todo.model.vo.Memo;
 import com.kh.hey.todo.model.vo.Todolist;
 
 @Controller
@@ -139,6 +139,88 @@ public class TodoListController {
 			
 			return result > 0 ? "success" : "fail";
 	
+		}
+		
+	//todolist 완료된 할일 삭제하기
+		
+		@RequestMapping(value="deleteComleteTodo.to")
+		public String deleteComleteTodo(HttpServletRequest request, HttpSession session) {
+		
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			
+			int result = tService.deleteComleteTodo(userNo);
+			
+			
+			return result > 0 ? "success" : "fail";
+		
+		
+		}
+		
+	//memo select 해오기	
+		
+		@RequestMapping(value="memoSelect.to")
+		public String memoSelect(HttpSession session, Model model) {
+			
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			
+			ArrayList<Memo> memo = tService.memoSelect(userNo);
+			
+			model.addAttribute("memo", memo);
+			
+			return "todo/memo";
+		}
+		
+	
+	//memo insert 하기
+		@ResponseBody
+		@RequestMapping(value="memoInsert.to")
+		public String memoInsert(HttpServletRequest request, Model model,HttpSession session, Memo me) {
+			
+			//로그인한 사원번호
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			
+			me.setUserNo(userNo);
+			
+			int result = tService.memoInsert(me);
+			
+			return result > 0 ? "success" : "fail";
+			
+		}
+		
+	
+	// 메모 수정하기
+		
+		@ResponseBody
+		@RequestMapping(value="memoUpdate.to")
+		public String memoUpdate(HttpServletRequest request, Model model,HttpSession session, Memo me) {
+			
+			//로그인한 사원번호
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			
+			me.setUserNo(userNo);
+			
+			int result = tService.memoUpdate(me);
+			
+			return result > 0 ? "success" : "fail";
+			
+		}
+		
+		
+	// 메모 삭제하기
+		
+		@ResponseBody
+		@RequestMapping(value="memoDelete.to")
+		public String memoDelete(HttpServletRequest request, Model model,HttpSession session, Memo me) {
+			
+			//로그인한 사원번호
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			
+			me.setUserNo(userNo);
+			
+			int result = tService.memoDelete(me);
+			
+			return result > 0 ? "success" : "fail";
+			
 		}
 		
 		

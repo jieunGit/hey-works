@@ -564,37 +564,51 @@ a.btnAdditional {
 				if(valueArr.length == 0) {
 				alertify.alert("선택된 주소록이 없습니다.");
 				}else{
+
+					Swal.fire({
+						text: "정말로 복구하시겠습니까?",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: '복구',
+						cancelButtonText: '취소'
+						
+						}).then((result) => {
+						if (result.isConfirmed) {
+							
+								$.ajax({
+
+										url : "restoreAddress.ad",
+										data : {valueArr : valueArr},
+										traditional:true,
+										dataType:"JSON",
+										success : function(json) {
+
+											if(json.result > 0){
+												Swal.fire('주소록 복구에 성공하였습니다.')
+
+											}else{
+
+												Swal.alert("주소록 복구에 실패하였습니다.");
+											}
+
+											location.href="deleteAdList.ad";
+
+										},
+										error: function(request, status, error){
+											alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+										}
+
+
+
+										})
+						}
+						})
 			
-				if(confirm("정말로 복구하시겠습니까?")==true) {
+	
 
-				$.ajax({
-
-				url : "restoreAddress.ad",
-				data : {valueArr : valueArr},
-				traditional:true,
-				dataType:"JSON",
-				success : function(json) {
-
-					if(json.result > 0){
-
-						alertify.alert("주소록 복구에 성공하였습니다.");
-
-					}else{
-
-						alertify.alert("주소록 복구에 실패하였습니다.");
-					}
-
-					location.href="deleteAdList.ad";
-
-				},
-				error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				}
-
-
-
-				});
-				}
+				
 				}
 
 			}
@@ -621,39 +635,54 @@ a.btnAdditional {
 				if(valueArr.length == 0) {
 				alertify.alert("선택된 주소록이 없습니다.");
 				}else{
-					if(confirm("정말 삭제하시겠습니까?")==true) {
+					Swal.fire({
+						text: "정말로 영구삭제하시겠습니까?",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: '삭제',
+						cancelButtonText: '취소'
+						
+						}).then((result) => {
+						if (result.isConfirmed) {
 
-				$.ajax({
+								$.ajax({
 
-				url :  "foreverdelete.ad",
-				data : {valueArr : valueArr},
-				traditional:true,
-				dataType:"JSON",
-				success : function(json) {
+								url :  "foreverdelete.ad",
+								data : {valueArr : valueArr},
+								traditional:true,
+								dataType:"JSON",
+								success : function(json) {
 
-					if(json.result > 0){
+									if(json.result > 0){
 
-						alertify.alert("주소록 삭제에 성공하였습니다.");
+										Swal.fire('주소록이 영구삭제 되었습니다.'	)
 
-					}else{
+									}else{
 
-						alertify.alert("주소록 삭제에 실패하였습니다.");
-					}
+										Swal.fire('주소록이 영구삭제에 실패하었습니다.')
+									}
 
-					location.href="deleteAdList.ad";
+									location.href="deleteAdList.ad";
 
-				},
-				error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				}
+								},
+								error: function(request, status, error){
+									alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+								}
 
 
 
-				});
-					}
-				}
+							})
+							}
+							})
 
-				}
+
+
+
+							}
+
+							}
 
 	</script>
 </body>

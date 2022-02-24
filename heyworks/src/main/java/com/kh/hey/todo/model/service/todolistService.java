@@ -3,6 +3,7 @@ package com.kh.hey.todo.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.hey.todo.model.vo.Memo;
 import com.kh.hey.todo.model.vo.Todolist;
 
 public interface todolistService {
@@ -25,4 +26,20 @@ public interface todolistService {
 	
 	//todolist 수정하기
 	int updateTodolist(Todolist to);
+	
+	//todolist 완료된 할일 삭제하기
+	int deleteComleteTodo(String userNo);
+	
+	//메모 조회하기
+	ArrayList<Memo> memoSelect(String userNo);
+	
+	//메모 입력하기
+	int memoInsert(Memo me);
+	
+	//메모 수정하기
+	int memoUpdate(Memo me);
+	
+	//메모 삭제하기
+	int memoDelete(Memo me);
+	
 }

@@ -17,7 +17,7 @@
 	
 #center{
 	   width: 950px;
-	   height:100%;
+	   height: auto;
 	   display:inline-block;
 	   border: 1px solid lightgray;
 	  
@@ -80,7 +80,7 @@
 	}
 	
 	.each_todo{
-		border: solid 1px gray;
+		/* border: solid 1px gray; */
 		display: inline-block;
 		width: 250px;
 		height: 250px;
@@ -114,6 +114,10 @@
 	
 	.each_todo_box{
 		padding: 20px;
+		width: 250px;
+		height: 250px;
+		font-size: 13.5px;
+		border-radius: 8px;
 	}
 	
 	.each_todo:hover{
@@ -178,6 +182,18 @@
         margin-left: 40px;
         cursor: pointer;
     }
+
+	.delBtn {
+    opacity: 1;
+	background: none;
+	border: none;
+	width: 20px;
+	height: 30px;
+    font-size: 1rem;
+    font-weight: lighter;
+    cursor: pointer;
+	float: right;
+}
 </style>
 </head>
 <body>
@@ -194,33 +210,26 @@
                 <div id="bookmark">
                     <h5 class="titleText">MEMO</h5>
                     <ul class="bookmarkUl">
+						<c:forEach var="m" items="${memo}">
+							<li class="each_todo edit_todo" >
+								<div class="each_todo_box" style="display: table-cell;  background: ${m.memoColor};" id="memoContentTag" contenteditable="true">
+									<input type="hidden" name="memoNo" value="${m.memoNo}" id="memoNoTag">
+									<button class="delBtn" contenteditable="false">x</button>
+									<span id="memoContentSpan">&nbsp;${ m.memoContent }</span>
 
+								</div>
+							</li>
+						</c:forEach>
                         <li class="each_todo add_each_todo" data-toggle="modal" data-target="#addMemoModal">
                             <div class="add_todo_box" style="display: table-cell; vertical-align: middle;">
                                 <i class="fa fa-plus" style="color: gray; font-size: 25px;"></i>
                             </div>
                         </li>
 
-                        <li class="each_todo add_each_todo" data-toggle="modal" data-target="#addMemoModal">
-                            <div class="add_todo_box" style="display: table-cell; vertical-align: middle;">
-                                <i class="fa fa-plus" style="color: gray; font-size: 25px;"></i>
-                            </div>
-                        </li>
-
-
-                        <li class="each_todo add_each_todo" data-toggle="modal" data-target="#addTodoModal">
-                            <div class="add_todo_box" style="display: table-cell; vertical-align: middle;">
-                                <i class="fa fa-plus" style="color: gray; font-size: 25px;"></i>
-                            </div>
-                        </li>
                     
                     </ul>
 
-                    <li class="each_todo add_each_todo" data-toggle="modal" data-target="#addTodoModal">
-                        <div class="add_todo_box" style="display: table-cell; vertical-align: middle;">
-                            <i class="fa fa-plus" style="color: gray; font-size: 25px;"></i>
-                        </div>
-                    </li>
+                   
                 </div>
                 
                 
@@ -243,7 +252,7 @@
 	   <div class="modal-content">
 	     <div class="modal-header">
              <h4 class="modal-title" style="font-weight: bold; font-size: 15px;">MEMO 등록</h4>
-	       <button type="button" class="close" data-dismiss="modal" onclick="window.closeModal()">&times;</button>
+	       <button type="button" class="close" data-dismiss="modal" >&times;</button>
 	     </div>
 	     <div class="modal-body">
             <div class="container">
@@ -259,9 +268,6 @@
 				      </tbody>
 				    </table>
                     
-					
-					<button class="btn btn-danger" style="float: right;" type="button" class="close" data-dismiss="modal" onclick="window.closeModal()" >취소</button>
-					<button class="btn btn-info" style="float: right; margin-right: 5px;" type="button" onclick="submitBtn()">등록</button>
 				</form>
 			</div>
 	     </div>
@@ -273,6 +279,8 @@
 
 
     <script>
+
+		//메모 insert
           $(function(){
 
                 $(document).on('click', '.colorSelect', function(){
@@ -281,13 +289,15 @@
                         console.log(memoColor);
                         
                         $.ajax({
-                            url:"addMemo.to",
+                            url:"memoInsert.to",
                             data: {memoColor:memoColor},
                             dataType:"JSON",
                             success:function(result){
 
                                 if (result == 'success') {
-                                    alertify.alert("메모 생성 성공하였습니다..")
+									location.reload();
+									location.href="memoSelect.to"
+
                                 }else{
                                     alertify.alert("메모 생성에 실패하였습니다..")
                                 }
@@ -302,6 +312,78 @@
 
             })
 
+
+
+
+    // 메모 수정하기
+	$(function(){
+
+		$(document).on('keyup', '#memoContentTag', function(e){
+
+			var mNo = $(this).children("#memoNoTag").val();
+			var content = $(this).children("#memoContentSpan").text();
+
+
+			if(e.keyCode == 13){  
+
+				$.ajax({
+					url:"memoUpdate.to",
+					data: { memoNo: mNo, memoContent:content},
+					dataType:"JSON",
+					success:function(result){
+
+						if (result == 'success') {
+						location.reload();
+							
+						}else{
+							alertify.alert("todolist 수정에 실패하였습니다..")
+						}
+						
+					}
+				});
+
+				location.reload();
+
+			}
+
+		
+			})
+
+
+		})
+
+		// 메모삭제하기
+		$(function(){
+
+			$(document).on('click', '.delBtn', function(){
+
+				var mNo = $(this).prev("#memoNoTag").val();
+
+					$.ajax({
+						url:"memoDelete.to",
+						data: { memoNo: mNo},
+						dataType:"JSON",
+						success:function(result){
+
+							if (result == 'success') {
+							location.reload();
+								
+							}else{
+								alertify.alert("메모 삭제에 실패하였습니다..")
+							}
+							
+						}
+					});
+
+					location.reload();
+
+				
+
+
+				})
+
+
+			})
 
 
 

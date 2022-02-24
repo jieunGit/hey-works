@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hey.todo.model.vo.Memo;
 import com.kh.hey.todo.model.vo.Todolist;
 
 @Repository
@@ -37,5 +38,28 @@ public class todolistDao {
 	
 	public int updateTodolist(SqlSessionTemplate sqlSession, Todolist to) {
 		return sqlSession.update("todolistMapper.updateTodolist", to);
+	}
+	
+	public int deleteComleteTodo(SqlSessionTemplate sqlSession, String userNo) {
+		
+		return sqlSession.delete("todolistMapper.deleteComleteTodo", userNo);
+	}
+	
+	public ArrayList<Memo> memoSelect(SqlSessionTemplate sqlSession, String userNo) {
+		return (ArrayList)sqlSession.selectList("todolistMapper.memoSelect", userNo);
+		
+	}
+	
+	public int memoInsert(SqlSessionTemplate sqlSession, Memo me) {
+		return sqlSession.insert("todolistMapper.memoInsert", me);
+	}
+	
+	public int memoUpdate(SqlSessionTemplate sqlSession, Memo me) {
+		return sqlSession.update("todolistMapper.memoUpdate", me);
+	}
+	
+	public int memoDelete(SqlSessionTemplate sqlSession, Memo me) {
+		
+		return sqlSession.delete("todolistMapper.memoDelete", me);
 	}
 }

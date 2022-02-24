@@ -226,16 +226,16 @@ display: none;
 			<br>
 
 				<!-- excel내보내기 -->
-			<div id="excel">
+			<!-- <div id="excel">
 				<section>
 				
 					<a class=" btnAdditional" id="contactExcelExport" onclick="exportExcelFile();">
-								<!-- <span class="ic_toolbar more"></span> -->
+					
 								<span class="txt">EXCEL로 내보내기</span>
 					</a>
 						
 				</section>
-			</div>
+			</div> -->
 			
 			<!-- 검색영역 --> 
 			<form name="searchContacts" action="groupAdList.ad" method="post">
@@ -313,7 +313,7 @@ display: none;
 							<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
 							<!-- 삭제하기 -->
 								<input type="hidden" id="hiddenTag" value="${a.addressNo}">
-								<a href="" class="addelebtn"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+								<a id="addelebtn"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
 						</td>
 					</tr>
 					
@@ -643,40 +643,39 @@ display: none;
 
 
 		$(function(){
-            	$(document).on('click', '.addelebtn', function(){
-                var aNo = $(this).siblings("#hiddenTag").val();
+            	$(document).on('click', '#addelebtn', function(){
+                var aNo = $(this).prev("#hiddenTag").val();
+				console.log(aNo);
 
                 alertify.confirm('삭제','정말로 카테고리를 삭제하시겠습니까?',
                 
 				function(){
 
+					$.ajax({
 
-		
-			$.ajax({
+						url : "deleteAddress.ad",
+						data : {addressNo : aNo},
+						dataType:"JSON",
+						success : function(json) {
 
-				url : "deleteAddress.ad",
-				data : {addressNo : aNo},
-				dataType:"JSON",
-				success : function(json) {
+							if(json.result == 1){
 
-					if(json.result == 1){
+								alertify.alert("주소록 삭제에 성공하였습니다.");
 
-						alertify.alert("주소록 삭제에 성공하였습니다.");
+							}else{
 
-					}else{
+								alertify.alert("주소록 삭제에 실패하였습니다.");
+							}
+							location.href="adAllList.ad"
 
-						alertify.alert("주소록 삭제에 실패하였습니다.");
-					}
-					location.href="adAllList.ad"
+						},
+						error: function(request, status, error){
+							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+						}
+						
+						
 
-				},
-				error: function(request, status, error){
-            		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-         		}
-				
-				
-
-				})
+						})
 				},
 					function(){
 					alertify.error('Cancel');
