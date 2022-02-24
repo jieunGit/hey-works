@@ -152,7 +152,7 @@
          JOIN DEPARTMENT D USING(DEPT_CODE)
         WHERE AL.STATUS = 'Y'
         ORDER
-           BY HIRE_DATE
+           BY USER_NO
 	</select>
 	
 	<select id="selectAleaveSearchCount" resultType="_int">
@@ -201,7 +201,7 @@
         </choose>        
               LIKE '%' || #{keyword} || '%'
         ORDER
-           BY HIRE_DATE
+           BY USER_NO
 	</select>
 	
 	<select id="selectAleaveForm" resultMap="AllLeaveResult">
@@ -254,7 +254,7 @@
 		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{startDate}
 		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{endDate}
 	</select>
-	
+	 
 	<select id="selectAtnaListCount" resultType="_int">
 		SELECT
 		       COUNT(*)
@@ -262,18 +262,8 @@
 		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	</select>
 	
-	<!--  
-	<select id="selectAtnaListCount" resultType="_int">
-		SELECT
-		       COUNT(*)
-		  FROM TNA 
-		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-	</select>
-	-->
 	<!-- 전체사원 근태현황 	-->
-	<select id="selectAtnaListt" resultMap="workingResult">
-	select  * from(
-		
+	<select id="selectAtnaList" resultMap="workingResult">		
 		SELECT
 		       USER_NO
 		     , ROWNUM NUMROW
@@ -294,13 +284,29 @@
 		  JOIN DEPARTMENT D USING(DEPT_CODE)
 		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 		 ORDER
-		    BY USER_NO) WHERE NUMROW <![CDATA[>]]> 10 and NUMROW <![CDATA[<=]]> 20
+		    BY USER_NO
 	</select>
-
-	<select id="selectAtnaList" resultMap="workingResult">
+	
+	<!-- 전사 근태현황 검색 -->
+	<select id="selectAtnaSearchCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TNA T
+		  JOIN EMPLOYEE USING(USER_NO)
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		 <if test="condition == 'userName'">
+		   AND  USER_NAME  
+		 </if>
+		 <if test="condition == 'tnaStatus'">
+		   AND TNA_STATUS
+		 </if>
+		       LIKE '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectAtnaSearch" resultMap="workingResult">		
 		SELECT
 		       USER_NO
-		     , E.USER_NAME
+		     , USER_NAME
 		     , DEPT_NAME
 		     , DECODE(JOB_CODE, 1, '사원'
 		                      , 2, '주임'
@@ -316,6 +322,15 @@
 		  JOIN EMPLOYEE E USING(USER_NO)
 		  JOIN DEPARTMENT D USING(DEPT_CODE)
 		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		<choose>
+           <when test="condition == 'userName'">
+          		AND USER_NAME
+           </when>
+           <when test="condition == 'tnaStatus'">
+          		AND TNA_STATUS
+           </when>
+        </choose>        
+              LIKE '%' || #{keyword} || '%'
 		 ORDER
 		    BY USER_NO
 	</select>

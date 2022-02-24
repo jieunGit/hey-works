@@ -56,12 +56,12 @@
             </div>
 
 			<div id="search-area">
-	            <form id="searchForm" action="AllLeaveSearch.wo" method="Get" style="margin-left:560px">
+	            <form id="searchForm" action="allLeaveSearch.wo" method="Get" style="margin-left:560px">
 	            	<input type="hidden" name="cpage" value="1">
 	                <div class="select">
 	                    <select class="custom-select" name="condition" >
-	                        <option value="deptName">소속</option>
 	                        <option value="userName">이름</option>
+	                        <option value="deptName">소속</option>
 	                    </select>
 	                </div>
 	                <div class="text">

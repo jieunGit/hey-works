@@ -3,7 +3,6 @@ package com.kh.hey.working.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -126,7 +125,7 @@ public class WorkingController {
 	}
 
 	// 전사 휴가현황 검색 요청
-	@RequestMapping("AllLeaveSearch.wo")
+	@RequestMapping("allLeaveSearch.wo")
 	public String selectLeaveSearch(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model,
 			String condition, String keyword) {
 
@@ -213,63 +212,43 @@ public class WorkingController {
 		return new Gson().toJson(wlist);
 
 	}
-
+	
+	// 전사 근태현황 리스트 조회
 	@RequestMapping("allTnaMain.wo")
-	public String allTnaMain() {
-		return "working/AjaxallWorkingStatus";
-	}
-	
-	@RequestMapping("selectAllTna.wo")
-	public ModelAndView a() {
-		ModelAndView mv = new ModelAndView();
-		int currentPage = 2;
+	public String allTnaMain(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model) {
+		
 		int listCount = wService.selectAtnaListCount();
+		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
-		ArrayList<Working> tlist = wService.selectAtnaListt();
+		ArrayList<Working> wlist = wService.selectAtnaList(pi);
 		
-		System.out.println(tlist);
+		model.addAttribute("pi", pi);
+		model.addAttribute("wlist", wlist);
 		
-		mv.setViewName("working/AjaxallWorkingStatus");
-		mv.addObject("tlist", tlist);
-		mv.addObject("currentPage", 2);
+		return "working/allWorkingStatus";
+	}
 	
-		return mv;
+	@RequestMapping("allTnaSearch.wo")
+	public String selectTnaSearch(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model,
+			String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);	
+		
+		int searchCount = wService.selectAtnaSearchCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 10, 10);
+		ArrayList<Working> wlist = wService.selectAtnaSearch(map, pi);
+
+		model.addAttribute("pi", pi);
+		model.addAttribute("wlist", wlist);
+
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		
+		return "working/allWorkingStatus"; 
 		
 	}
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value="selectAllTna.wo",
-	 * produces="application/json; charset=UTF-8") public ModelandView
-	 * selectAllTnaMain(@RequestParam(value="cpage", defaultValue="1") int
-	 * currentPage, Model model) {
-	 * 
-	 * // 전체 리스트 개수 int listCount = wService.selectAtnaListCount();
-	 * 
-	 * PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
-	 * //ArrayList<Working> tlist = wService.selectAtnaList(pi); ArrayList<Working>
-	 * tlist = wService.selectAtnaList();
-	 * 
-	 * JSONObject obj = new JSONObject();
-	 * 
-	 * 
-	 * if(cpage=='1') {
-	 * 
-	 * }
-	 * 
-	 * 
-	 * 
-	 * //System.out.println(pi); // [listCount=28, currentPage=1, pageLimit=10,
-	 * boardLimit=10, maxPage=3, startPage=1, endPage=3]
-	 * //System.out.println(tlist); // 28개 데이터
-	 * 
-	 * obj.put("pi", pi); obj.put("tlist", tlist);
-	 * 
-	 * return new Gson().toJson(obj);
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
 
 }

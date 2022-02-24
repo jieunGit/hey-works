@@ -86,21 +86,19 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.selectAtnaListCount(sqlSession);
 	}
 
-	/*
 	@Override
-	public ArrayList<Working> selectAtnaList(String> map) {
+	public ArrayList<Working> selectAtnaList(PageInfo pi) {
 		return wDao.selectAtnaList(sqlSession, pi);
 	}
-	*/
+
 	@Override
-	public ArrayList<Working> selectAtnaList() {
-		return wDao.selectAtnaList(sqlSession);
+	public int selectAtnaSearchCount(HashMap<String, String> map) {
+		return wDao.selectAtnaSearchCount(sqlSession, map);
 	}
 
 	@Override
-	public ArrayList<Working> selectAtnaListt() {
-		return wDao.selectAtnaListt(sqlSession);
+	public ArrayList<Working> selectAtnaSearch(HashMap<String, String> map, PageInfo pi) {
+		return wDao.selectAtnaSearch(sqlSession, map, pi);
 	}
-
 
 }
