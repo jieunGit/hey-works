@@ -191,12 +191,12 @@
 	                    </td>
 	                </tr>
 	                <tr id="line-list">
-                        <th>결재라인</th>
-                        <td width="25" style="border-left: none;">
+                        <th class="text-danger">*결재라인</th>
+                        <th width="25" style="border-left: none;">
                             <button type="button" data-target="#confirm-line" data-toggle="modal" >
                                 <img src="resources/images/875068.png">
                             </button>
-                        </td>
+                        </th>
                     </tr>
 	                <tr style="height: 80px;">
 	                    <td colspan="11" id="form-type">업무기안서</td>
@@ -500,7 +500,7 @@
            	$("#confirm1").val($("#sign1").text());
            	$("#confirm2").val($("#sign2").text());
            	$("#confirm3").val($("#sign3").text());
-           	
+           }
            //------------------------------------------결재자 끝
         </script>
 

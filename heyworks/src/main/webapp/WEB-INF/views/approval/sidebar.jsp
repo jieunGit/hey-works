@@ -48,6 +48,10 @@
     	text-align:left;
     	background-color:white;
     }
+    .side-list>ul{display:none;}
+    .side-list:hover{
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -98,6 +102,22 @@
     </div>
     
     <script>
+    	// 사이드바 조절
+    	$(function(){
+    		$(".side-list").click(function(){
+    			const $ul = $(this).children().nextAll();
+    			
+    			if($ul.css("display") == "none"){
+    				$(this).siblings("ul").slideUp();
+    				
+    				$ul.slideDown();
+    			}else{
+    				$ul.slideUp();
+    			}
+    		})
+    	})
+    	
+    	// 사이드메뉴 클릭시 이동
    		$(".onsidebtn").click(function(){
    			
    			const value = $(this).val();
@@ -111,7 +131,6 @@
    			console.log(value);
    			
    		});
-
     </script>
 
 </body>

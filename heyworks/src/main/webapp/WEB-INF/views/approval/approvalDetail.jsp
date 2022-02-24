@@ -252,9 +252,9 @@
             </tr>
             <tr>
                 <th>참 조</th>
-                <td colspan="2">${ap.reference}</td>
+                <td colspan="2">${ap.reference}&nbsp;${ap.referenceJob}</td>
                 <th>열 람</th>
-                <td colspan="3">${ap.read}</td>
+                <td colspan="3">${ap.read}&nbsp;${ap.readJob}</td>
             </tr>
 
             <!-- 증명서 일때 -->

@@ -215,11 +215,11 @@
                     </tr>
                     <tr id="line-list">
                         <th class="text-danger">*결재라인</th>
-                        <td width="25" style="border-left: none;">
+                        <th width="25" style="border-left: none;">
                             <button type="button" data-target="#confirm-line" data-toggle="modal" >
                                 <img src="resources/images/875068.png">
                             </button>
-                        </td>
+                        </th>
                     </tr>
                     <tr>
                         <th colspan="2">제 목</th>

@@ -194,12 +194,12 @@
                         <input type="text" style="border: none;" id="reference" readonly>
                         <input type="hidden" name="reference" id="refNo">
                     </td>
-                    <th colspan="2">결 재</th>
-                    <td width="25" style="border-left: none;">
+                    <th colspan="2" class="text-danger">*결 재</th>
+                    <th width="25" style="border-left: none;">
                       <button type="button" data-target="#confirm-line" data-toggle="modal" >
                           <img src="resources/images/875068.png">
                       </button>
-                    </td>
+                    </th>
                     <td colspan="2" style="border-right: none;">
                         <input type="text" style="border: none;" id="confirm0" readonly required>
                         <input type='hidden' name='confirmList[0].confirmNo' id='clist0'>
@@ -255,7 +255,9 @@
                 </tbody>
             </table>
             <br>
-            <div style="width:100%;" align="right">총 금액 : <input type="text" name="totalPay"><button type="button" class="btn btn-sm" onclick="allTotalPay();">조회</button></div>
+            <div style="width:100%;" align="right">총 금액 : <input type="text" name="totalPay">
+            	<button type="button" class="btn btn-sm" onclick="allTotalPay();"><span class="spinner-grow text-info spinner-grow-sm"></span>조회</button>
+            </div>
             <br>
             <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeList();">한 행 삭제</button>
             
@@ -546,14 +548,7 @@
             	$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
             	
             }
-            
-            // 결재자 직급비교해서 체크박스 disabled
-            //$("#confirm-line input[type='checkbox']").checked(function(){
-            	
-           // 	console.log();
-            	
-            //})
-            
+
             //------------------------------------------결재자 끝
             
             //----------------------비품시작
@@ -564,9 +559,9 @@
             	       + "<td><input type='text' name='itemList[" + count + "].itemSeq' class='form-control' value='" + procedure + "' required></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].itemName' class='form-control' required></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].itemSize' class='form-control' required></td>" 
-            	       + "<td><input type='text' name='itemList[" + count + "].total' class='form-control num' id='num[" + count + "]' required></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].total' class='form-control num" + count + "' required></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].unit' class='form-control' required></td>" 
-            	       + "<td><input type='text' name='itemList[" + count + "].amount' class='form-control pay' id='pay[" + count + "]' required></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].amount' class='form-control pay" + count + "' required></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].note' class='form-control'></td>" 
             		   + "</tr>"
             	
@@ -602,11 +597,9 @@
             	var tablelt = $("#equipmentList tr").length;
        			
 				for(let i=0; i<tablelt-1; i++){
-           			totalPay += ($("#pay")[i].value() * $("#num")[i].value())
-           					  //+ totalPay
+           			totalPay += $("input[name='itemList[" + i + "].amount'").val() * $("input[name='itemList[" + i + "].total'").val()
 				}
-           			console.log(totalPay);
-           		
+           		$("input[name='totalPay']").val(totalPay);
             	
             }
         </script>
