@@ -220,10 +220,11 @@
 										     + "<td>" + "01:00" + "</td>"
 										     + "<td>" + wlist[i].workTime + "시간" + "</td>"
 										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
-										     + "<td id='tnaStatus'>" + wlist[i].tnaStatus + "</td>"
-										     + "</tr>";
-										    	   	    	   
+										     + "<td>" + wlist[i].tnaStatus + "</td>"
+										     + "</tr>";	 
+										     
 									}
+                					
                 					
 									$("#weekTna").html(list);
                                 },error:function(){
@@ -234,14 +235,13 @@
                     </script>
                     
                     <script>
-                    	$(function(){
-                    		var tnaStatus = document.getElementById("tnaStatus").innerHTML;
-                    		console.log(tnaStatus);
-                    		
-                    		//if(tnaStatus == '정상근무'){
-                    			
+                    	function tnaStatus(){
+                    		var status = document.getElementById("tnaStatus").innerText;
+                    		console.log(status);
+                    		//if(document.getElementById("tnaStatus").innerText == '정상근무'){
+                    			//status.style.color = "red";
                     		//}
-                    	});
+                    	}
                     </script>
                     
                     <!--

@@ -87,24 +87,21 @@ public class WorkingController {
 		return "working/overtimeApplyForm";
 	}
 
-	// 근무/휴가현황 test
-	@RequestMapping("myWorkingStatus.wo")
-	public String myWorkingStatus() {
-		return "working/myWorkingStatus";
-	}
-
 	// 개인 휴가현황
 	@RequestMapping("selectMyleave.wo")
 	public ModelAndView selectMyleave(HttpSession session, ModelAndView mv) {
 
 		int userNo = ((Employee) session.getAttribute("loginUser")).getUserNo();
 
-		ArrayList<Leave> leList = wService.selectMyleave(userNo);
+		AllLeave leStatus = wService.selectMyleaveStatus(userNo);
+		ArrayList<Leave> leList = wService.selectMyleave(userNo); // 휴가신청 리스트 
 
+		mv.addObject("leStatus", leStatus);
 		mv.addObject("leList", leList);
 		mv.setViewName("working/leaveStatus");
 
-		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘
+		System.out.println(leStatus);
+		//System.out.println(leList); 
 
 		return mv;
 	}

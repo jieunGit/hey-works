@@ -70,19 +70,19 @@
                 </div><br>
     
                 <div class="leave-box">
-                    <strong><img src="resources/images/gift.png" style="width: 20px; height: 20px;"> 근무일수 및 현황</strong>
+                    <strong><img src="resources/images/gift.png" style="width: 20px; height: 20px;"> 휴가현황</strong>
                     <ul class="leave-box-list" style="width:450px">
                         <li style="border-right:1px solid lightgray;">
                             <strong style="margin-left:40px;">총 휴가일수</strong><br><br>
-                            <span style="margin-left:35px;">1일</span>
+                            <span style="margin-left:35px;">${leStatus.leaveTotal}일</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>사용일수</strong><br><br>
-                            <span>0회</span>
+                            <span>${leStatus.leaveUse}일</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>잔여일수</strong><br><br>
-                            <span>0회</span>
+                            <span>${leStatus.leaveRest}일</span>
                         </li>
                         <li>
                             <a href="leaveApplyForm.wo" class="btn btn-primary" style="font-size:13px; margin-top:13px;">휴가신청</a>

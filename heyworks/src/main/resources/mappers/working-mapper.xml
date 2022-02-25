@@ -111,6 +111,17 @@
 		  )	
 	</insert>
 	
+	<!-- 내 휴가현황 -->
+	<select id="selectMyleaveStatus" resultMap="AllLeaveResult">
+			SELECT
+		        USER_NO
+		      , LEAVE_TOTAL
+		      , LEAVE_USE
+		      , LEAVE_REST
+		  FROM ANNUAL_LEAVE
+		 WHERE USER_NO = #{userNo}
+	</select>
+	
 	<!-- 내 휴가신청 내역 -->
 	<select id="selectMyleave" resultMap="leaveResult">
 		SELECT

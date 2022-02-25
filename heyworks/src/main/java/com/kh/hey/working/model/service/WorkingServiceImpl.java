@@ -38,6 +38,11 @@ public class WorkingServiceImpl implements WorkingService {
 	public int insertLeave(Leave l) {
 		return wDao.insertLeave(sqlSession, l);
 	}
+	
+	@Override
+	public AllLeave selectMyleaveStatus(int userNo) {
+		return wDao.selectMyleaveStatus(sqlSession, userNo);
+	}
 
 	@Override
 	public ArrayList<Leave> selectMyleave(int userNo) {
@@ -100,5 +105,7 @@ public class WorkingServiceImpl implements WorkingService {
 	public ArrayList<Working> selectAtnaSearch(HashMap<String, String> map, PageInfo pi) {
 		return wDao.selectAtnaSearch(sqlSession, map, pi);
 	}
+
+
 
 }

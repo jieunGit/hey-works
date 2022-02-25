@@ -20,6 +20,9 @@ public interface WorkingService {
 	// 휴가신청 insert
 	int insertLeave(Leave l);
 	
+	// 개인 휴가현황 select
+	AllLeave selectMyleaveStatus(int userNo);
+	
 	// 휴가신청내역 select
 	ArrayList<Leave> selectMyleave(int userNo);
 	

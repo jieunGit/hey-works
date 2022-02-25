@@ -31,6 +31,11 @@ public class WorkingDao {
 		return sqlSession.insert("workingMapper.insertLeave", l);
 	}
 	
+	public AllLeave selectMyleaveStatus(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("workingMapper.selectMyleaveStatus", userNo);
+	}
+	
 	public ArrayList<Leave> selectMyleave(SqlSessionTemplate sqlSession, int userNo){
 		
 		return (ArrayList)sqlSession.selectList("workingMapper.selectMyleave", userNo);
