@@ -23,8 +23,11 @@ public interface WorkingService {
 	// 휴가신청내역 select
 	ArrayList<Leave> selectMyleave(int userNo);
 	
-	// 근태/휴가 현황 select
+	// 근태/휴가 현황 select (미완)
 	ArrayList<Working> selectMyallStatus(Map<String, Object> map);
+	
+	
+	// 관리자
 	
 	// 전사 휴가현황 리스트 페이지 (페이징)
 	int selectAleaveListCount();
@@ -39,4 +42,12 @@ public interface WorkingService {
 	
 	// 전사 휴가현황 수정용 서비스 update
 	int updateLeaveStatus(AllLeave al);
+	
+	// 전사 근무현황 리스트 페이지 (페이징)
+	int selectAtnaListCount();
+	//ArrayList<Working> selectAtnaList(PageInfo pi);
+	
+	ArrayList<Working> selectAtnaList();
+
+	ArrayList<Working> selectAtnaListt();
 }

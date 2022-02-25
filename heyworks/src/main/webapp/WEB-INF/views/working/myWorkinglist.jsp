@@ -7,6 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    @font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
     .outer{
         width:1200px;
         height:1200px;
@@ -20,7 +26,7 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .title-box{font-size:18px; font-weight:bold;}
+    .title-box{font-size:20px; font-weight:600; font-family: 'Cafe24SsurroundAir';}
     .working-box-list{
         list-style:none;
         height:100px;
@@ -31,6 +37,7 @@
     .working-box>strong{
         position:absolute;
         font-size:16px;
+        font-family: 'Cafe24SsurroundAir';
     }
     .working-box-list{
         position:relative;
@@ -48,13 +55,15 @@
         margin-right:10px;
         padding-right:15px;
         font-size:13px;
+        font-family: 'Cafe24SsurroundAir';
     }
 
     /*주간 근무 정보*/
-    .week-select{font-size:20px; font-weight:700;}
-    .table-bordered th{font-size:14px; text-align:center;}
-    .table-bordered td{font-size:13px;}
-    .tb-body tr{height:40px;}
+    #left, #right:hover{cursor:pointer;}
+    .week-select{font-size:20px; font-weight:700; font-family: 'Cafe24SsurroundAir';}
+    .table-bordered th{font-size:14px; text-align:center; font-family: 'Cafe24SsurroundAir';}
+    .table-bordered td{font-size:13px; font-family: 'Cafe24SsurroundAir';}
+    .tb-body tr{height:37px;}
 </style>
 </head>
 <body>
@@ -133,19 +142,16 @@
                 </div><br>
     
                 <div class="week-select" align="center">
-                    <span id="left"> < </span>
-                    <!--  
-                    <input type="text" id="startDate" value="2022-02-21"/> ~ 
-                    <input type="text" id="endDate" value="2022-02-27"/>
-                    -->
+                    <!--<span id="left"> < </span>  -->
+                    <img src="resources/images/left-arrow.png" id="left" style="width: 20px; height: 20px;">
                     <label id="startDate">2022-02-21</label> ~ 
                     <label id="endDate">2022-02-27</label>
-                    <span id="right"> > </span>
+                    <img src="resources/images/right-arrow.png" id="right" style="width: 20px; height: 20px;">
                 </div><br><br>
     
                 <table class="table-bordered">
                     <thead class="tb-head">
-                        <tr height="50px">
+                        <tr height="45px">
                             <th width="130">날짜</th>
                             <th width="110">휴일구분</th>
                             <th width="130">근무스케줄시간</th>
@@ -237,7 +243,7 @@
 										     + "<td>" + "01:00" + "</td>"
 										     + "<td>" + wlist[i].workTime + "시간" + "</td>"
 										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
-										     + "<td>" + wlist[i].tnaStatus + "</td>"
+										     + "<td id='tnaStatus'>" + wlist[i].tnaStatus + "</td>"
 										     + "</tr>";
 										    	   	    	   
 									}
@@ -249,6 +255,18 @@
                             })
                         }
                     </script>
+                    <!--  
+                    <script>
+                    	$(function(){
+                    		var tnaStatus = document.getElementById("tnaStatus").text();
+                    		console.log(tnaStatus);
+                    		
+                    		//if(tnaStatus == '정상근무'){
+                    			
+                    		//}
+                    	});
+                    </script>
+                    -->
                     <!--
                     <tbody align="center" class="tb-body">
                     	<c:forEach var="w" items="${wlist}">

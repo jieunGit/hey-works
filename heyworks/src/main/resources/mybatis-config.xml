@@ -23,6 +23,7 @@
 		<typeAlias type="com.kh.hey.working.model.vo.Leave" alias="Leave" />
 		<typeAlias type="com.kh.hey.working.model.vo.AllLeave" alias="AllLeave" />
 		<typeAlias type="com.kh.hey.todo.model.vo.Todolist" alias="Todolist" />
+		<typeAlias type="com.kh.hey.todo.model.vo.Memo" alias="Memo" />
 
 	</typeAliases>
 	

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.hey.todo.model.dao.todolistDao;
+import com.kh.hey.todo.model.vo.Memo;
 import com.kh.hey.todo.model.vo.Todolist;
 
 @Service
@@ -58,6 +59,33 @@ public class todolistServcieImpl implements todolistService{
 		
 		return tDao.updateTodolist(sqlSession, to);
 	}
+	@Override
+	public int deleteComleteTodo(String userNo) {
+		
+		return tDao.deleteComleteTodo(sqlSession, userNo);
+	}
+	@Override
+	public ArrayList<Memo> memoSelect(String userNo) {
+		
+		return tDao.memoSelect(sqlSession, userNo);
+	}
+	@Override
+	public int memoInsert(Memo me) {
+		
+		return tDao.memoInsert(sqlSession, me);
+	}
+	@Override
+	public int memoUpdate(Memo me) {
+		
+		return tDao.memoUpdate(sqlSession, me);
+	}
+	@Override
+	public int memoDelete(Memo me) {
+		
+		return tDao.memoDelete(sqlSession, me);
+	}
+	
+	
 
 	
 

@@ -71,4 +71,25 @@ public class WorkingDao {
 	public ArrayList<Working> selectMyallStatus(SqlSessionTemplate sqlSession, Map<String, Object> map){
 		return (ArrayList)sqlSession.selectList("workingMapper.selectMyallStatus", map);
 	}
+	
+	public int selectAtnaListCount(SqlSessionTemplate sqlSession) {
+		//System.out.println(map);
+		return sqlSession.selectOne("workingMapper.selectAtnaListCount");
+	}
+	
+	
+	public ArrayList<Working> selectAtnaList(SqlSessionTemplate sqlSession){
+		//int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		//int limit = pi.getBoardLimit();
+		//RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaList", null);
+	}
+	public ArrayList<Working> selectAtnaListt(SqlSessionTemplate sqlSession){
+		//int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		//int limit = pi.getBoardLimit();
+		//RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaListt", null);
+	}
 }

@@ -80,8 +80,27 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.selectMyallStatus(sqlSession, map);
 	}
 
+	// 관리자 근무현황 
+	@Override
+	public int selectAtnaListCount() {
+		return wDao.selectAtnaListCount(sqlSession);
+	}
 
+	/*
+	@Override
+	public ArrayList<Working> selectAtnaList(String> map) {
+		return wDao.selectAtnaList(sqlSession, pi);
+	}
+	*/
+	@Override
+	public ArrayList<Working> selectAtnaList() {
+		return wDao.selectAtnaList(sqlSession);
+	}
 
+	@Override
+	public ArrayList<Working> selectAtnaListt() {
+		return wDao.selectAtnaListt(sqlSession);
+	}
 
 
 }

@@ -12,6 +12,9 @@
 		<result column="work_time" property="workTime"/>
 		<result column="over_time" property="overTime"/>
 		<result column="tna_status" property="tnaStatus"/>
+		<result column="dept_name" property="deptName"/>
+		<result column="job_name" property="jobName"/>
+		<result column="numrow" property="rowNum"/>
 	</resultMap>
 
 	<resultMap id="leaveResult" type="Leave">
@@ -250,5 +253,70 @@
 		 WHERE USER_NO = #{userNo}
 		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{startDate}
 		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{endDate}
+	</select>
+	
+	<select id="selectAtnaListCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TNA 
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<!--  
+	<select id="selectAtnaListCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TNA 
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	-->
+	<!-- 전체사원 근태현황 	-->
+	<select id="selectAtnaListt" resultMap="workingResult">
+	select  * from(
+		
+		SELECT
+		       USER_NO
+		     , ROWNUM NUMROW
+		     , E.USER_NAME
+		     , DEPT_NAME
+		     , DECODE(JOB_CODE, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') "JOB_NAME"
+		     , CLOCK_IN
+		     , CLOCK_OUT
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE(CLOCK_IN, 'HH24:MI'))))*24-1) "WORK_TIME"
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE('17:00', 'HH24:MI'))))*24) "OVER_TIME"
+		     , TNA_STATUS
+		  FROM TNA T
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		 ORDER
+		    BY USER_NO) WHERE NUMROW <![CDATA[>]]> 10 and NUMROW <![CDATA[<=]]> 20
+	</select>
+
+	<select id="selectAtnaList" resultMap="workingResult">
+		SELECT
+		       USER_NO
+		     , E.USER_NAME
+		     , DEPT_NAME
+		     , DECODE(JOB_CODE, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') "JOB_NAME"
+		     , CLOCK_IN
+		     , CLOCK_OUT
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE(CLOCK_IN, 'HH24:MI'))))*24-1) "WORK_TIME"
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE('17:00', 'HH24:MI'))))*24) "OVER_TIME"
+		     , TNA_STATUS
+		  FROM TNA T
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		 ORDER
+		    BY USER_NO
 	</select>
 </mapper>

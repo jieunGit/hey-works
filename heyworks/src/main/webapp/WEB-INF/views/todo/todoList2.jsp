@@ -37,8 +37,9 @@
 
 .todo-wrapper {
     justify-content: center;
-    margin-left: 3rem;
-    width: 400px;
+    margin-left: 10rem;
+    width: 600px;
+
 }
 
 .todo-title {
@@ -46,15 +47,15 @@
     margin-top: 10px;
     margin-bottom: 20px;
     text-align: center;
-    /* color: rosybrown; */
     color: rgb(63, 145, 213);
-    font-size: 1.7rem;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 .todo-box {
     background-color: white;
     border: 1px solid #ddd;
-    
+    border-radius: 10px;
 }
 
 .todo-input-box {
@@ -122,7 +123,7 @@ button {
     border: 1px solid lightgray;
     cursor: pointer;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
 }
 
 .todo-item.checked .checkbox{
@@ -131,7 +132,7 @@ button {
 }
 
 .todo {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     padding: 0 1rem;
     width: 80%;
 }
@@ -334,9 +335,6 @@ p.info {
                 var content = $(this).text()
 
                 if(e.keyCode == 13){  
-                    console.log("엔터침");
-                    console.log(cNo);
-                    console.log(content);
 
                     $.ajax({
                         url:"updateTodolist.to",
@@ -359,53 +357,43 @@ p.info {
 
                 }
 
-             /*
-            	$(document).on('click', '.todocontent', function(){
-                    var cNo = $(this).siblings("#checkNoTag").val();
-
-                    var content = $(this).text()
-
-                    console.log(cNo);
-                    console.log(content);
-
-                    function press(f){ 
-                        if(f.keyCode == 13){  
-
-                            update_todo.submit();
-
-                        // $.ajax({
-                        // url:"updateTodolist.to",
-                        // data: { checkNo: cNo, todoContent:content},
-                        // dataType:"JSON",
-                        // success:function(json){
-
-                        //     if (json.result == 1) {
-                            
-                        //     location.reload();
-
-
-                        //     }else{
-                        //     alertify.alert("todolist 수정에 실패하였습니다..")
-                        //     location.reload();
-
-                        //     }
-                            
-                        // },
-                        // error: function(request, status, error){
-                        //     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                        // }
-                        // });
-                    
-                    }
-                    
-                    }
-                   
-                    */   
                
                 })
 
 
              })
+
+
+
+              // clear-completed 완료된 todolist 지우기
+                    $(function(){
+
+                            $(document).on('click', '.clear-completed-btn', function(){
+
+                           
+                                    $.ajax({
+                                        url:"deleteComleteTodo.to",
+                                        data: {},
+                                        dataType:"JSON",
+                                        success:function(result){
+
+                                            if (result == 'success') {
+                                            
+                                                location.reload();
+                                            }else{
+                                                alertify.alert("todolist 삭제에 실패하였습니다..")
+                                                location.reload();
+                                            }
+                                            
+                                        }
+                                    });
+
+                                    location.reload();
+                            
+                                })
+
+
+                            })
 
            
        
@@ -451,7 +439,7 @@ p.info {
                                 <c:when test="${ t.checkStatus eq 'Y'}">
                                 <!-- <form action="updateTodo" method="post" name="update_todo" > -->
                                     <li class="todo-item ">
-                                        <div class="checkbox chkbtn">✔</div>
+                                        <div class="checkbox chkbtn" style="color: black;">✔</div>
                                         <div class="todo todocontent" contenteditable="true" >${t.todoContent}</div>
                                         <input type="hidden" name="checkNo" value="${t.checkNo}" id="checkNoTag">
                                
@@ -472,20 +460,15 @@ p.info {
                         </c:choose>
                         </c:forEach>
 
-                        <li class="todo-item">
-                            <div class="checkbox"></div>
-                            <div class="todo">할일1</div>
-                            <button class="delBtn">x</button>
-                        </li>
-                    
+                      
                     </ul>
                     <div class="todo-bottom">
-                        <div class="left-items">${count} items left</div>
-                        <div class="button-group">
+                        <div class="left-items">&nbsp;${count} items left</div>
+                        <!-- <div class="button-group">
                             <button class="show-all-btn selected" data-type="all">All</button>
                             <button class="show-active-btn" data-type="active">Active</button>
                             <button class="show-completed-btn" data-type="completed">Completed</button>
-                        </div>
+                        </div> -->
                         <button class="clear-completed-btn" style="font-size: 0.8rem;">Clear Completed</button>
                     </div>
                 </div>
@@ -493,17 +476,6 @@ p.info {
                
             </div>
             <!-- <script src="todo.js" ></script> -->
-
-
-
-       
-
-
-            
-
-
-
-
 
 
         </div>

@@ -202,17 +202,17 @@
    }
    
    .fc-row > table > thead > tr > th.fc-today{
-      background: #b5a8b9 !important;
+      background: rgba(157,195,230) !important;
    }
    
    /* 오늘날짜 cell 색상 없애기 */
    .fc-unthemed .fc-today {
-        background: rgba(64, 163, 245, 0.411) !important;
+        background: rgba(206,225,242) !important;
        border-top: 1px solid #ddd !important;
        font-weight: bold !important;
        color: black;
    }
-   
+
    .table-borderless > tbody > tr > td,
    .table-borderless > tbody > tr > th,
    .table-borderless > tfoot > tr > td,
@@ -289,6 +289,26 @@
 	   font-size: 18px;
    }
 
+   .fc-row > table > thead > tr{
+      height: 30px;
+    
+   }
+
+   .fc-center{
+      font-size: 12px;
+   }
+
+   .fc-title{
+      font-size: 13px;
+      margin-top: 10px;
+      font-weight: bold;
+      color:white;
+   }
+   .fc-time>span{
+      font-size: 11px;
+      
+     
+   }
 
 </style>
 
@@ -437,7 +457,7 @@
                   url:"selectRsvList.re",
                   data:{
                       rno:fk_reservation_resource_no,
-                      cno:$("#cNo").val()
+                      cno:$("#categoryNoTag").val()
                   },
                   type:"GET",
                   dataType:'JSON',
@@ -454,7 +474,7 @@
 	                                   title: item.userName,  //표시되는제목
 	                                   start: item.startDate,  //예약시작날짜 표시
 	                                   end: item.endDate,      // 예약 끝날짜 표시
-	                                   color: "skyblue",    
+	                                   color: "rgba(46,117,182)",    
 	                                   id: item.reserveNo  //고유번호
 	                                });
 	                      }else{
@@ -488,15 +508,15 @@
      $('#addRsvModal').find('form')[0].reset();  //addRsvModal 모달 id
      $('#addRsvModal').modal('show');
      
+
      $.ajax({
       url:"readRsList.re",
       data : {
-         categoryNo:$("#cNo").val()
+         categoryNo:$("#cNoTag").val()
       },
       type:"get",
       dataType:"JSON",
       success:function(json){
-         console.log(json);
          var html = "";
          if (json.length > 0) {
             $.each(json, function(index, item){
@@ -566,7 +586,7 @@
             fk_reservation_resource_no:fk_reservation_resource_no, 
             reason:reason, 
             categoryNo : $("#categoryNoTag").val(),
-            categoryName:$("#categoryName").val()},
+            categoryName:$("#categoryNameTag").val()},
       type:"POST",
       dataType:"JSON",
       success:function(json){
@@ -575,8 +595,8 @@
          // 예약일로 입력한 값이 db에서 중복되는지 안되는지로 나눔
          if (json.n == 1) {
             // 에약이 정상적으로 등록됐을 때
-            // window.closeModal();
-            calendar.refetchEvents();
+            window.closeModal();
+            // calendar.refetchEvents();
             
          }else if (json.n == -1) {
             // 중복된 예약(시간)으로 예약에 실패했을 때
@@ -586,13 +606,13 @@
             // db오류
             alert("DB 오류");
          }
+         location.reload();
          
       },
       error: function(request, status, error){
          alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
        }
    });
-
   }
 
 
@@ -687,6 +707,11 @@
          fk_reservation_resource_no = rsNo;
       calendar.refetchEvents();   
    }
+
+
+
+
+ 
     </script>
 </head>
 
@@ -706,8 +731,8 @@
 			<br>
 			<div id="toparea"><span>${rc.categoryName} 예약</span></div>
 			
-			<input type="hidden" value="${rc.categoryName}" id="cName">
-         <input type="hidden" value="${rc.categoryNo}" id="cNo">
+			<input type="hidden" value="${rc.categoryName}" id="categoryNameTag">
+         <input type="hidden" value="${rc.categoryNo}" id="categoryNoTag">
 			<div id="resourceContent">
 				<div id="content">
 					
@@ -723,10 +748,10 @@
                      <c:forEach var="r" items="${ rlist }">
                        <li style="list-style-type: none; float: left;">
                           <p class='nav_ul_p'>
-                             <input type="hidden" name="categoryNo" id="categoryNoTag" value="${r.categoryNo}">
+                             <input type="hidden" name="categoryNo" id="cNoTag" value="${r.categoryNo}">
                              <input type="hidden" name="categoryName" id="categoryName" value="${r.categoryName}"> 
                              <input type="hidden" name="resourceNo" id="resourceNoTag" value="${r.resourcesNo}">
-                            <label class="smallText" style="margin-top: 5px; cursor: pointer;" onclick="changeResource(${r.resourcesNo})">${r.resourceName}</label>&nbsp;&nbsp;&nbsp;
+                            <label class="smallText" style="margin-top: 5px; cursor: pointer; font-weight: bold;" onclick="changeResource(${r.resourcesNo})">${r.resourceName}</label>&nbsp;&nbsp;&nbsp;
                              <!-- href="reserve.re?cno=${r.categoryNo}&rno=${r.resourcesNo}" -->
                            </p>
                         </li>

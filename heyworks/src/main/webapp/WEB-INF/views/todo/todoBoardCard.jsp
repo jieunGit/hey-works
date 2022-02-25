@@ -71,7 +71,7 @@
     
     <div class="outer">
 		<jsp:include page="../common/menubar.jsp" />
-		<jsp:include page="../todo+/todoMenubar.jsp" />
+		<jsp:include page="../todo/todoMenubar.jsp" />
 
 
         <div id="center"><br>
@@ -102,6 +102,20 @@
                         </div>
                     </li>
 
+                    <li class="each_card">
+                        <div class="each_card_box">
+
+
+
+                        </div>
+                    </li>
+                    <li class="each_card">
+                        <div class="each_card_box">
+
+
+
+                        </div>
+                    </li>
                     <li class="each_card">
                         <div class="each_card_box">
 
