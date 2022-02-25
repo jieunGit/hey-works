@@ -113,7 +113,7 @@ public class ApprovalController {
 	
 	/*결재자 기준 결재 대기 목록 페이지*/	
 	@RequestMapping("standby.el")
-	public String selectStandByList(@RequestParam(value="cpage", defaultValue="1")int currentPage, Model model, HttpSession session) {
+	public ModelAndView selectStandByList(@RequestParam(value="cpage", defaultValue="1")int currentPage, ModelAndView mv, HttpSession session) {
 		
 		// 조건검사할 로그인 객체 받아오기
 		String userName = ((Employee)session.getAttribute("loginUser")).getUserName();
@@ -124,10 +124,12 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Approval> apList = aService.selectStandByList(pi, userName);
 		
-		model.addAttribute("pi", pi);
-		model.addAttribute("apList", apList);
+		mv.addObject("pi", pi);
+		mv.addObject("apList", apList);
+		
+		mv.setViewName("approval/standbyList");
 
-		return "approval/standbyList";
+		return mv;
 		
 	} // 각 게시판 페이징처리해서 조회
 	
@@ -808,7 +810,7 @@ public class ApprovalController {
 	
 	
 	
-	
+
 	
 	
 	

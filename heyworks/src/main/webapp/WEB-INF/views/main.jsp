@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,6 +70,13 @@
         font-size:17px;
         font-weight:500;
 	}
+	#approvalTable{
+		font-size:10px;
+		font-weight:400;
+	}
+	#approvalTable:hover{
+		cursor:pointer;
+	}
 </style>
 </head>
 <body>
@@ -97,8 +106,27 @@
 			</div>
 			<div id="elec-approval">
 				<div class="title">
-					결재예정문서()
+					결재예정문서(<span class="text-danger">${apList.size()}</span>)
 					<hr>
+					<table id="approvalTable" class="table" style="table-layout:fixed">
+						<c:choose>
+							<c:when test="${!empty apList}">
+								<c:forEach var="ap" items="${apList}" begin="0" end="5">
+								<input type="hidden" value="${ap.approvalNo}" name="ano">
+									<tr>
+										<td>${ap.userNo}</td>
+										<td style="text-overflow:ellipsis; overflow:hidden"><nobr>${ap.approvalTitle}</nobr></td>
+										<td class="text-secondary">${fn:substring(ap.createDate, 5,10)}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="3">결재 대기중인 문서가 없습니다.</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</table>
 				</div>
 				<div>
 
@@ -235,6 +263,14 @@
 				return false;
 			}
 		}
+		
+		// 전자결재 상세보기-------------------------------------------
+		$("#approvalTable tr").click(function(){
+			location.href="detail.el?ano=" + $("input[name='ano']").val();
+		})
+		
+		
+		
 	</script>
 
 </body>
