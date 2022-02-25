@@ -53,6 +53,20 @@
     	margin-left:5px;
 		font-size:10px;
     }
+    select {
+		width: 100px;
+		padding: .1em;
+		border: 1px solid #999;
+		font-family: inherit;
+		border-radius: 0px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		text-align:center;
+	}
+	select::-ms-expand {
+		display: none;
+	}
 </style>
 </head>
 <body>
@@ -67,8 +81,8 @@
         <a href="#" class="subject">삭제된 문서</a>
         <br><br>
 
-        <form>
-            <div align="right">
+        <form action="delSearch.el" method="get">
+            <div align="right" id="search-area">
             	<select name="subject">
 					<option value="writer">작성자</option>
 					<option value="title">제목</option>
@@ -77,6 +91,15 @@
                 <button type="submit" class="btn btn-sm">검색</button>
             </div>
         </form> 
+        
+        <!-- 검색후에만 실행되는 스크립트 -->
+		<c:if test="${!empty subject}">
+			<script>
+				$(function(){
+					$("#search-area option[value=${subject}]").attr("selected", true);
+				})
+			</script>
+		</c:if>
 
         <br>
 
@@ -102,7 +125,7 @@
 		                    <td>${de.userNo}</td>
 		                    <td>${de.formNo}</td>
 		                    <td>${de.writeDept}</td>
-		                    <td>${de.approvalTitle}</td>
+		                    <td class="apTitle">${de.approvalTitle}</td>
 		                    <td>${de.createDate}</td>
 		                </tr>
 		                </c:forEach>
@@ -130,7 +153,7 @@
         
         
         <div style="width:100%;">
-        	<button type="button" class="btn btn-sm btn-outline-danger">복구</button>
+        	<button type="button" class="btn btn-sm btn-outline-danger" onclick="restoration();">복구</button>
         </div>
 
     </div>
@@ -142,7 +165,7 @@
             		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${depi.currentPage-1}">◀ PREV</a></li>
+            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${depi.currentPage-1}&subject=${subject}&keyword=${keyword}">◀ PREV</a></li>
             	</c:otherwise>
             </c:choose>
             
@@ -152,7 +175,7 @@
 	            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${p}">${p}</a></li>
 	            	</c:when>
 	            	<c:otherwise>
-	            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${p}&keyword=${keyword}">${p}</a></li>
+	            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${p}&subject=${subject}&keyword=${keyword}">${p}</a></li>
 	            	</c:otherwise>
             	</c:choose>
             </c:forEach>
@@ -162,7 +185,7 @@
             		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${depi.currentPage+1}">NEXT ▶</a></li>
+            		<li class="page-item"><a class="page-link" href="deletelist.el?cpage=${depi.currentPage+1}&subject=${subject}&keyword=${keyword}">NEXT ▶</a></li>
             	</c:otherwise>
            	</c:choose>
         </ul>
@@ -171,11 +194,66 @@
 	</div>
 	
 	<script>
-		$(".table-hover>tbody>tr").click(function(){
+		$(".table-hover>tbody>tr>td").siblings(".apTitle").click(function(){
 		
-			location.href="detail.el?ano=" + $(this).children(".ano").text();
+			location.href="detail.el?ano=" + $(this).siblings(".ano").text();
 			
 		})
+		
+		function restoration(){
+			
+			var arraynum = [];
+			
+			$("input:checkbox[class='boxes']:checked").each(function(){
+				arraynum.push($(this).parent().next().text());
+			})
+			
+			console.log(arraynum);
+			
+			if(confirm("문서를 복구하시겠습니까?") == true){
+
+				$.ajax({
+					url:"restore.el",
+					type:"post",
+					data:{approvalNo:arraynum},
+					success:function(result){
+						
+						if(result == 'S'){
+							return new swal({
+								title:"문서가 정상적으로 복구되었습니다!",
+								icon:"success",
+								closeOnClickOutside:false
+							})
+							.then((value) => {
+								if(value){
+									location.reload();
+								}
+							})
+						}else{
+							return new swal({
+								title:"문서 삭제 실패",
+								icon:"error",
+								closeOnClickOutside:false
+							})
+							.then((value) => {
+								if(value){
+									location.reload();
+								}
+							})
+							
+						}
+					},error:function(request, error){
+						alert(error);
+						console.log(error);
+						console.log("삭제문서 복구용 ajax통신 실패");
+					}
+				})
+			
+			}else{
+				return;
+			}
+			
+		}
 	</script>
 	
 	

@@ -100,7 +100,6 @@
         margin-top: 20px;
         margin-left: 20px;
     }
-    #searchNsawon>div>button{height: 38px;}
     #line{
         width: 130px;
         height: 300px;
@@ -216,11 +215,11 @@
                     </tr>
                     <tr id="line-list">
                         <th class="text-danger">*결재라인</th>
-                        <td width="25" style="border-left: none;">
+                        <th width="25" style="border-left: none;">
                             <button type="button" data-target="#confirm-line" data-toggle="modal" >
                                 <img src="resources/images/875068.png">
                             </button>
-                        </td>
+                        </th>
                     </tr>
                     <tr>
                         <th colspan="2">제 목</th>
@@ -291,7 +290,7 @@
                 </tbody>
             </table>
 
-            <div style="width: 100%;">
+            <div style="width: 100%;" id="content-area">
                 <textarea name="" id="summernote"></textarea>
             </div>
 			<br><br>
@@ -331,8 +330,7 @@
                     <div id="searchNsawon" style="overflow: auto;">
                         <!--ajax로 이름 검색요청-->
                         <div>
-                            <input type="text" class="form-control" placeholder="이름으로 검색" style="width: 350px;" name="keyword">
-                            <button type="button" class="btn btn-sm btn-outline-dark" onclick="searchConfirm();">검색</button>
+                            <input type="text" class="form-control" placeholder="이름으로 검색" onkeyup="searchConfirm(this.value);" style="width: 100%;" name="keyword">
                         </div>
                         <table class="table sawon-list" style="overflow: auto;">
                             <thead>
@@ -385,6 +383,7 @@
 	</div>
 	
         <script>
+        	// 팀별 사원조회용 ajax
         	let count = 0;
         	let procedure = 1;
         
@@ -402,7 +401,7 @@
             			let value = "";
         				for(let i in list){
         					value += "<tr>"
-                            	   + "<td width='48'><input type='checkbox'></td>"
+                            	   + "<td width='48'><input type='checkbox' name='job' value='"+list[i].jobCode+"' onclick='valueCheck(this);'></td>"
                             	   + "<td width='150' class='noCheck'>" + list[i].userNo + "</td>"
                             	   + "<td width='100' class='nameCheck'>" + list[i].userName + "</td>"
                             	   + "<td width='100' class='jobCheck'>" + list[i].jobName + "</td>"
@@ -419,35 +418,55 @@
             	})
             } 
             
-            function searchConfirm(){
+            function searchConfirm(keyword){
             	
-            	var keyword = $("input[name='keyword']").val();
+            	//var keyword = $("input[name='keyword']").val();
             	console.log(keyword);
             	
-            	$.ajax({
-	            	url:"searchConfirm.el",
-	            	data:{keyword:keyword},
-	            	success:function(result){
-	            		
-	            		let listresult = "";
-	            		for(let i in result){
-	            			listresult += "<tr>"
-		                         	   + "<td width='48'><input type='checkbox'></td>"
-		                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
-		                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
-		                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
-		                			   + "</tr>"
-	            		}
-	            		$(".sawon-list>tbody").html(listresult);
-	            	},error:function(){
-            			console.log("사원조회용 ajax통신 실패");
-            		}
-            	})
-            }
+            	$("input[name='keyword']").keyup(function(e){
+                    if(e.keyCode == 13){
+		            	$.ajax({
+			            	url:"searchConfirm.el",
+			            	data:{keyword:keyword},
+			            	success:function(result){
+			            		
+			            		let listresult = "";
+			            		for(let i in result){
+			            			listresult += "<tr>"
+				                         	   + "<td width='48'><input type='checkbox'></td>"
+				                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
+				                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
+				                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
+				                			   + "</tr>"
+			            		}
+			            		$(".sawon-list>tbody").html(listresult);
+			            	},error:function(){
+		            			console.log("사원조회용 ajax통신 실패");
+		            		}
+		            	})
+		            }
+            	 })
+            	}
             
             /*ajax끝*/
             
-         // 결재버튼 플러스 마이너스까지 일단 완성 체크박스랑 사원비교 아직,,,
+            // 사원 값 비교해서 체크박스 disabled하기
+            /* 사용안함
+            function valueCheck(){
+            	
+            	let checkvalue = $("input:checkbox[name='job']:checked").val();
+
+            	$('input:checkbox[name="job"]').each(function(){
+            	    
+            		if(checkvalue > $(this).val()){
+            			this.disabled = true;
+            		}else{
+            			this.disabled = false;
+            		}
+            	})
+
+            }*/
+
             /*버튼 클릭시 결재 화면에 뿌려질 용도*/
             function list(num){
 
@@ -455,6 +474,14 @@
                 var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
             	var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
             	
+                switch(num){
+                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
+                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
+                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
+                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
+                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
+                }
+	
             	if(num == 1){ // 열람 참조시
             		
             		var read = "";
@@ -462,7 +489,7 @@
             			  + "<input type='hidden' name='read' id='readNo'>"
             		
             		$("#read-line").html(read);
-            				
+            			  
             	}else if(num == 2){
 					
             		var ref = "";
@@ -479,7 +506,7 @@
 	            	       + "<input type='hidden' name='confirmList[1].confirmNo' id='clist1'>"
 	            	       + "<input type='hidden' name='confirmList[1].procedureNo' value='1'>"
 	            	       + "</td>"
-	            	       	       
+     	       
             	}else if(num == 4){
             		
             		var value = "";
@@ -499,17 +526,39 @@
 	            	       + "</td>"
             		
             	}
+           		// 결재자 리스트 누적해서 뿌려주기
+            	$("#line-list").html($("#line-list").html() + value); 
             	
-	            	$("#line-list").html($("#line-list").html() + value);
+            	// 결재자 값 비교해서 선택 불가하게 하기
+               	let sign1 = $("#sign1").text();
+               	let fsign = sign1.slice(-2);
+               	
+               	if(fsign == '이사'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 4 || $(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '과장'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '대리'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '주임'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	} // 결재비교 끝
 
-                switch(num){
-                    case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
-                    case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
-                    case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
-                    case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
-                    case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
-                }
-	
                 
             }
             
@@ -553,15 +602,7 @@
             	$("#confirm2").val($("#sign2").text());
             	$("#confirm3").val($("#sign3").text());
             	
-            	$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
-            	
             }
-            
-            $("#confirm-line input[type='checkbox']").checked(function(){
-            	
-            	
-            	
-            })
             
             //------------------------------------------결재자 끝
         </script>
@@ -573,14 +614,21 @@
 	          width: 898,
 	          height: 300
 	        });
-	
+			
+	        $(function(){ // 아무양식도 안보이게
+	        	$(".table-bordered>tbody").hide();
+	        	$("#content-area").hide();
+	        })
+	        
 	        /*카테고리별로 다르게보이기*/
 	        $("#category").change(function(){
-	            if($(this).find("option:selected").val() == 3){
+	        	
+	        	if($(this).find("option:selected").val() == 3){
 	                
 	                $("#recruitment").hide();
 	                $("#expenseReport").hide();
 	                $("#certificate").show();
+	                $("#content-area").show();
 	                
 	                document.getElementById("summernote").setAttribute('name', "certificateContent");
 	
@@ -589,6 +637,7 @@
 	                $("#certificate").hide();
 	                $("#expenseReport").hide();
 	                $("#recruitment").show();
+	                $("#content-area").show();
 	                
 	                document.getElementById("summernote").setAttribute('name', "recruimentContent");
 	
@@ -597,6 +646,7 @@
 	                $("#certificate").hide();
 	                $("#recruitment").hide();
 	                $("#expenseReport").show();
+	                $("#content-area").show();
 	                
 	                document.getElementById("summernote").setAttribute('name', "expenseReportContent");
 	

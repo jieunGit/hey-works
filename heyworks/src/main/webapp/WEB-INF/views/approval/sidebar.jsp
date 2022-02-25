@@ -20,6 +20,7 @@
     .sidebar img{
     	width:15px;
     	height:15px;
+    	margin-bottom:5px;
     }
     .sidebar a{
         text-decoration: none;
@@ -47,6 +48,10 @@
     	text-align:left;
     	background-color:white;
     }
+    .side-list>ul{display:none;}
+    .side-list:hover{
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -68,6 +73,7 @@
                 <ul>
                     <li><a href="standby.el">결재대기</a></li>
                     <li><a href="readNref.el">&nbsp;참조/열람대기</a></li>
+                    <li><a href="doneConf.el">&nbsp;승인결재문서</a></li>
                 </ul>
             </li>
             <li class="side-list"><img src="resources/images/3759325.png">진행중인문서
@@ -96,6 +102,22 @@
     </div>
     
     <script>
+    	// 사이드바 조절
+    	$(function(){
+    		$(".side-list").click(function(){
+    			const $ul = $(this).children().nextAll();
+    			
+    			if($ul.css("display") == "none"){
+    				$(this).siblings("ul").slideUp();
+    				
+    				$ul.slideDown();
+    			}else{
+    				$ul.slideUp();
+    			}
+    		})
+    	})
+    	
+    	// 사이드메뉴 클릭시 이동
    		$(".onsidebtn").click(function(){
    			
    			const value = $(this).val();
@@ -109,7 +131,6 @@
    			console.log(value);
    			
    		});
-
     </script>
 
 </body>

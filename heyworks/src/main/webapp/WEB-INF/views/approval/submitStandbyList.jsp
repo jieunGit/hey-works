@@ -50,11 +50,8 @@
     	margin-left:5px;
 		font-size:10px;
     }
-    .table-hover{
-    	table-layout:fixed;
-    	overflow:hidden;
-    	text-overflow:ellipsis;
-    	white-space:nowrap;	
+    .table-hover tr:hover{
+    	cursor:pointer;
     }
 </style>
 </head>
@@ -67,24 +64,14 @@
 		
 		<div class="elec-outer">
         <!-- 진행중인문서 -->
-        <a href="" class="subject">진행중인문서</a>
+        <a href="#" class="subject">진행중인문서(
+        <c:if test="${status eq 'A'}">전체</c:if>
+        <c:if test="${status eq 'D'}">결재대기</c:if>
+        <c:if test="${status eq 'P'}">진행중</c:if>
+        )
+        </a>
         <br><br>
 
-        <div id="btnNsearch">
-            <div id="btns">
-                <button type="button" class="btn btn-sm">전체</button>
-                <button type="button" class="btn btn-sm">결재대기</button>
-                <button type="button" class="btn btn-sm">진행중</button>
-            </div>
-
-            <form>
-                <div align="right">
-                    <input type="text" name="" value="" placeholder="검색하기">
-                    <button type="submit" class="btn btn-sm">검색</button>
-                </div>
-            </form>
-        </div>
-        <br><br>
 
         <table align="center" class="table-hover">
             <thead>
@@ -93,7 +80,7 @@
                     <th width="80">작성자</th>
                     <th width="70">긴급</th>
                     <th width="200">제목</th>
-                    <th wdith="70">첨부</th>
+                    <th width="70">첨부</th>
                     <th width="100">현재결재자</th>
                     <th width="100">최종결재자</th>
                     <th width="80">결재상태</th>
@@ -109,13 +96,13 @@
 		                    <td>${sb.userNo}</td>
 		                    <td>
 		                    	<c:if test="${sb.emergancy eq 'Y'}">
-		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+		                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
-		                    <td>${sb.approvalTitle}</td>
+		                    <td style="text-overflow:ellipsis; overflow:hidden"><nobr>${sb.approvalTitle}</nobr></td>
 		                    <td>
 		                    	<c:if test="${!empty sb.originName}">
-		                        	<img src="resources/images/2586886.png" style="width: 85%; height: 70%;" >
+		                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
 		                       	</c:if>
 		                    </td>
 		                    <td>${sb.firstUser}</td>
@@ -145,6 +132,7 @@
 	</div>
 	
 	<div id="pagingArea">
+		<c:if test="${pi.endPage > 0}">
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.currentPage eq 1}">
@@ -167,6 +155,7 @@
             	</c:otherwise>
            	</c:choose>
         </ul>
+        </c:if>
     </div>
     
     <script>

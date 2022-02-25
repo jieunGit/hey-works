@@ -2,9 +2,13 @@ package com.kh.hey.working.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +24,14 @@ import com.kh.hey.employee.model.vo.Employee;
 import com.kh.hey.working.model.service.WorkingService;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Controller
 public class WorkingController {
 
 	@Autowired
 	private WorkingService wService;
-	
+
 	// test
 	@RequestMapping("myWorkingList.wo")
 	public String myWorkingList() {
@@ -35,102 +40,236 @@ public class WorkingController {
 
 	// 출근
 	@ResponseBody
-	@RequestMapping(value="clockin.wo")
+	@RequestMapping(value = "clockin.wo")
 	public void insertClockIn(HttpSession session) {
-		
-		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
-		
+
+		int userNo = ((Employee) session.getAttribute("loginUser")).getUserNo();
+
 		int result = wService.insertClockIn(userNo);
 
 	}
-	
+
 	// 퇴근
 	@ResponseBody
-	@RequestMapping(value="clockout.wo")
+	@RequestMapping(value = "clockout.wo")
 	public void updateClockOut(HttpSession session) {
-		
-		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
-		
+
+		int userNo = ((Employee) session.getAttribute("loginUser")).getUserNo();
+
 		int result = wService.updateClockOut(userNo);
 	}
-	
+
 	// 휴가신청 폼
 	@RequestMapping("leaveApplyForm.wo")
 	public String leaveApplyForm() {
 		return "working/leaveApplyForm";
 	}
-	
+
 	// 휴가신청
 	@RequestMapping("insertLeave.wo")
 	public String insertLeave(Leave l, HttpSession session) {
-		
+
 		int result = wService.insertLeave(l);
-		
-		return "working/leaveStatus";
+
+		// return "working/leaveStatus";
+
+		if (result > 0) {
+			session.setAttribute("alertMsg", "휴가 신청이 완료되었습니다.");
+			return "redirect:selectMyleave.wo";
+		} else {
+			session.setAttribute("alertMsg", "휴가 신청 실패");
+			return "redirect:selectMyleave.wo";
+		}
 	}
-	
+
 	// 연장근무 신청 폼
 	@RequestMapping("otApplyForm.wo")
 	public String otApplyForm() {
 		return "working/overtimeApplyForm";
 	}
-	
+
 	// 근무/휴가현황 test
 	@RequestMapping("myWorkingStatus.wo")
 	public String myWorkingStatus() {
 		return "working/myWorkingStatus";
 	}
-	
+
 	// 개인 휴가현황
 	@RequestMapping("selectMyleave.wo")
 	public ModelAndView selectMyleave(HttpSession session, ModelAndView mv) {
-		
-		int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
-		
+
+		int userNo = ((Employee) session.getAttribute("loginUser")).getUserNo();
+
 		ArrayList<Leave> leList = wService.selectMyleave(userNo);
-		
+
 		mv.addObject("leList", leList);
 		mv.setViewName("working/leaveStatus");
-		
-		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘 
-		
+
+		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘
+
 		return mv;
 	}
-	
-	// 전사 휴가현황 리스트 
+
+	// 전사 휴가현황 리스트
 	@RequestMapping("leaveStatusList.wo")
-	public String selectAleaveList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
-		
+	public String selectAleaveList(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model) {
+
 		int listCount = wService.selectAleaveListCount();
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		ArrayList<AllLeave> alist = wService.selectAleaveList(pi);
-		
+
 		model.addAttribute("pi", pi);
 		model.addAttribute("alist", alist);
-		
+
 		return "working/allLeaveStatus";
 	}
-	
+
 	// 전사 휴가현황 검색 요청
 	@RequestMapping("AllLeaveSearch.wo")
-	public String selectLeaveSearch(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model, String condition, String keyword) {
-		
+	public String selectLeaveSearch(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model,
+			String condition, String keyword) {
+
 		HashMap<String, String> map = new HashMap<>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
-		
+
 		int searchCount = wService.selectAleaveSearchCount(map);
-		
+
 		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 10, 10);
 		ArrayList<AllLeave> alist = wService.selectAleaveSearch(map, pi);
-		
+
 		model.addAttribute("pi", pi);
 		model.addAttribute("alist", alist);
-		
+
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
-		
+
 		return "working/allLeaveStatus";
 	}
+
+	// 휴가현황 수정 폼
+	@RequestMapping("leaveUpdateForm.wo")
+	public String leaveUpdateForm(int userNo, Model model) {
+
+		AllLeave al = wService.selectAleaveForm(userNo);
+
+		model.addAttribute("al", al);
+		// System.out.println(userNo);
+		return "working/allLeaveStatusUpdate";
+	}
+
+	// 휴가현황 수정 요청
+	@RequestMapping("leaveUpdate.wo")
+	public String leaveUpdate(AllLeave al, Model model, HttpSession session) {
+
+		int result = wService.updateLeaveStatus(al);
+
+		if (result > 0) {
+			model.addAttribute("al", al);
+			session.setAttribute("alertMsg", "휴가현황 정보가 수정되었습니다.");
+			// return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
+			return "redirect:leaveStatusList.wo";
+		} else {
+			session.setAttribute("alertMsg", "휴가현황 수정 실패");
+			return "redirect:leaveUpdateForm.wo";
+		}
+	}
+
+	// 근무/휴가 조회
+	/*
+	 * @RequestMapping("selectMyall.wo") public ModelAndView
+	 * selectMyallStatus(HttpSession session, ModelAndView mv) {
+	 * 
+	 * int userNo = ((Employee)session.getAttribute("loginUser")).getUserNo();
+	 * 
+	 * ArrayList<Working> wlist = wService.selectMyallStatus(userNo);
+	 * 
+	 * mv.addObject("wlist", wlist); mv.setViewName("working/myWorkinglist");
+	 * 
+	 * System.out.println(wlist); return mv; }
+	 */
+
+	@RequestMapping("main.wo")
+	public String tnaMain() {
+		return "working/myWorkinglist";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "selectMyall.wo", produces = "application/json; charset=UTF-8")
+	public String selectMyallStatus(String startDate, String endDate, HttpSession session) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		int userNo = ((Employee) session.getAttribute("loginUser")).getUserNo();
+
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("userNo", userNo);
+		// System.out.println(map);
+
+		ArrayList<Working> wlist = wService.selectMyallStatus(map);
+		// System.out.println(wlist);
+
+		return new Gson().toJson(wlist);
+
+	}
+
+	@RequestMapping("allTnaMain.wo")
+	public String allTnaMain() {
+		return "working/AjaxallWorkingStatus";
+	}
+	
+	@RequestMapping("selectAllTna.wo")
+	public ModelAndView a() {
+		ModelAndView mv = new ModelAndView();
+		int currentPage = 2;
+		int listCount = wService.selectAtnaListCount();
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Working> tlist = wService.selectAtnaListt();
+		
+		System.out.println(tlist);
+		
+		mv.setViewName("working/AjaxallWorkingStatus");
+		mv.addObject("tlist", tlist);
+		mv.addObject("currentPage", 2);
+	
+		return mv;
+		
+	}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value="selectAllTna.wo",
+	 * produces="application/json; charset=UTF-8") public ModelandView
+	 * selectAllTnaMain(@RequestParam(value="cpage", defaultValue="1") int
+	 * currentPage, Model model) {
+	 * 
+	 * // 전체 리스트 개수 int listCount = wService.selectAtnaListCount();
+	 * 
+	 * PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+	 * //ArrayList<Working> tlist = wService.selectAtnaList(pi); ArrayList<Working>
+	 * tlist = wService.selectAtnaList();
+	 * 
+	 * JSONObject obj = new JSONObject();
+	 * 
+	 * 
+	 * if(cpage=='1') {
+	 * 
+	 * }
+	 * 
+	 * 
+	 * 
+	 * //System.out.println(pi); // [listCount=28, currentPage=1, pageLimit=10,
+	 * boardLimit=10, maxPage=3, startPage=1, endPage=3]
+	 * //System.out.println(tlist); // 28개 데이터
+	 * 
+	 * obj.put("pi", pi); obj.put("tlist", tlist);
+	 * 
+	 * return new Gson().toJson(obj);
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
+
 }

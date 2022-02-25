@@ -178,6 +178,20 @@ display: none;
 			});
 
 
+			
+			$(".simpleContactSearch").keyup(function(event) {
+					if(event.keyCode == 13) {
+					
+					
+						var frm = document.searchContacts;
+						frm.action = "adAllList.ad?gNo="+ $("#groupNoTag").val();
+						frm.submit();
+					
+						
+					}
+
+				});
+
 			// $(document).ready(function() 끝-------
 			
 			// // 주소록 검색
@@ -212,21 +226,21 @@ display: none;
 			<br>
 
 				<!-- excel내보내기 -->
-			<div id="excel">
+			<!-- <div id="excel">
 				<section>
 				
 					<a class=" btnAdditional" id="contactExcelExport" onclick="exportExcelFile();">
-								<!-- <span class="ic_toolbar more"></span> -->
+					
 								<span class="txt">EXCEL로 내보내기</span>
 					</a>
 						
 				</section>
-			</div>
+			</div> -->
 			
 			<!-- 검색영역 --> 
 			<form name="searchContacts" action="groupAdList.ad" method="post">
 				<div class="search-box">
-					<input type="text" class="form-control" placeholder="Search…" id="simpleContactSearch" name="contactInput">
+					<input type="text" class="form-control" placeholder="Search…" class="simpleContactSearch" name="contactInput">
 					<button type="submit" style="border: none; background: none;"><i class="fa-solid fa-magnifying-glass" id="simpleContactbtn" ></i></button>
 					<c:forEach var="a" items="${ list }" begin="0" end="0">
 						<input type="hidden" id="groupNoTag" value="${a.groupNo}" name="gNo">
@@ -292,14 +306,14 @@ display: none;
 						<td>${a.deptTitle }</td>
 						<td>${a.jobTitle }</td>
 						<td>${a.groupName }</td>
-						<input type="hidden" id="hiddenTag" value="${a.addressNo}">
 						<td>
-								<!-- 상세보기&수정하기 -->
-								<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
-								<!-- 수정하기 -->
-								<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
-								<!-- 삭제하기 -->
-								<a href="" data-toggle="modal" data-target="#deleteModal"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+							<!-- 상세보기&수정하기 -->
+							<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
+							<!-- 수정하기 -->
+							<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
+							<!-- 삭제하기 -->
+								<input type="hidden" id="hiddenTag" value="${a.addressNo}">
+								<a id="addelebtn"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
 						</td>
 					</tr>
 					
@@ -428,8 +442,8 @@ display: none;
 		
 		
 		   
-   <%-- 취소 버튼 클릭 시 정말 취소할 것인지 묻는 모달 --%>
-   <div class="modal fade" id="deleteModal" role="dialog">
+   <!-- <%-- 삭제 버튼 클릭 시 정말 삭제할 것인지 묻는 모달 --%> -->
+   <!-- <div class="modal fade" id="deleteModal" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content" style="width: 400px;">
         <div class="modal-header" style="background: rgb(63, 145, 213);">
@@ -446,7 +460,7 @@ display: none;
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -627,36 +641,49 @@ display: none;
 
 	// 삭제모달에서 예 클릭시 실행되는 함수 
 
-	function deleteAddress() {
-		
-			$.ajax({
 
-				url : "deleteAddress.ad",
-				data : {addressNo : $("#hiddenTag").val()},
-				dataType:"JSON",
-				success : function(json) {
+		$(function(){
+            	$(document).on('click', '#addelebtn', function(){
+                var aNo = $(this).prev("#hiddenTag").val();
+				console.log(aNo);
 
-					if(json.result == 1){
+                alertify.confirm('삭제','정말로 카테고리를 삭제하시겠습니까?',
+                
+				function(){
 
-						alertify.alert("주소록 삭제에 성공하였습니다.");
+					$.ajax({
 
-					}else{
+						url : "deleteAddress.ad",
+						data : {addressNo : aNo},
+						dataType:"JSON",
+						success : function(json) {
 
-						alertify.alert("주소록 삭제에 실패하였습니다.");
-					}
-					location.href="adAllList.ad"
+							if(json.result == 1){
 
+								alertify.alert("주소록 삭제에 성공하였습니다.");
+
+							}else{
+
+								alertify.alert("주소록 삭제에 실패하였습니다.");
+							}
+							location.href="adAllList.ad"
+
+						},
+						error: function(request, status, error){
+							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+						}
+						
+						
+
+						})
 				},
-				error: function(request, status, error){
-            		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-         		}
-				
-				
-
-				})
+					function(){
+					alertify.error('Cancel');
+					});
 			
-
-	}
+				})
+		})
+	
 
 
 

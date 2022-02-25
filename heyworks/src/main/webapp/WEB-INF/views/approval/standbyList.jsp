@@ -48,6 +48,9 @@
     	margin-left:5px;
 		font-size:10px;
     }
+    .table-hover tr:hover{
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -59,15 +62,10 @@
 	
 		<div class="elec-outer">
 	        <!-- 결재 대기 문서 -->
-	        <a href="#" class="subject">내 결재 대기 문서</a>
+	        <a href="#" class="subject">결재대기</a>
 	        <br><br>
 	        
-	        <form>
-                <div align="right">
-                    <input type="text" name="" value="" placeholder="검색하기">
-                    <button type="submit" class="btn btn-sm">검색</button>
-                </div>
-            </form> <br>
+        <br>
 	
 	        <table align="center" class="table-hover">
 	            <thead>
@@ -78,7 +76,7 @@
 	                    <th width="80">작성팀</th>
 	                    <th width="80">긴급</th>
 	                    <th width="250">제목</th>
-	                    <th wdith="50">첨부</th>
+	                    <th width="50">첨부</th>
 	                    <th width="85">작성자</th>
 	                </tr>
 	            </thead>
@@ -86,7 +84,7 @@
 	            	<c:choose>
 	            		<c:when test="${empty apList}">
             				<tr align="center">
-			            		<td colspan="7">결재 대기중인 문서가 없습니다.</td>
+			            		<td colspan="8">결재 대기중인 문서가 없습니다.</td>
 			            	</tr>
 			            </c:when>
 			            <c:otherwise>
@@ -117,6 +115,7 @@
 	    </div>
 	
 	<div id="pagingArea">
+		<c:if test="${pi.endPage > 0}">
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.currentPage eq 1}">
@@ -139,6 +138,7 @@
             	</c:otherwise>
            	</c:choose>
         </ul>
+        </c:if>
     </div>
 	
 
@@ -150,7 +150,6 @@
 			location.href="detail.el?ano=" + $(this).children(".ano").text();
 			
 		})
-		
 	</script>
 	
 	

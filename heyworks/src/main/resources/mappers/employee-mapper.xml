@@ -106,10 +106,76 @@
          order
             by job_code desc
 	</select>
-
-
 	
 	<!-- 전자결재 관리자용 사원 알아오기 -->
+	<select id="selectAdminList" resultMap="employeeResult">
+		select
+		       user_no
+		     , user_name
+		     , call
+		     , dept_name
+		     , decode(job_code, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') job_name
+		     , admin_yn
+		     , email
+		  from employee
+          join department using(dept_code)
+		 where admin_yn = 'Y'
+		 order
+            by job_code desc
+	</select>
+	
+	<!-- 관리자용 검색 -->
+	<select id="ajaxAdminSearchSelect" resultMap="employeeResult">
+		select
+		       user_no
+		     , user_name
+		     , call
+		     , dept_name
+		     , decode(job_code, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') job_name
+		     , admin_yn
+		     , email
+		  from employee
+          join department using(dept_code)
+         where admin_yn = 'N'
+         <choose>
+	         <when test='userName == "n"'>
+	           and dept_code = #{deptCode}
+	         order
+	            by job_code desc
+	         </when>
+	         <otherwise>
+	            and user_name = #{userName}
+	            and dept_code = #{deptCode}
+	         order
+	            by job_code desc
+	         </otherwise>
+         </choose>
+	</select>
+	
+	<!-- 관리자 해제하기 -->
+	<update id="deleteAdmin">
+		update
+			   employee
+		   set admin_yn = 'N'
+		 where user_no = #{userNo}
+	</update>
+	
+	<!-- 관리자 등록하기 -->
+	<update id="approvalAdminUpdate">
+		update
+			   employee
+		   set admin_yn = 'Y'
+		 where user_no = #{uno}
+	</update>
+	
 	
 	
 	

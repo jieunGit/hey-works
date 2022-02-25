@@ -40,8 +40,8 @@
             
             <div class="leave-status">
                 <h3 style="font-size:20px;">휴가현황</h3>
-                <p style="font-size:14px;">총 휴가 : 15일 | 사용 : 0일 | 잔여 : 15일</p>
-            </div><br>
+                <p style="font-size:14px; margin-top:25px;">총 휴가 : 15일 | 사용 : 0일 | 잔여 : 15일</p>
+            </div><br><br>
     
             <div class="leave-creation">
                 <h3 style="font-size:20px;">휴가 생성 내역</h3><br>
@@ -54,7 +54,7 @@
                         <th width="450px">비고</th>
                     </tr>
                     <tr style="height:30px; text-align:center;">
-                        <td>2022/01/01</td>
+                        <td>2022-01-01</td>
                         <td>15일</td>
                         <td>정기 휴가</td>
                         <td>연차 (15일 x 8시간 = 120시간)</td>

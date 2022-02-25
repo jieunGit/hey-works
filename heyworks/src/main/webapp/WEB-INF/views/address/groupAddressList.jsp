@@ -229,17 +229,16 @@
 			<br>
 
 				<!-- excel내보내기 -->
-			<div id="excel">
+			<!-- <div id="excel">
 				<section>
 				
 					<a class=" btnAdditional" id="contactExcelExport" onclick="exportExcelFile();">
-								<!-- <span class="ic_toolbar more"></span> -->
 								<span class="txt">EXCEL로 내보내기</span>
 					</a>
 						
 				</section>
 			</div>
-			
+			 -->
 			<!-- 검색영역 --> 
 			<form name="searchContacts" action="groupAdList.ad" method="post">
 				<div class="search-box">
@@ -306,15 +305,16 @@
 						<td>${a.deptTitle }</td>
 						<td>${a.jobTitle }</td>
 						<td>${a.groupName }</td>
-						<input type="hidden" id="hiddenTag" value="${a.addressNo}">
 						<input type="hidden" id="groupNoTag" value="${a.groupNo}">
 						<td>
-								<!-- 상세보기&수정하기 -->
-								<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
-								<!-- 수정하기 -->
-								<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
-								<!-- 삭제하기 -->
-								<a href="" data-toggle="modal" data-target="#deleteModal"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
+							<!-- 상세보기&수정하기 -->
+							<a href=""  data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo} , ${a.groupNo})"> <i class="fa-solid fa-align-justify"style="color:rgb(32, 32, 179)"></i> </a>&nbsp;
+							<!-- 수정하기 -->
+							<!-- <a href="" data-toggle="modal" data-target="#addressUpdate" onclick="selectAddress(${a.addressNo})"> <i class="fa-solid fa-pen " style="color: orange"></i> </a>&nbsp; -->
+							<!-- 삭제하기 -->
+							<input type="hidden" id="groupNoTag" value="${a.groupNo}">
+							<input type="hidden" id="hiddenTag" value="${a.addressNo}">
+								<a id="addelebtn"> <i class="fa-solid fa-trash" style="color:red"></i> </a>
 						</td>
 					</tr>
 					
@@ -447,7 +447,7 @@
 	  <input class="hidden_reservation_no" type="hidden">
 	</div>
 	<div class="modal-footer" style="margin: auto;">
-	  <button type="button" class="btn btn-secondary" style="width: 100px;"onclick="deleteAddress()">예</button>
+	  <button type="button" class="btn btn-secondary" style="width: 100px;">예</button>
 	  <button type="reset" class="btn btn-primary" data-dismiss="modal" style="width: 100px;">아니오</button>
 	</div>
   </div>
@@ -632,37 +632,50 @@ function selectAddress(addressNo, groupNumber) {
 
 // 삭제모달에서 예 클릭시 실행되는 함수 
 
-function deleteAddress() {
-	
-			$.ajax({
+	$(function(){
+            	$(document).on('click', '#addelebtn', function(){
+                var aNo = $(this).prev("#hiddenTag").val();
+				var groupNo = $("#groupNoTag").val();
+				console.log(aNo);
 
-				url : "deleteAddress.ad",
-				data : {addressNo : $("#hiddenTag").val()},
-				dataType:"JSON",
-				success : function(json) {
+                alertify.confirm('삭제','정말로 카테고리를 삭제하시겠습니까?',
+                
+				function(){
 
-					if(json.result == 1){
+					$.ajax({
 
-						alertify.alert("즐겨찾기 삭제에 성공하였습니다.");
+						url : "deleteAddress.ad",
+						data : {addressNo : aNo},
+						dataType:"JSON",
+						success : function(json) {
 
-					}else{
+							if(json.result == 1){
 
-						alertify.alert("즐겨찾기 삭제에 실패하였습니다.");
-					}
+								alertify.alert("주소록 삭제에 성공하였습니다.");
 
-					location.href="groupAdList.ad?gNo="+ $("#groupNoTag").val();
+							}else{
 
+								alertify.alert("주소록 삭제에 실패하였습니다.");
+							}
+							location.href="groupAdList.ad?gNo="+groupNo
+
+						},
+						error: function(request, status, error){
+							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+						}
+						
+						
+
+						})
 				},
-				error: function(request, status, error){
-					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				}
-
-
-
+					function(){
+					alertify.error('Cancel');
+					});
+			
 				})
-		
+		})
+	
 
-			}	
 
 			// 선택삭제 기능
 			function deleteValue() {
@@ -764,7 +777,7 @@ function deleteAddress() {
 
 
 				// 즐겨찾기 삭제
-				function deleteLike(addressNo, aE1) {
+				function deleteLike(addressNo, aE2) {
 
 					$.ajax({
 
@@ -776,9 +789,9 @@ function deleteAddress() {
 								if(json.result == 1){
 
 									// alertify.alert("즐겨찾기 삭제에 성공하였습니다.");
-									$(aEl).children().removeClass("fa-regular");
-									$(aEl).children().addClass("fas");
-									$(aEl).click(function(){
+									$(aE2).children().removeClass("fa-regular");
+									$(aE2).children().addClass("fas");
+									$(aE2).click(function(){
 										return insertLike(addressNo);
 									})
 

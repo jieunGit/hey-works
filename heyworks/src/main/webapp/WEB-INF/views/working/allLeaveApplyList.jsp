@@ -38,19 +38,9 @@
                 <h2>휴가 신청내역</h2>
             </div><br>
 
-            <div class="date-box" style="margin-bottom:70px;">
+            <div class="date-box" style="margin-bottom:70px;" align="center">
                 <span>&lt; 2022/01/01 &gt;</span>
             </div>
-
-            <form action="" method="Get">
-                <select name="search">
-                    <option value="name">이름</option>
-                    <option value="dept">소속</option>
-                </select>
-
-                <input type="text" name="keyword">
-                <button type="button" class="btn btn-primary">검색</button>
-            </form>
 
             <br><br><br>
 

@@ -20,7 +20,7 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .date-box{font-size:20px; font-weight:500;}
+    .date-box{font-size:25px; font-weight:700;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
     #pagingArea{width:fit-content;margin:auto;}
@@ -51,7 +51,7 @@
                 <h3 style="font-size:20px;">전사 휴가현황</h3>
             </div><br>
 
-            <div class="date-box" style="margin-bottom:70px;">
+            <div class="date-box" style="margin-bottom:50px;" align="center">
                 <span> 2022-01-01 ~ 2022-12-31 </span>
             </div>
 
@@ -94,6 +94,7 @@
                     <th width="85px">상세</th>
                 </tr>
                 <c:forEach var="a" items="${alist}">
+                	<input type="hidden" name=userNo value="${a.userNo}">
 	                <tr style="height:37px; text-align:center">
 	                    <td>${ a.userName }</td>
 	                    <td>${ a.deptName }</td>
@@ -104,7 +105,7 @@
 	                    <td>${ a.leaveUse }</td>
 	                    <td>${ a.leaveRest }</td>
 	                    <td>${ a.status }</td>
-	                    <td><a href=""><img src="resources/images/edit.png" style="width: 15px; height: 15px;"></a></td>
+	                    <td><a href="leaveUpdateForm.wo?userNo=${a.userNo}"><img src="resources/images/edit.png" style="width: 15px; height: 20px;"></a></td>
 	                </tr>
                 </c:forEach>
             </table>
@@ -122,14 +123,7 @@
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<c:choose>
-                    	    <c:when test="${empty condition }">
-                    			<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ p }">${ p }</a></li>
-                    		</c:when>
-                    		<c:otherwise>
-                    			<li class="page-item"><a class="page-link" href="AllLeaveSearch.wo?cpage=${ p }$condition=${condition}&keyword=${keyword">${ p }</a></li>
-                    		</c:otherwise>
-                    	</c:choose>
+                    	<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ p }">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>

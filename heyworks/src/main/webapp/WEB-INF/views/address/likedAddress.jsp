@@ -206,16 +206,15 @@
 			<br>
 
 				<!-- excel내보내기 -->
-			<div id="excel">
+			<!-- <div id="excel">
 				<section>
 				
 					<a class=" btnAdditional" id="contactExcelExport" onclick="exportExcelFile();">
-								<!-- <span class="ic_toolbar more"></span> -->
 								<span class="txt">EXCEL로 내보내기</span>
 					</a>
 						
 				</section>
-			</div>
+			</div> -->
 			
 			<!-- 검색영역 --> 
 			<form name="searchContacts" action="likeAddress.ad" method="post">

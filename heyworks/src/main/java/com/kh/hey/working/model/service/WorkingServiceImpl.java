@@ -2,6 +2,7 @@ package com.kh.hey.working.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.working.model.dao.WorkingDao;
 import com.kh.hey.working.model.vo.AllLeave;
 import com.kh.hey.working.model.vo.Leave;
+import com.kh.hey.working.model.vo.Working;
 
 @Service
 public class WorkingServiceImpl implements WorkingService {
@@ -62,14 +64,43 @@ public class WorkingServiceImpl implements WorkingService {
 	public ArrayList<AllLeave> selectAleaveSearch(HashMap<String, String> map, PageInfo pi) {
 		return wDao.selectAleaveSearch(sqlSession, map, pi);
 	}
-	
+
 	@Override
-	public int updateAleave(Leave l) {
-		return 0;
+	public AllLeave selectAleaveForm(int userNo) {
+		return wDao.selectAleaveForm(sqlSession, userNo);
 	}
 
+	@Override
+	public int updateLeaveStatus(AllLeave al) {
+		return wDao.updateLeaveStatus(sqlSession, al);
+	}
 
+	@Override
+	public ArrayList<Working> selectMyallStatus(Map<String, Object> map) {
+		return wDao.selectMyallStatus(sqlSession, map);
+	}
 
+	// 관리자 근무현황 
+	@Override
+	public int selectAtnaListCount() {
+		return wDao.selectAtnaListCount(sqlSession);
+	}
+
+	/*
+	@Override
+	public ArrayList<Working> selectAtnaList(String> map) {
+		return wDao.selectAtnaList(sqlSession, pi);
+	}
+	*/
+	@Override
+	public ArrayList<Working> selectAtnaList() {
+		return wDao.selectAtnaList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Working> selectAtnaListt() {
+		return wDao.selectAtnaListt(sqlSession);
+	}
 
 
 }

@@ -18,5 +18,6 @@ public class Resources {
 	private String resourceName;
 	private String status;
 	private String resourceContent;
+	private String categoryName;
 	
 }

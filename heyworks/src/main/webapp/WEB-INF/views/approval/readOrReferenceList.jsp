@@ -46,11 +46,12 @@
         text-decoration: none;
     }
     #pagingArea{
-	   	width:fit-content;
-	   	margin-left:400px;
+	   	margin-left:850px;
     }
     .pagination>li{
     	border-radius:10px;
+    	margin-left:5px;
+		font-size:10px;
     }
 </style>
 </head>
@@ -78,7 +79,7 @@
                     <th width="80">작성자</th>
                     <th width="70">긴급</th>
                     <th width="350">제목</th>
-                    <th wdith="70">등급</th>
+                    <th width="70">등급</th>
                     <th width="100">기안일</th>
                 </tr>
             </thead>
@@ -98,6 +99,10 @@
 		                    <td>${rr.approvalTitle}</td>
 		                    <td>${rr.grade}</td>
 		                    <td>${rr.createDate}</td>
+		                    <td style="display:none;" class="read">${rr.read}</td>
+		                    <td style="display:none;" class="readyn">${rr.readStatus}</td>
+		                    <td style="display:none;" class="reference">${rr.reference}</td>
+		                    <td style="display:none;" class="referenceyn">${rr.referenceStatus}</td>
 		                </tr>
 		                </c:forEach>
                 	</c:when>
@@ -114,7 +119,7 @@
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${rrpi.currentPage eq 1}">
-            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
             	</c:when>
             	<c:otherwise>
             		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage-1}">이전</a></li>
@@ -126,24 +131,37 @@
             
             <c:choose>
         		<c:when test="${rrpi.currentPage eq rrpi.endPage}">
-            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage+1}">다음</a></li>
+            		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage+1}">NEXT ▶</a></li>
             	</c:otherwise>
            	</c:choose>
         </ul>
+    </div>
+    
+    <div style="display:none;">
+    	
     </div>
 	
 		
 	</div>
 	
 	<script>
+		const loginNo = ${loginUser.userNo};
+		
+		$(".table-hover>tbody>tr").each(function(){
+			
+			if($(".read").text() == loginNo && $(".readyn").text() == 'Y' || $(".reference").text() == loginNo && $(".referenceyn").text() == 'Y'){
+				$(".table-hover>tbody>tr").css("background-color", "gray");
+			}	
+		})
+	
 		$(".table-hover>tbody>tr").click(function(){
 		
 			location.href="detail.el?ano=" + $(this).children(".ano").text();
 			
-		})
+		})	
 	</script>
 	
 	
