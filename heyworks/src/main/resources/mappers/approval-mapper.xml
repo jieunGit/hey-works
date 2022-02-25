@@ -293,6 +293,7 @@
 		   and reference_no = #{userNo} 
 	</select>
 	
+	<!-- 열람참조자 기준 열람참조목록 -->
 	<select id="selectReadReference" resultMap="approvalResult">
 		select 
 		       elec_appr_no
