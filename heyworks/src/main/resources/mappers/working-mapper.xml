@@ -68,11 +68,18 @@
 		  )
 	</insert>  
 	
-	<!-- 퇴근 insert -->
+	<!-- 퇴근 + 근태상태 update -->
 	<update id="updateClockOut">
 		UPDATE TNA
 		   SET CLOCK_OUT = TO_CHAR(SYSDATE, 'HH24:MI')
+		     , TNA_STATUS =
+		  CASE
+		  WHEN CLOCK_OUT >= '17:00' THEN '정상근무'
+		  WHEN CLOCK_OUT >= '18:00' THEN '연장근무'
+		  WHEN CLOCK_OUT <![CDATA[ < ]]> '17:00' THEN '조기퇴근' 
+		  WHEN CLOCK_OUT IS NULL THEN '퇴근미체크' END
 		 WHERE USER_NO = #{userNo} 
+		   AND TNA_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
 	</update> 
 	
 	<!-- 휴가 신청 insert -->

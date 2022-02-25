@@ -56,16 +56,16 @@
             </div><br>
 
             <div class="date-box" style="margin-bottom:50px;" align="center">
-                <label id="sysdate"></label>
+                <label id="sysdate">왜 안나와</label>
             </div>
 
             <script>
-                function setClock(){
-                    let today = new Date();
+                function setSysdate(){
+                    var today = new Date();
 
-                    let year = today.getFullYear(); // 년도
-                    let month = today.getMonth() + 1; // 월
-                    let date = today.getDate(); // 일
+                    var year = today.getFullYear(); // 년도
+                    var month = today.getMonth() + 1; // 월
+                    var date = today.getDate(); // 일
 
                     document.getElementById("sysdate").innerHTML = year + "-" + 0 + month + "-" + date;
                 }
