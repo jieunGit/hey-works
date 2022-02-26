@@ -12,14 +12,31 @@
 		<result column="inmessage_no" property="inMsgNo" />
 		<result column="recv_no" property="recvNo" />
 		<result column="user_name" property="userName" />
+		<result column="user_no" property="userNo" />
 	</resultMap>
 	
 	<select id="countList" resultType="_int">
 		select
 		       count(*)
-		  from outmessage
-		  join inmessage using (outmessage_no)
+		  from inmessage
 		 where recv_no = #{ userNo }
+		   and status = 'Y'
+	</select>
+	
+	<select id="countOutList" resultType="_int">
+		select
+		       count(*)
+		  from outmessage
+		 where sent_no = #{ userNo }
+		   and status = 'Y'
+	</select>
+	
+	<select id="countKeepList" resultType="_int">
+		select
+		       count(*)
+		  from inmessage
+		 where recv_no = #{ userNo }
+		   and status = 'K'
 	</select>
 	
 	<select id="listInMsg" resultMap="messageResult">
@@ -35,6 +52,7 @@
 		 join employee on (user_no = sent_no)
 		 join inmessage imsg using (outmessage_no)
 		where recv_no = #{ userNo }
+		  and imsg.status = 'Y'
 		order by outmessage_no desc
 	
 	</select>
@@ -51,11 +69,29 @@
 		  from outmessage
 		  join employee on (user_no = sent_no)
 		  join inmessage imsg using (outmessage_no)
-		 where inmessage_no = #{ mno }
+		 where recv_no = #{ recvNo }
+		   and inmessage_no = #{ inMsgNo }
+		   and imsg.status in ('Y', 'K')
 	
 	</select>
 
-	<select id="searchInMsg" resultMap="messageResult">
+	<update id="deleteInMsg">
+	
+		update inmessage
+		   set status = 'N'
+		 where inmessage_no = #{mno}
+		 
+ 	</update>
+ 	
+ 	<update id="keepInMsg">
+	
+		update inmessage
+		   set status = 'K'
+		 where inmessage_no = #{mno}
+		 
+ 	</update>
+ 	
+ 	<select id="searchInMsg" resultMap="messageResult">
 		
 		select outmessage_no
 		     , inmessage_no
@@ -67,8 +103,149 @@
 		  from outmessage
 		  join employee on (user_no = sent_no)
 		  join inmessage imsg using (outmessage_no)
-		 where recv_no = #{ msg.userNo }
-           and user_name = #{ msg.userName }
+		 where recv_no = #{ userNo }
+           and user_name like '%'||#{ userName }||'%'
+           and imsg.status = 'Y'
+		 order by outmessage_no desc
+	
+	</select>
+ 	
+ 	<insert id="sentOutMsg">
+ 		insert
+		  into outmessage
+			  (
+			    outmessage_no
+			  , sent_no
+			  , outmessage_content
+			  , message_date
+			  , status
+			  )
+			  values
+			  (
+			     SEQ_OUTMSG.nextval
+			   , #{ sentNo }
+			   , #{ outMsgContent }
+			   , sysdate
+			   , 'Y'
+			   )
+ 	</insert>
+ 	
+ 	<insert id="sentInMsg">
+ 		insert
+		  into inmessage
+			  (
+			    inmessage_no
+			  , recv_no
+			  , outmessage_no
+			  , status
+			  )
+			  values
+			  (
+			     SEQ_INMSG.nextval
+			   , #{ recvNo }
+			   , SEQ_OUTMSG.currval
+			   , 'Y'
+			   )
+ 	</insert>
+ 	
+ 	<select id="listOutMsg" resultMap="messageResult">
+ 	
+ 		select outmessage_no
+		    , inmessage_no
+		    , sent_no
+            , recv_no
+		    , user_name
+		    , outmessage_content
+		    , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		    , omsg.status
+		 from outmessage omsg
+		 join inmessage imsg using (outmessage_no)
+         left join employee on (user_no = recv_no)
+		where sent_no = #{ userNo }
+		  and omsg.status = 'Y'
+		order by outmessage_no desc
+	
+	</select>
+	
+	<select id="detailOutMsg" resultMap="messageResult">
+	
+		select outmessage_no
+		     , sent_no
+		     , inmessage_no
+		     , user_name
+		     , outmessage_content
+		     , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		     , omsg.status
+		  from outmessage omsg
+		  join inmessage imsg using (outmessage_no)
+          left join employee on (user_no = recv_no)
+		 where sent_no = #{ sentNo }
+		   and outmessage_no = #{ outMsgNo }
+		   and omsg.status = 'Y'
+	
+	</select>
+	
+	<update id="deleteOutMsg">
+	
+		update outmessage
+		   set status = 'N'
+		 where outmessage_no = #{mno}
+		 
+ 	</update>
+ 	
+ 	<select id="searchOutMsg" resultMap="messageResult">
+		
+		select outmessage_no
+		     , inmessage_no
+		     , sent_no
+		     , recv_no
+		     , user_name
+		     , outmessage_content
+		     , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		     , omsg.status
+		  from outmessage omsg
+		  join inmessage imsg using (outmessage_no)
+          left join employee on (user_no = recv_no)
+		 where sent_no = #{ sentNo }
+           and user_name like '%'||#{ userName }||'%'
+           and omsg.status = 'Y'
+		 order by outmessage_no desc
+	
+	</select>
+	
+	<select id="listKeepMsg" resultMap="messageResult">
+		
+		select outmessage_no
+		    , inmessage_no
+		    , sent_no
+		    , user_name
+		    , outmessage_content
+		    , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		    , imsg.status
+		 from outmessage
+		 join employee on (user_no = sent_no)
+		 join inmessage imsg using (outmessage_no)
+		where recv_no = #{ userNo }
+		  and imsg.status = 'K'
+		order by outmessage_no desc
+	
+	</select>
+	
+	<select id="searchKeepMsg" resultMap="messageResult">
+		
+		select outmessage_no
+		     , inmessage_no
+		     , sent_no
+		     , user_name
+		     , outmessage_content
+		     , to_char(message_date, 'YYYY-MM-DD [HH24:MM]') message_date
+		     , imsg.status
+		  from outmessage
+		  join employee on (user_no = sent_no)
+		  join inmessage imsg using (outmessage_no)
+		 where recv_no = #{ userNo }
+           and user_name like '%'||#{ userName }||'%'
+           and imsg.status = 'K'
 		 order by outmessage_no desc
 	
 	</select>

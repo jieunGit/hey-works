@@ -32,6 +32,7 @@
     .contents .searchbar {
         margin-top: 30px;
         margin-bottom: 20px;
+        
     }
     .contents .input-group {
         width: 250px;
@@ -40,9 +41,6 @@
         margin-top: 40px;
         margin-left: 10px;
         font-size: 16px;
-    }
-    .searchbar {
-        width: 250px;
     }
     .searchbar, #count { 
         float: left;
@@ -92,21 +90,19 @@
    
         <div class="contents">
 
-            <div class="top">
-                <!-- 검색바 -->
-                <form class="searchbar" action="search.msg" method="get">
-                    <div class="input-group">
-                    <input type="text" class="form-control" name="userName" placeholder="발신자 이름 검색">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit" style="height: 34px;">
-                        <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </div>
-                    </div>
-                </form>
+            <!--검색바-->
+            <form class="searchbar" method="get" action="search.inMsg">
+                <div class="input-group">
+                  <input name="userName" type="text" class="form-control" placeholder=" 이름 검색">
+                  <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit" style="width: 40px; height: 34px;">
+                      <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                  </div>
+                </div>
+            </form>
 
-                <span id="count">받은쪽지함 ${ count }개</span>
-            </div>
+            <span id="count">받은쪽지 <b>${ count }</b>개</span>
             
 
             <!-- 받은쪽지리스트 -->
@@ -122,7 +118,7 @@
                 <tbody>
                 	<c:forEach var="m" items="${ inList }">
 	                    <tr class="msgList">
-	                    	<td class="mno" style="display:none;">${ m.inMsgNo }</td>
+	                    	<td class="inMsgNo" style="display:none;">${ m.inMsgNo }</td>
 	                        <td><input class="ck" type="checkbox"></td>
 	                        <td>${ m.userName }</td>
 	                        <td class="msgcontent" style="text-overflow:ellipsis; overflow:hidden"><nobr>${ m.outMsgContent }</nobr></td>
@@ -131,18 +127,56 @@
                     </c:forEach>
                 </tbody>
             </table>
-
+            
             <!-- 삭제|보관 버튼 -->
             <div class="buttons">
-                <button id="goDel" type="button" class="btn btn-default" style="margin-right: 10px;" data-toggle="modal" data-target="#delete">삭제</button>
+                <button id="goDel" type="button" class="btn btn-default" style="margin-right: 10px;" data-toggle="modal" data-target="#delete"><i class="fa-regular fa-trash-can">&nbsp;</i>삭제</button>
                 <button id="goKeep" type="button" class="btn btn-success" data-toggle="modal" data-target="#keep">보관함</button>
             </div>   
 
+            <!-- 삭제 Modal -->
+            <div id="delete" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+            
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
+                            쪽지를 삭제하시겠습니까?
+                        </div>
+                        <div class="modal-footer" style="text-align: center;">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
+                            <button type="button" id="yesDel" class="btn btn-danger" style="margin-right:40px;">삭제</button>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+
+            <!-- 보관 Modal -->
+            <div id="keep" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+            
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
+                            쪽지를 보관함으로 이동하시겠습니까?
+                        </div>
+                        <div class="modal-footer" style="text-align: center;">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
+                            <button type="button" id="yesKeep" class="btn btn-success" style="margin-right:40px;">보관</button>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+            
+            
+            
 			<!-- 상세보기용 script -->
 			<script>
 				$(function(){
 					$(".msgcontent").click(function(){
-						location.href = "detail.msg?mno=" + $(this).children('.mno').text();						
+						location.href = "detail.inMsg?inMsgNo=" + $(this).siblings('.inMsgNo').text();						
 					})
 				})
 			</script>
@@ -173,43 +207,71 @@
 			         }
 			      })   
 		   </script>
-
-
-            <!-- 삭제 Modal -->
-            <div id="delete" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-sm">
             
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
-                            쪽지를 삭제하시겠습니까?
-                        </div>
-                        <div class="modal-footer" style="text-align: center;">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
-                            <button type="button" class="btn btn-danger">삭제</button>
-                        </div>
-                    </div>
-            
-                </div>
-            </div>
-
-            <!-- 보관 Modal -->
-            <div id="keep" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-sm">
-            
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
-                            쪽지를 보관함으로 이동하시겠습니까?
-                        </div>
-                        <div class="modal-footer" style="text-align: center;">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
-                            <button type="button" class="btn btn-success">보관</button>
-                        </div>
-                    </div>
-            
-                </div>
-            </div>
+            <!-- 삭제하기 기능 -->
+			<script>
+				$(function(){
+					
+					$("#yesDel").click(function(){
+						
+						const mNos = new Array();
+						
+						$(".ck:checked").each(function(){
+							mNos.push($(this).parent().siblings(".inMsgNo").text());
+						});
+						console.log(mNos);
+						
+						$.ajax({
+							
+							url:"delete.inMsg",
+	 		   				type:"post",
+	 		   				data: {
+	 		   					mNos:mNos
+	 		   				},
+	 		   				success:function(result){
+	 		   					if(result > 0) {
+	 		   						alert("쪽지가 삭제되었습니다.");
+	 	   							location.reload();
+	 		   					}
+	 		   				}, error:function(){
+	 		   					console.log("실패");
+	 		   				}
+	 		   					
+							
+						})
+						
+						
+					})
+					
+					$("#yesKeep").click(function(){
+						
+						const mNos = new Array();
+						
+						$(".ck:checked").each(function(){
+							mNos.push($(this).parent().siblings(".inMsgNo").text());
+						});
+						
+						console.log(mNos);
+						
+						$.ajax({
+							
+							url:"keep.inMsg",
+	 		   				type:"post",
+	 		   				data: {
+	 		   					mNos:mNos
+	 		   				},
+	 		   				success:function(result){
+	 		   					if(result > 0) {
+	 		   						alert("선택한 쪽지를 보관함으로 이동했습니다.");
+	 	   							location.reload();
+	 		   					}
+	 		   				}, error:function(){
+	 		   					console.log("실패");
+	 		   				}
+						})
+					})
+				})
+			</script>
             
             <!-- 페이징바 -->
             <ul class="pagination" style="margin-left: 350px;">

@@ -160,9 +160,9 @@
                	</div>
                	<div class="chart">
                 	<c:forEach var="e" items="${ organ }">
-		                    <dl data-toggle="modal" data-target="#myModal">
+		                    <dl class="userList" data-toggle="modal" data-target="#myModal">
 		                    	<c:choose>
-		                    		<c:when test="${ e.status eq 'R' }">
+		                    		<c:when test="${ e.status eq 'R ' }">
 				                        <dt class="name">${ e.userName }<span style="color:rgb(147, 177, 223);">(휴직)</span></dt>
 				                    </c:when>    
 			                        <c:otherwise>
@@ -181,6 +181,7 @@
 			                        		<dd class="position">${ e.jobName }</dd>	
 			                        	</c:otherwise>
 		                        </c:choose>
+	                        	<dd class="userNo" style="display:none;">${ e.userNo }</dd>
 		                    </dl>
                    	</c:forEach>
                	</div>
@@ -251,7 +252,7 @@
 			$(document).on('click', '.userList', function(){
 				
 				var userNo = $(this).children(".userNo").text();
-				console.log(userNo);
+				//console.log(userNo);
 				
 				$.ajax({
 					url:"detail.emp",
