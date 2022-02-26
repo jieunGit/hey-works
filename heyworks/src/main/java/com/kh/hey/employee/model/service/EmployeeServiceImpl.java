@@ -75,23 +75,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return eDao.approvalAdminUpdate(sqlSession, uno);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public int updatePassword(HashMap<String,String> map) {
+		return eDao.updatePassword(sqlSession, map);
+	}
+
+
 
 }

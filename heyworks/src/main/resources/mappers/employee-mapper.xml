@@ -53,8 +53,8 @@
 	  join department using(dept_code)
 	 where status = 'Y'
 	   and user_id = #{userId}
-	<!--   and user_pwd = #{userPwd} -->		
-	
+  <!-- and user_pwd = #{userPwd} -->		
+	<!-- 비밀번호 주석하고 커밋하기 -->
 	</select>
 	
 	<!-- 전자결재 결재자용 사원 조회 -->
@@ -175,11 +175,7 @@
 		   set admin_yn = 'Y'
 		 where user_no = #{uno}
 	</update>
-	
-	
-	
-	
-	
+	<!-- 전자결재 끝+++++++++++++++++++ -->
 	
 	<!-- 회원정보수정 -->
 	<update id="updateEmployee">
@@ -193,7 +189,13 @@
 		 where user_no = #{userNo}
 	</update>
 	
-	
+	<!-- 초기 비밀번호 변경 -->
+	<update id="updatePassword">
+		update
+			   employee
+		   set user_pwd = #{encPwd}
+		 where user_id = #{userId}
+	</update>
 	
 	
 	

@@ -26,4 +26,7 @@ public interface EmployeeService {
 	// 회원정보수정
 	int updateEmployee(Employee e);
 	
+	// 초기 비밀번호 입력시 비번 변경
+	int updatePassword(HashMap<String,String> map);
+	
 }

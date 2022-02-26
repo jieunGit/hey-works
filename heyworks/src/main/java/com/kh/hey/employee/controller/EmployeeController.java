@@ -1,10 +1,12 @@
 package com.kh.hey.employee.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,9 @@ public class EmployeeController {
 	@Autowired
 	private ApprovalService aService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	
 	@RequestMapping("login.em")
 	public ModelAndView loginEmployee(Employee e, HttpSession session, ModelAndView mv) {
@@ -34,24 +39,32 @@ public class EmployeeController {
 		
 		Employee loginUser = eService.loginEmployee(e);
 		
-		if(loginUser == null) { 			
+		if(loginUser != null && bcryptPasswordEncoder.matches(e.getUserPwd(), loginUser.getUserPwd())) { 
+			
+			if(e.getUserPwd().equals("0000")) { // 나중에 1234으로 변경하기
+				
+				mv.addObject("userId", e.getUserId());
+				mv.setViewName("employee/updatePassword");
+			
+			}else {
+				
+				session.setAttribute("loginUser", loginUser);
+				System.out.println(loginUser);
+				mv.setViewName("redirect:/main.do");
+			}
+			
+		}else { 			
 			mv.addObject("errorMsg", "로그인 실패");
 			System.out.println("로그인 실패");
 			System.out.println(loginUser);
 			mv.setViewName("redirect:/login.do"); 
-			
-			
-		}else { 			
-			session.setAttribute("loginUser", loginUser);
-			System.out.println(loginUser);
-			mv.setViewName("redirect:/main.do");
-			
 		}
 		return mv;		
 	}
 	
 	@RequestMapping("login.do")
 	public String index(HttpSession session) throws Exception {
+
 		return "employee/login";
 	}
 	
@@ -102,7 +115,41 @@ public class EmployeeController {
 			return "redirect:myPage.em";
 		}
 		
-	}
+	} // 회원정보수정
+	
+	@RequestMapping("updatePwdForm.em")
+	public ModelAndView updatePwdForm(ModelAndView mv) {
+		mv.setViewName("employee/updatePassword");
+		return mv;
+	} // 비밀번호 변경 페이지 
+	
+	@RequestMapping("updatePwd.em")
+	public String updatePassword(String userPwd, String userId, HttpSession session) {
+		
+		String encPwd = bcryptPasswordEncoder.encode(userPwd);
+
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("encPwd", encPwd);
+		map.put("userId", userId);
+		
+		int result = eService.updatePassword(map);
+		
+		if(result > 0) {
+			return "redirect:login.do";
+		}else {
+			session.setAttribute("alertMsg", "비밀번호 변경 실패!");
+			return "redirect:updatePwdForm.em";
+		}
+		
+	} // 비밀번호 변경
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

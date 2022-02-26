@@ -58,7 +58,9 @@ public class EmployeeDao {
 		return sqlSession.update("employeeMapper.updateEmployee", e);
 	} // 회원정보수정
 	
-	
+	public int updatePassword(SqlSessionTemplate sqlSession, HashMap<String,String> map) {
+		return sqlSession.update("employeeMapper.updatePassword", map);
+	} // 초기 비밀번호 변경
 	
 	
 	

@@ -47,13 +47,14 @@
 						</span>
 					</div>
 
-				<!-- 	<div class="wrap-input100 validate-input" data-validate = "비밀번호를 입력해주세요">
-						<input class="input100" type="password" id=userPwd name="uesrPwd" placeholder="Password">
+					<!-- 여기가 비밀번호 자리 코드 수정하고 주석달기 -->
+					<div class="wrap-input100 validate-input" data-validate = "비밀번호를 입력해주세요">
+						<input class="input100" type="password" id=userPwd name="userPwd" placeholder="Password">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
-					</div> -->
+					</div> 
 					
 					<div class="container-login100-form-btn">
 						<button type="submit" class="login100-form-btn">
