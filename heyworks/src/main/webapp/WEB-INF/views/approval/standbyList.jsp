@@ -96,13 +96,13 @@
 					                    <td>${ap.writeDept}</td>
 					                    <td>
 					                    	<c:if test="${ap.emergancy eq 'Y'}">
-					                        	<img src="resources/images/179386.png" style="width: 25%; height: 55%;" >
+					                        	<img src="resources/images/emergancy.png" style="width: 25%; height: 55%;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.approvalTitle}</td>
 					                    <td>
 					                    	<c:if test="${!empty ap.originName}">
-					                        	<img src="resources/images/2586886.png" style="width: 80%; height: 70%;" >
+					                        	<img src="resources/images/attachment.png" style="width: 80%; height: 70%;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.userNo}</td>

@@ -100,7 +100,7 @@
 					                    <td>${rr.userNo}</td>
 					                    <td>
 					                    	<c:if test="${!empty rr.emergancy}">
-					                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+					                        	<img src="resources/images/emergancy.png" style="width: 25%; height: 45%;" >
 					                        </c:if>
 					                    </td>
 					                    <td>${rr.approvalTitle}</td>

@@ -95,13 +95,13 @@
 					                    <td>${d.writeDept}</td>
 					                    <td>
 					                    	<c:if test="${d.emergancy eq 'Y'}">
-					                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
+					                        	<img src="resources/images/emergancy.png" style="width: 30px; height: 30px;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${d.approvalTitle}</td>
 					                    <td>
 					                    	<c:if test="${!empty d.originName}">
-					                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
+					                        	<img src="resources/images/attachment.png" style="width: 30px; height: 30px;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${d.userNo}</td>

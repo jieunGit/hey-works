@@ -134,13 +134,13 @@
 		                    <td>${ed.userNo}</td>
 		                    <td>
 		                    	<c:if test="${!empty ed.emergancy}">
-		                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
+		                        	<img src="resources/images/emergancy.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
 		                    <td>${ed.approvalTitle}</td>
 		                    <td>
 		                    	<c:if test="${!empty ed.originName}">
-		                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
+		                        	<img src="resources/images/attachment.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
 		                    <td>

@@ -201,7 +201,7 @@
                     <th class="text-danger">*결재라인</th>
                     <th width="25" style="border-left: none;">
                         <button type="button" data-target="#confirm-line" data-toggle="modal">
-                            <img src="resources/images/875068.png">
+                            <img src="resources/images/plus.png">
                         </button>
                     </th>
                     <c:forEach var="ce" items="${ap.confirmList}" varStatus="i">
@@ -406,7 +406,7 @@
 
             <div id="attachment-div">
                 &nbsp;&nbsp;
-                <img src="resources/images/124506.png" width="20px" height="20px">
+                <img src="resources/images/clip.png" width="20px" height="20px">
                 <c:choose>
                 	<c:when test="${!empty ap.originName}">
 		               	현재 업로드된 파일 : 
@@ -547,7 +547,7 @@
             			let value = "";
         				for(let i in list){
         					value += "<tr>"
-                            	   + "<td width='48'><input type='checkbox'></td>"
+                            	   + "<td width='48'><input type='checkbox' name='job' value='"+list[i].jobCode+"'></td>"
                             	   + "<td width='150' class='noCheck'>" + list[i].userNo + "</td>"
                             	   + "<td width='100' class='nameCheck'>" + list[i].userName + "</td>"
                             	   + "<td width='100' class='jobCheck'>" + list[i].jobName + "</td>"
@@ -655,6 +655,36 @@
                     case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
                     case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
                 }
+                
+             	// 결재자 값 비교해서 선택 불가하게 하기
+               	let sign1 = $("#sign1").text();
+               	let fsign = sign1.slice(-2);
+               	
+               	if(fsign == '이사'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 4 || $(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '과장'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '대리'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '주임'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	} // 결재비교 끝
 	
                 
             }
@@ -699,16 +729,10 @@
             	$("#confirm2").val($("#sign2").text());
             	$("#confirm3").val($("#sign3").text());
             	
-            	$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
             	
             }
             
-            $("#confirm-line input[type='checkbox']").checked(function(){
-            	
-            	
-            	
-            })
-            
+
             //------------------------------------------결재자 끝
 
 			

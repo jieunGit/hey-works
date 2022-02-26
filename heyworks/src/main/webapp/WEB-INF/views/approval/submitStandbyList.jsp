@@ -96,13 +96,13 @@
 		                    <td>${sb.userNo}</td>
 		                    <td>
 		                    	<c:if test="${sb.emergancy eq 'Y'}">
-		                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
+		                        	<img src="resources/images/emergancy.png" style="width: 30px; height: 30px;" >
 		                        </c:if>
 		                    </td>
 		                    <td style="text-overflow:ellipsis; overflow:hidden"><nobr>${sb.approvalTitle}</nobr></td>
 		                    <td>
 		                    	<c:if test="${!empty sb.originName}">
-		                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
+		                        	<img src="resources/images/attachment.png" style="width: 30px; height: 30px;" >
 		                       	</c:if>
 		                    </td>
 		                    <td>${sb.firstUser}</td>

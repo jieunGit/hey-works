@@ -374,7 +374,7 @@ public class ApprovalController {
 					session.setAttribute("alertMsg", "업무기안서 작성에 실패했습니다!");
 				}
 				
-			}else { // 수정중
+			}else { 
 				
 				for(int i=0; i<confirmList.size(); i++) {
 					confirmList.get(i).setFormNoName("SA-EB-");
@@ -402,7 +402,7 @@ public class ApprovalController {
 		}
 		
 		
-		return "redirect:onlist.el";
+		return "redirect:onlist.el?status=A";
 		
 	}
 	

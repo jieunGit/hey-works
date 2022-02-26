@@ -86,14 +86,14 @@
 					                    <td>${ap.createDate}</td>
 					                    <td>
 					                    	<c:if test="${ap.emergancy eq 'Y'}">
-					                        	<img src="resources/images/179386.png" style="width: 30px; height: 30px;" >
+					                        	<img src="resources/images/emergancy.png" style="width: 30px; height: 30px;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.formNo}</td>
 					                    <td style="text-overflow:ellipsis; overflow:hidden"><nobr>${ap.approvalTitle}</nobr></td>
 					                    <td>
 					                    	<c:if test="${!empty ap.originName}">
-					                        	<img src="resources/images/2586886.png" style="width: 30px; height: 30px;" >
+					                        	<img src="resources/images/attachment.png" style="width: 30px; height: 30px;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.userNo}</td>
@@ -131,7 +131,7 @@
 		                    <td>${rr.createDate}</td>
 		                    <td>
 		                    	<c:if test="${!empty rr.emergancy}">
-		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
+		                        	<img src="resources/images/emergancy.png" style="width: 25%; height: 45%;" >
 		                        </c:if>
 		                    </td>
 		                    <td style="text-overflow:ellipsis; overflow:hidden"><nobr>${rr.approvalTitle}</nobr></td>

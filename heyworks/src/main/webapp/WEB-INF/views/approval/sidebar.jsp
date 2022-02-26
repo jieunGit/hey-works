@@ -63,27 +63,27 @@
                 	전자결재
             </li>
             <li id="write"><a href="approvalFrom.el" style="color: white;">작성하기</a></li>
-            <li class="side-list"><img src="resources/images/3759325.png">자주쓰는양식
+            <li class="side-list"><img src="resources/images/underarrow.png">자주쓰는양식
                 <ul>
                     <li><a href="bdEnrollForm.el">업무기안서</a></li>
                     <li><a href="ebEnrollForm.el">비품구매품의서</a></li>
                 </ul>
             </li>
-            <li class="side-list"><img src="resources/images/3759325.png">내 결재함
+            <li class="side-list"><img src="resources/images/underarrow.png">내 결재함
                 <ul>
                     <li><a href="standby.el">결재대기</a></li>
                     <li><a href="readNref.el">&nbsp;참조/열람대기</a></li>
                     <li><a href="doneConf.el">&nbsp;승인결재문서</a></li>
                 </ul>
             </li>
-            <li class="side-list"><img src="resources/images/3759325.png">진행중인문서
+            <li class="side-list"><img src="resources/images/underarrow.png">진행중인문서
                 <ul>
                 	<li><button type="button" class="onsidebtn" value="A">전체</button></li>
                     <li><button type="button" class="onsidebtn" value="D">결재대기</button></li>
                     <li><button type="button" class="onsidebtn" value="P">진행중</button></li>
                 </ul>
             </li>
-            <li class="side-list"><img src="resources/images/3759325.png">완료된문서
+            <li class="side-list"><img src="resources/images/underarrow.png">완료된문서
                 <ul>
                     <li><button type="button" class="onsidebtn" value="Y">결재완료문서</button></li>
                     <li><button type="button" class="onsidebtn" value="R">반려문서</button></li>
@@ -91,7 +91,7 @@
                 </ul>
             </li>
             <c:if test="${loginUser.adminYn eq 'Y'}">
-	            <li class="side-list"><img src="resources/images/3759325.png">관리자 설정
+	            <li class="side-list"><img src="resources/images/underarrow.png">관리자 설정
 	                <ul>
 	                    <li><a href="deletelist.el">삭제된문서</a></li>
 	                    <li><a href="approvalad.el">&nbsp;전자결재관리자</a></li>

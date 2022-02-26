@@ -98,7 +98,7 @@
 				</c:if>
 				
 	            <!-- 관리자가 복구시 -->
-	            <c:if test="${loginUser.adminYn eq 'Y'}">
+	            <c:if test="${loginUser.adminYn eq 'Y' and ap.status eq '기안회수(삭제)'}">
 	            	<a class="btn btn-sm text-warning" onclick="restoration();">복구하기</a>
 	            </c:if>
 	            
@@ -228,19 +228,31 @@
             <tr style="height: 110px;">
                 <td>
               		<c:if test="${ap.confirmList[0].confirmStatus eq '승인'}">
-                  		<img src="resources/images/511608.png"><br><br>
+                  		<img src="resources/images/ok.png"><br><br>
+                  		${ap.confirmList[0].confirmDate}
+              		</c:if>
+              		<c:if test="${ap.confirmList[0].confirmStatus eq '반려'}">
+                  		<img src="resources/images/rejected.png"><br><br>
                   		${ap.confirmList[0].confirmDate}
               		</c:if>
                 </td>
                 <td>
                     <c:if test="${ap.confirmList[1].confirmStatus eq '승인'}">
-                  		<img src="resources/images/511608.png"><br><br>
+                  		<img src="resources/images/ok.png"><br><br>
+                  		${ap.confirmList[1].confirmDate}
+              		</c:if>
+              		<c:if test="${ap.confirmList[1].confirmStatus eq '반려'}">
+                  		<img src="resources/images/rejected.png"><br><br>
                   		${ap.confirmList[1].confirmDate}
               		</c:if>
                 </td>
                 <td colspan="2">
                     <c:if test="${ap.confirmList[2].confirmStatus eq '승인'}">
-                  		<img src="resources/images/511608.png"><br><br>
+                  		<img src="resources/images/ok.png"><br><br>
+                  		${ap.confirmList[2].confirmDate}
+              		</c:if>
+              		<c:if test="${ap.confirmList[2].confirmStatus eq '반려'}">
+                  		<img src="resources/images/rejected.png"><br><br>
                   		${ap.confirmList[2].confirmDate}
               		</c:if>
                 </td>
@@ -379,7 +391,7 @@
 
         <div id="attachment-div">
             &nbsp;&nbsp;
-            <img src="resources/images/124506.png" width="20px" height="20px">
+            <img src="resources/images/clip.png" width="20px" height="20px">
            	<c:choose>
            		<c:when test="${!empty ap.originName}">
            			첨부파일 (1)개 <a href="${ap.filePath}" download="${ap.originName}">${ap.originName}</a>

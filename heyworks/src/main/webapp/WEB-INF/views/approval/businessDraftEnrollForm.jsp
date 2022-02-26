@@ -180,21 +180,19 @@
 	                </tr>
 	                <tr>
 	                    <th colspan="2">참 조</th>
-	                    <td colspan="3" style="border-right: none;">
-	                        <input type="text" name="" style="border: none;" id="reference" readonly required>
-	                         <input type="hidden" name="reference" id="refNo">
+	                    <td colspan="3" style="border-right: none;" id="ref-line">
+	                      
 	                    </td>
 	                    <th colspan="3">열 람</th>
-	                    <td colspan="3" style="border-right: none;">
-	                        <input type="text" name="" style="border: none;"  id="read" readonly required>
-	                        <input type="hidden" name="read" id="readNo">
+	                    <td colspan="3" style="border-right: none;" id="read-line">
+	                     
 	                    </td>
 	                </tr>
 	                <tr id="line-list">
                         <th class="text-danger">*결재라인</th>
                         <th width="25" style="border-left: none;">
                             <button type="button" data-target="#confirm-line" data-toggle="modal" >
-                                <img src="resources/images/875068.png">
+                                <img src="resources/images/plus.png">
                             </button>
                         </th>
                     </tr>
@@ -321,7 +319,7 @@
            			let value = "";
        				for(let i in list){
        					value += "<tr>"
-                           	   + "<td width='48'><input type='checkbox' name='job' value='"+list[i].jobCode+"' onclick='valueCheck(this);'></td>"
+                           	   + "<td width='48'><input type='checkbox' name='job' value='"+list[i].jobCode+"'></td>"
                            	   + "<td width='150' class='noCheck'>" + list[i].userNo + "</td>"
                            	   + "<td width='100' class='nameCheck'>" + list[i].userName + "</td>"
                            	   + "<td width='100' class='jobCheck'>" + list[i].jobName + "</td>"
@@ -374,13 +372,6 @@
                var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
            	   var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
            	
-               switch(num){
-                   case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
-                   case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
-                   case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
-                   case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
-                   case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
-               }
 	
            	if(num == 1){ // 열람 참조시
            		
@@ -403,8 +394,8 @@
            		var value = "";
 	            	value += "<td colspan='3'>"
 	            	       + "<input type='text' style='border: none;' id='confirm1' readonly>" 
-	            	       + "<input type='hidden' name='confirmList[1].confirmNo' id='clist1'>"
-	            	       + "<input type='hidden' name='confirmList[1].procedureNo' value='1'>"
+	            	       + "<input type='hidden' name='confirmList[0].confirmNo' id='clist1'>"
+	            	       + "<input type='hidden' name='confirmList[0].procedureNo' value='1'>"
 	            	       + "</td>"
 	            	       	       
            	}else if(num == 4){
@@ -412,8 +403,8 @@
            		var value = "";
 	            	value += "<td colspan='3'>"
 	            	       + "<input type='text' style='border: none;' id='confirm2' readonly>" 
-	            	       + "<input type='hidden' name='confirmList[2].confirmNo' id='clist2'>"
-	            	       + "<input type='hidden' name='confirmList[2].procedureNo' value='2'>"
+	            	       + "<input type='hidden' name='confirmList[1].confirmNo' id='clist2'>"
+	            	       + "<input type='hidden' name='confirmList[1].procedureNo' value='2'>"
 	            	       + "</td>"
            		
            	}else if(num == 5){
@@ -421,14 +412,22 @@
            		var value = "";
 	            	value += "<td colspan='3'>"
 	            	       + "<input type='text' style='border: none;' id='confirm3' readonly>" 
-	            	       + "<input type='hidden' name='confirmList[3].confirmNo' id='clist3'>"
-	            	       + "<input type='hidden' name='confirmList[3].procedureNo' value='3'>"
+	            	       + "<input type='hidden' name='confirmList[2].confirmNo' id='clist3'>"
+	            	       + "<input type='hidden' name='confirmList[2].procedureNo' value='3'>"
 	            	       + "</td>"
            		
            	}
            	
            	$("#line-list").html($("#line-list").html() + value);
 	
+	         switch(num){
+	             case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
+	             case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
+	             case 3:$("#sign1").text(nameCheck + " " + jobCheck),$("#clist1").val(noCheck); break;
+	             case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
+	             case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
+	         }
+	         
            	// 결재자 값 비교해서 선택 불가하게 하기
            	let sign1 = $("#sign1").text();
            	let fsign = sign1.slice(-2);
