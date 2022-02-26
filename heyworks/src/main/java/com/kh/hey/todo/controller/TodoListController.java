@@ -62,6 +62,24 @@ public class TodoListController {
 			}
 			
 		}
+		
+		// todolist 메인페이지 입력 ajax
+		@ResponseBody
+		@RequestMapping(value="ajaxInsertTodo.to", produces="application/json; charset=utf-8")
+		public String deleteTodolist(HttpServletRequest request, HttpSession session, Todolist to) {
+		
+			String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
+			String todoContent = request.getParameter("todoContent");
+			to.setTodoContent(todoContent);
+			to.setUserNo(userNo);
+		
+			int result = tService.todolistInsert(to);
+			
+			
+			return result > 0 ? "success" : "fail";
+			
+		}
+		
 			
 		//todolist 삭제하기
 		@ResponseBody
