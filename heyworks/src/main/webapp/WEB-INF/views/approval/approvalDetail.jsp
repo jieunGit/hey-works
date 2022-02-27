@@ -94,7 +94,7 @@
 				
 	            <!-- 반려시 -->
 	            <c:if test="${ap.status eq '반려'}">
-	            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
+	            	<a class="btn btn-sm text-danger" onclick="postSubmit(1)">재기안</a>
 				</c:if>
 				
 	            <!-- 관리자가 복구시 -->
@@ -128,7 +128,6 @@
 				case 2:	$("#postForm").attr("action", "delete.el").submit(); break;
 				case 3:	$("#postForm").attr("action", "confirm.el").submit(); break;
 				case 4:	$("#postForm").attr("action", "reject.el").submit(); break;
-				case 5:	$("#postForm").attr("action", "retryForm.el").submit(); break;
 				}
 				
         	}
@@ -380,7 +379,7 @@
 		
         <!-- 반려시 보여질 곳 -->
         <br>
-        <c:if test="${ap.status eq 'N'}">
+        <c:if test="${ap.status eq '반려'}">
         	<div>반려사유 : 
         		${ap.confirmList[0].rejectReason}
         		${ap.confirmList[1].rejectReason}

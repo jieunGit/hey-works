@@ -289,8 +289,31 @@ public class ApprovalController {
 		ArrayList<Approval> confirmList = ap.getConfirmList();
 		ArrayList<Approval> itemList = ap.getItemList();
 		
+		// 재기안시 문서번호 뽑고 formNo에 담기
+		String apNo = "";
+		if(ap.getApprovalNo() != null) {
+			apNo = ap.getApprovalNo().substring(3,5); 
+			System.out.println(apNo);
+			
+			if(apNo.equals("CE")) {
+				ap.setFormNo("3");
+			}else if(apNo.equals("RC")) {
+				ap.setFormNo("4");
+			}else if(apNo.equals("ER")) {
+				ap.setFormNo("5");
+			}else if(apNo.equals("BD")) {
+				ap.setFormNo("1");
+			}else {
+				ap.setFormNo("2");
+			}
+		}
+		
 		// 첨부파일 여부 확인하기
 		if(!upfile.getOriginalFilename().contentEquals("")) {
+			
+			if(ap.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(ap.getFilePath())).delete();
+			} // 기존파일 삭제
 			
 			String changeName = saveFile(upfile, session);
 			
@@ -305,10 +328,7 @@ public class ApprovalController {
 		if(result > 0) {
 		
 			if(ap.getFormNo().equals("3")) {
-				
-				// 전자결재 결재자
-				//ap.setFormNoName("SA-CE-");
-				
+
 				for(int i=0; i<confirmList.size(); i++) {
 					confirmList.get(i).setFormNoName("SA-CE-");
 				}
@@ -325,7 +345,6 @@ public class ApprovalController {
 				
 				
 			}else if(ap.getFormNo().equals("4")) {
-				
 
 				for(int i=0; i<confirmList.size(); i++) {
 					confirmList.get(i).setFormNoName("SA-RC-");
@@ -478,7 +497,7 @@ public class ApprovalController {
 	
 	// 수정하기
 	@RequestMapping("update.el")
-	public ModelAndView updateApproval(ModelAndView mv, Approval ap, MultipartFile reupfile, HttpSession session) {
+	public ModelAndView updateApproval(ModelAndView mv, Approval ap, MultipartFile upfile, HttpSession session) {
 		
 		ArrayList<Approval> confirmList = ap.getConfirmList();
 		ArrayList<Approval> itemList = ap.getItemList();
@@ -496,14 +515,14 @@ public class ApprovalController {
 		int insertitem = 0;
 		
 		// 새로운 첨부파일 있을경우
-		if(!reupfile.getOriginalFilename().equals("")) {
+		if(!upfile.getOriginalFilename().equals("")) {
 			
 			if(ap.getOriginName() != null) {
 				new File(session.getServletContext().getRealPath(ap.getFilePath())).delete();
 			} // 기존파일 삭제
 			
-			String changeName = saveFile(reupfile, session);
-			ap.setOriginName(reupfile.getOriginalFilename());
+			String changeName = saveFile(upfile, session);
+			ap.setOriginName(upfile.getOriginalFilename());
 			ap.setFilePath("resources/uploadFiles/approval/" + changeName);
 			
 		}
@@ -809,7 +828,138 @@ public class ApprovalController {
 	} // 관리자 등록하기
 	
 	
-	
+	// 재기안 수정중------------------------------------------
+	@RequestMapping("reinsert.el")
+	public String retry(Approval ap, MultipartFile upfile, HttpSession session, Model model) {
+		System.out.println(ap);
+		
+		ArrayList<Approval> confirmList = ap.getConfirmList();
+		ArrayList<Approval> itemList = ap.getItemList();
+		
+		// 재기안시 뽑을 문서번호
+		String apNo = ap.getApprovalNo().substring(3,5); 
+		System.out.println(apNo);
+		
+		// 첨부파일 여부 확인하기
+		if(!upfile.getOriginalFilename().contentEquals("")) {
+			
+			String changeName = saveFile(upfile, session);
+			
+			ap.setOriginName(upfile.getOriginalFilename());
+			ap.setFilePath("resources/uploadFiles/approval/" + changeName);
+			
+		}
+		
+		if(apNo.equals("RC")) {
+			ap.setFormNo("4");
+		}
+		
+		// 전자결재 공통컬럼
+		int result = aService.insertApproval(ap);
+		
+		if(result > 0) {
+		
+			/*if(ap.getFormNo().equals("3")) {
+				
+				// 전자결재 결재자
+				//ap.setFormNoName("SA-CE-");
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-CE-");
+				}
+				
+				// 증명서 신청
+				int ceResult = aService.insertCertificate(ap);
+				
+				
+				if(ceResult > 0) {
+					session.setAttribute("alertMsg", "증명서신청 문서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "증명서신청 문서 작성에 실패했습니다!");
+				}
+				
+				
+			}else*/ if(ap.getFormNo().equals("4") || apNo.equals("RC")) {
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-RC-");
+				}
+				
+				// 채용요청서 신청
+				int rcResult = aService.insertRecruiment(ap);
+				
+				
+				if(rcResult > 0) {
+					session.setAttribute("alertMsg", "채용요청서 문서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "채용요청서 문서 작성에 실패했습니다!");
+				}
+				
+				
+			}/*else if(ap.getFormNo().equals("5")) {
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-ER-");
+				}
+				
+				// 일반품의서 신청
+				int erResult = aService.insertExpenseReport(ap);
+				
+				
+				if(erResult > 0) {
+					session.setAttribute("alertMsg", "일반품의서 문서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "일반품의서 문서 작성에 실패했습니다!");
+				}
+				
+			}else if(ap.getFormNo().equals("1")) { // 수정중
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-BD-");
+				}
+				
+				// 업무기안서 신청
+				int bdResult = aService.insertBusinessDraft(ap);
+				
+				
+				if(bdResult > 0) {
+					session.setAttribute("alertMsg", "업무기안서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "업무기안서 작성에 실패했습니다!");
+				}
+				
+			}else { 
+				
+				for(int i=0; i<confirmList.size(); i++) {
+					confirmList.get(i).setFormNoName("SA-EB-");
+				}
+				
+				// 비품구매품의서 신청
+				int ebResult = aService.insertEquipmentBuy(ap);
+				int ilResult = aService.insertItemList(itemList);
+				
+				
+				if(ebResult > 0 && ilResult > 0) {
+					session.setAttribute("alertMsg", "비품구매품의서 작성에 성공했습니다.");
+				}else {
+					session.setAttribute("alertMsg", "비품구매품의서 작성에 실패했습니다!");
+				}
+				
+			}*/
+		
+		}
+		
+		int cfResult = aService.insertConfirm(confirmList);
+		
+		if((cfResult * result) < 1) {
+			session.setAttribute("alertMsg", "공통문서, 결재자 등록 실패!");
+		}
+		
+		
+		return "redirect:onlist.el?status=A";
+		
+		//return null;
+	}
 
 	
 	

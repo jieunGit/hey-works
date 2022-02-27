@@ -281,6 +281,20 @@
                 }
             })
         }
+        
+		function deleteAdmin(){
+        	
+			var arraynum = [];
+			
+			$("input:checkbox[class='boxes']:checked").each(function(){
+				arraynum.push($(this).parent().next().text());
+			})
+			
+			console.log(arraynum);
+			
+			location.href="deletead.el?adno=" + arraynum;
+        	
+        }
     </script>
 
 	
