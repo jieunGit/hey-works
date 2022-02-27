@@ -64,4 +64,7 @@ public interface WorkingService {
 	
 	// 휴가신청 상태 변경
 	int updateApplyLeaveStatus(int leaveAno);
+	
+	// 휴가신청 삭제
+	int deleteApplyLeave(int leaveAno);
 }

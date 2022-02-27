@@ -126,6 +126,11 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.updateApplyLeaveStatus(sqlSession, leaveAno);
 	}
 
+	@Override
+	public int deleteApplyLeave(int leaveAno) {
+		return wDao.deleteApplyLeave(sqlSession, leaveAno);
+	}
+
 
 
 

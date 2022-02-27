@@ -289,22 +289,19 @@ public class WorkingController {
 			return "redirect:leaveApplyUpdateForm.wo";
 		}
 	}
-	/*
-	// 휴가현황 수정 요청
-	@RequestMapping("leaveUpdate.wo")
-	public String leaveUpdate(AllLeave al, Model model, HttpSession session) {
 
-		int result = wService.updateLeaveStatus(al);
-
-		if (result > 0) {
-			model.addAttribute("al", al);
-			session.setAttribute("alertMsg", "휴가현황 정보가 수정되었습니다.");
-			// return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
-			return "redirect:leaveStatusList.wo";
-		} else {
-			session.setAttribute("alertMsg", "휴가현황 수정 실패");
-			return "redirect:leaveUpdateForm.wo";
+	// 전사 휴가신청 삭제
+	@RequestMapping("deleteApplyLeave.wo")
+	public String deleteApplyLeave(int leaveAno, HttpSession session) {
+		
+		int result = wService.deleteApplyLeave(leaveAno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "신청 내역을 삭제하였습니다.");
+			return "redirect:leaveApplyList.wo";
+		}else {
+			session.setAttribute("alertMsg", "삭제처리 실패");
+			return "redirect:leaveApplyUpdateForm.wo";
 		}
 	}
-	*/
 }

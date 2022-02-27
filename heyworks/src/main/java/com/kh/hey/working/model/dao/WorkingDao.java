@@ -122,4 +122,8 @@ public class WorkingDao {
 	public int updateApplyLeaveStatus(SqlSessionTemplate sqlSession, int leaveAno) {
 		return sqlSession.update("workingMapper.updateApplyLeaveStatus", leaveAno);
 	}
+	
+	public int deleteApplyLeave(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.delete("workingMapper.deleteApplyLeave", leaveAno);
+	}
 }

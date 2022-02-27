@@ -52,6 +52,7 @@
 				<div class="leave-btn">
 					<button type="submit" class="btn btn-primary">승인</button>
 					<button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
+					<a href="deleteApplyLeave.wo?leaveAno=${ l.leaveAno }" class="btn btn-danger" style="margin-top:7px; margin-left:735px;">삭제</a>
 				</div>
 				<br>
 		

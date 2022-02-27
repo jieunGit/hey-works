@@ -416,4 +416,11 @@
 		   SET STATUS = '승인'
 		 WHERE LEAVE_ANO = #{leaveAno}
 	</update>
+	
+	<delete id="deleteApplyLeave">
+		UPDATE 
+		 	   LEAVE_ALIST
+		   SET STATUS = '취소'
+		 WHERE LEAVE_ANO = #{leaveAno}
+	</delete>
 </mapper>
