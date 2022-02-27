@@ -134,13 +134,14 @@
             </div>
             
             <script>
-	            $(function(){
-	            	$('#deptCode').change(function(){
-	            		var dtCode = $('#deptCode option:selected').val();
-	            		console.log(dtCode);
-	            		location.href="list.selectOr?dno=" + dtCode;
-	            	})
-	            });
+            $(function(){
+            	$('#deptCode').change(function(){
+            		var dtCode = $('#deptCode option:selected').val();
+            		$('#deptCode option:selected').val(dtCode).prop('selected', true);
+            		console.log(dtCode);
+            		location.href="list.selectOr?dno=" + dtCode;
+            	})
+            });
             </script>
            
             
