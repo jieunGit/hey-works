@@ -151,8 +151,6 @@
 
             <div id="btns">
                 <button type="submit" class="btn btn-sm btn-primary">결재요청</button>
-                <a href="tempInsert.el" class="btn btn-sm">임시저장</a>
-                <a href="" class="btn btn-sm">미리보기</a>
                 <button type="button" class="btn btn-sm" onclick="history.back();">취소</button>
             </div>
             <div id="often-form">
