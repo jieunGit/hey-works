@@ -78,7 +78,7 @@
             <div class="year-outer">
 
                 <div class="title-box">
-                    올해 근무 정보
+                    	올해 근무 정보
                 </div><br>
     
                 <div class="working-box">
@@ -86,15 +86,15 @@
                     <ul class="working-box-list" style="width:510px">
                         <li style="border-right:1px solid lightgray;">
                             <strong style="margin-left:40px;">총 근무일수</strong><br><br>
-                            <span style="margin-left:35px;">1일</span>
+                            <span style="margin-left:35px;">19일</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>정상근무</strong><br><br>
-                            <span>0회</span>
+                            <span>14회</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>연장근무</strong><br><br>
-                            <span>0회</span>
+                            <span>3회</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>조기퇴근</strong><br><br>
@@ -129,15 +129,14 @@
                 <table class="table-bordered">
                     <thead class="tb-head">
                         <tr height="45px">
-                            <th width="130">날짜</th>
-                            <th width="110">휴일구분</th>
-                            <th width="130">근무스케줄시간</th>
-                            <th width="85">출근시각</th>
-                            <th width="85">퇴근시각</th>
-                            <th width="85">휴게시간</th>
-                            <th width="85">근무시간</th>
-                            <th width="85">연장근무</th>
-                            <th width="100">근태상황</th>
+                            <th width="160">날짜</th>
+                            <th width="165">근무스케줄시간</th>
+                            <th width="95">출근시각</th>
+                            <th width="95">퇴근시각</th>
+                            <th width="95">휴게시간</th>  
+                            <th width="95">연장근무</th>
+                            <th width="100">총 근무시간</th>
+                            <th width="110">근태상태</th>
                         </tr>
                     </thead>
                     <tbody align="center" class="tb-body" id="weekTna">
@@ -210,18 +209,30 @@
                                 	
                 					let list = "";
                 					for(let i in wlist){
-                						list += "<tr>"
-										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
-										     + "<td>" 
-										     +"</td>"
-										     + "<td>" + "08:00 ~ 17:00" + "</td>"
-										     + "<td>" + wlist[i].clockIn + "</td>"
-										     + "<td>" + wlist[i].clockOut + "</td>"
-										     + "<td>" + "01:00" + "</td>"
-										     + "<td>" + wlist[i].workTime + "시간" + "</td>"
-										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
-										     + "<td>" + wlist[i].tnaStatus + "</td>"
-										     + "</tr>";	 
+                						if(wlist[i].clockIn == null){
+                    						list += "<tr>"
+   										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
+   										     + "<td>" + "08:00 ~ 17:00" + "</td>"
+   										     + "<td>" + " " + "</td>"
+   										     + "<td>" + " " + "</td>"
+   										     + "<td>" + "01:00" + "</td>"
+   										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
+   										     + "<td>" + wlist[i].workTime + "시간" + "</td>"			     
+   										     + "<td>" + wlist[i].tnaStatus + "</td>"
+   										     + "</tr>";	
+                						}else{
+                    						list += "<tr>"
+   										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
+   										     + "<td>" + "08:00 ~ 17:00" + "</td>"
+   										     + "<td>" + wlist[i].clockIn + "</td>"
+   										     + "<td>" + wlist[i].clockOut + "</td>"
+   										     + "<td>" + "01:00" + "</td>"
+   										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
+   										     + "<td>" + wlist[i].workTime + "시간" + "</td>"			     
+   										     + "<td>" + wlist[i].tnaStatus + "</td>"
+   										     + "</tr>";	 
+                						}
+
 										     
 									}
                 					
@@ -234,15 +245,6 @@
                         }
                     </script>
                     
-                    <script>
-                    	function tnaStatus(){
-                    		var status = document.getElementById("tnaStatus").innerText;
-                    		console.log(status);
-                    		//if(document.getElementById("tnaStatus").innerText == '정상근무'){
-                    			//status.style.color = "red";
-                    		//}
-                    	}
-                    </script>
                     
                     <!--
                     <tbody align="center" class="tb-body">

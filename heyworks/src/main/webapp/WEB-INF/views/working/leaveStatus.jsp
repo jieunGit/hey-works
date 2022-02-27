@@ -114,7 +114,7 @@
                 </table>
             </div><br><br><br><br>
         
-            <!--최신순 3개까지만-->
+            <!--최신순 5개까지만-->
             <div class="leave-apply" style="margin-left:30px">
                 <strong><img src="resources/images/tick.png" style="width: 20px; height: 20px;"> 휴가신청내역</strong>
 

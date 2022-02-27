@@ -26,7 +26,7 @@ public interface WorkingService {
 	// 휴가신청내역 select
 	ArrayList<Leave> selectMyleave(int userNo);
 	
-	// 근태/휴가 현황 select (미완)
+	// 근태/휴가 현황 select 
 	ArrayList<Working> selectMyallStatus(Map<String, Object> map);
 	
 	

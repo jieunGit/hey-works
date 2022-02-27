@@ -20,7 +20,8 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .date-box{font-size:25px; font-weight:700;}
+    .title-box{font-size:20px; font-weight:600;}
+    .date-box{font-size:25px; font-weight:600;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
     #pagingArea{width:fit-content;margin:auto;}

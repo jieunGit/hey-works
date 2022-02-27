@@ -33,7 +33,7 @@
     .text{width:25%;}
     .searchBtn{Width:10%;}
 
-    .date-box{font-size:25px; font-weight:700;}
+    .date-box{font-size:25px; font-weight:600;}
 
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
@@ -50,26 +50,64 @@
         <jsp:include page="workingSidebar.jsp"/>
 
         <div class="all-status">
-
+			
             <div class="title-box">
-                <h3 style="font-size:20px;">전사 근무현황</h3>
+                <h3 style="font-size:20px;">전사 근태현황</h3>
             </div><br>
-
+			
             <div class="date-box" style="margin-bottom:50px;" align="center">
-                <label id="sysdate">왜 안나와</label>
+            	<!--<img src="resources/images/left-arrow.png" id="left" style="width: 20px; height: 20px;">  -->
+                <span id="today" name="today">
+                
+                </span>             
+                <!--<img src="resources/images/right-arrow.png" id="right" style="width: 20px; height: 20px;"> -->
             </div>
 
             <script>
-                function setSysdate(){
+            	$(document).ready(function(){
                     var today = new Date();
 
                     var year = today.getFullYear(); // 년도
                     var month = today.getMonth() + 1; // 월
                     var date = today.getDate(); // 일
 
-                    document.getElementById("sysdate").innerHTML = year + "-" + 0 + month + "-" + date;
-                }
+                    document.getElementById("today").innerHTML = year + "-" + 0 + month + "-" + date;
+                })
             </script>
+            
+            <!-- 
+            <script>
+            $("#left").click(function(){
+            	
+            	var sysdate = $("#today").text();
+            	var sysdateArr = sysdate.split("-"); 
+            	//console.log(sysdateArr); // ['2022', '02', '21']
+            	
+            	var stDate = new Date(sysdateArr[0], sysdateArr[1]-1, sysdateArr[2]);    
+            	var agoSt = new Date(stDate.setDate(stDate.getDate() -1+1)).toISOString().substring(0,10);
+            	
+                //console.log(agoSt);                       	
+                
+            	document.getElementById("today").innerHTML = agoSt;
+            	
+            })
+            
+            $("#right").click(function(){
+            	
+            	var sysdate = $("#today").text();
+            	var sysdateArr = sysdate.split("-"); 
+            	//console.log(startDateArr); // ['2022', '02', '21']
+            	
+            	var stDate = new Date(sysdateArr[0], sysdateArr[1]-1, sysdateArr[2]);    
+            	var nextSt = new Date(stDate.setDate(stDate.getDate() +1+1)).toISOString().substring(0,10);	
+
+                //console.log(nextSt);                  	
+                
+            	document.getElementById("today").innerHTML = nextSt;
+
+            })
+            </script>
+             -->
 
 			<div id="search-area">
 	            <form id="searchForm" action="allTnaSearch.wo" method="Get" style="margin-left:520px">
