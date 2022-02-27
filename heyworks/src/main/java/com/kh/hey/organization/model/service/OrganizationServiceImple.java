@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.organization.model.dao.OrganizationDao;
 import com.kh.hey.organization.model.vo.Organ;
 
@@ -48,6 +49,33 @@ public class OrganizationServiceImple implements OrganizationService {
 	public Organ detailEmployee(int userNo) {
 		return orDao.detailEmployee(sqlSession, userNo);
 	}
+	
+	@Override
+	public int adCountList(int dno) {
+		return orDao.adCountList(sqlSession, dno);
+	}
+
+	@Override
+	public ArrayList<Organ> adminDeptOrgan(int dno, PageInfo pi) {
+		return orDao.adminDeptOrgan(sqlSession, dno, pi);
+	}
+
+	@Override
+	public int insertOrgan(Organ o) {
+		return orDao.insertOrgan(sqlSession, o);
+	}
+
+	@Override
+	public int checkId(String id) {
+		return orDao.checkId(sqlSession, id);
+	}
+
+	@Override
+	public int checkNo(int no) {
+		return orDao.checkNo(sqlSession, no);
+	}
+
+	
 
 	
 
