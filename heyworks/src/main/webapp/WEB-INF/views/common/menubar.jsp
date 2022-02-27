@@ -66,6 +66,21 @@
         height: 100%;
         padding: 18px;        
     }
+    
+    #logout{
+    position: relative;
+     width: 100%;
+        height: 65px;
+        list-style-type: none;
+        top:130px;       
+    }      
+     #logout img{
+    	width: 100%;
+        height: 100%;
+        padding: 13px;  
+    }
+   
+    
  	#profile{
 		border-radius:100%; 	
  	}
@@ -147,7 +162,7 @@
                 <li><a href="">
                     <img src="resources/images/board.png">
                 </a></li>
-                <li><a href="">
+                <li><a href="myCalendar.ca">
                     <img src="resources/images/calendar.png">
                 </a></li>
                 
@@ -173,13 +188,13 @@
                     <img src="resources/images/coperation.png">
                 </a></li>         
                 
-                 <li><a href="">
-                </a></li>       
-                   	 
-                <li><a href="logout.em">
-                    <i class="bi bi-door-open" style="font-size: 4rem; color: black;"></i>
-                </a></li>  
-            </ul>
+                </ul>
+            
+            <div id="logout">
+                <a href="logout.em">
+                    <img src="resources/images/logout1.png">
+                </a>
+            </div>
         </div>
        
     </div>
