@@ -28,4 +28,5 @@ public class Leave {
 	
 	private String userName;
 	private String deptName;
+	private String jobName;
 }

@@ -54,4 +54,14 @@ public interface WorkingService {
 	// 전사 근무현황 검색 
 	int selectAtnaSearchCount(HashMap<String, String> map);
 	ArrayList<Working> selectAtnaSearch(HashMap<String, String> map, PageInfo pi);
+	
+	// 전사 휴가신청 리스트 페이지
+	int selectAleaveAppListCount();
+	ArrayList<Leave> selectAleaveAppList(PageInfo pi);
+	
+	// 전사 휴가신청 상태 수정폼
+	Leave selectLeaveApplyForm(int leaveAno);
+	
+	// 휴가신청 상태 변경
+	int updateApplyLeaveStatus(int leaveAno);
 }

@@ -106,6 +106,27 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.selectAtnaSearch(sqlSession, map, pi);
 	}
 
+	@Override
+	public int selectAleaveAppListCount() {
+		return wDao.selectAleaveAppListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Leave> selectAleaveAppList(PageInfo pi) {
+		return wDao.selectAleaveAppList(sqlSession, pi);
+	}
+
+	@Override
+	public Leave selectLeaveApplyForm(int leaveAno) {
+		return wDao.selectLeaveApplyForm(sqlSession, leaveAno);
+	}
+
+	@Override
+	public int updateApplyLeaveStatus(int leaveAno) {
+		return wDao.updateApplyLeaveStatus(sqlSession, leaveAno);
+	}
+
+
 
 
 }

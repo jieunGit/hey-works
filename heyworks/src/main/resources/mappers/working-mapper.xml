@@ -29,6 +29,7 @@
 		<result column="status" property="status"/>
 		<result column="user_name" property="userName"/>
 		<result column="dept_name" property="deptName"/>
+		<result column="job_name" property="jobName"/>
 	</resultMap>
 	
 	<resultMap id="AllLeaveResult" type="AllLeave">
@@ -352,4 +353,67 @@
 		 ORDER
 		    BY USER_NO
 	</select>
+	
+	<select id="selectAleaveAppListCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM LEAVE_ALIST 
+		 WHERE STATUS = '대기'
+	</select>
+	
+	<select id="selectAleaveAppList" resultMap="leaveResult">
+		SELECT
+		        APPLY_DATE
+		      , LEAVE_TYPE
+		      , START_DATE
+		      , L.END_DATE
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+		      , DECODE(JOB_CODE, 1, '사원'
+		                       , 2, '주임'
+		                       , 3, '대리'
+		                       , 4, '과장'
+		                       , 9, '대표이사') "JOB_NAME"
+		      , LEAVE_ANO
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE L.STATUS = '대기'
+		 ORDER
+		    BY APPLY_DATE DESC
+	</select>
+	
+	<select id="selectLeaveApplyForm" resultMap="leaveResult">
+		SELECT
+		        APPLY_DATE
+		      , LEAVE_TYPE
+		      , START_DATE
+		      , L.END_DATE
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+		      , DECODE(JOB_CODE, 1, '사원'
+		                       , 2, '주임'
+		                       , 3, '대리'
+		                       , 4, '과장'
+		                       , 9, '대표이사') "JOB_NAME"
+		      , LEAVE_ANO
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE L.STATUS = '대기'
+		   AND LEAVE_ANO = #{leaveAno}
+	</select>
+	
+	<update id="updateApplyLeaveStatus">
+		UPDATE
+			   LEAVE_ALIST
+		   SET STATUS = '승인'
+		 WHERE LEAVE_ANO = #{leaveAno}
+	</update>
 </mapper>

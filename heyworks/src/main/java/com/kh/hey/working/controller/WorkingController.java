@@ -100,7 +100,7 @@ public class WorkingController {
 		mv.addObject("leList", leList);
 		mv.setViewName("working/leaveStatus");
 
-		System.out.println(leStatus);
+		//System.out.println(leStatus);
 		//System.out.println(leList); 
 
 		return mv;
@@ -248,5 +248,63 @@ public class WorkingController {
 		
 	}
 	
+	// 전사원 휴가 신청 list 
+	@RequestMapping("leaveApplyList.wo")
+	public String allLeaveApplyMain(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model) {
+		
+		int listCount = wService.selectAleaveAppListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Leave> leApplist = wService.selectAleaveAppList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("leApplist", leApplist);
+		
+		return "working/allLeaveApplyList";
+		
+	}
+	
+	// 전사 휴가신청 상태 수정 폼 
+	@RequestMapping("leaveApplyUpdateForm.wo")
+	public String leaveStatusUpdate(int leaveAno, Model model) {
 
+		Leave l = wService.selectLeaveApplyForm(leaveAno);
+		
+		model.addAttribute("l", l);
+		return "working/allLeaveApplyUpdate";
+	}
+
+	// 전사 휴가신청 상태 수정 
+	@RequestMapping("updateApplyLeave.wo")
+	public String updateApplyLeaveStatus(int leaveAno, HttpSession session) {
+		
+		int result = wService.updateApplyLeaveStatus(leaveAno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 승인 처리되었습니다.");
+			//return "working/allLeaveApplyList";	
+			return "redirect:leaveApplyList.wo";
+		}else {
+			session.setAttribute("alertMsg", "승인처리 실패");
+			return "redirect:leaveApplyUpdateForm.wo";
+		}
+	}
+	/*
+	// 휴가현황 수정 요청
+	@RequestMapping("leaveUpdate.wo")
+	public String leaveUpdate(AllLeave al, Model model, HttpSession session) {
+
+		int result = wService.updateLeaveStatus(al);
+
+		if (result > 0) {
+			model.addAttribute("al", al);
+			session.setAttribute("alertMsg", "휴가현황 정보가 수정되었습니다.");
+			// return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
+			return "redirect:leaveStatusList.wo";
+		} else {
+			session.setAttribute("alertMsg", "휴가현황 수정 실패");
+			return "redirect:leaveUpdateForm.wo";
+		}
+	}
+	*/
 }

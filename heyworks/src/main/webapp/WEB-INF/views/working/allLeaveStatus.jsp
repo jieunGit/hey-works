@@ -94,7 +94,7 @@
                     <th width="85px">상세</th>
                 </tr>
                 <c:forEach var="a" items="${alist}">
-                	<input type="hidden" name=userNo value="${a.userNo}">
+                	<input type="hidden" name="userNo" value="${a.userNo}">
 	                <tr style="height:37px; text-align:center">
 	                    <td>${ a.userName }</td>
 	                    <td>${ a.deptName }</td>

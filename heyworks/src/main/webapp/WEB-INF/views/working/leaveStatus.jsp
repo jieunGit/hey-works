@@ -92,11 +92,11 @@
     
             </div>
     
-            <br><br><br><br>
+            <br><br><br><br><br>
 
 
             <div class="leave-creation" style="margin-left:30px">
-                <strong><img src="resources/images/gift.png" style="width: 20px; height: 20px;"> 휴가생성내역</strong>
+                <strong><img src="resources/images/page.png" style="width: 20px; height: 20px;"> 휴가생성내역</strong>
                 
                 <table class="table-bordered" style="margin-top:15px;">
                     <tr style="height:40px;">
@@ -116,9 +116,7 @@
         
             <!--최신순 3개까지만-->
             <div class="leave-apply" style="margin-left:30px">
-                <div class="title-box">
-                    휴가 신청 내역
-                </div><br>
+                <strong><img src="resources/images/tick.png" style="width: 20px; height: 20px;"> 휴가신청내역</strong>
 
                 <table class="table-bordered" style="margin-top:15px;">
                     <tr style="height:40px;">

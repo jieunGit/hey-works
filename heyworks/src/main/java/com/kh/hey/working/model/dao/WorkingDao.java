@@ -103,4 +103,23 @@ public class WorkingDao {
 		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaSearch", map, rowBounds);
 	}
 
+	public int selectAleaveAppListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("workingMapper.selectAleaveAppListCount");
+	}
+	
+	public ArrayList<Leave> selectAleaveAppList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAleaveAppList", null, rowBounds);
+	}
+	
+	public Leave selectLeaveApplyForm(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.selectOne("workingMapper.selectLeaveApplyForm", leaveAno);
+	}
+	
+	public int updateApplyLeaveStatus(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.update("workingMapper.updateApplyLeaveStatus", leaveAno);
+	}
 }

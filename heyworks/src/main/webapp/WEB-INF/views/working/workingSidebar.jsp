@@ -71,8 +71,7 @@
                     <ul>
                         <li style="margin-left:15px;"><a href="allTnaMain.wo">전사 근태현황</a></li>
                         <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
-                        <li style="margin-left:15px;"><a href="">휴가 신청내역</a></li>
-                        <li style="margin-left:15px;"><a href="">연장근무 신청내역</a></li>
+                        <li style="margin-left:15px;"><a href="leaveApplyList.wo">휴가 신청내역</a></li>
                     </ul>
                 </li>
             </ul>
