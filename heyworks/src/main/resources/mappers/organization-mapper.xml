@@ -16,6 +16,15 @@
 		<result column="image" property="image" />
 		<result column="adminyn" property="adminYn" />
 		<result column="status" property="status" />
+		
+		<result column="user_id" property="userId" />
+		<result column="user_pwd" property="userPwd" />
+		<result column="birth" property="birth" />
+		<result column="post" property="post" />
+		<result column="address" property="address" />
+		<result column="address_detail" property="adrDetail" />
+		<result column="hire_date" property="hire" />
+		<result column="end_date" property="end" />
 	</resultMap>
 	
 	<select id="selectDept" resultMap="organResult">
@@ -32,6 +41,14 @@
 		select
 			    user_no
 			  , user_name
+			  , user_id
+			  , user_pwd
+			  , birth
+			  , post
+			  , address
+			  , address_detail
+			  , hire_date
+			  , end_date
 			  , email
 			  , phone
 			  , call
@@ -123,6 +140,35 @@
 	
 	</select>
 	
+	<select id="messageSerchEmployee" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_name
+			  , image
+			  , admin_yn
+			  , nvl(job_code, 0) job_code
+		  from employee
+		  join department using (dept_code)
+		 where (status = 'Y' or status = 'R')
+		   and user_name like '%'||#{ userName }||'%'
+	     order by job_code desc
+		 		, user_name asc
+	
+	</select>
+	
 	<select id="detailEmployee" resultMap="organResult">
 
 		select
@@ -146,11 +192,110 @@
 		 where user_no = #{ userNo }
 	
 	</select>
+	
+	<select id="adCountList" resultType="_int">
 
+		select         
+			   count(*)
+		  from employee
+		  join department using (dept_code)
+		 where (status = 'Y' or status = 'R')
+		 <if test="dno > 0">
+           and dept_code = #{ dno }
+         </if>
+	
+	</select>
+	
+	<select id="adminDeptOrgan" resultMap="organResult">
 
+		select
+			    user_no
+			  , user_name
+			  , user_id
+			  , user_pwd
+			  , birth
+			  , post
+			  , address
+			  , address_detail
+			  , hire_date
+			  , end_date
+			  , email
+			  , phone
+			  , call
+			  , status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_name
+			  , image
+			  , admin_yn
+			  , nvl(job_code, 0) job_code
+		  from employee
+		  join department using (dept_code)
+		 where (status = 'Y' or status = 'R')
+		 <if test="dno > 0 ">
+		   and dept_code = #{ dno }
+		 </if>
+		 order by job_code desc
+		 		, user_name asc
+	
+	</select>
+	
+	<insert id="insertOrgan">
+		
+		insert
+		  into employee
+		  (  user_no 
+		  ,  user_name 
+		  ,  user_id 
+		  ,  user_pwd 
+		  ,  email 
+		  ,  phone 
+		  ,  call 
+		  ,  hire_date 
+		  ,  status 
+		  ,  dept_code 
+		  ,  job_code 
+		  ,  image
+		  )
+		  values
+		  ( #{ userNo }
+		  , #{ userName }
+		  , #{ userId }
+		  , #{ userPwd }
+		  , #{ email }
+		  , #{ phone }
+		  , #{ call }
+		  , #{ hire }
+		  , #{ status }
+		  , #{ deptCode }
+		  , #{ jobCode }
+		  , #{ image }
+		  )
+		
+	</insert>
 
+	<select id="checkId" resultType="_int">
+		
+		select
+				count(*)
+		  from employee
+		 where user_id = #{ id } 
+		
+	</select>
 
-
+	<select id="checkNo" resultType="_int">
+		
+		select
+				count(*)
+		  from employee
+		 where user_no = #{ no } 
+		
+	</select>
 
 
 </mapper>

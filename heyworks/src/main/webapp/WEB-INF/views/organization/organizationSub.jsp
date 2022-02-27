@@ -31,10 +31,22 @@
     }
     .contents .searchbar {
         margin-top: 30px;
-        margin-bottom: 50px;
+        margin-bottom: 20px;
     }
     .contents .input-group {
         width: 350px;
+    }
+    .searchbar, .goAdmin {
+        display: inline-block;
+    }
+    .goAdmin { 
+        margin-top: 30px;
+        margin-bottom: 50px;
+        float: right;
+    }
+    .goAdmin button {
+        width: 200px;
+        height: 35px;
     }
     .chart {
         width: 900px;
@@ -45,8 +57,8 @@
         display: inline-block;
         width: 160px;
         height: 72px;
-        margin-top: 20px;
-        margin-right: 16px;
+        margin-top: 25px;
+        margin-right: 50px;
         position: relative;
         cursor: pointer;
     }
@@ -56,7 +68,6 @@
         left: 0;
         width: 70px;
         height: 70px;
-        border: 1px solid #d2d2d2;
         border-radius: 4px;
     }
     .chart .name {
@@ -65,7 +76,7 @@
         font-weight: bold;
     }
     .chart .name, .chart .teams, .chart .position {
-        margin-left: 80px;
+        margin-left: 90px;
         width: 136px;
         overflow: hidden;
         white-space: nowrap;
@@ -84,8 +95,8 @@
         height:80px;
     }
     image img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
     }
     #detail1 .inform {
@@ -151,18 +162,26 @@
                 </div>
             </form>
             
+            <!--관리자모드 전환 버튼-->
+            <c:if test="${ loginUser.adminYn eq 'Y' }">
+	            <div class="goAdmin">
+	                <button type="button" class="btn btn-primary"><i class="fa-solid fa-gears"> 임직원 / 조직도 관리</i></button>
+	            </div>
+            </c:if>
+            
             <!--조직도-->
             <div class="chart-area">
 
                 <!--소속임직원-->
+                
                	<div class="deptName">
-                   	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ dt.deptName }</i>
-               	</div>
+                  	<i class="fa-solid fa-bars" style="font-size: 20px;"> ${ dt.deptName }</i>
+              		</div>
                	<div class="chart">
                 	<c:forEach var="e" items="${ organ }">
-		                    <dl data-toggle="modal" data-target="#myModal">
+		                    <dl class="userList" data-toggle="modal" data-target="#myModal">
 		                    	<c:choose>
-		                    		<c:when test="${ e.status eq 'R' }">
+		                    		<c:when test="${e.status eq 'R '}">
 				                        <dt class="name">${ e.userName }<span style="color:rgb(147, 177, 223);">(휴직)</span></dt>
 				                    </c:when>    
 			                        <c:otherwise>
@@ -170,26 +189,27 @@
 			                        </c:otherwise>
 		                        </c:choose>
 		                        <dd class="picture">
-		                            <img class="image" width="70px" height="70px" src="" style="display: inline-block;">
+		                            <img class="image" src="${ e.image }" style="display: inline-block; width:85px; height:85px; border-radius:100px;">
 		                        </dd>
-		                        <dd class="position">${ e.deptName }</dd>
+		                        <dd class="teams">${ e.deptName }</dd>
 		                        <c:choose>
-			                        	<c:when test="${ e.jobCode eq '0' }">
-			                        		<dd class="position">-</dd>	
-			                        	</c:when>
-			                        	<c:otherwise>
-			                        		<dd class="position">${ e.jobName }</dd>	
-			                        	</c:otherwise>
+		                        	<c:when test="${ e.jobCode eq '0' }">
+		                        		<dd class="position">-</dd>	
+		                        	</c:when>
+		                        	<c:otherwise>
+		                        		<dd class="position">${ e.jobName }</dd>	
+		                        	</c:otherwise>
 		                        </c:choose>
+		                        <dd class="userNo" style="display:none;">${ e.userNo }</dd>
 		                    </dl>
-                   	</c:forEach>
+                    </c:forEach>
                	</div>
 
-        	</div>
+            </div>
 
-    	</div>
-    	
-   	</div>
+        </div>
+
+    </div>
                 
                 
 	<!-- 임직원 상세보기 모달창 -->
@@ -299,8 +319,19 @@
 		})
 	
 	</script>
-
     
+    <!-- 관리자모드 전환 스크립트 -->
+    <script>
+    	
+    	$(function(){
+    		
+    		$('.goAdmin').click(function(){
+    			location.href="list.adminOrgan";
+    		})
+    		
+    	})
+    
+    </script>
    
 
 </body>

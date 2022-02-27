@@ -130,13 +130,49 @@
 		  	and status = 'P'
 		  </if>
 		  <if test='status == "Y"'>
-		  	and status = 'Y'
+			  <choose>
+			  	<when test="subject == 'title'">
+			  		and status = 'Y'
+					and elec_title like '%'||#{keyword}||'%'
+			  	</when>
+			  	<when test="subject == 'formType'">
+			  		and status = 'Y'
+					and form_no = #{type}
+			  	</when>
+			  	<otherwise>
+				  	and status = 'Y'
+			  	</otherwise>
+			  </choose>
 		  </if>
 		  <if test='status == "R"'>
-		  	and status = 'R'
+		  	<choose>
+			  	<when test="subject == 'title'">
+			  		and status = 'R'
+					and elec_title like '%'||#{keyword}||'%'
+			  	</when>
+			  	<when test="subject == 'formType'">
+			  		and status = 'R'
+					and form_no = #{type}
+			  	</when>
+			  	<otherwise>
+				  	and status = 'R'
+			  	</otherwise>
+			  </choose>
 		  </if>
 		  <if test='status == "T"'>
-		  	and status = 'T'
+		  	<choose>
+			  	<when test="subject == 'title'">
+			  		and status = 'T'
+					and elec_title like '%'||#{keyword}||'%'
+			  	</when>
+			  	<when test="subject == 'formType'">
+			  		and status = 'T'
+					and form_no = #{type}
+			  	</when>
+			  	<otherwise>
+				  	and status = 'T'
+			  	</otherwise>
+			  </choose>
 		  </if>
 	</select>
 	
@@ -198,13 +234,49 @@
 		  join confirm using(elec_appr_no)
 		 where writer_no = #{userNo}
 	   	 <if test='status == "Y"'>
-		   and ep.status = 'Y'
+	   	 	<choose>
+			  	<when test="subject == 'title'">
+			  		and ep.status = 'Y'
+					and elec_title like '%'||#{keyword}||'%'
+			  	</when>
+			  	<when test="subject == 'formType'">
+			  		and ep.status = 'Y'
+					and form_no = #{type}
+			  	</when>
+			  	<otherwise>
+				  	and ep.status = 'Y'
+			  	</otherwise>
+			  </choose>
 		 </if>
 		 <if test='status == "R"'>
-		   and ep.status = 'R'
+		 	<choose>
+			  	<when test="subject == 'title'">
+			  		and ep.status = 'R'
+					and elec_title like '%'||#{keyword}||'%'
+			  	</when>
+			  	<when test="subject == 'formType'">
+			  		and ep.status = 'R'
+					and form_no = #{type}
+			  	</when>
+			  	<otherwise>
+				  	and ep.status = 'R'
+			  	</otherwise>
+			  </choose>
 		 </if>
 		 <if test='status == "T"'>
-		   and ep.status = 'T'
+		 	<choose>
+			  	<when test="subject == 'title'">
+			  		and ep.status = 'T'
+					and elec_title like '%'||#{keyword}||'%'
+			  	</when>
+			  	<when test="subject == 'formType'">
+			  		and ep.status = 'T'
+					and form_no = #{type}
+			  	</when>
+			  	<otherwise>
+				  	and ep.status = 'T'
+			  	</otherwise>
+			  </choose>
 		 </if>
 		 order
 		    by create_date desc
@@ -221,6 +293,7 @@
 		   and reference_no = #{userNo} 
 	</select>
 	
+	<!-- 열람참조자 기준 열람참조목록 -->
 	<select id="selectReadReference" resultMap="approvalResult">
 		select 
 		       elec_appr_no
@@ -750,6 +823,7 @@
 	 	   and elec_appr_no = #{approvalNo}
 	</update>
 	
+	<!-- 완료문서 검색하기 -->
 	
 	
 	

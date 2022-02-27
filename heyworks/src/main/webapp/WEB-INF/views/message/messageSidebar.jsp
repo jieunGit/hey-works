@@ -47,6 +47,12 @@
         cursor: pointer;
         background-color: rgba(24, 121, 201, 0.2);
     }
+    .sidebar button {
+    	text-align: center;
+    	width: 80%;
+    	height: 35px;
+    	margin: 5px 0px 13px 0px;
+    }
 
 </style>
 </head>
@@ -56,13 +62,26 @@
         <div class="title">
             <i class='fas fa-angle-double-right' style='font-size:24px'> 쪽지함</i>
         </div>
+        <div align="center">
+        	<button type="button" id="goWrite" class="btn btn-primary">쪽지쓰기</button>
+        </div>
         <ul>
-            <li><i class="fa-solid fa-arrow-right-to-bracket" style='font-size:20px'><a href="inList.msg">받은쪽지함</a></i></li>
-            <li><i class="fa-solid fa-arrow-right-from-bracket" style='font-size:20px'><a href="outList.msg">보낸쪽지함</a></i></li>
-            <li><i class="fa-solid fa-layer-group" style='font-size:20px'><a href="keepList.msg">보관함</a></i></li>
-            <li><i class="fa-solid fa-trash-can" style='font-size:20px'><a href="delList.msg">휴지통</a></i></li>
+            <li><i class="fa-solid fa-arrow-right-to-bracket" style='font-size:20px'><a href="list.inMsg">받은쪽지함</a></i></li>
+            <li><i class="fa-solid fa-arrow-right-from-bracket" style='font-size:20px'><a href="list.outMsg">보낸쪽지함</a></i></li>
+            <li><i class="fa-solid fa-layer-group" style='font-size:20px'><a href="list.keepMsg">보관함</a></i></li>
+            <li><i class="fa-solid fa-trash-can" style='font-size:20px'><a href="list.delMsg">휴지통</a></i></li>
         </ul>
     </div>
+    
+    <!-- 쪽지작성 넘어가기 -->
+    <script>
+    	$(function(){
+    		$("#goWrite").click(function(){
+    			console.log("클릭");
+    			location.href="insert.form";
+    		})
+    	})
+    </script>
 
 </body>
 </html>

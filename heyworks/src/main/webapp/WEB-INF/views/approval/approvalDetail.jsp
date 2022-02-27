@@ -94,11 +94,11 @@
 				
 	            <!-- 반려시 -->
 	            <c:if test="${ap.status eq '반려'}">
-	            	<a href="" class="btn btn-sm text-danger" onclick="postSubmit(5)">재기안</a>
+	            	<a class="btn btn-sm text-danger" onclick="postSubmit(1)">재기안</a>
 				</c:if>
 				
 	            <!-- 관리자가 복구시 -->
-	            <c:if test="${loginUser.adminYn eq 'Y'}">
+	            <c:if test="${loginUser.adminYn eq 'Y' and ap.status eq '기안회수(삭제)'}">
 	            	<a class="btn btn-sm text-warning" onclick="restoration();">복구하기</a>
 	            </c:if>
 	            
@@ -128,7 +128,6 @@
 				case 2:	$("#postForm").attr("action", "delete.el").submit(); break;
 				case 3:	$("#postForm").attr("action", "confirm.el").submit(); break;
 				case 4:	$("#postForm").attr("action", "reject.el").submit(); break;
-				case 5:	$("#postForm").attr("action", "retryForm.el").submit(); break;
 				}
 				
         	}
@@ -228,19 +227,31 @@
             <tr style="height: 110px;">
                 <td>
               		<c:if test="${ap.confirmList[0].confirmStatus eq '승인'}">
-                  		<img src="resources/images/511608.png"><br><br>
+                  		<img src="resources/images/ok.png"><br><br>
+                  		${ap.confirmList[0].confirmDate}
+              		</c:if>
+              		<c:if test="${ap.confirmList[0].confirmStatus eq '반려'}">
+                  		<img src="resources/images/rejected.png"><br><br>
                   		${ap.confirmList[0].confirmDate}
               		</c:if>
                 </td>
                 <td>
                     <c:if test="${ap.confirmList[1].confirmStatus eq '승인'}">
-                  		<img src="resources/images/511608.png"><br><br>
+                  		<img src="resources/images/ok.png"><br><br>
+                  		${ap.confirmList[1].confirmDate}
+              		</c:if>
+              		<c:if test="${ap.confirmList[1].confirmStatus eq '반려'}">
+                  		<img src="resources/images/rejected.png"><br><br>
                   		${ap.confirmList[1].confirmDate}
               		</c:if>
                 </td>
                 <td colspan="2">
                     <c:if test="${ap.confirmList[2].confirmStatus eq '승인'}">
-                  		<img src="resources/images/511608.png"><br><br>
+                  		<img src="resources/images/ok.png"><br><br>
+                  		${ap.confirmList[2].confirmDate}
+              		</c:if>
+              		<c:if test="${ap.confirmList[2].confirmStatus eq '반려'}">
+                  		<img src="resources/images/rejected.png"><br><br>
                   		${ap.confirmList[2].confirmDate}
               		</c:if>
                 </td>
@@ -252,9 +263,9 @@
             </tr>
             <tr>
                 <th>참 조</th>
-                <td colspan="2">${ap.reference}</td>
+                <td colspan="2">${ap.reference}&nbsp;${ap.referenceJob}</td>
                 <th>열 람</th>
-                <td colspan="3">${ap.read}</td>
+                <td colspan="3">${ap.read}&nbsp;${ap.readJob}</td>
             </tr>
 
             <!-- 증명서 일때 -->
@@ -368,7 +379,7 @@
 		
         <!-- 반려시 보여질 곳 -->
         <br>
-        <c:if test="${ap.status eq 'N'}">
+        <c:if test="${ap.status eq '반려'}">
         	<div>반려사유 : 
         		${ap.confirmList[0].rejectReason}
         		${ap.confirmList[1].rejectReason}
@@ -379,7 +390,7 @@
 
         <div id="attachment-div">
             &nbsp;&nbsp;
-            <img src="resources/images/124506.png" width="20px" height="20px">
+            <img src="resources/images/clip.png" width="20px" height="20px">
            	<c:choose>
            		<c:when test="${!empty ap.originName}">
            			첨부파일 (1)개 <a href="${ap.filePath}" download="${ap.originName}">${ap.originName}</a>

@@ -20,8 +20,13 @@ public interface EmployeeService {
 	// 관리자 해제하기
 	int deleteAdmin(String[] adNo);
 	
+	// 관리자 등록하기
+	int approvalAdminUpdate(String uno);
 	
 	// 회원정보수정
 	int updateEmployee(Employee e);
+	
+	// 초기 비밀번호 입력시 비번 변경
+	int updatePassword(HashMap<String,String> map);
 	
 }

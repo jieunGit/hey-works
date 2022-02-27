@@ -23,7 +23,7 @@
     .outer>div{float:left;}
     .contents{
         margin: auto;
-        margin-top:20px;
+        margin-top:30px;
         margin-left:40px;
         width: 900px;
         height: 900px;
@@ -86,22 +86,24 @@
 
             <!-- 삭제|답장|이전|다음 버튼 -->
             <div class="buttons">
-                <button id="goDel" type="button" class="btn btn-default" style="width: 70px;" data-toggle="modal" data-target="#delete">삭제</button>
+                <button id="goDel" type="button" class="btn btn-default" style="width: 70px;" data-toggle="modal" data-target="#delete"><i class="fa-regular fa-trash-can">&nbsp;</i>삭제</button>
                 <button id="goRe" type="button" class="btn btn-primary" style="margin-right: 25px; width: 70px;">답장</button>
                 <button id="goPrev" type="button" class="btn btn-default" style="border-radius: 15px;">&lt;&nbsp; prev</button>
                 <button id="goNext" type="button" class="btn btn-default" style="border-radius: 15px;">next &nbsp;&gt; </button>
             </div>
-
+            
             <!-- 쪽지내용 -->
             <div class="inform">
                 <table>
                     <tr>
                         <th>보낸사람</th>
-                        <td>${ msg.userName }</td>
+                        <td class="userName">${ msg.userName }</td>
+                        <td class="sentNo" style="display:none;">${ msg.sentNo }</td>
                     </tr>
                     <tr>
                         <th>받은시간</th>
                         <td>${ msg.msgDate }</td>
+                        <td class="inMsgNo" style="display:none;">${ msg.inMsgNo }</td>
                     </tr>
                 </table>
             </div>
@@ -123,7 +125,7 @@
                         </div>
                         <div class="modal-footer" style="text-align: center;">
                             <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
-                            <button type="button" class="btn btn-danger">삭제</button>
+                            <button type="button" style="margin-right:40px;" id="yesDel" class="btn btn-danger">삭제</button>
                         </div>
                     </div>
             
@@ -141,12 +143,87 @@
                         </div>
                         <div class="modal-footer" style="text-align: center;">
                             <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
-                            <button type="button" style="margin-right:40px;" class="btn btn-primary">보관</button>
+                            <button type="button" style="margin-right:40px;" id="yesKeep" class="btn btn-primary">보관</button>
                         </div>
                     </div>
             
                 </div>
             </div>   
+            
+            <!-- 답장하기 스크립트 -->
+            <script>
+            
+            	$(function(){
+            		
+            		$('#goRe').click(function(){
+            			location.href="reply.form?sentNo=${msg.sentNo}&userName=${msg.userName}";
+            		})
+            		
+            	})
+            
+            </script>
+          
+            <!-- 이전|다음 스크립트 -->
+			<script>
+				
+			</script>
+			
+			<!-- 삭제|보관 스크립트 -->
+			<script>
+				
+				$(function(){
+					
+					$("#yesDel").click(function(){
+						
+						const mNos = new Array();
+						mNos.push('${ msg.inMsgNo }');
+						
+						$.ajax({
+							
+							url:"delete.inMsg",
+	 		   				type:"post",
+	 		   				data: {
+	 		   					mNos:mNos
+	 		   				},
+	 		   				success:function(result){
+	 		   					if(result > 0) {
+	 		   						alert("선택한 쪽지를 삭제했습니다.");
+	 	   							location.reload();
+	 		   					}
+	 		   				}, error:function(){
+	 		   					console.log("실패");
+	 		   				}
+						})
+						
+					})
+					
+					$("#yesKeep").click(function(){
+					
+						const mNos = new Array();
+						mNos.push('${ msg.inMsgNo }');
+						
+						$.ajax({
+							
+							url:"keep.inMsg",
+	 		   				type:"post",
+	 		   				data: {
+	 		   					mNos:mNos
+	 		   				},
+	 		   				success:function(result){
+	 		   					if(result > 0) {
+	 		   						alert("선택한 쪽지를 보관함으로 이동했습니다.");
+	 	   							location.reload();
+	 		   					}
+	 		   				}, error:function(){
+	 		   					console.log("실패");
+	 		   				}
+						})
+					
+					})
+				
+				})
+				
+			</script>
 
 
         </div>

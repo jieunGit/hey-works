@@ -68,25 +68,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public ArrayList<Employee> ajaxAdminSearchSelect(HashMap<String, String> map) {
 		return eDao.ajaxAdminSearchSelect(sqlSession, map);
+	} // 전자결재 관리자 등록용 전 사원 검색
+
+	@Override
+	public int approvalAdminUpdate(String uno) {
+		return eDao.approvalAdminUpdate(sqlSession, uno);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public int updatePassword(HashMap<String,String> map) {
+		return eDao.updatePassword(sqlSession, map);
+	}
+
+
 
 }

@@ -137,14 +137,21 @@
 
         <div style="width: 100%;"></div>
         <br><br>
-	<form action="update.el" method="post" enctype="multipart/form-data">
         <div id="btns">
             <button type="button" class="btn btn-sm" onclick="history.back();">뒤로가기</button>
-            <button type="submit" class="btn btn-sm text-primary">수정완료</button>
+            <c:choose>
+            	<c:when test="${ap.status ne '반려'}">
+            		<a class="btn btn-sm text-primary" onclick="postSubmit(1);">수정완료</a>
+            	</c:when>
+            	<c:otherwise>
+            		<a class="btn btn-sm text-danger" onclick="postSubmit(2);">재기안하기</a>
+            	</c:otherwise>
+            </c:choose>
         </div>
 
         <hr>
-		
+	<form action="" id="postForm" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="userNo" value="${loginUser.userNo}">
 			<div id="form-type"><input type="text" value="${ap.formNo}" name="formNo" readonly></div>
             <br>
             <div class="custom-control custom-switch" align="right">
@@ -166,9 +173,9 @@
             <table align="center" class="table-bordered">
                 <tr>
                     <th colspan="2" width="200">문서번호</th>
-                    <td colspan="3" width="250"><input type="text" name="approvalNo" style="border: none;" value="${ap.approvalNo}" required></td>
+                    <td colspan="3" width="250"><input type="text" name="approvalNo" style="border: none;" value="${ap.approvalNo}" readonly></td>
                     <th colspan="3" width="225">기안부서</th>
-                    <td colspan="3" width="225">${ap.writeDept}</td>
+                    <td colspan="3" width="225"><input type="text" name="writeDept" style="border: none;" value="${ap.writeDept}" readonly></td>
                 </tr>
                 <tr>
                     <th colspan="2">보안 등급</th>
@@ -187,12 +194,12 @@
                     <th colspan="2">참 조</th>
                     <td colspan="3" style="border-right: none;" id="ref-line">
                         <input type="text" style="border: none;" value="${ap.reference}&nbsp;${ap.referenceJob}" readonly id="reference">
-                        <input type="hidden" style="border: none;" value="${ap.refNo}">
+                        <input type="hidden" style="border: none;" name="read" value="${ap.refNo}">
                     </td>
                     <th colspan="3">열 람</th>
                     <td colspan="3" style="border-right: none;" id="read-line">
                         <input type="text" style="border: none;" value="${ap.read}&nbsp;${ap.readJob}" id="read">
-                        <input type="hidden" style="border: none;" value="${ap.readNo}">
+                        <input type="hidden" style="border: none;" name="reference" value="${ap.readNo}">
                     </td>
                 </tr>
 
@@ -201,7 +208,7 @@
                     <th class="text-danger">*결재라인</th>
                     <th width="25" style="border-left: none;">
                         <button type="button" data-target="#confirm-line" data-toggle="modal">
-                            <img src="resources/images/875068.png">
+                            <img src="resources/images/plus.png">
                         </button>
                     </th>
                     <c:forEach var="ce" items="${ap.confirmList}" varStatus="i">
@@ -358,6 +365,13 @@
 		    			}
 		    		})
 		    	})
+		    	
+		    	function postSubmit(num){
+	            	switch(num){
+					case 1:	$("#postForm").attr("action", "update.el").submit(); break;
+					case 2:	$("#postForm").attr("action", "insert.el").submit(); break;
+	            	}
+	            }
 	  		</script>
 
             <!-- 비품구매 제외시 보여질 내용 -->
@@ -397,8 +411,11 @@
 				        </c:forEach>
 			        </tbody>
 		        </table>
-		        <div style="width:100%;" align="right">총 금액 : <input type="text" name="totalPay" value="${eb.totalPay}"><button type="button" class="btn btn-sm" onclick="totalPay();">조회</button></div>
-		        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeList();">한 행 삭제하기</button>
+		        
+				<div style="width:100%;" align="right">총 금액 : <input type="text" name="totalPay">
+	            	<button type="button" class="btn btn-sm" onclick="allTotalPay();"><span class="spinner-grow text-info spinner-grow-sm"></span>조회</button>
+	            </div>
+	            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeList();">한 행 삭제하기</button>
 		        <br><br>
 		        <p class="text-danger" style="font-size:12px;">* 수정하신 후 추가버튼을 누르면 기존의 아이템으로 초기화 됩니다. 꼭 원하시는만큼 추가버튼을 누르고 수정해주세요.</p>
 			</c:if>
@@ -406,7 +423,7 @@
 
             <div id="attachment-div">
                 &nbsp;&nbsp;
-                <img src="resources/images/124506.png" width="20px" height="20px">
+                <img src="resources/images/clip.png" width="20px" height="20px">
                 <c:choose>
                 	<c:when test="${!empty ap.originName}">
 		               	현재 업로드된 파일 : 
@@ -419,7 +436,7 @@
                 	</c:otherwise>
                 </c:choose>
             </div>
-        	<input type="file" name="reupfile" class="form-control-file border" style="margin-top: 30px;">
+        	<input type="file" name="upfile" class="form-control-file border" style="margin-top: 30px;">
    			<p id="fileNotice" class="text-danger">* 1개의 파일만 첨부할 수 있습니다</p>
 		</form>
 		
@@ -454,8 +471,7 @@
                     <div id="searchNsawon" style="overflow: auto;">
                         <!--ajax로 이름 검색요청-->
                         <div>
-                            <input type="text" class="form-control" placeholder="이름으로 검색" style="width: 350px;" name="keyword">
-                            <button type="button" class="btn btn-sm btn-outline-dark" onclick="searchConfirm();">검색</button>
+                            <input type="text" class="form-control" placeholder="이름으로 검색" style="width:100%;" onkeyup="searchConfirm(this.value);" name="keyword">
                         </div>
                         <table class="table sawon-list" style="overflow: auto;">
                             <thead>
@@ -547,7 +563,7 @@
             			let value = "";
         				for(let i in list){
         					value += "<tr>"
-                            	   + "<td width='48'><input type='checkbox'></td>"
+                            	   + "<td width='48'><input type='checkbox' name='job' value='"+list[i].jobCode+"'></td>"
                             	   + "<td width='150' class='noCheck'>" + list[i].userNo + "</td>"
                             	   + "<td width='100' class='nameCheck'>" + list[i].userName + "</td>"
                             	   + "<td width='100' class='jobCheck'>" + list[i].jobName + "</td>"
@@ -564,33 +580,32 @@
             	})
             } 
 			
-			function searchConfirm(){
+			function searchConfirm(keyword){
             	
-            	var keyword = $("input[name='keyword']").val();
-            	console.log(keyword);
-            	
-            	$.ajax({
-	            	url:"searchConfirm.el",
-	            	data:{keyword:keyword},
-	            	success:function(result){
-	            		
-	            		let listresult = "";
-	            		for(let i in result){
-	            			listresult += "<tr>"
-		                         	   + "<td width='48'><input type='checkbox'></td>"
-		                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
-		                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
-		                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
-		                			   + "</tr>"
-	            		}
-	            		$(".sawon-list>tbody").html(listresult);
-	            	},error:function(){
-            			console.log("사원조회용 ajax통신 실패");
-            		}
-            	})
-            }
-            
-			
+				$("input[name='keyword']").keyup(function(e){
+                    if(e.keyCode == 13){
+		            	$.ajax({
+			            	url:"searchConfirm.el",
+			            	data:{keyword:keyword},
+			            	success:function(result){
+			            		
+			            		let listresult = "";
+			            		for(let i in result){
+			            			listresult += "<tr>"
+				                         	   + "<td width='48'><input type='checkbox'></td>"
+				                        	   + "<td width='150' class='noCheck'>" + result[i].userNo + "</td>"
+				                        	   + "<td width='100' class='nameCheck'>" + result[i].userName + "</td>"
+				                        	   + "<td width='100' class='jobCheck'>" + result[i].jobName + "</td>"
+				                			   + "</tr>"
+			            		}
+			            		$(".sawon-list>tbody").html(listresult);
+			            	},error:function(){
+		            			console.log("사원조회용 ajax통신 실패");
+		            		}
+		            	})
+		            }
+				})
+        	}
 			/*ajax끝*/
             
             // 결재버튼 플러스 마이너스까지 일단 완성 체크박스랑 사원비교 아직,,,
@@ -655,6 +670,36 @@
                     case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
                     case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
                 }
+                
+             	// 결재자 값 비교해서 선택 불가하게 하기
+               	let sign1 = $("#sign1").text();
+               	let fsign = sign1.slice(-2);
+               	
+               	if(fsign == '이사'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 4 || $(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '과장'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '대리'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 2 || $(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	}else if(fsign == '주임'){
+               		$('input:checkbox[name="job"]').each(function(){
+                   		if($(this).val() == 1){
+                   			this.disabled = true;
+                   		}
+                   	})
+               	} // 결재비교 끝
 	
                 
             }
@@ -699,16 +744,10 @@
             	$("#confirm2").val($("#sign2").text());
             	$("#confirm3").val($("#sign3").text());
             	
-            	$("#confirm-line input[type:checkbox]").attr("checked", false); // 체크박스 해제하기 아직 미구현
             	
             }
             
-            $("#confirm-line input[type='checkbox']").checked(function(){
-            	
-            	
-            	
-            })
-            
+
             //------------------------------------------결재자 끝
 
 			
@@ -727,9 +766,9 @@
             	       + "<td><input type='text' name='itemList[" + count + "].itemSeq' class='form-control' value='" + count + "' readonly></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].itemName' class='form-control'></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].itemSize' class='form-control'></td>" 
-            	       + "<td><input type='text' name='itemList[" + count + "].total' class='form-control num' id='num[" + count + "]'></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].total' class='form-control num" + count + "'></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].unit' class='form-control' required></td>" 
-            	       + "<td><input type='text' name='itemList[" + count + "].amount' class='form-control pay' id='pay[" + count + "]'></td>" 
+            	       + "<td><input type='text' name='itemList[" + count + "].amount' class='form-control pay" + count + "'></td>" 
             	       + "<td><input type='text' name='itemList[" + count + "].note' class='form-control'></td>" 
             		   + "</tr>"
             	
@@ -756,6 +795,18 @@
             	
             	count--;
             	procedure--;
+            	
+            }
+			
+			function allTotalPay(){
+            	
+           		var totalPay = 0;
+            	var tablelt = $("#equipmentList tr").length;
+       			
+				for(let i=1; i<tablelt; i++){
+           			totalPay += $("input[name='itemList[" + i + "].amount'").val() * $("input[name='itemList[" + i + "].total'").val()
+				}
+           		$("input[name='totalPay']").val(totalPay);
             	
             }
         </script>

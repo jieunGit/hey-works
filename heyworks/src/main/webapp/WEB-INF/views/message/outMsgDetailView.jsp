@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
     .outer>div{float:left;}
     .contents{
         margin: auto;
-        margin-top:20px;
+        margin-top:30px;
         margin-left:40px;
         width: 900px;
         height: 900px;
@@ -52,7 +53,7 @@
         height: 460px;
         border : 0px;
     }
-    #goDel { margin-top: 20px;}
+    #goKeep { margin-top: 20px;}
     .modal {
         text-align: center;
     }
@@ -79,36 +80,36 @@
     <div class="outer">
    
         <jsp:include page="../common/menubar.jsp" />
-        <jsp:include page="sidebar.jsp" />
+        <jsp:include page="messageSidebar.jsp" />
     
         <div class="contents">
 
-            <!-- 이전|다음 버튼 -->
+            <!-- 삭제|답장|이전|다음 버튼 -->
             <div class="buttons">
-                <button id="goPrev" type="button" class="btn" style="border-radius: 15px;">&lt;&nbsp; prev</button>
-                <button id="goNext" type="button" class="btn" style="border-radius: 15px;">next &nbsp;&gt; </button>
+                <button id="goDel" type="button" class="btn btn-default" style="width: 70px;" data-toggle="modal" data-target="#delete"><i class="fa-regular fa-trash-can">&nbsp;</i>삭제</button>
+                <button id="goPrev" type="button" class="btn btn-default" style="border-radius: 15px;">&lt;&nbsp; prev</button>
+                <button id="goNext" type="button" class="btn btn-default" style="border-radius: 15px;">next &nbsp;&gt; </button>
             </div>
-
+            
             <!-- 쪽지내용 -->
             <div class="inform">
                 <table>
                     <tr>
                         <th>받는사람</th>
-                        <td>서강준님</td>
+                        <td class="userName">${ msg.userName }</td>
+                        <td class="sentNo" style="display:none;">${ msg.recvNo }</td>
                     </tr>
                     <tr>
                         <th>보낸시간</th>
-                        <td>22-01-20 [13:30]</td>
+                        <td>${ msg.msgDate }</td>
+                        <td class="outMsgNo" style="display:none;">${ msg.outMsgNo }</td>
                     </tr>
                 </table>
             </div>
             <div class="msg-content">
-                <textarea id="comment" readonly></textarea>
+                <textarea id="comment" readonly>${ msg.outMsgContent }</textarea>
             </div>
             
-            <!-- 삭제하기 버튼 -->
-            <button id="goDel" type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">삭제하기</button>
-
             <!-- 삭제 Modal -->
             <div id="delete" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-sm">
@@ -116,16 +117,54 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
-                            보낸 쪽지를 삭제하시겠습니까?
+                            쪽지를 삭제하시겠습니까?
                         </div>
                         <div class="modal-footer" style="text-align: center;">
                             <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 22px;">취소</button>
-                            <button type="button" class="btn btn-danger">삭제</button>
+                            <button type="button" style="margin-right:40px;" id="yesDel" class="btn btn-danger">삭제</button>
                         </div>
                     </div>
             
                 </div>
             </div>
+
+            <!-- 이전|다음 스크립트 -->
+			<script>
+				
+			</script>
+			
+			<!-- 삭제|보관 스크립트 -->
+			<script>
+				
+				$(function(){
+					
+					$("#yesDel").click(function(){
+						
+						const mNos = new Array();
+						mNos.push('${ msg.outMsgNo }');
+						
+						$.ajax({
+							
+							url:"delete.outMsgNo",
+	 		   				type:"post",
+	 		   				data: {
+	 		   					mNos:mNos
+	 		   				},
+	 		   				success:function(result){
+	 		   					if(result > 0) {
+	 		   						alert("선택한 쪽지를 삭제했습니다.");
+	 	   							location.reload();
+	 		   					}
+	 		   				}, error:function(){
+	 		   					console.log("실패");
+	 		   				}
+						})
+						
+					})
+					
+				})
+				
+			</script>
 
 
         </div>

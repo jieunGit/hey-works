@@ -46,13 +46,14 @@
         text-decoration: none;
     }
     #pagingArea{
-	   	margin-left:850px;
+	   	margin-left:350px;
     }
     .pagination>li{
     	border-radius:10px;
     	margin-left:5px;
 		font-size:10px;
     }
+    .color{background-color:lightgray;}
 </style>
 </head>
 <body>
@@ -65,11 +66,10 @@
 		<div class="elec-outer">
     
         <a href="#" class="subject">참조/열람대기 문서</a>
-        <br><br>
+        <p class="text-secondary" style="font-size:12px;">*회색으로 표시된 부분은 이미 열람/참조한 글입니다.</p>
 
         <br>
 
-        <br>
 
         <table align="center" class="table-hover">
             <thead>
@@ -86,28 +86,31 @@
             <tbody>
             	<c:choose>
             		<c:when test="${!empty rrList}">
-            			<c:forEach var="rr" items="${rrList}">
-		                <tr>
-		                    <td class="ano">${rr.approvalNo}</td>
-		                    <td>${rr.writeDept}</td>
-		                    <td>${rr.userNo}</td>
-		                    <td>
-		                    	<c:if test="${!empty rr.emergancy}">
-		                        	<img src="resources/images/179386.png" style="width: 25%; height: 45%;" >
-		                        </c:if>
-		                    </td>
-		                    <td>${rr.approvalTitle}</td>
-		                    <td>${rr.grade}</td>
-		                    <td>${rr.createDate}</td>
-		                    <td style="display:none;" class="read">${rr.read}</td>
-		                    <td style="display:none;" class="readyn">${rr.readStatus}</td>
-		                    <td style="display:none;" class="reference">${rr.reference}</td>
-		                    <td style="display:none;" class="referenceyn">${rr.referenceStatus}</td>
-		                </tr>
+            			<c:forEach var="rr" items="${rrList}" varStatus="i">
+	            			<c:choose>
+	            				<c:when test="${ loginUser.userNo eq rr.read and rr.readStatus eq 'Y' or loginUser.userNo eq rr.reference and rr.referenceStatus eq 'Y'  }">
+				                	<tr class="color">
+				                </c:when>
+				                <c:otherwise>
+				                	<tr>
+				                </c:otherwise>
+				            </c:choose>
+					                    <td class="ano">${rr.approvalNo}</td>
+					                    <td>${rr.writeDept}</td>
+					                    <td>${rr.userNo}</td>
+					                    <td>
+					                    	<c:if test="${!empty rr.emergancy}">
+					                        	<img src="resources/images/emergancy.png" style="width: 25%; height: 45%;" >
+					                        </c:if>
+					                    </td>
+					                    <td>${rr.approvalTitle}</td>
+					                    <td>${rr.grade}</td>
+					                    <td>${rr.createDate}</td>
+			                	</tr>
 		                </c:forEach>
                 	</c:when>
                 	<c:otherwise>
-                		<td colspan="7">참조/열람 할 문서가 없습니다.</td>
+                		<td colspan="8">참조/열람 할 문서가 없습니다.</td>
                 	</c:otherwise>
                 </c:choose>
             </tbody>
@@ -119,7 +122,7 @@
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${rrpi.currentPage eq 1}">
-            		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">◀ PREV</a></li>
             	</c:when>
             	<c:otherwise>
             		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage-1}">이전</a></li>
@@ -131,10 +134,10 @@
             
             <c:choose>
         		<c:when test="${rrpi.currentPage eq rrpi.endPage}">
-            		<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+            		<li class="page-item disabled"><a class="page-link" href="#">NEXT ▶</a></li>
             	</c:when>
             	<c:otherwise>
-            		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage+1}">다음</a></li>
+            		<li class="page-item"><a class="page-link" href="readNref.el?cpage=${rrpi.currentPage+1}">NEXT ▶</a></li>
             	</c:otherwise>
            	</c:choose>
         </ul>
@@ -148,15 +151,30 @@
 	</div>
 	
 	<script>
-		const loginNo = ${loginUser.userNo};
+		/*
+		const loginNo = '${loginUser.userNo}';
 		
-		$(".table-hover>tbody>tr").each(function(){
+		// 열람,참조가 완료된 tr은 회색으로 변경
+		var i = 0;
+		
+		$(".table-hover tr").each(function(){
 			
-			if($(".read").text() == loginNo && $(".readyn").text() == 'Y' || $(".reference").text() == loginNo && $(".referenceyn").text() == 'Y'){
-				$(".table-hover>tbody>tr").css("background-color", "gray");
-			}	
+			$(".table-hover tr>td>input").each(function(){
+				
+				if(($("input[name='read"+i+"']").val() == loginNo && $("input[name='readyn"+i+"']").val() == 'Y') || ($("input[name='reference"+i+"']").val() == loginNo && $("input[name='referenceyn"+i+"']").val() == 'Y')){
+					
+					$(this).parent().parent().addClass("color");
+					
+				}
+				
+				})
+			console.log(i);
+			i++;
+				
 		})
+		*/
 	
+		// 클릭시 상세페이지 이동
 		$(".table-hover>tbody>tr").click(function(){
 		
 			location.href="detail.el?ano=" + $(this).children(".ano").text();

@@ -48,6 +48,9 @@
     	margin-left:5px;
 		font-size:10px;
     }
+    .table-hover tr:hover{
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -59,14 +62,10 @@
 	
 		<div class="elec-outer">
 	        <!-- 결재 대기 문서 -->
-	        <a href="#" class="subject">내 결재 대기 문서</a>
+	        <a href="#" class="subject">결재대기</a>
 	        <br><br>
 	        
-        <div>
-	        <form>
-                    <input type="text" name="" value="" placeholder="검색하기">
-            </form> <br>
-        </div>
+        <br>
 	
 	        <table align="center" class="table-hover">
 	            <thead>
@@ -85,7 +84,7 @@
 	            	<c:choose>
 	            		<c:when test="${empty apList}">
             				<tr align="center">
-			            		<td colspan="7">결재 대기중인 문서가 없습니다.</td>
+			            		<td colspan="8">결재 대기중인 문서가 없습니다.</td>
 			            	</tr>
 			            </c:when>
 			            <c:otherwise>
@@ -97,13 +96,13 @@
 					                    <td>${ap.writeDept}</td>
 					                    <td>
 					                    	<c:if test="${ap.emergancy eq 'Y'}">
-					                        	<img src="resources/images/179386.png" style="width: 25%; height: 55%;" >
+					                        	<img src="resources/images/emergancy.png" style="width: 25%; height: 55%;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.approvalTitle}</td>
 					                    <td>
 					                    	<c:if test="${!empty ap.originName}">
-					                        	<img src="resources/images/2586886.png" style="width: 80%; height: 70%;" >
+					                        	<img src="resources/images/attachment.png" style="width: 80%; height: 70%;" >
 					                    	</c:if>
 					                    </td>
 					                    <td>${ap.userNo}</td>
@@ -116,6 +115,7 @@
 	    </div>
 	
 	<div id="pagingArea">
+		<c:if test="${pi.endPage > 0}">
         <ul class="pagination">
         	<c:choose>
         		<c:when test="${pi.currentPage eq 1}">
@@ -138,6 +138,7 @@
             	</c:otherwise>
            	</c:choose>
         </ul>
+        </c:if>
     </div>
 	
 
@@ -149,7 +150,6 @@
 			location.href="detail.el?ano=" + $(this).children(".ano").text();
 			
 		})
-		
 	</script>
 	
 	

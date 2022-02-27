@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>쪽지 보관함</title>
+<title>보낸쪽지함</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -91,7 +91,7 @@
         <div class="contents">
 
             <!--검색바-->
-            <form class="searchbar" method="get" action="search.keepMsg">
+            <form class="searchbar" method="get" action="search.outMsg">
                 <div class="input-group">
                   <input name="userName" type="text" class="form-control" placeholder=" 이름 검색">
                   <div class="input-group-btn">
@@ -102,7 +102,7 @@
                 </div>
             </form>
 
-            <span id="count">보관쪽지 <b>${ count }</b>개</span>
+            <span id="count">보낸쪽지 <b>${ count }</b>개</span>
             
 
             <!-- 받은쪽지리스트 -->
@@ -110,15 +110,15 @@
                 <thead>
                     <tr>
                         <th width="90"><input id="ckAll" type="checkbox"></th>
-                        <th width="150">발송인</th>
+                        <th width="150">수신인</th>
                         <th width="">내용</th>
                         <th width="200">날짜</th>
                     </tr>
                 </thead>
                 <tbody>
-                	<c:forEach var="m" items="${ keepList }">
+                	<c:forEach var="m" items="${ outList }">
 	                    <tr class="msgList">
-	                    	<td class="inMsgNo" style="display:none;">${ m.inMsgNo }</td>
+	                    	<td class="outMsgNo" style="display:none;">${ m.outMsgNo }</td>
 	                        <td><input class="ck" type="checkbox"></td>
 	                        <td>${ m.userName }</td>
 	                        <td class="msgcontent" style="text-overflow:ellipsis; overflow:hidden"><nobr>${ m.outMsgContent }</nobr></td>
@@ -128,7 +128,7 @@
                 </tbody>
             </table>
             
-            <!-- 삭제 버튼 -->
+            <!-- 삭제|보관 버튼 -->
             <div class="buttons">
                 <button id="goDel" type="button" class="btn btn-default" style="margin-right: 10px;" data-toggle="modal" data-target="#delete"><i class="fa-regular fa-trash-can">&nbsp;</i>삭제</button>
             </div>   
@@ -155,7 +155,7 @@
 			<script>
 				$(function(){
 					$(".msgcontent").click(function(){
-						location.href = "detail.inMsg?inMsgNo=" + $(this).siblings('.inMsgNo').text();						
+						location.href = "detail.outMsg?outMsgNo=" + $(this).siblings('.outMsgNo').text();						
 					})
 				})
 			</script>
@@ -196,13 +196,13 @@
 						const mNos = new Array();
 						
 						$(".ck:checked").each(function(){
-							mNos.push($(this).parent().siblings(".inMsgNo").text());
+							mNos.push($(this).parent().siblings(".outMsgNo").text());
 						});
 						console.log(mNos);
 						
 						$.ajax({
 							
-							url:"delete.inMsg",
+							url:"delete.outMsg",
 	 		   				type:"post",
 	 		   				data: {
 	 		   					mNos:mNos
@@ -218,7 +218,10 @@
 	 		   					
 							
 						})
+						
+						
 					})
+					
 				})
 			</script>
             
@@ -230,12 +233,12 @@
             			<li class="page-item disabled"><a href="#"><</a></li>
             		</c:when>
             		<c:otherwise>
-            			<li class="page-item"><a href="list.keepMsg?cpage=${ pi.currentPage-1 }"><</a></li>
+            			<li class="page-item"><a href="list.outMsg?cpage=${ pi.currentPage-1 }"><</a></li>
             		</c:otherwise>
             	</c:choose>
             	
             	<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-            		<li class="page-item"><a href="list.keepMsg?cpage=${ p }">${ p }</a></li>
+            		<li class="page-item"><a href="list.outMsg?cpage=${ p }">${ p }</a></li>
             	</c:forEach>
             	
             	<c:choose>
@@ -243,7 +246,7 @@
             			<li class="page-item disabled"><a href="#">></a></li>
             		</c:when>
             		<c:otherwise>
-            			<li class="page-item"><a href="list.keepMsg?cpage=${ pi.currentPage+1 }">></a></li>
+            			<li class="page-item"><a href="list.outMsg?cpage=${ pi.currentPage+1 }">></a></li>
             		</c:otherwise>
             	</c:choose>
             	

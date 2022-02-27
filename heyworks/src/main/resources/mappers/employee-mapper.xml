@@ -53,8 +53,8 @@
 	  join department using(dept_code)
 	 where status = 'Y'
 	   and user_id = #{userId}
-	<!--   and user_pwd = #{userPwd} -->		
-	
+  <!-- and user_pwd = #{userPwd} -->		
+	<!-- 비밀번호 주석하고 커밋하기 -->
 	</select>
 	
 	<!-- 전자결재 결재자용 사원 조회 -->
@@ -128,7 +128,7 @@
             by job_code desc
 	</select>
 	
-	<!-- 관리자용 검색(수정중) -->
+	<!-- 관리자용 검색 -->
 	<select id="ajaxAdminSearchSelect" resultMap="employeeResult">
 		select
 		       user_no
@@ -144,20 +144,23 @@
 		     , email
 		  from employee
           join department using(dept_code)
+         where admin_yn = 'N'
          <choose>
-	         <when test="userName != null and !userName.equals('')">
-	          where user_name = #{userName}
+	         <when test='userName == "n"'>
+	           and dept_code = #{deptCode}
 	         order
 	            by job_code desc
 	         </when>
 	         <otherwise>
-	         where dept_code = #{code}
+	            and user_name = #{userName}
+	            and dept_code = #{deptCode}
 	         order
 	            by job_code desc
 	         </otherwise>
          </choose>
 	</select>
 	
+	<!-- 관리자 해제하기 -->
 	<update id="deleteAdmin">
 		update
 			   employee
@@ -165,13 +168,14 @@
 		 where user_no = #{userNo}
 	</update>
 	
-	
-	
-	
-	
-	
-	
-	
+	<!-- 관리자 등록하기 -->
+	<update id="approvalAdminUpdate">
+		update
+			   employee
+		   set admin_yn = 'Y'
+		 where user_no = #{uno}
+	</update>
+	<!-- 전자결재 끝+++++++++++++++++++ -->
 	
 	<!-- 회원정보수정 -->
 	<update id="updateEmployee">
@@ -185,7 +189,13 @@
 		 where user_no = #{userNo}
 	</update>
 	
-	
+	<!-- 초기 비밀번호 변경 -->
+	<update id="updatePassword">
+		update
+			   employee
+		   set user_pwd = #{encPwd}
+		 where user_id = #{userId}
+	</update>
 	
 	
 	
