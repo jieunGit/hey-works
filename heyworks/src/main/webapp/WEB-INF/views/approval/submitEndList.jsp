@@ -104,10 +104,33 @@
 					<option value="5">일반품의서</option>
 				</select>
 				
-	            <input type="text" id="searchStandBy" name="keyword" placeholder="검색하기" onkeyup="enterApproval();">
+	            <input type="text" id="searchStandBy" name="keyword" placeholder="검색하기" onkeyup="enterApproval();" value="${keyword}">
 	            <input type="hidden" name="status" value="${status}">
             </form>
         </div>
+        
+        <script>
+        	$("select[name='subject'] option").each(function(){
+        		if($(this).val() == '${subject}'){
+        			$(this).attr("selected", true);
+        		}
+        		
+        	})
+        	
+        	$("select[name='type'] option").each(function(){
+        		if($(this).val() == '${type}'){
+        			$(this).attr("selected", true);
+        		}
+        		
+        	})
+        	
+        	$(function(){
+        		if(${type} != null){
+        			$("#type").show();
+    				$("#searchStandBy").hide();
+        		}
+        	})
+        </script>
 
         <br>
 
