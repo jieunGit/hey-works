@@ -37,5 +37,7 @@ public interface OrganizationService {
 	
 	// 7. 사용자정보 수정요청
 	int updateOrgan(Organ o);
+	
+	Organ mainEmp(String userNo);
 
 }

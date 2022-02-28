@@ -80,6 +80,11 @@ public class OrganizationServiceImple implements OrganizationService {
 		return orDao.updateOrgan(sqlSession, o);
 	}
 
+	@Override
+	public Organ mainEmp(String userNo) {
+		return orDao.mainEmp(sqlSession, userNo);
+	}
+
 	
 
 	
