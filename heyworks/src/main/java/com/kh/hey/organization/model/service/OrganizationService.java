@@ -34,5 +34,8 @@ public interface OrganizationService {
 	int insertOrgan(Organ o);
 	int checkId(String id);
 	int checkNo(int no);
+	
+	// 7. 사용자정보 수정요청
+	int updateOrgan(Organ o);
 
 }
