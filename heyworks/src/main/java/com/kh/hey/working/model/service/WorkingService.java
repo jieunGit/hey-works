@@ -73,4 +73,7 @@ public interface WorkingService {
 	
 	// 전사 근태현황 수정 update
 	int updateTnaUpdate(Working w);
+	
+	// 개인 휴가신청 내역 수정폼
+	Leave leaveAppUpdateForm(int leaveAno);
 }

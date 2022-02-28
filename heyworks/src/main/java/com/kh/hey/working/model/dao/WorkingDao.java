@@ -134,4 +134,8 @@ public class WorkingDao {
 	public int updateTnaUpdate(SqlSessionTemplate sqlSession, Working w) {
 		return sqlSession.update("workingMapper.updateTnaUpdate", w);
 	}
+	
+	public Leave leaveAppUpdateForm(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.selectOne("workingMapper.leaveAppUpdateForm", leaveAno);
+	}
 }

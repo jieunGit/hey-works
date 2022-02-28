@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    @font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+	}
+	*{font-family: 'Cafe24SsurroundAir';}
     .outer{
         width:1200px;
         height:1200px;
@@ -123,10 +130,11 @@
                         <th width="120">신청일</th>
                         <th width="90">이름</th>
                         <th width="90">소속</th>
-                        <th width="90">신청일수</th>
-                        <th width="300">휴가기간</th>
+                        <th width="70">신청일수</th>
+                        <th width="270">휴가기간</th>
                         <th width="90">구분</th>
                         <th width="90">상태</th>
+                        <th width="50">상태</th>
                     </tr>
                     <c:forEach var="l" items="${leList}">
                         <tr style="height:37px; text-align:center;">
@@ -137,6 +145,7 @@
                             <td>${l.startDate} ~ ${l.endDate}</td>
                             <td>${l.leaveType}</td>
                             <td>${l.status}</td>
+                            <td><a href="leaveAppUpdateForm.wo?leaveAno=${l.leaveAno}"><img src="resources/images/file.png" style="width: 20px; height: 20px;"></a></td>
                         </tr>
                     </c:forEach>
                 </table>

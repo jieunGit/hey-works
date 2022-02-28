@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    @font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+	}
+	*{font-family: 'Cafe24SsurroundAir';}
     .outer{
         width:1200px;
         height:1200px;
@@ -61,7 +68,7 @@
 				<!--휴가신청서 내용-->
 				<div class="leave-content" style="border:1px solid lightgrey;"><br>
 					
-					<h3 align="center" class="title-box">휴가 신청</h3>
+					<h3 align="center" class="title-box">휴가 신청서</h3>
 					<br><br>
 					<table class="table-bordered">
 						<tr>
@@ -96,15 +103,15 @@
 					<table class="table-bordered">
 						<tr>
 							<th width="130">*구분</th>
-							<td width="650">
+							<td width="650" style="padding-top:10px">
 								<input type="radio" id="day" name="leaveType" value="연차" checked>
-								<label for="day">연차</label>
+								<label for="day" style="margin-right:15px">연차</label>
 		
 								<input type="radio" id="event" name="leaveType" value="경조">
-								<label for="event">경조</label>
+								<label for="event" style="margin-right:15px">경조</label>
 		
 								<input type="radio" id="sick" name="leaveType" value="병가">
-								<label for="sick">병가</label>
+								<label for="sick" style="margin-right:15px">병가</label>
 
 								<input type="radio" id="baby" name="leaveType" value="출산휴가">
 								<label for="baby">출산휴가</label>
@@ -119,7 +126,8 @@
 						</tr>
 						<tr>
 							<th>신청일수</th>
-							<td id="leaveUse" readonly></td>
+							<td id="leaveUse" readonly style="font-weight:500">
+							</td>
 						</tr>
 						<input type="hidden" name="leaveUse" id="useDay">
 

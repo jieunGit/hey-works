@@ -12,7 +12,8 @@
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+	}
+	*{font-family: 'Cafe24SsurroundAir';}
     .outer{
         width:1200px;
         height:1200px;
@@ -26,7 +27,7 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .title-box{font-size:20px; font-weight:600; font-family: 'Cafe24SsurroundAir';}
+    .title-box{font-size:20px; font-weight:600;}
     .working-box-list{
         list-style:none;
         height:100px;
@@ -37,7 +38,6 @@
     .working-box>strong{
         position:absolute;
         font-size:16px;
-        font-family: 'Cafe24SsurroundAir';
     }
     .working-box-list{
         position:relative;
@@ -55,14 +55,13 @@
         margin-right:20px;
         padding-right:15px;
         font-size:13px;
-        font-family: 'Cafe24SsurroundAir';
     }
 
     /*주간 근무 정보*/
     #left, #right:hover{cursor:pointer;}
-    .week-select{font-size:20px; font-weight:700; font-family: 'Cafe24SsurroundAir';}
-    .table-bordered th{font-size:14px; text-align:center; font-family: 'Cafe24SsurroundAir';}
-    .table-bordered td{font-size:13px; font-family: 'Cafe24SsurroundAir';}
+    .week-select{font-size:20px; font-weight:700;}
+    .table-bordered th{font-size:14px; text-align:center;}
+    .table-bordered td{font-size:13px;}
     .tb-body tr{height:37px;}
 </style>
 </head>

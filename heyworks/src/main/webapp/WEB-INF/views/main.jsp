@@ -17,6 +17,13 @@
     <link rel="stylesheet" type="text/css" href="resources/calendar/css/icons.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
+    @font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+	}
+	*{font-family: 'Cafe24SsurroundAir';}
 	.outer{
 		width:1200px;
 		height:1200px;

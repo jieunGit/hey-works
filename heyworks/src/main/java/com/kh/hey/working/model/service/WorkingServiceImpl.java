@@ -141,6 +141,11 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.updateTnaUpdate(sqlSession, w);
 	}
 
+	@Override
+	public Leave leaveAppUpdateForm(int leaveAno) {
+		return wDao.leaveAppUpdateForm(sqlSession, leaveAno);
+	}
+
 
 
 

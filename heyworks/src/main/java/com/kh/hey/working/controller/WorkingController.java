@@ -291,18 +291,18 @@ public class WorkingController {
 		}
 	}
 
-	// 전사 휴가신청 삭제
+	// 개인 휴가신청 삭제
 	@RequestMapping("deleteApplyLeave.wo")
 	public String deleteApplyLeave(int leaveAno, HttpSession session) {
 		
 		int result = wService.deleteApplyLeave(leaveAno);
 		
 		if(result > 0) {
-			session.setAttribute("alertMsg", "신청 내역을 삭제하였습니다.");
-			return "redirect:leaveApplyList.wo";
+			session.setAttribute("alertMsg", "휴가 신청을 삭제하였습니다.");
+			return "redirect:selectMyleave.wo";
 		}else {
 			session.setAttribute("alertMsg", "삭제처리 실패");
-			return "redirect:leaveApplyUpdateForm.wo";
+			return "redirect:leaveAppUpdateForm.wo";
 		}
 	}
 	
@@ -332,5 +332,15 @@ public class WorkingController {
 			session.setAttribute("alertMsg", "근태현황 수정 실패");
 			return "redirect:tnaUpdateForm.wo";
 		}
+	}
+	
+	// 개인 휴가신청 내역 수정폼
+	@RequestMapping("leaveAppUpdateForm.wo")
+	public String leaveAppUpdateForm(int leaveAno, Model model) {
+
+		Leave l = wService.leaveAppUpdateForm(leaveAno);
+
+		model.addAttribute("l", l);
+		return "working/leaveAppUpdateForm";
 	}
 }
