@@ -75,6 +75,16 @@ public class OrganizationServiceImple implements OrganizationService {
 		return orDao.checkNo(sqlSession, no);
 	}
 
+	@Override
+	public int updateOrgan(Organ o) {
+		return orDao.updateOrgan(sqlSession, o);
+	}
+
+	@Override
+	public Organ mainEmp(String userNo) {
+		return orDao.mainEmp(sqlSession, userNo);
+	}
+
 	
 
 	

@@ -82,6 +82,9 @@
         width: 80px;
     }
     .pagination { margin-top: 50px; }
+    .table>tbody>tr>td:hover { 
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -150,7 +153,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th width=""><input type="checkbox"></th>
+                        <th width=""><input id="ckAll" type="checkbox"></th>
                         <th width="">이름</th>
                         <th width="">ID</th>
                         <th width="">사내전화</th>
@@ -163,7 +166,8 @@
                 <tbody>
                 	<c:forEach var="o" items="${ organ }">
                    		<tr>
-	                        <td><input type="checkbox"></td>
+	                        <td><input class="ck" type="checkbox"></td>
+	                        <td style="display:none;" class="userNo">${ o.userNo }</td>
 	                        <td>${ o.userName }</td>
 	                        <td>${ o.userId }</td>
 	                        <td>${ o.call }</td>
@@ -176,11 +180,7 @@
                 </tbody>
             </table>
 
-            <!--삭제|직위변경|상태변경-->
-            <div class="settings">
-                <button type="button">직위변경</button>
-                <button type="button" style="border: 0px;">상태변경</button>
-            </div>
+           
 
             <!-- 페이징바 -->
             <ul class="pagination" style="margin-left: 350px;">
@@ -216,6 +216,42 @@
    		function prev(){
    			location.href = "";
    		}
+   </script>
+   
+   <script>
+   	 $(function(){
+   		 $('.table>tbody>tr').click(function(){
+   			location.href = "updateForm.organ?userNo=" + $(this).children('.userNo').text();
+   			 console.log($(this).children('.userNo').text());
+   		 })
+   	 })
+   </script>
+   
+   <!-- 전체선택|전체해제 기능 -->
+   <script>
+         
+         // 전체선택 클릭시 전부 선택
+         $("#ckAll").on('click', function(){
+            
+            if($("#ckAll").is(':checked')) {
+               $("input[type=checkbox]").prop("checked", true);
+            }else {
+               $("input[type=checkbox]").prop("checked", false);
+            }
+            
+         })
+         
+         // 전부 선택시 전체선택 checked
+	     $("input[type=checkbox]").on('click', function(){
+	         var total = $(".ck").length;
+	         var checked = $(".ck:checked").length;
+	         
+	         if(total != checked) {
+	            $("#ckAll").prop("checked", false);
+	         }else {
+	            $("#ckAll").prop("checked", true);
+	         }
+	      })   
    </script>
  
 </body>

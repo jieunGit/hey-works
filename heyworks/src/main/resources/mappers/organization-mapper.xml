@@ -174,12 +174,20 @@
 		select
 			    user_no
 			  , user_name
+			  , user_id
+			  , user_pwd
+			  , birth
+			  , post
+			  , address
+			  , address_detail
+			  , to_date(hire_date, 'YYYY-MM-DD') hire_date
+			  , to_date(end_date, 'YYYY-MM-DD') end_date
 			  , email
 			  , phone
 			  , call
+			  , status
 			  , dept_code
 			  , dept_name
-			  , job_code
 			  , decode
 			    (job_code, 1, '사원' 
 			             , 2, '주임'
@@ -187,6 +195,8 @@
 			             , 4, '과장'
 			             , 9, '대표이사') job_name
 			  , image
+			  , admin_yn
+			  , nvl(job_code, 0) job_code
 		  from employee
 		  join department using (dept_code)
 		 where user_no = #{ userNo }
@@ -296,6 +306,23 @@
 		 where user_no = #{ no } 
 		
 	</select>
+	
+	<update id="updateOrgan">
+	
+		update employee
+		   set 
+		     user_name = #{ userName }
+		   , user_pwd = #{ userPwd }
+		   , hire_date = #{ hire }
+		   , dept_code = #{ deptCode }
+		   , job_code = #{ jobCode }
+		   , email = #{ email }
+		   , call = #{ call }
+		   , phone = #{ phone }
+		   , status = #{ status }
+		 where user_no = #{ userNo }    
+		
+	</update>
 
 
 </mapper>

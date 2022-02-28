@@ -129,12 +129,12 @@
 	
 			</div>
 
-			
+			<c:if test="${loginUser.adminYn eq 'Y'}">
 			<!-- 관리자만 보일수있게 -->
 			<div id="adminSetting">
 				<a href="categoryList.re" style="color: black;"><i class="fa-solid fa-gear"></i> 자원관리</a>
 			</div>
-
+			</c:if>
 
         </div>
 		 

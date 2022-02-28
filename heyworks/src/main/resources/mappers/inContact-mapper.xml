@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="inConMapper">
+
+	<resultMap id="inConResult" type="inContact">		
+		<result column="incon_no" property="inconNo" />
+		<result column="user_no" property="userNo" />
+		<result column="ingroup_no" property="inGroupNo" />
+		<result column="ingroup_name" property="inGroupName" />
+		<result column="user_name" property="userName" />
+		<result column="email" property="email" />
+		<result column="phone" property="phone" />
+		<result column="call" property="call" />
+		<result column="dept" property="deptCode" />
+		<result column="deptName" property="deptName" />
+		<result column="job" property="job_code" />
+		<result column="jobName" property="jobName" />
+		<result column="address" property="address" />
+		<result column="address_detail" property="address_detail" />
+		<result column="birth" property="birth" />
+	</resultMap>
+	
+	<select id="selectGroup" resultMap="inConResult">
+		select
+		       ingroup_no
+		     , ingroup_name
+		  from incontact_group
+	</select>
+	
+	<insert id="insertGroup">
+		insert
+		  into incontact_group
+		  (
+		    ingroup_no
+		  , ingroup_name
+		  )
+		  values
+		  (
+		    seq_incongp.NEXTVAL
+		  , #{ inGroupName }
+		  )
+	</insert>
+	
+	<insert id="insertInCon">
+		insert
+		  into incontact
+		  (
+		    incon_no
+		  , user_no
+		  , ingroup_no
+		  , user_name  
+		  , email
+		  , phone
+		  , call
+		  , dept
+		  , job
+		  , address
+		  , birth
+		  , address_detail
+		  )
+		  values
+		  (
+		    seq_incon.NEXTVAL
+		  , #{ userNo }
+		  , ${ inGroupNo }
+		  , ${ userName }
+		  , ${ email }
+		  , ${ phone }
+		  , ${ call }
+		  , ${ deptCode }
+		  , ${ jobCode }
+		  , ${ address }
+		  , ${ birth }
+		  , ${ addressDetail }
+		  )
+	</insert>
+
+</mapper>

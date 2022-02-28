@@ -19,6 +19,8 @@ import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.common.template.Pagination;
 import com.kh.hey.employee.model.service.EmployeeService;
 import com.kh.hey.employee.model.vo.Employee;
+import com.kh.hey.organization.model.service.OrganizationService;
+import com.kh.hey.organization.model.vo.Organ;
 import com.kh.hey.reserve.model.service.ReservationService;
 import com.kh.hey.reserve.model.vo.Reservation;
 import com.kh.hey.todo.model.service.todolistService;
@@ -39,6 +41,9 @@ public class EmployeeController {
 	@Autowired 
 	private todolistService tService;
 	
+	@Autowired 
+	private OrganizationService orService;
+	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
@@ -51,7 +56,7 @@ public class EmployeeController {
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(e.getUserPwd(), loginUser.getUserPwd())) { 
 			
-			if(e.getUserPwd().equals("0000")) { // 나중에 1234으로 변경하기
+			if(e.getUserPwd().equals("1234")) { 
 				
 				mv.addObject("userId", e.getUserId());
 				mv.setViewName("employee/updatePassword");
@@ -105,6 +110,11 @@ public class EmployeeController {
 		int count = tService.todolistCount(userNo);
 		model.addAttribute("todoList", todoList);
 		model.addAttribute("count", count);
+		
+		//로그인유저 메인 -----------------------------------------------------------
+		Organ emp = orService.mainEmp(userNo);
+		model.addAttribute("emp", emp);
+		System.out.println(emp);
 		
 		return "main";
 	}

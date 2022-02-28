@@ -61,5 +61,13 @@ public class OrganizationDao {
 	public int checkNo(SqlSessionTemplate sqlSession, int no) {
 		return sqlSession.selectOne("organMapper.checkNo", no);
 	}
+	
+	public int updateOrgan(SqlSessionTemplate sqlSession, Organ o) {
+		return sqlSession.update("organMapper.updateOrgan", o);
+	}
+	
+	public Organ mainEmp(SqlSessionTemplate sqlSession, String userNo) {
+		return sqlSession.selectOne("organMapper.detailEmployee", userNo);
+	}
 
 }
