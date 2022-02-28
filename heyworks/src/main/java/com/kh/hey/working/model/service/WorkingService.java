@@ -67,4 +67,10 @@ public interface WorkingService {
 	
 	// 휴가신청 삭제
 	int deleteApplyLeave(int leaveAno);
+	
+	// 전사 근무현황 상세 (수정폼)
+	Working selectAtnaForm(int userNo);
+	
+	// 전사 근태현황 수정 update
+	int updateTnaUpdate(Working w);
 }

@@ -138,19 +138,20 @@
                 <thead class="tb-head">
                     <tr height="40px">
                         <th colspan="4">사원 정보</th>
-                        <th colspan="6">근무 정보</th>
+                        <th colspan="7">근무 정보</th>
                     </tr>
                     <tr height="43px">
-                        <th width="100px">사번</th>
-                        <th width="95px">이름</th>
-                        <th width="95px">소속</th>
+                        <th width="95px">사번</th>
+                        <th width="90px">이름</th>
+                        <th width="90px">소속</th>
                         <th width="95px">직급</th>
-                        <th width="87px">출근시각</th>
-                        <th width="87px">퇴근시각</th>
-                        <th width="87px">휴게시간</th>
-                        <th width="87px">근무시간</th>
-                        <th width="87px">연장근무</th>
-                        <th width="95px">근태상태</th>
+                        <th width="83px">출근시각</th>
+                        <th width="83px">퇴근시각</th>
+                        <th width="83px">휴게시간</th>
+                        <th width="83px">근무시간</th>
+                        <th width="83px">연장근무</th>
+                        <th width="90px">근태상태</th>
+                        <th width="50px">상세</th>
                     </tr>
                 </thead>
                 <tbody id="tnaTbody" align="center" class="tb-body">
@@ -173,6 +174,7 @@
                                 <c:if test="${w.tnaStatus eq'휴가'}">
                                 <font color="blue">${w.tnaStatus}</font></c:if>
                             </td>
+                            <td><a href="tnaUpdateForm.wo?userNo=${w.userNo}"><img src="resources/images/edit.png" style="width: 15px; height: 20px;"></a></td>
 	                    </tr>
                     </c:forEach>
                 </tbody>

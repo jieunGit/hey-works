@@ -36,7 +36,6 @@
 </style>
 </head>
 <body>
-
     <div class="outer">
 
         <jsp:include page="../common/menubar.jsp"/>
@@ -44,7 +43,7 @@
 
         <div class="all-status">
 				
-           <form action="leaveUpdate.wo" method="Get">
+           <form action="tnaUpdate.wo" method="Get">
            		
             	<div class="update-btn">      
                    <button type="submit" class="btn btn-primary">수정</button>
@@ -54,51 +53,42 @@
            
                 <div class="status-content" style="border:1px solid lightgrey;"><br>
                 
-                	<h3 align="center" class="title-box">휴가현황 수정</h3>
+                	<h3 align="center" class="title-box">근태 상세</h3>
                 	<br>
-                	<input type="hidden" name="userNo" value="${al.userNo}">
+                	<input type="hidden" name="userNo" value="${w.userNo}">
 	                <table class="table-borderless">
 	                   <tr>
 	                       <th><label for="userNo">사번</label></th>
-	                       <td><input type="text" class="form-control" id="userName" name="userName" value="${ al.userNo }" readonly></td>
+	                       <td><input type="text" class="form-control" id="userNo" name="userName" value="${ w.userNo }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="userName">이름</label></th>
-	                       <td><input type="text" class="form-control" id="userName" name="userName" value="${ al.userName }" readonly></td>
+	                       <td><input type="text" class="form-control" id="userName" name="userName" value="${ w.userName }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="deptName">소속</label></th>
-	                       <td><input type="text" class="form-control" id="deptName" name="deptName" value="${ al.deptName }" readonly></td>
+	                       <td><input type="text" class="form-control" id="deptName" name="deptName" value="${ w.deptName }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="jobName">직급</label></th>
-	                       <td><input type="text" class="form-control" id="jobName" name="jobName" value="${ al.jobName }" readonly></td>
+	                       <td><input type="text" class="form-control" id="jobName" name="jobName" value="${ w.jobName }" readonly></td>
 	                   </tr>
 	                   <tr>
-	                       <th><label for="hireDate">입사일</label></th>
-	                       <td><input type="text" class="form-control" id="hireDate" name="hireDate" value="${ al.hireDate }" readonly></td>
+	                       <th><label for="clockIn">출근시각</label></th>
+	                       <td><input type="text" class="form-control" id="clockIn" name="clockIn" value="${ w.clockIn }"></td>
 	                   </tr>
 	                   <tr>
-	                       <th><label for="length">근속연수</label></th>
-	                       <td><input type="number" id="length" class="form-control" name="lengthYears" value="${ al.lengthYears }"></td>
+	                       <th><label for="clockOut">퇴근시각</label></th>
+	                       <td><input type="text" id="clockOut" class="form-control" name="clockOut" value="${ w.clockOut }"></td>
 	                   </tr>
 	                   <tr>
-	                       <th><label for="totalLeave">총 연차</label></th>
-	                       <td><input type="number" id="totalLeave" class="form-control" name="leaveTotal" value="${ al.leaveTotal }"></td>
+	                       <th><label for="rest">휴게시간</label></th>
+	                       <td><input type="text" id="rest" class="form-control" name="leaveTotal" value="01:00" readonly></td>
 	                   </tr>
 	                   <tr>
-	                       <th><label for="useLeave">사용 연차</label></th>
-	                       <td><input type="number" id="useLeave" class="form-control" name="leaveUse" value="${ al.leaveUse }"></td>
+	                       <th><label for="tnaStatus">근태상태</label></th>
+	                       <td><input type="text" id="tnaStatus" class="form-control" name="tnaStatus" value="${ w.tnaStatus }"></td>
 	                   </tr>
-	                   <tr>
-	                       <th><label for="restLeave">잔여 연차</label></th>
-	                       <td><input type="number" id="restLeave" class="form-control" name="leaveRest" value="${ al.leaveRest }"></td>
-	                   </tr>
-	                   <tr>
-	                       <th><label for="status">상태</label></th>
-	                       <td><input type="text" class="form-control" id="status" name="status" value="${ al.status }"></td>
-	                   </tr>
-	
 	                </table>
 	            </div>
 

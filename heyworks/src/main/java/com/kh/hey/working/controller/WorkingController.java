@@ -305,4 +305,32 @@ public class WorkingController {
 			return "redirect:leaveApplyUpdateForm.wo";
 		}
 	}
+	
+	// 전사 근태현황 수정폼
+	@RequestMapping("tnaUpdateForm.wo")
+	public String tnaUpdateForm(int userNo, Model model) {
+
+		Working w = wService.selectAtnaForm(userNo);
+
+		model.addAttribute("w", w);
+		// System.out.println(userNo);
+		return "working/tnaUpdateForm";
+	}
+	
+	// 전사 근태현황 수정 요청
+	@RequestMapping("tnaUpdate.wo")
+	public String tnaUpdate(Working w, Model model, HttpSession session) {
+
+		int result = wService.updateTnaUpdate(w);
+
+		if (result > 0) {
+			model.addAttribute("w", w);
+			session.setAttribute("alertMsg", "근태 정보가 수정되었습니다.");
+			// return "redirect:leaveUpdateForm.wo?userNo=" + al.getUserNo();
+			return "redirect:allTnaMain.wo";
+		} else {
+			session.setAttribute("alertMsg", "근태현황 수정 실패");
+			return "redirect:tnaUpdateForm.wo";
+		}
+	}
 }
