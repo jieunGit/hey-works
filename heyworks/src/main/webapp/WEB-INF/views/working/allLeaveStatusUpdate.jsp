@@ -20,6 +20,7 @@
        padding-left:30px;
        padding-top:30px;
     }
+    .title-box{font-size:23px; font-weight:600;}
     .table-borderless{
         border-spacing:0 20px;
         border-collapse:separate;
@@ -30,7 +31,8 @@
         height:700px;
     }
     .table-borderless th{width:120px; height:35px; text-align:left;}
-    .table-borderless td, .table-borderless input{width:300px; height:30px;}
+    .table-borderless td, .table-borderless input{width:300px; height:35px;}
+    input:read-only{background-color:lightgrey;}
 </style>
 </head>
 <body>
@@ -44,49 +46,57 @@
 				
            <form action="leaveUpdate.wo" method="Get">
            		
-            	<div class="update-btn">
-                   <button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
+            	<div class="update-btn">      
                    <button type="submit" class="btn btn-primary">수정</button>
+                   <button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
                 </div>
                 <br>
            
                 <div class="status-content" style="border:1px solid lightgrey;"><br>
                 
-                	<h3 align="center">휴가현황 수정</h3>
-                	<br><br>
+                	<h3 align="center" class="title-box">휴가현황 수정</h3>
+                	<br>
                 	<input type="hidden" name=userNo value="${al.userNo}">
 	                <table class="table-borderless">
 	                   <tr>
+	                       <th><label for="userName">사번</label></th>
+	                       <td><input type="text" class="form-control" id="userName" name="userName" value="${ al.userNo }" readonly></td>
+	                   </tr>
+	                   <tr>
 	                       <th><label for="userName">이름</label></th>
-	                       <td><input type="text" id="userName" name="userName" value="${ al.userName }" readonly></td>
+	                       <td><input type="text" class="form-control" id="userName" name="userName" value="${ al.userName }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="deptName">소속</label></th>
-	                       <td><input type="text" id="deptName" name="deptName" value="${ al.deptName }" readonly></td>
+	                       <td><input type="text" class="form-control" id="deptName" name="deptName" value="${ al.deptName }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="jobName">직급</label></th>
-	                       <td><input type="text" id="jobName" name="jobName" value="${ al.jobName }" readonly></td>
+	                       <td><input type="text" class="form-control" id="jobName" name="jobName" value="${ al.jobName }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="hireDate">입사일</label></th>
-	                       <td><input type="text" id="hireDate" name="hireDate" value="${ al.hireDate }" readonly></td>
+	                       <td><input type="text" class="form-control" id="hireDate" name="hireDate" value="${ al.hireDate }" readonly></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="length">근속연수</label></th>
-	                       <td><input type="number" id="length" name="lengthYears" value="${ al.lengthYears }"></td>
+	                       <td><input type="number" id="length" class="form-control" name="lengthYears" value="${ al.lengthYears }"></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="totalLeave">총 연차</label></th>
-	                       <td><input type="number" id="totalLeave" name="leaveTotal" value="${ al.leaveTotal }"></td>
+	                       <td><input type="number" id="totalLeave" class="form-control" name="leaveTotal" value="${ al.leaveTotal }"></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="useLeave">사용 연차</label></th>
-	                       <td><input type="number" id="useLeave" name="leaveUse" value="${ al.leaveUse }"></td>
+	                       <td><input type="number" id="useLeave" class="form-control" name="leaveUse" value="${ al.leaveUse }"></td>
 	                   </tr>
 	                   <tr>
 	                       <th><label for="restLeave">잔여 연차</label></th>
-	                       <td><input type="number" id="restLeave" name="leaveRest" value="${ al.leaveRest }"></td>
+	                       <td><input type="number" id="restLeave" class="form-control" name="leaveRest" value="${ al.leaveRest }"></td>
+	                   </tr>
+	                   <tr>
+	                       <th><label for="status">상태</label></th>
+	                       <td><input type="text" class="form-control" id="status" name="status" value="${ al.status }"></td>
 	                   </tr>
 	
 	                </table>

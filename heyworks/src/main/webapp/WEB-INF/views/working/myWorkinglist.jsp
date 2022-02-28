@@ -121,8 +121,8 @@
                 <div class="week-select" align="center">
                     <!--<span id="left"> < </span>  -->
                     <img src="resources/images/left-arrow.png" id="left" style="width: 20px; height: 20px;">
-                    <label id="startDate">2022-02-21</label> ~ 
-                    <label id="endDate">2022-02-27</label>
+                    <label id="startDate">2022-02-28</label> ~ 
+                    <label id="endDate">2022-03-06</label>
                     <img src="resources/images/right-arrow.png" id="right" style="width: 20px; height: 20px;">
                 </div><br><br>
     
@@ -209,16 +209,16 @@
                                 	
                 					let list = "";
                 					for(let i in wlist){
-                						if(wlist[i].clockIn == null){
+                						if(wlist[i].clockIn == null){ // 출근시간 x 
                     						list += "<tr>"
    										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
    										     + "<td>" + "08:00 ~ 17:00" + "</td>"
    										     + "<td>" + " " + "</td>"
    										     + "<td>" + " " + "</td>"
-   										     + "<td>" + "01:00" + "</td>"
-   										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
-   										     + "<td>" + wlist[i].workTime + "시간" + "</td>"			     
-   										     + "<td>" + wlist[i].tnaStatus + "</td>"
+   										     + "<td>" + " " + "</td>"
+   										     + "<td>" + " " + "</td>"
+   										     + "<td>" + " " + "</td>"			     
+   										     + "<td><font color='blue'>" + wlist[i].tnaStatus + "</td>"
    										     + "</tr>";	
                 						}else{
                     						list += "<tr>"
@@ -228,15 +228,17 @@
    										     + "<td>" + wlist[i].clockOut + "</td>"
    										     + "<td>" + "01:00" + "</td>"
    										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
-   										     + "<td>" + wlist[i].workTime + "시간" + "</td>"			     
-   										     + "<td>" + wlist[i].tnaStatus + "</td>"
-   										     + "</tr>";	 
+   										     + "<td>" + wlist[i].workTime + "시간" + "</td>";	
+   										     
+   										     if(wlist[i].tnaStatus == "연장근무"){
+   										    	 list += "<td><font color='red'>" + wlist[i].tnaStatus + "</td>";
+   										     }else if(wlist[i].tnaStatus == "정상근무"){
+   										    	 list += "<td><font color='green'>" + wlist[i].tnaStatus + "</td>";
+   										     }
+   										     list += "</tr>";	 
                 						}
-
-										     
 									}
-                					
-                					
+                					    					
 									$("#weekTna").html(list);
                                 },error:function(){
                                 	console.log("ajax통신 실패");

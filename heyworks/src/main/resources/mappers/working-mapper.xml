@@ -253,6 +253,7 @@
 		     , LEAVE_TOTAL = #{leaveTotal}
 		     , LEAVE_USE = #{leaveUse}
 		     , LEAVE_REST = #{leaveRest}
+		     , STATUS = #{status}
 		 WHERE USER_NO = #{userNo}
 	</update>
 	
@@ -280,7 +281,7 @@
 		SELECT
 		       COUNT(*)
 		  FROM TNA 
-		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_DATE(SYSDATE, 'YYYY-MM-DD')
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	</select>
 	
 	<!-- 전체사원 근태현황 	-->
@@ -303,7 +304,7 @@
 		  FROM TNA T
 		  JOIN EMPLOYEE E USING(USER_NO)
 		  JOIN DEPARTMENT D USING(DEPT_CODE)
-		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_DATE(SYSDATE, 'YYYY-MM-DD')
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 		 ORDER
 		    BY USER_NO
 	</select>
@@ -392,8 +393,8 @@
 		SELECT
 		        APPLY_DATE
 		      , LEAVE_TYPE
-		      , START_DATE
-		      , L.END_DATE
+		      , TO_CHAR(TO_DATE(START_DATE), 'YYYY-MM-DD') "START_DATE"
+		      , TO_CHAR(TO_DATE(L.END_DATE), 'YYYY-MM-DD') "END_DATE"
 		      , LEAVE_USE
 		      , REASON
 		      , L.STATUS

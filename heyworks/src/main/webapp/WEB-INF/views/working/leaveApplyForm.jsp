@@ -20,6 +20,7 @@
        padding-left:30px;
        padding-top:30px;
 	}
+	.title-box{font-size:23px; font-weight:600;}
     .leave-content{
         height:700px;
     }
@@ -60,7 +61,7 @@
 				<!--휴가신청서 내용-->
 				<div class="leave-content" style="border:1px solid lightgrey;"><br>
 					
-					<h3 align="center">휴가 신청</h3>
+					<h3 align="center" class="title-box">휴가 신청</h3>
 					<br><br>
 					<table class="table-bordered">
 						<tr>
@@ -94,7 +95,7 @@
 		
 					<table class="table-bordered">
 						<tr>
-							<th width="130">구분</th>
+							<th width="130">*구분</th>
 							<td width="650">
 								<input type="radio" id="day" name="leaveType" value="연차" checked>
 								<label for="day">연차</label>
@@ -110,7 +111,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th>휴가기간</th>
+							<th>*휴가기간</th>
 							<td>
 								<input type="date" name="startDate" id="startDate" onchange="datechange()"> ~
 								<input type="date" name="endDate" id="endDate" onchange="datechange()">
@@ -146,9 +147,9 @@
 						</script>
 
 						<tr>
-							<th>사유</th>
+							<th>*사유</th>
 							<td style="height:100px;">
-								<textarea name="reason" cols="100" rows="12" style="resize:none; border:none;"></textarea>
+								<textarea name="reason" cols="100" rows="12" style="resize:none; border:none;" required></textarea>
 							</td>
 						</tr>
 					</table>

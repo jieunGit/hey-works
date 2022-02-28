@@ -88,7 +88,7 @@ public class WorkingDao {
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaList", rowBounds);
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaList", null, rowBounds);
 	}
 	
 	public int selectAtnaSearchCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {

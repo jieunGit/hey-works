@@ -20,6 +20,7 @@
        padding-left:30px;
        padding-top:30px;
 	}
+	.title-box{font-size:23px; font-weight:600;}
     .leave-content{
         height:700px;
     }
@@ -59,7 +60,7 @@
 				<!--휴가신청서 내용-->
 				<div class="leave-content" style="border:1px solid lightgrey;"><br>
 					
-					<h3 align="center">휴가 상세</h3>
+					<h3 align="center" class="title-box">휴가 상세</h3>
 					<br><br>
 					<table class="table-bordered">
 						<tr>
