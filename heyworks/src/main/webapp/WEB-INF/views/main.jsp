@@ -271,11 +271,11 @@ p.info {
 		<div id="mainView">
 			<div id="employee">
 				<div id="profile">
-
+					<img src="${ emp.image }" width="180px" height="180px" style="border-radius:100px;">
 				</div>
 				<div id="name">
-					<h5>강동원 팀장</h5>
-					<p>삼조전자 인사팀</p>
+					<h5>${ emp.userName }</h5>
+					<p>삼조전자 | ${ emp.deptName }</p>
 				</div>
 			</div>
 			<div id="mail">

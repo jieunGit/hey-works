@@ -123,7 +123,7 @@
             </a>
         </div>
         <div id="icon">
-            <a href="">
+            <a href="list.inMsg">
                 <img src="resources/images/miniletter.png" id="letter">
             </a>
             <a href="myPage.em">
