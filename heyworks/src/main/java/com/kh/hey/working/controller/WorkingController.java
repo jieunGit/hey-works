@@ -212,15 +212,14 @@ public class WorkingController {
 	
 	// 전사 근태현황 리스트 조회
 	@RequestMapping("allTnaMain.wo")
-	public String allTnaMain(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model, @RequestParam(value="today", required = false) String today) {
+	public String allTnaMain(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model) {
 		
-		System.out.println(today);
+		//System.out.println(today);
 		int listCount = wService.selectAtnaListCount();	
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		ArrayList<Working> wlist = wService.selectAtnaList(pi);
-		
-		
+			
 		model.addAttribute("pi", pi);
 		model.addAttribute("wlist", wlist);
 		

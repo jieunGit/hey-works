@@ -487,7 +487,7 @@ p.info {
 
 			// 출근버튼 비활성화, 출근 alert
 			i.target.style.backgroundColor = "lightgrey";
-			alert("출근하였습니다.");
+			alertify.alert("출근하였습니다.");
 			i.target.disabled = true;
 			// 출근시간 옆에 누른 시간 찍힘
 			let t = new Date().toTimeString().split(" ")[0];
@@ -515,12 +515,14 @@ p.info {
 				let t = new Date().toTimeString().split(" ")[0];
 
 				document.getElementById("click-td2").innerHTML = t;
-
+				
+				alertify.alert("퇴근하였습니다.");
 				// 퇴근시간 update
 				$.ajax({
 				url:"clockout.wo",
 				success:function(result){
 					console.log("통신 성공");
+					
 				},error:function(){
 					console.log("퇴근 업데이트 ajax 통신 실패");
 				}

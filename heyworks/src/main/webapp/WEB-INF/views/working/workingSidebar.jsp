@@ -57,7 +57,7 @@
             <img src="resources/images/2722998.png" style="width: 25px; height: 25px;"> 근태관리
         </div><br>
 
-        <div class="sidebar-menu">
+        <div class="sidebar-menu" style="margin-left:20px">
             <ul>
                 <li style="font-size:15px;"><strong>내 근무</strong>
                     <ul>
@@ -67,13 +67,15 @@
                 </li><br><br>
 
                 <!--관리자만-->
-                <li style="font-size:15px;"><strong>근무관리</strong>
-                    <ul>
-                        <li style="margin-left:15px;"><a href="allTnaMain.wo">전사 근태현황</a></li>
-                        <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
-                        <li style="margin-left:15px;"><a href="leaveApplyList.wo">휴가 신청내역</a></li>
-                    </ul>
-                </li>
+                <c:if test="${ loginUser.adminYn eq 'Y' }">
+	                <li style="font-size:15px;"><strong>근무관리</strong>
+	                    <ul>
+	                        <li style="margin-left:15px;"><a href="allTnaMain.wo">전사 근태현황</a></li>
+	                        <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
+	                        <li style="margin-left:15px;"><a href="leaveApplyList.wo">휴가 신청내역</a></li>
+	                    </ul>
+	                </li>
+                </c:if>
             </ul>
         </div>
 
