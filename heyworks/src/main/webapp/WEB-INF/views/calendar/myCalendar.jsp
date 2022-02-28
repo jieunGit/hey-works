@@ -462,24 +462,22 @@ $(document).ready(function(){
   
   
   cal.createSchedules([
-	    {
+	  {
 	        id: '1',
-	        calendarId: '1',
-	        title: 'Bank IT Center',
-	        body:'어쩌고저쩌고',
-	        category: 'time',
+	        calendarId: '5',
+	        title: '아빠생신',
+	        category: 'allday',
 	        dueDateClass: '',
 	        start: '2022-02-11T09:00:00+09:00',
 	        end: '2022-02-11T18:00:00+09:00',	        
-	        isReadOnly: true
+	       // isReadOnly: true
 	        
 	    },
 	 {
 	        id: '2',
 	        calendarId: '2',
-	        title: 'AirShow Seoul 2018',
-	        body:'어쩌고저쩌고',
-	        category: 'time',
+	        title: '창립기념일',
+	        category: 'allday',
 	        dueDateClass: '',
 	        start: '2022-02-14T09:30:00+09:00',
 	        end: '2022-02-14T12:30:00+09:00',
@@ -488,12 +486,12 @@ $(document).ready(function(){
 	    },
 	 {
 	        id: '3',
-	        calendarId: '3',
-	        title: 'Block Chain Seoul 2018',
-	        category: 'time',
+	        calendarId: '4',
+	        title: '휴가',
+	        category: 'allday',
 	        dueDateClass: '',
-	        start: '2022-02-14T13:30:00+09:00',
-	        end: '2022-02-14T18:30:00+09:00'
+	        start: '2022-02-21T13:30:00+09:00',
+	        end: '2022-02-25T18:30:00+09:00'
 	    }
 
 	]);

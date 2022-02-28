@@ -359,7 +359,7 @@ function hexToRGBA(hex) {
     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = '개인일정';
+    calendar.name = '세미나';
     calendar.color = '#ffffff';
     calendar.bgColor = '#9e5fff';
     calendar.dragBgColor = '#9e5fff';
@@ -369,7 +369,7 @@ function hexToRGBA(hex) {
     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = '회사';
+    calendar.name = '프로젝트';
     calendar.color = '#ffffff';
     calendar.bgColor = '#00a9ff';
     calendar.dragBgColor = '#00a9ff';
@@ -380,14 +380,14 @@ function hexToRGBA(hex) {
     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = '팀';
+    calendar.name = '프로젝트완료';
     calendar.color = '#ffffff';
     calendar.bgColor = '#03bd9e';
     calendar.dragBgColor = '#03bd9e';
     calendar.borderColor = '#03bd9e';
     addCalendar(calendar);
 
-    calendar = new CalendarInfo();
+     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
     calendar.name = '휴가';
@@ -397,17 +397,17 @@ function hexToRGBA(hex) {
     calendar.borderColor = '#bbdc00';
     addCalendar(calendar);
 
-    calendar = new CalendarInfo();
+     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = '생일';
+    calendar.name = '회의';
     calendar.color = '#ffffff';
     calendar.bgColor = '#ffbb3b';
     calendar.dragBgColor = '#ffbb3b';
     calendar.borderColor = '#ffbb3b';
     addCalendar(calendar);
 
-    calendar = new CalendarInfo();
+/*    calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
     calendar.name = 'etc';
@@ -415,7 +415,7 @@ function hexToRGBA(hex) {
     calendar.bgColor = '#9d9d9d';
     calendar.dragBgColor = '#9d9d9d';
     calendar.borderColor = '#9d9d9d';
-    addCalendar(calendar);
+    addCalendar(calendar);  */
 
 })();
 
@@ -463,33 +463,50 @@ $(document).ready(function(){
 	    {
 	        id: '1',
 	        calendarId: '1',
-	        title: 'Bank IT Center',
+	        title: 'GDG Korea WebTech Online Lightning Talk 2022',
 	        category: 'time',
+	        location: 'gather town',
 	        dueDateClass: '',
-	        start: '2022-02-11T09:00:00+09:00',
-	        end: '2022-02-11T18:00:00+09:00',	        
-	        isReadOnly: true
+	        start: '2022-02-12T14:30:00+09:00',
+	        end: '2022-02-12T17:30:00+09:00',	        
+	        isReadOnly: true,
+	        attendees:['강동원']
 	        
 	    },
 	 {
 	        id: '2',
 	        calendarId: '2',
-	        title: 'AirShow Seoul 2018',
-	        category: 'time',
+	        title: '신한은행 차세대 프로젝트',
+	        category: 'allday',
 	        dueDateClass: '',
-	        start: '2022-02-14T09:30:00+09:00',
-	        end: '2022-02-14T12:30:00+09:00',
-	        attendees:['강동원']
+	        start: '2022-02-21T09:30:00+09:00',
+	        end: '2022-05-21T12:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['서강준']
 	       
 	    },
 	 {
 	        id: '3',
-	        calendarId: '3',
-	        title: 'Block Chain Seoul 2018',
+	        calendarId: '1',
+	        title: 'Block Chain Seoul 2022',
 	        category: 'time',
+	        location: '코엑스',
 	        dueDateClass: '',
 	        start: '2022-02-14T13:30:00+09:00',
-	        end: '2022-02-14T18:30:00+09:00'
+	        end: '2022-02-14T18:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['이해랑']
+	    },
+	 {
+	        id: '4',
+	        calendarId: '5',
+	        title: '아침회의',
+	        category: 'time',
+	        dueDateClass: '',
+	        start: '2022-02-28T09:30:00+09:00',
+	        end: '2022-02-28T11:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['주세현']
 	    }
 
 	]);
