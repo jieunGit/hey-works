@@ -130,32 +130,33 @@ public class OrganizationController {
 	}
 	
 	// ajax
-	@RequestMapping("list.selectOr")
-	public String adselectOr(@RequestParam(value="cpage", defaultValue="1") int currentPage, 
-							 @RequestParam(value="dno", defaultValue="0")int dno, HttpSession session, Model model) {
-		
-		// 갯수조회
-		int listCount = orService.adCountList(dno);
-		
-		// 페이징처리
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		// 조직도 조회요청
-		ArrayList<Organ> organ = orService.adminDeptOrgan(dno, pi);
-		
-		System.out.println(listCount);
-		System.out.println(organ);
-		
-		if(organ != null) {
-			session.setAttribute("organ", organ);
-			session.setAttribute("pi", pi);
-			model.addAttribute("dno", dno);
-			return "organization/adminUserSetMain";
-		}else {
-			System.out.println("받은메세지 불러오기 실패");
-			return "organization/adminUserSetMain";
+		@RequestMapping("list.selectOr")
+		public String adselectOr(@RequestParam(value="cpage", defaultValue="1") int currentPage, 
+								 @RequestParam(value="dno", defaultValue="0")int dno, HttpSession session, Model model) {
+			
+			// 갯수조회
+			int listCount = orService.adCountList(dno);
+			
+			// 페이징처리
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+			// 조직도 조회요청
+			ArrayList<Organ> organ = orService.adminDeptOrgan(dno, pi);
+			
+			System.out.println(listCount);
+			System.out.println(organ);
+			
+			if(organ != null) {
+				session.setAttribute("organ", organ);
+				session.setAttribute("pi", pi);
+				model.addAttribute("dno", dno);
+				return "organization/adminUserSetMain";
+			}else {
+				System.out.println("받은메세지 불러오기 실패");
+				return "organization/adminUserSetMain";
+			}
+			
 		}
-		
-	}
+	
 	
 	// 사용자추가 폼
 	@RequestMapping("userPlustForm.organ")
@@ -200,7 +201,33 @@ public class OrganizationController {
 		return count > 0 ? "NN" : "NY";
 	}
 	
+	// 임직원 정보수정폼
+	@RequestMapping("updateForm.organ")
+	public String updateForm(int userNo, Model model) {
+		
+		Organ o  = orService.detailEmployee(userNo);
+		if(o != null) {
+			model.addAttribute("o", o);
+			return "organization/adminUserUpdateForm";
+		}else {
+			System.out.println("상세정보 불러오기 실패");
+			return "organization/adminUserUpdateForm";
+		}
+	}
 	
+	// 임직원 정보수정요청
+	@RequestMapping("update.organ")
+	public String updateOrgan(Organ o, HttpSession session) {
+		int result = orService.updateOrgan(o);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "정보가 수정되었습니다.");
+			return "redirect:list.adminOrgan";
+		}else {
+			session.setAttribute("alertMsg", "정보 수정에 실패했습니다.");
+			return "redirect:list.adminOrgan";
+		}
+	}
 	
 	
 	// 첨부파일용 메소드

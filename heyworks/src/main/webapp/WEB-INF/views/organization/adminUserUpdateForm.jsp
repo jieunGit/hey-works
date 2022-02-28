@@ -112,14 +112,14 @@
             </div>
 
             <!--입력폼-->
-            <form class="insertForm" method="post" action="insert.organ" enctype="multipart/form-data">
+            <form class="insertForm" method="post" action="update.organ" enctype="multipart/form-data">
 
                 <div class="required">
 
                     <!--이미지-->
                     <div id="img-area">
                     	<div id="delImg" onclick="delImg();" style="float: right;"><i class="fa-solid fa-x"></i></div>
-                        <img id="preview" src="resources/uploadFiles/employeeImg/EmployeeImage.png" style="width:110px; height:110px; border-radius: 100px;"> <!--기본값은 user.png-->
+                        <img id="preview" src="${ o.image }" style="width:110px; height:110px; border-radius: 100px;"> <!--기본값은 user.png-->
                         <button type="button" onclick="clickImg();" class="btn btn-primary">사진 첨부하기</button>
                         <input type="file" id="image" style="display:none;" name="upfile" onchange="loadImg(this);">
                     </div>
@@ -127,16 +127,16 @@
                     <ul id="input1">
                         <li>
                             <span>이름*</span>
-                            <label><input type="text" name="userName" id="userName" required></label>
+                            <label><input type="text" name="userName" id="userName" value="${ o.userName }" required></label>
                         </li>
                         <li>
                             <span>ID*</span>
-                            <label><input type="text" name="userId" id="userId" placeholder="5글자 이상 입력해주세요" required></label>
-                            <div id="idResult" style="font-size: 0.8em; margin-left: 115px; display:none;"></div>
+                            <label><input type="text" name="userId" id="userId" value="${ o.userId }" readOnly required></label>
+                            <div id="idResult" style="font-size: 0.8em; margin-left: 115px;">* 아이디는 변경이 불가능합니다.</div>
                         </li>
                         <li>
                             <span>비밀번호*</span>
-                            <label><input type="password" name="userPwd" id="userPwd" placeholder="임시비밀번호 : 1234" required></label>
+                            <label><input type="password" name="userPwd" id="userPwd" value="${ o.userPwd }" required></label>
                         </li>
                         <li>
                             <span>비밀번호확인*</span>
@@ -149,52 +149,52 @@
                     <ul id="input2">
                         <li>
                             <span>사번*</span>
-                            <label><input type="number" name="userNo" id="userNo"></label>
-                            <div id="noResult" style="font-size: 0.8em; margin-left: 115px; display:none;"></div>
+                            <label><input type="number" name="userNo" id="userNo" value="${ o.userNo }" readOnly required></label>
+                            <div id="noResult" style="font-size: 0.8em; margin-left: 115px;">* 사번은 변경이 불가능합니다.</div>
                         </li>
                         <li>
                             <span>입사일*</span>
-                            <label><input type="date" name="hire" id="hireDate" required></label>
+                            <label><input type="date" name="hire" id="hireDate" value="${ o.hire }" required></label>
                         </li><li>
                             <span>부서*</span>
                             <label>
                                 <!--부서select-->
-                                <select name="deptCode" id="deptCode" required>
-                                    <option value="1">개발팀</option>
-                                    <option value="2">경영팀</option>
-                                    <option value="3">회계팀</option>                                    
-                                    <option value="4">인사팀</option>
-                                </select>
+			                    <select name="deptCode" id="deptCode">
+			                    	<option value="0">전체</option>
+			                    	<c:forEach var="d" items="${ dept }">
+			                    		<option value="${ d.deptCode }" <c:if test="${o.deptCode eq d.deptCode}">selected="selected"</c:if>>${ d.deptName }</option>
+			                    	</c:forEach>
+			                    </select>
                             </label>
                         </li><li>
                             <span>직급</span>
                             <label>
                                 <!--직급select-->
                                 <select name="jobCode" id="jobCode">
-                                    <option value="1">사원</option>
-                                    <option value="2">주임</option>
-                                    <option value="3">대리</option>                                    
-                                    <option value="4">과장</option>
-                                    <option value="9">이사</option>
+                                    <option <c:if test="${o.jobCode eq 1}">selected="selected"</c:if> value="1">사원</option>
+                                    <option <c:if test="${o.jobCode eq 2}">selected="selected"</c:if> value="2">주임</option>
+                                    <option <c:if test="${o.jobCode eq 3}">selected="selected"</c:if> value="3">대리</option>                                    
+                                    <option <c:if test="${o.jobCode eq 4}">selected="selected"</c:if> value="4">과장</option>
+                                    <option <c:if test="${o.jobCode eq 9}">selected="selected"</c:if> value="9">이사</option>
                                 </select>
                             </label>
                         </li><li>
                             <span>이메일</span>
-                            <label><input type="text" name="email" id="email"></label>
+                            <label><input type="text" name="email" id="email" value="${ o.email }"></label>
                         </li><li>
                             <span>사내전화</span>
-                            <label><input type="text" name="call" id="call" placeholder="02) 입력"></label>
+                            <label><input type="text" name="call" id="call" value="${ o.call }" placeholder="02) 입력"></label>
                         </li><li>
                             <span>휴대전화</span>
-                            <label><input type="text" name="phone" id="phone" placeholder="-포함하여 입력"></label>
+                            <label><input type="text" name="phone" id="phone"value="${ o.phone }" placeholder="-포함하여 입력"></label>
                         </li><li>
                             <span>상태*</span>
                             <label>
                                 <!--상태select-->
                                 <select name="status" id="status" required>
-                                    <option value="Y">재직</option>
-                                    <option value="N">퇴사</option>
-                                    <option value="R">휴직</option>     
+                                    <option <c:if test="${o.status eq 'Y'}">selected="selected"</c:if> value="Y">재직</option>
+                                    <option <c:if test="${o.status eq 'N'}">selected="selected"</c:if> value="N">퇴사</option>
+                                    <option <c:if test="${o.status eq 'R'}">selected="selected"</c:if> value="R">휴직</option>     
                                 </select>
                             </label>
                         </li>
@@ -215,54 +215,6 @@
         </div>
 
    </div>
-   
-   
-   
-   <!-- 아이디 유효성검사 -->
-   <script>
-       $(function(){
-    	   
-          // 아이디 입력하는 input요소객체 변수에 담아두기
-          const $id = $(".insertForm input[name=userId]");
-          
-          $id.keyup(function(){
-             
-             if($id.val().length >= 5){
-            	 
-                $.ajax({
-                   url:"idCheck.organ",
-                   data:{id:$id.val()},
-                   success:function(result){
-                      if(result == "NN"){ // 사용불가능
-                    	  
-                         $("#idResult").show();
-                         $("#idResult").css("color", "red").text("중복된 아이디가 존재합니다.");
-                         
-                         $(".insertForm :submit").attr("disabled", true);
-                      }else{ // 사용가능
-                    	 
-                    	  $("#idResult").show();
-                          $("#idResult").css("color", "blue").text("OK!");
-                          
-                          $(".insertForm :submit").removeAttr("disabled");
-                      }
-                      
-                   },error:function(){
-                      console.log("아이디 중복체크용 ajax 통신 실패");
-                   }
-                });
-                
-             }else{ // 5글자 미만일 경우 => 버튼 비활성화, 메세지 숨기기
-                $("#idResult").hide();
-                $(".insertForm :submit").attr("disabled", true);
-             }
-             
-             
-          })
-          
-          
-       })
-    </script>
     
     <!-- 비밀번호확인 -->
 	<script>
@@ -286,6 +238,8 @@
 					
 					$("#pwdResult").show();
                     $("#pwdResult").css("color", "blue").text("OK!");
+                    
+                    $(".insertForm :submit").removeAttr("disabled");
 					
 				}
 					
@@ -293,54 +247,6 @@
 			
 		})
 	</script>
-	
-	<!-- 사번 유효성검사 -->
-	<!-- 아이디 유효성검사 -->
-    <script>
-       $(function(){
-    	   
-          // 아이디 입력하는 input요소객체 변수에 담아두기
-          const $no = $(".insertForm input[name=userNo]");
-          
-          $no.keyup(function(){
-             
-             if($no.val().length >= 8){
-                
-                $.ajax({
-                   url:"noCheck.organ",
-                   data:{no:$no.val()},
-                   success:function(result){
-                      if(result == "NN"){ // 사용불가능
-                    	  
-                         $("#noResult").show();
-                         $("#noResult").css("color", "red").text("중복된 사번이 존재합니다.");
-                         
-                         $(".insertForm :submit").attr("disabled", true);
-                      }else{ // 사용가능
-                    	 
-                    	  $("#noResult").show();
-                          $("#noResult").css("color", "blue").text("OK!");
-                          
-                          $(".insertForm :submit").removeAttr("disabled");
-                      }
-                      
-                   },error:function(){
-                      console.log("아이디 중복체크용 ajax 통신 실패");
-                   }
-                });
-                
-             }else{ // 5글자 미만일 경우 => 버튼 비활성화, 메세지 숨기기
-            	$("#noResult").show();
-                $("#noResult").css("color", "red").text("사번은 8자리 숫자로 구성하여주세요");
-                $(".insertForm :submit").attr("disabled", true);
-             }
-             
-             
-          })
-          
-          
-       })
-    </script>
 
 	<script>
         function clickImg(){
