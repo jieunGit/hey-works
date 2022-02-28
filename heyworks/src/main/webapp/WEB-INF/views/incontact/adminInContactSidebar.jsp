@@ -101,7 +101,24 @@
         font-weight: bold;
     }
     .addressAdd td {
-        padding-top: 15px;
+        padding-top: 7px;
+    }
+    #suggestion {
+        border: 1px solid #979595;
+        border-radius: 5px;
+        margin-left: 0px;
+        width: 195px;
+        display:none;
+    }
+    #suggestion>ul { 
+        list-style-type: none;
+        padding-left: 0px;
+        margin: 5px 0px 0px 10px; 
+    }
+    #suggestion>ul>li {
+        font-size: small;
+        margin: 5px 0px 7px 0px;
+        padding-bottom: 5px;
     }
 </style>
 <script>
@@ -133,12 +150,14 @@
         </ul>
         <hr>
         <div class="addressgroup">
-            <div class="group">사내주소록</div>
+            <div class="group"><i class="fa-solid fa-angles-down">&nbsp;사내주소록</i></div>
             <div class="groupDetail"><a href=""><i class="far fa-address-book"> 전체</i></a> </div>
             <ul class="groupDetail" id="contanctGroup" style="list-style-type: none; height: 100%;">
-                <li><a href=""><i class="far fa-folder"> 개발팀</i></a></li><br>
-                <li><a href=""><i class="far fa-folder"> 인사팀</i></a></li><br>
-                <li><a href=""><i class="far fa-folder"> 회계팀</i></a></li>
+            
+            	<c:forEach var="g" items="${ inCon }">
+            		<li><li><a href='group.inCon?gNo=${ g.inGroupNo }'><i class='far fa-folder'> &nbsp;${ g.inGroupName }</i></a></li>
+            	</c:forEach>
+            
             </ul>
         </div>
 
@@ -150,7 +169,7 @@
         <div class="modal-dialog" style="width: 450px;">
         <div class="modal-content">
             
-            <form id="contactCreateId" name="formContactCreate">
+            <form action="insert.inCon" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 style="font-weight: bold; float: left;">주소록추가</h4>
@@ -177,7 +196,9 @@
                                         <td>
                                             <span>
                                                 <select id="inGroupNo" style="height: 32px;">
-                                                    <option value="">xx팀</option>
+                                                	<c:forEach var="g" items="${ inCon }">
+                                                    	<option value="${ g.inGroupNo }">${ g.inGroupName }</option>
+                                                    </c:forEach>
                                                 </select>
                                             </span>
                                         </td>
@@ -189,8 +210,12 @@
                                         </th>
                                         <td>
                                             <span>
-                                                <input type="text" class="form-control" id="name" required>
+                                                <input type="text" class="form-control" id="name" name="userName" required>
                                             </span>
+                                            <div id="suggestion" style="position: absolute; z-index: 2;  background-color: rgb(255 255 255);">
+	                    						<ul class="result">
+                    							</ul>
+	                						</div>
                                         </td>
                                     </tr>
 
@@ -200,7 +225,7 @@
                                         </th>
                                         <td>
                                             <span>
-                                                <input type="text" class="form-control" id="name">
+                                                <input type="text" class="form-control" id="email" name="email">
                                             </span>
                                         </td>
                                     </tr>
@@ -219,7 +244,7 @@
                                             <span>내선번호 *</span>
                                         </th>
                                         <td>
-                                            <span><input type="text" class="form-control" id="phone" name="phone" placeholder="지역번호) 포함"></span>
+                                            <span><input type="text" class="form-control" id="call" name="call" placeholder="지역번호) 포함"></span>
                                         </td>
                                     </tr>
                                     
@@ -228,14 +253,13 @@
                                             <span>부서</span>
                                         </th>
                                         <td>
-                                            <!--부서select-->
                                             <div>
-                                                <select name="deptCode" id="deptCode" style="height: 32px;">
-                                                    <option value="1">개발팀</option>
-                                                    <option value="2">경영팀</option>
-                                                    <option value="3">회계팀</option>                                    
-                                                    <option value="4">인사팀</option>
-                                                </select>
+                                                <!--부서select-->
+							                    <select name="deptCode" id="deptCode">
+							                    	<c:forEach var="d" items="${ dept }">
+							                    		<option value="${ d.deptCode }">${ d.deptName }</option>
+							                    	</c:forEach>
+							                    </select>
                                             </div>
                                             <!--직급select-->
                                             <div>
@@ -255,8 +279,8 @@
                                             <span>주소</span>
                                         </th>
                                         <td>
-                                            <div><input name="departmentName" type="text" class="company form-control" placeholder="부서명"></div>
-                                            <div><input name="positionName" type="text" class="company form-control" placeholder="직위"></div>
+                                            <div><input name="address" type="text" class="company form-control" placeholder="부서명"></div>
+                                            <div><input name="address_detail" type="text" class="company form-control" placeholder="직위"></div>
                                         </td>
                                     </tr>
                                     
@@ -281,8 +305,28 @@
                 <!-- Modal footer -->
                 <div class="modal-footer" style="text-align: center;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 150px;">취소</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 150px; margin-right:55px;">저장</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#keep" style="width: 150px; margin-right:55px;">저장</button>
                 </div>
+                
+                
+	            <!-- 보관 Modal -->
+	            <div id="keep" class="modal fade" role="dialog">
+	                <div class="modal-dialog modal-sm">
+	            
+	                    <!-- Modal content-->
+	                    <div class="modal-content">
+	                        <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
+	                            해당 입력사항으로 사내연락처를 추가하시겠습니까?
+	                        </div>
+	                        <div class="modal-footer" style="text-align: center;">
+	                            <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 27px;">취소</button>
+	                            <button type="submit" id="yesKeep" class="btn btn-success" style="margin-right: 70px;">등록</button>
+	                        </div>
+	                    </div>
+	            
+	                </div>
+	            </div>
+                
             </form>
         </div>
         </div>
@@ -300,39 +344,82 @@
                     <div class="modal-body">
                         <p style="margin-top:20px; font-size: x-small; color: grey; margin-bottom: 5px;">사내주소록</p>
                         <p style="font-size: larger;">그룹추가하기</p>
-                        <input name="groupName"  class="form-control" placeholder="그룹명을 입력해주세요" style="display: inline-block; width:250px; height: 40px;">   
+                        <input id="inGroupName" name="inGroupName"  class="inGroupName" placeholder="그룹명을 입력해주세요" style="display: inline-block; width:250px; height: 40px;">   
                     </div>
             
                     <!-- Modal footer -->
                     <div class="modal-footer" style="text-align: center;">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:100px; margin-right: 5px;">취소</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#confirm" style="width:100px; margin-right:25px;">저장</button>
+                        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#confirm" style="width:100px; margin-right:25px;">저장</button>
                     </div>
                 </form>
 
             </div>
         </div>
     </div>
-
-    <!-- 그룹생성 확인 Modal -->
-    <div id="confirm" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
     
-            <!-- Modal content-->
-            <div class="modal-content">
+    <!--임직원 자동완성-->
+    <script>
 
-                <div class="modal-body" style="margin-top: 30px; margin-bottom: 30px; text-align: center;">
-                    그룹이 생성되었습니다.
-                </div>
+        $(function() {
+    
+            $("#name").keyup(function(){
+            	
+            var keyword = $(this).val();
                 
-                <div class="modal-footer" style="text-align: center;">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 200px; margin-right:25px;">확인</button>
-                </div>
-            </div>
+         	if(keyword.length == 0) {
+         		$("#suggestion").hide();
+         	}else if(keyword.length >= 1){
+                   	$("#suggestion").show();
+             	$.ajax({ // Ajax 요청을 작성하고 GET 방식으로 전송함.
+                      url: "search.name",
+                      data: { userName : keyword },
+                      method: "GET",
+                      success:function(list){
+                      	
+                      	//console.log(list);
+                     		if(list.length >= 1) {
+                      		
+                      		var result = "";
+                      		for(let i in list) {
+                       		result += "<li>"
+                       				+ "<i class='fa-solid fa-magnifying-glass'>&nbsp;</i>"
+                       				+ "<span class='usern' style='display:none;'> " + list[i].userNo + "</span>"
+                       				+ "<span class='usernm'> " + list[i].userName + "</span>"
+                       		        + "<span> | " + list[i].deptName  + "</span>"
+                       		        + "<span>(" + list[i].jobName + ")</span>"
+                       		        + "</li>";
+                    		   			$(".result").html(result);
+                       	}
+                      		
+                      	}else if(list.length <= 0) {
+                      		$("#suggestion").hide();
+                      	}
+                      	
+                      }, error:function(){
+                          console.log("ajax통신실패");
+                      }
+                 })       // Ajax 응답을 정상적으로 받으면 실행됨.
+         	}
+            })
     
-        </div>
-    </div>
+        });
+    
+    </script>
+    
+    <!-- input값 채워주기 -->
+    <script>
+    	$(document).on('click', '#suggestion>ul>li', function(){
+    		var userNo = $(this).children().siblings('.usern').text();
+    		var userName = $(this).children().siblings('.usernm').text();
+    		//console.log(userNo);
+    		$("#suggestion").hide();
+    		$("#name").val(userName);
+    		$("#recvNo").val(userNo);
+    	})
+    </script>
 
+	
 
 </body>
 </html>
