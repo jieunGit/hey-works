@@ -140,8 +140,6 @@
 	
 	            <div id="btns" align="right">
 	                <button type="submit" class="btn btn-sm btn-primary">결재요청</button>
-	                <a href="" class="btn btn-sm">임시저장</a>
-	                <button type="button" class="btn btn-sm">미리보기</button>
 	                <button type="button" class="btn btn-sm" onclick="history.back();">취소</button>
 	            </div>
 	

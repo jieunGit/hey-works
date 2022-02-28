@@ -57,127 +57,28 @@
             <img src="resources/images/2722998.png" style="width: 25px; height: 25px;"> 근태관리
         </div><br>
 
-        <p id="date" class="date"></p>
-        <strong id="time" class="time"></strong><br><br>
-
-        <table class="click-time">
-            <tr>
-                <th style="font-size:13px; border:none;">출근시간</th>
-                <td class="click-td" id="click-td1" width="90px"></td>
-            </tr>
-            <tr>
-                <th style="font-size:13px; border:none;">퇴근시간</th>
-                <td class="click-td" id="click-td2" ></td>
-            </tr>
-        </table>
-        <hr style="margin-right:15px;">
-        
-        <button class="in-btn" id="btn1" style="margin-left:15px;">출근</button> 
-        <button class="out-btn" id="btn2">퇴근</button><br>
-
-        <!--출퇴근 버튼 클릭시 이벤트-->
-        <script>
-            document.getElementById("btn1").onclick = function(i){
-
-            	// 출근버튼 비활성화, 출근 alert
-                i.target.style.backgroundColor = "lightgrey";
-                alert("출근하였습니다.");
-                i.target.disabled = true;
-                // 출근시간 옆에 누른 시간 찍힘
-                let t = new Date().toTimeString().split(" ")[0];
-                document.getElementById("click-td1").innerHTML = t;
-                
-                // 출근시간 insert 
-                $.ajax({
-                url:"clockin.wo",
-                success:function(result){
-				 console.log("통신 성공");
-                },error:function(){
-                    console.log("출근 인서트 ajax 통신 실패");
-                }
-              })
-                
-            }
-
-            document.getElementById("btn2").onclick = function(e){
-
-                if(confirm("퇴근하시겠습니까?") == true){
-
-                    e.target.style.backgroundColor = "lightgrey";
-                    e.target.disabled = true;
-
-                    let t = new Date().toTimeString().split(" ")[0];
-                
-                    document.getElementById("click-td2").innerHTML = t;
-
-                    // 퇴근시간 update
-                    $.ajax({
-                    url:"clockout.wo",
-                    success:function(result){
-    				 	console.log("통신 성공");
-                    },error:function(){
-                        console.log("퇴근 업데이트 ajax 통신 실패");
-                    }
-                  })
-                  
-                }else{
-                    return false;
-                }
-            }
-        </script>
-        
-
-        <button class="ot-btn" style="margin-left:15px;" onclick="location.href = 'otApplyForm.wo'">연장근무신청</button>
-        <br><br><br>
-
-        <div class="sidebar-menu">
+        <div class="sidebar-menu" style="margin-left:20px">
             <ul>
                 <li style="font-size:15px;"><strong>내 근무</strong>
                     <ul>
-                        <li style="margin-left:15px;"><a href="main.wo">근무/휴가</a></li>
-                        <li style="margin-left:15px;"><a href="">근태현황</a></li>
+                        <li style="margin-left:15px;"><a href="main.wo">근태현황</a></li>
                         <li style="margin-left:15px;"><a href="selectMyleave.wo">휴가현황</a></li>
                     </ul>
                 </li><br><br>
 
                 <!--관리자만-->
-                <li style="font-size:15px;"><strong>근무관리</strong>
-                    <ul>
-                        <li style="margin-left:15px;"><a href="allTnaMain.wo">전사 근태현황</a></li>
-                        <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
-                        <li style="margin-left:15px;"><a href="">휴가 신청내역</a></li>
-                        <li style="margin-left:15px;"><a href="">연장근무 신청내역</a></li>
-                    </ul>
-                </li>
+                <c:if test="${ loginUser.adminYn eq 'Y' }">
+	                <li style="font-size:15px;"><strong>근무관리</strong>
+	                    <ul>
+	                        <li style="margin-left:15px;"><a href="allTnaMain.wo">전사 근태현황</a></li>
+	                        <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
+	                        <li style="margin-left:15px;"><a href="leaveApplyList.wo">휴가 신청내역</a></li>
+	                    </ul>
+	                </li>
+                </c:if>
             </ul>
         </div>
 
-        <!--실시간 날짜, 시간-->
-        <script>
-            function setClock(){
-                var dateInfo = new Date(); 
-                var hour = modifyNumber(dateInfo.getHours());
-                var min = modifyNumber(dateInfo.getMinutes());
-                var sec = modifyNumber(dateInfo.getSeconds());
-                var year = dateInfo.getFullYear();
-                var month = dateInfo.getMonth()+1; //monthIndex를 반환해주기 때문에 1을 더해줌
-                var date = dateInfo.getDate();
-                document.getElementById("time").innerHTML = hour + ":" + min  + ":" + sec;
-                document.getElementById("date").innerHTML = year + "년 " + month + "월 " + date + "일";
-            }
-            function modifyNumber(time){
-                if(parseInt(time)<10){
-                    return "0"+ time;
-                }
-                else
-                    return time;
-            }
-            window.onload = function(){
-                setClock();
-                setInterval(setClock,1000); //1초마다 setClock 함수 실행
-            }
-
-        </script>
 
     </div>
 </body>

@@ -38,6 +38,11 @@ public class WorkingServiceImpl implements WorkingService {
 	public int insertLeave(Leave l) {
 		return wDao.insertLeave(sqlSession, l);
 	}
+	
+	@Override
+	public AllLeave selectMyleaveStatus(int userNo) {
+		return wDao.selectMyleaveStatus(sqlSession, userNo);
+	}
 
 	@Override
 	public ArrayList<Leave> selectMyleave(int userNo) {
@@ -86,21 +91,47 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.selectAtnaListCount(sqlSession);
 	}
 
-	/*
 	@Override
-	public ArrayList<Working> selectAtnaList(String> map) {
+	public ArrayList<Working> selectAtnaList(PageInfo pi) {
 		return wDao.selectAtnaList(sqlSession, pi);
-	}
-	*/
-	@Override
-	public ArrayList<Working> selectAtnaList() {
-		return wDao.selectAtnaList(sqlSession);
 	}
 
 	@Override
-	public ArrayList<Working> selectAtnaListt() {
-		return wDao.selectAtnaListt(sqlSession);
+	public int selectAtnaSearchCount(HashMap<String, String> map) {
+		return wDao.selectAtnaSearchCount(sqlSession, map);
 	}
+
+	@Override
+	public ArrayList<Working> selectAtnaSearch(HashMap<String, String> map, PageInfo pi) {
+		return wDao.selectAtnaSearch(sqlSession, map, pi);
+	}
+
+	@Override
+	public int selectAleaveAppListCount() {
+		return wDao.selectAleaveAppListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Leave> selectAleaveAppList(PageInfo pi) {
+		return wDao.selectAleaveAppList(sqlSession, pi);
+	}
+
+	@Override
+	public Leave selectLeaveApplyForm(int leaveAno) {
+		return wDao.selectLeaveApplyForm(sqlSession, leaveAno);
+	}
+
+	@Override
+	public int updateApplyLeaveStatus(int leaveAno) {
+		return wDao.updateApplyLeaveStatus(sqlSession, leaveAno);
+	}
+
+	@Override
+	public int deleteApplyLeave(int leaveAno) {
+		return wDao.deleteApplyLeave(sqlSession, leaveAno);
+	}
+
+
 
 
 }

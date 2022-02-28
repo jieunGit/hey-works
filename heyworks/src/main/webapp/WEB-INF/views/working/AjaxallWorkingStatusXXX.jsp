@@ -103,16 +103,13 @@
              <div id="pagingArea">
              
 		    
-		    </div>
+		     </div>
             
              <script>
               $(function(){
                   selectAllList();
               });
               
-              //$("#next").click(function(){
-            	  
-              //})
              
         	   // 근무현황 리스트 조회해오는 ajax
               function selectAllList(cpage){
@@ -125,7 +122,7 @@
               	var endPage; // 페이징바의 끝수 
               	
               	$.ajax({
-              		url:"selectAllTna.wo",
+              		url:"selectAllTna.woss",
               		data: {cpage:cpage},
               		success:function(obj){
               			
@@ -139,7 +136,7 @@
               			//console.log(startPage); 1
               			//console.log(endPage); 3
               			//console.log(cpage); 1
-/* 
+						/* 
               			console.log(tlist[0]);
               			console.log(tlist);
               			 */

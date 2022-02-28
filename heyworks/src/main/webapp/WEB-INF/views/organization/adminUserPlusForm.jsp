@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +24,8 @@
     .outer>div{float:left;}
     .contents{
         margin: auto;
-        margin-top:20px;
-        margin-left:40px;
+        margin-top:10px;
+        margin-left:50px;
         width: 900px;
         height: 900px;
     }
@@ -55,7 +56,7 @@
         font-size: 11px;
     }
     .required {
-        margin-top: 60px;
+        margin-top: 30px;
     }
     ul, ol, li {
         list-style: none;
@@ -69,7 +70,7 @@
         width: 110px;
         font-size: 14px;
     }
-    input[type=text], input[type=password], input[type=date], input[type=number], #deptCode, #jobCode {
+    input[type=text], input[type=password], input[type=date], input[type=number], #deptCode, #jobCode, #status {
         border: 1px #cfcfcf solid;
         padding: 0 4px;
         color: #444;
@@ -90,6 +91,9 @@
         height: 35px;
         margin: 60px 30px 0px 0px;
     }
+    #delImg:hover {
+    	cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -97,7 +101,7 @@
    <div class="outer">
    
         <jsp:include page="../common/menubar.jsp" />
-        <jsp:include page="sidebar.jsp" />
+        <jsp:include page="adminOrganSidebar.jsp" />
    
         <div class="contents">
           
@@ -108,50 +112,54 @@
             </div>
 
             <!--입력폼-->
-            <form class="insertForm" enctype="multipart/form-data">
+            <form class="insertForm" method="post" action="insert.organ" enctype="multipart/form-data">
 
                 <div class="required">
 
                     <!--이미지-->
                     <div id="img-area">
-                        <img src="user.png"> <!--기본값은 user.png-->
-                        <button type="button" class="btn btn-default">기본이미지 사용</button>
-                        <button type="button" class="btn btn-primary">사진 첨부하기</button>
+                    	<div id="delImg" onclick="delImg();" style="float: right;"><i class="fa-solid fa-x"></i></div>
+                        <img id="preview" src="resources/uploadFiles/employeeImg/EmployeeImage.png" style="width:110px; height:110px; border-radius: 100px;"> <!--기본값은 user.png-->
+                        <button type="button" onclick="clickImg();" class="btn btn-primary">사진 첨부하기</button>
+                        <input type="file" id="image" style="display:none;" name="upfile" onchange="loadImg(this);">
                     </div>
                     <!--필수입력사항-->
                     <ul id="input1">
                         <li>
                             <span>이름*</span>
-                            <label><input type="text" name="userName" id="userName"></label>
+                            <label><input type="text" name="userName" id="userName" required></label>
                         </li>
                         <li>
                             <span>ID*</span>
-                            <label><input type="text" name="userId" id="userId"></label>
+                            <label><input type="text" name="userId" id="userId" placeholder="5글자 이상 입력해주세요" required></label>
+                            <div id="idResult" style="font-size: 0.8em; margin-left: 115px; display:none;"></div>
                         </li>
                         <li>
                             <span>비밀번호*</span>
-                            <label><input type="password" name="userPwd" id="userPwd"></label>
+                            <label><input type="password" name="userPwd" id="userPwd" placeholder="임시비밀번호 : 1234" required></label>
                         </li>
                         <li>
                             <span>비밀번호확인*</span>
-                            <label><input type="password" name="userPwdCheck" id="userPwdCheck"></label>
+                            <label><input type="password" name="userPwdCheck" id="userPwdCheck" required></label>
+                            <div id="pwdResult" style="font-size: 0.8em; margin-left: 115px; display:none;"></div>
                         </li>
                     </ul>
 
                     <!--서브입력사항-->
                     <ul id="input2">
                         <li>
-                            <span>사번</span>
+                            <span>사번*</span>
                             <label><input type="number" name="userNo" id="userNo"></label>
+                            <div id="noResult" style="font-size: 0.8em; margin-left: 115px; display:none;"></div>
                         </li>
                         <li>
-                            <span>입사일</span>
-                            <label><input type="date" name="hireDate" id="hireDate"></label>
+                            <span>입사일*</span>
+                            <label><input type="date" name="hire" id="hireDate" required></label>
                         </li><li>
-                            <span>부서</span>
+                            <span>부서*</span>
                             <label>
                                 <!--부서select-->
-                                <select name="deptCode" id="deptCode">
+                                <select name="deptCode" id="deptCode" required>
                                     <option value="1">개발팀</option>
                                     <option value="2">경영팀</option>
                                     <option value="3">회계팀</option>                                    
@@ -167,7 +175,7 @@
                                     <option value="2">주임</option>
                                     <option value="3">대리</option>                                    
                                     <option value="4">과장</option>
-                                    <option value="9">대표이상</option>
+                                    <option value="9">이사</option>
                                 </select>
                             </label>
                         </li><li>
@@ -175,15 +183,15 @@
                             <label><input type="text" name="email" id="email"></label>
                         </li><li>
                             <span>사내전화</span>
-                            <label><input type="text" name="call" id="call"></label>
+                            <label><input type="text" name="call" id="call" placeholder="02) 입력"></label>
                         </li><li>
                             <span>휴대전화</span>
-                            <label><input type="text" name="phone" id="phone"></label>
+                            <label><input type="text" name="phone" id="phone" placeholder="-포함하여 입력"></label>
                         </li><li>
-                            <span>상태</span>
+                            <span>상태*</span>
                             <label>
                                 <!--상태select-->
-                                <select name="status" id="status">
+                                <select name="status" id="status" required>
                                     <option value="Y">재직</option>
                                     <option value="N">퇴사</option>
                                     <option value="R">휴직</option>     
@@ -193,7 +201,7 @@
                     </ul>
                     
                     <div class="buttons">
-                        <button type="button" class="btn btn-primary">추가하기</button>
+                        <button type="submit" class="btn btn-primary">추가하기</button>
                         <button type="button" class="btn btn-danger">취소하기</button>
                     </div>
 
@@ -208,6 +216,155 @@
 
    </div>
    
+   
+   
+   <!-- 아이디 유효성검사 -->
+   <script>
+       $(function(){
+    	   
+          // 아이디 입력하는 input요소객체 변수에 담아두기
+          const $id = $(".insertForm input[name=userId]");
+          
+          $id.keyup(function(){
+             
+             if($id.val().length >= 5){
+            	 
+                $.ajax({
+                   url:"idCheck.organ",
+                   data:{id:$id.val()},
+                   success:function(result){
+                      if(result == "NN"){ // 사용불가능
+                    	  
+                         $("#idResult").show();
+                         $("#idResult").css("color", "red").text("중복된 아이디가 존재합니다.");
+                         
+                         $(".insertForm :submit").attr("disabled", true);
+                      }else{ // 사용가능
+                    	 
+                    	  $("#idResult").show();
+                          $("#idResult").css("color", "blue").text("OK!");
+                          
+                          $(".insertForm :submit").removeAttr("disabled");
+                      }
+                      
+                   },error:function(){
+                      console.log("아이디 중복체크용 ajax 통신 실패");
+                   }
+                });
+                
+             }else{ // 5글자 미만일 경우 => 버튼 비활성화, 메세지 숨기기
+                $("#idResult").hide();
+                $(".insertForm :submit").attr("disabled", true);
+             }
+             
+             
+          })
+          
+          
+       })
+    </script>
+    
+    <!-- 비밀번호확인 -->
+	<script>
+		$(function(){
+			
+			const $pwdCk = $(".insertForm input[name=userPwdCheck]");
+			
+			$pwdCk.keyup(function(){
+				
+				const pwd = $(".insertForm input[name=userPwd]").val();
+				const pwdCk = $(".insertForm input[name=userPwdCheck]").val();
+				
+				if(pwd != pwdCk) {
+					
+					$("#pwdResult").show();
+                    $("#pwdResult").css("color", "red").text("비밀번호가 일치하지 않습니다!");
+                    
+                    $(".insertForm :submit").attr("disabled", true);
+					
+				}else if(pwd == pwdCk) {
+					
+					$("#pwdResult").show();
+                    $("#pwdResult").css("color", "blue").text("OK!");
+					
+				}
+					
+			})
+			
+		})
+	</script>
+	
+	<!-- 사번 유효성검사 -->
+	<!-- 아이디 유효성검사 -->
+    <script>
+       $(function(){
+    	   
+          // 아이디 입력하는 input요소객체 변수에 담아두기
+          const $no = $(".insertForm input[name=userNo]");
+          
+          $no.keyup(function(){
+             
+             if($no.val().length >= 8){
+                
+                $.ajax({
+                   url:"noCheck.organ",
+                   data:{no:$no.val()},
+                   success:function(result){
+                      if(result == "NN"){ // 사용불가능
+                    	  
+                         $("#noResult").show();
+                         $("#noResult").css("color", "red").text("중복된 사번이 존재합니다.");
+                         
+                         $(".insertForm :submit").attr("disabled", true);
+                      }else{ // 사용가능
+                    	 
+                    	  $("#noResult").show();
+                          $("#noResult").css("color", "blue").text("OK!");
+                          
+                          $(".insertForm :submit").removeAttr("disabled");
+                      }
+                      
+                   },error:function(){
+                      console.log("아이디 중복체크용 ajax 통신 실패");
+                   }
+                });
+                
+             }else{ // 5글자 미만일 경우 => 버튼 비활성화, 메세지 숨기기
+            	$("#noResult").show();
+                $("#noResult").css("color", "red").text("사번은 8자리 숫자로 구성하여주세요");
+                $(".insertForm :submit").attr("disabled", true);
+             }
+             
+             
+          })
+          
+          
+       })
+    </script>
 
+	<script>
+        function clickImg(){
+            $("#image").click();
+        }
+        function delImg(){
+        	$("#image").val("");
+        	$("#preview").attr("src", "resources/images/user.jpg");
+        }
+        function loadImg(inputFile){
+        	
+            // 1. 파일을 읽어들일 FileReader 객체를 생성 (자바스크립트 제공객체)
+            const reader = new FileReader();
+
+            // 2. 파일을 읽어들이는 메소드 생성
+            reader.readAsDataURL(inputFile.files[0]);
+            // readAsDataURL  : 파일을 읽어들이는 순간 내부적으로 이 파일만의 고유한 url부여
+
+            // 파일 읽어들이기가 완료됐을 때 실행할 함수 정의해두기
+            reader.onload = function(e){
+                $("#preview").attr("src", e.target.result);
+            }
+
+        }
+    </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +24,8 @@
     .outer>div{float:left;}
     .contents{
         margin: auto;
-        margin-top:20px;
-        margin-left:40px;
+        margin-top:0px;
+        margin-left:50px;
         width: 900px;
         height: 900px;
     }
@@ -68,7 +69,7 @@
     }
     .contents .table {
         border-bottom: 2px solid rgb(223, 223, 223);
-        margin-top: 30px;
+        margin-top: 45px;
     }
     .table thead {
         background-color: rgb(235, 231, 231);
@@ -81,6 +82,9 @@
         width: 80px;
     }
     .pagination { margin-top: 50px; }
+    .table>tbody>tr>td:hover { 
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
@@ -88,14 +92,22 @@
    <div class="outer">
    
       <jsp:include page="../common/menubar.jsp" />
-      <jsp:include page="sidebar.jsp" />
+      <jsp:include page="adminOrganSidebar.jsp" />
    
       <div class="contents">
           
             <!--사용자 추가 버튼-->
             <div class="userPlus">
-                <i class="fa-solid fa-circle-plus" style="font-size: 20px;""> 사용자 추가</i>
+                <i class="fa-solid fa-circle-plus" style="font-size: 20px;"> 사용자 추가</i>
             </div>
+            
+            <script>
+            	$(function(){
+            		$('.userPlus').click(function(){
+            			location.href = "userPlustForm.organ";
+            		})
+            	})
+            </script>
 
             <!--드롭다운 | 검색바-->
             <div class="search-area">
@@ -104,10 +116,10 @@
                     <span style="font-size: 16px;">소속 : </span>
                     <!--부서select-->
                     <select name="deptCode" id="deptCode">
-                        <option value="1">개발팀</option>
-                        <option value="2">경영팀</option>
-                        <option value="3">회계팀</option>                                    
-                        <option value="4">인사팀</option>
+                    	<option value="0">전체</option>
+                    	<c:forEach var="d" items="${ dept }">
+                    		<option value="${ d.deptCode }" <c:if test="${dno eq d.deptCode}">selected="selected"</c:if>>${ d.deptName }</option>
+                    	</c:forEach>
                     </select>
                 </div>
             
@@ -123,12 +135,25 @@
                     </div>
                 </form>
             </div>
-
+            
+            <script>
+	            $(function(){
+	            	$('#deptCode').change(function(){
+	            		var dtCode = $('#deptCode option:selected').val();
+	            		console.log(dtCode);
+	            		location.href="list.selectOr?dno=" + dtCode;
+	            	})
+	            });
+            </script>
+           
+            
+        	
+			
             <!--임직원목록-->
             <table class="table">
                 <thead>
                     <tr>
-                        <th width=""><input type="checkbox"></th>
+                        <th width=""><input id="ckAll" type="checkbox"></th>
                         <th width="">이름</th>
                         <th width="">ID</th>
                         <th width="">사내전화</th>
@@ -139,80 +164,95 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>jooni1322</td>
-                        <td>02) 132-1234</td>
-                        <td>010-1231-1231</td>
-                        <td>경영팀</td>
-                        <td>대표이사</td>
-                        <td>재직</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>jooni1322</td>
-                        <td>02) 132-1234</td>
-                        <td>010-1231-1231</td>
-                        <td>경영팀</td>
-                        <td>대표이사</td>
-                        <td>재직</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>jooni1322</td>
-                        <td>02) 132-1234</td>
-                        <td>010-1231-1231</td>
-                        <td>경영팀</td>
-                        <td>대표이사</td>
-                        <td>재직</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>jooni1322</td>
-                        <td>02) 132-1234</td>
-                        <td>010-1231-1231</td>
-                        <td>경영팀</td>
-                        <td>대표이사</td>
-                        <td>재직</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>서강준</td>
-                        <td>jooni1322</td>
-                        <td>02) 132-1234</td>
-                        <td>010-1231-1231</td>
-                        <td>경영팀</td>
-                        <td>대표이사</td>
-                        <td>재직</td>
-                    </tr>
+                	<c:forEach var="o" items="${ organ }">
+                   		<tr>
+	                        <td><input class="ck" type="checkbox"></td>
+	                        <td style="display:none;" class="userNo">${ o.userNo }</td>
+	                        <td>${ o.userName }</td>
+	                        <td>${ o.userId }</td>
+	                        <td>${ o.call }</td>
+	                        <td>${ o.phone }</td>
+	                        <td>${ o.deptName }</td>
+	                        <td>${ o.jobName }</td>
+	                        <td>${ o.status }</td>
+                   		</tr>
+                	</c:forEach>
                 </tbody>
             </table>
 
-            <!--삭제|직위변경|상태변경-->
-            <div class="settings">
-                <button type="button">삭제</button>
-                <button type="button">직위변경</button>
-                <button type="button" style="border: 0px;">상태변경</button>
-            </div>
+           
 
             <!-- 페이징바 -->
             <ul class="pagination" style="margin-left: 350px;">
-                <li><a href="#"><</a></li>
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">></a></li>
+            
+            	<c:choose>
+            		<c:when test="${ pi.currentPage eq 1 }">
+            			<li class="pagePrev" class="page-item disabled"><a href="#"><</a></li>
+            		</c:when>
+            		<c:otherwise>
+            			<li class="pagePrev" class="page-item"><a href=""><</a></li>
+            		</c:otherwise>
+            	</c:choose>
+            	
+            	<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+            		<li class="page" class="page-item"><a class="cur" onclick="current();">${ p }</a></li>
+            	</c:forEach>
+            	
+            	<c:choose>
+            		<c:when test="${ pi.currentPage eq pi.maxPage }">
+            			<li class="pageNext" class="page-item disabled"><a href="#">></a></li>
+            		</c:when>
+            		<c:otherwise>
+            			<li class="pageNext" class="page-item"><a onclick="next();">></a></li>
+            		</c:otherwise>
+            	</c:choose>
+            	
             </ul>
-
+            
        </div>
    </div>
    
-
+   <script>
+   		function prev(){
+   			location.href = "";
+   		}
+   </script>
+   
+   <script>
+   	 $(function(){
+   		 $('.table>tbody>tr').click(function(){
+   			location.href = "updateForm.organ?userNo=" + $(this).children('.userNo').text();
+   			 console.log($(this).children('.userNo').text());
+   		 })
+   	 })
+   </script>
+   
+   <!-- 전체선택|전체해제 기능 -->
+   <script>
+         
+         // 전체선택 클릭시 전부 선택
+         $("#ckAll").on('click', function(){
+            
+            if($("#ckAll").is(':checked')) {
+               $("input[type=checkbox]").prop("checked", true);
+            }else {
+               $("input[type=checkbox]").prop("checked", false);
+            }
+            
+         })
+         
+         // 전부 선택시 전체선택 checked
+	     $("input[type=checkbox]").on('click', function(){
+	         var total = $(".ck").length;
+	         var checked = $(".ck:checked").length;
+	         
+	         if(total != checked) {
+	            $("#ckAll").prop("checked", false);
+	         }else {
+	            $("#ckAll").prop("checked", true);
+	         }
+	      })   
+   </script>
+ 
 </body>
 </html>

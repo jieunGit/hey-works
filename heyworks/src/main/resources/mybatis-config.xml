@@ -24,6 +24,8 @@
 		<typeAlias type="com.kh.hey.working.model.vo.AllLeave" alias="AllLeave" />
 		<typeAlias type="com.kh.hey.todo.model.vo.Todolist" alias="Todolist" />
 		<typeAlias type="com.kh.hey.todo.model.vo.Memo" alias="Memo" />
+		<typeAlias type="com.kh.hey.inContact.model.vo.InContact" alias="inContact" />
+		<typeAlias type="com.kh.hey.inContact.model.vo.InContactGroup" alias="inConGroup" />
 
 	</typeAliases>
 	
@@ -37,7 +39,7 @@
 		<mapper resource="/mappers/reply-mapper.xml"/>
 		<mapper resource="/mappers/message-mapper.xml"/>
 		<mapper resource="/mappers/todolist-mapper.xml"/>
-
+		<mapper resource="/mappers/inContact-mapper.xml"/>
 	 </mappers>
 	 
 	 

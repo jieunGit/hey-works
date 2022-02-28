@@ -20,10 +20,13 @@ public interface WorkingService {
 	// 휴가신청 insert
 	int insertLeave(Leave l);
 	
+	// 개인 휴가현황 select
+	AllLeave selectMyleaveStatus(int userNo);
+	
 	// 휴가신청내역 select
 	ArrayList<Leave> selectMyleave(int userNo);
 	
-	// 근태/휴가 현황 select (미완)
+	// 근태/휴가 현황 select 
 	ArrayList<Working> selectMyallStatus(Map<String, Object> map);
 	
 	
@@ -46,8 +49,22 @@ public interface WorkingService {
 	// 전사 근무현황 리스트 페이지 (페이징)
 	int selectAtnaListCount();
 	//ArrayList<Working> selectAtnaList(PageInfo pi);
-	
-	ArrayList<Working> selectAtnaList();
+	ArrayList<Working> selectAtnaList(PageInfo pi);
 
-	ArrayList<Working> selectAtnaListt();
+	// 전사 근무현황 검색 
+	int selectAtnaSearchCount(HashMap<String, String> map);
+	ArrayList<Working> selectAtnaSearch(HashMap<String, String> map, PageInfo pi);
+	
+	// 전사 휴가신청 리스트 페이지
+	int selectAleaveAppListCount();
+	ArrayList<Leave> selectAleaveAppList(PageInfo pi);
+	
+	// 전사 휴가신청 상태 수정폼
+	Leave selectLeaveApplyForm(int leaveAno);
+	
+	// 휴가신청 상태 변경
+	int updateApplyLeaveStatus(int leaveAno);
+	
+	// 휴가신청 삭제
+	int deleteApplyLeave(int leaveAno);
 }

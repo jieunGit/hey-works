@@ -29,6 +29,7 @@
 		<result column="status" property="status"/>
 		<result column="user_name" property="userName"/>
 		<result column="dept_name" property="deptName"/>
+		<result column="job_name" property="jobName"/>
 	</resultMap>
 	
 	<resultMap id="AllLeaveResult" type="AllLeave">
@@ -68,11 +69,18 @@
 		  )
 	</insert>  
 	
-	<!-- 퇴근 insert -->
+	<!-- 퇴근 + 근태상태 update -->
 	<update id="updateClockOut">
 		UPDATE TNA
 		   SET CLOCK_OUT = TO_CHAR(SYSDATE, 'HH24:MI')
+		     , TNA_STATUS =
+		  CASE
+		  WHEN CLOCK_OUT >= '17:00' THEN '정상근무'
+		  WHEN CLOCK_OUT >= '18:00' THEN '연장근무'
+		  WHEN CLOCK_OUT <![CDATA[ < ]]> '17:00' THEN '조기퇴근' 
+		  WHEN CLOCK_OUT IS NULL THEN '퇴근미체크' END
 		 WHERE USER_NO = #{userNo} 
+		   AND TNA_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
 	</update> 
 	
 	<!-- 휴가 신청 insert -->
@@ -104,13 +112,24 @@
 		  )	
 	</insert>
 	
+	<!-- 내 휴가현황 -->
+	<select id="selectMyleaveStatus" resultMap="AllLeaveResult">
+			SELECT
+		        USER_NO
+		      , LEAVE_TOTAL
+		      , LEAVE_USE
+		      , LEAVE_REST
+		  FROM ANNUAL_LEAVE
+		 WHERE USER_NO = #{userNo}
+	</select>
+	
 	<!-- 내 휴가신청 내역 -->
 	<select id="selectMyleave" resultMap="leaveResult">
 		SELECT
 		        APPLY_DATE
 		      , LEAVE_TYPE
-		      , START_DATE
-		      , L.END_DATE
+		      , TO_CHAR(TO_DATE(START_DATE), 'YYYY-MM-DD') "START_DATE"
+		      , TO_CHAR(TO_DATE(L.END_DATE), 'YYYY-MM-DD') "END_DATE"
 		      , LEAVE_USE
 		      , REASON
 		      , L.STATUS
@@ -152,7 +171,7 @@
          JOIN DEPARTMENT D USING(DEPT_CODE)
         WHERE AL.STATUS = 'Y'
         ORDER
-           BY HIRE_DATE
+           BY USER_NO
 	</select>
 	
 	<select id="selectAleaveSearchCount" resultType="_int">
@@ -201,7 +220,7 @@
         </choose>        
               LIKE '%' || #{keyword} || '%'
         ORDER
-           BY HIRE_DATE
+           BY USER_NO
 	</select>
 	
 	<select id="selectAleaveForm" resultMap="AllLeaveResult">
@@ -234,6 +253,7 @@
 		     , LEAVE_TOTAL = #{leaveTotal}
 		     , LEAVE_USE = #{leaveUse}
 		     , LEAVE_REST = #{leaveRest}
+		     , STATUS = #{status}
 		 WHERE USER_NO = #{userNo}
 	</update>
 	
@@ -253,8 +273,10 @@
 		 WHERE USER_NO = #{userNo}
 		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ >= ]]> #{startDate}
 		   AND TO_DATE(TNA_DATE, 'YYYY-MM-DD') <![CDATA[ <= ]]> #{endDate}
+		 ORDER
+		    BY TNA_DATE
 	</select>
-	
+	 
 	<select id="selectAtnaListCount" resultType="_int">
 		SELECT
 		       COUNT(*)
@@ -262,18 +284,8 @@
 		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	</select>
 	
-	<!--  
-	<select id="selectAtnaListCount" resultType="_int">
-		SELECT
-		       COUNT(*)
-		  FROM TNA 
-		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-	</select>
-	-->
 	<!-- 전체사원 근태현황 	-->
-	<select id="selectAtnaListt" resultMap="workingResult">
-	select  * from(
-		
+	<select id="selectAtnaList" resultMap="workingResult">		
 		SELECT
 		       USER_NO
 		     , ROWNUM NUMROW
@@ -294,13 +306,29 @@
 		  JOIN DEPARTMENT D USING(DEPT_CODE)
 		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 		 ORDER
-		    BY USER_NO) WHERE NUMROW <![CDATA[>]]> 10 and NUMROW <![CDATA[<=]]> 20
+		    BY USER_NO
 	</select>
-
-	<select id="selectAtnaList" resultMap="workingResult">
+	
+	<!-- 전사 근태현황 검색 -->
+	<select id="selectAtnaSearchCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM TNA T
+		  JOIN EMPLOYEE USING(USER_NO)
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		 <if test="condition == 'userName'">
+		   AND  USER_NAME  
+		 </if>
+		 <if test="condition == 'tnaStatus'">
+		   AND TNA_STATUS
+		 </if>
+		       LIKE '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectAtnaSearch" resultMap="workingResult">		
 		SELECT
 		       USER_NO
-		     , E.USER_NAME
+		     , USER_NAME
 		     , DEPT_NAME
 		     , DECODE(JOB_CODE, 1, '사원'
 		                      , 2, '주임'
@@ -316,7 +344,86 @@
 		  JOIN EMPLOYEE E USING(USER_NO)
 		  JOIN DEPARTMENT D USING(DEPT_CODE)
 		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		<choose>
+           <when test="condition == 'userName'">
+          		AND USER_NAME
+           </when>
+           <when test="condition == 'tnaStatus'">
+          		AND TNA_STATUS
+           </when>
+        </choose>        
+              LIKE '%' || #{keyword} || '%'
 		 ORDER
 		    BY USER_NO
 	</select>
+	
+	<select id="selectAleaveAppListCount" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM LEAVE_ALIST 
+		 WHERE STATUS = '대기'
+	</select>
+	
+	<select id="selectAleaveAppList" resultMap="leaveResult">
+		SELECT
+		        APPLY_DATE
+		      , LEAVE_TYPE
+		      , TO_CHAR(TO_DATE(START_DATE), 'YYYY-MM-DD') "START_DATE"
+		      , TO_CHAR(TO_DATE(L.END_DATE), 'YYYY-MM-DD') "END_DATE"
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+		      , DECODE(JOB_CODE, 1, '사원'
+		                       , 2, '주임'
+		                       , 3, '대리'
+		                       , 4, '과장'
+		                       , 9, '대표이사') "JOB_NAME"
+		      , LEAVE_ANO
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE L.STATUS = '대기'
+		 ORDER
+		    BY APPLY_DATE DESC
+	</select>
+	
+	<select id="selectLeaveApplyForm" resultMap="leaveResult">
+		SELECT
+		        APPLY_DATE
+		      , LEAVE_TYPE
+		      , TO_CHAR(TO_DATE(START_DATE), 'YYYY-MM-DD') "START_DATE"
+		      , TO_CHAR(TO_DATE(L.END_DATE), 'YYYY-MM-DD') "END_DATE"
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+		      , DECODE(JOB_CODE, 1, '사원'
+		                       , 2, '주임'
+		                       , 3, '대리'
+		                       , 4, '과장'
+		                       , 9, '대표이사') "JOB_NAME"
+		      , LEAVE_ANO
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE L.STATUS = '대기'
+		   AND LEAVE_ANO = #{leaveAno}
+	</select>
+	
+	<update id="updateApplyLeaveStatus">
+		UPDATE
+			   LEAVE_ALIST
+		   SET STATUS = '승인'
+		 WHERE LEAVE_ANO = #{leaveAno}
+	</update>
+	
+	<delete id="deleteApplyLeave">
+		UPDATE 
+		 	   LEAVE_ALIST
+		   SET STATUS = '취소'
+		 WHERE LEAVE_ANO = #{leaveAno}
+	</delete>
 </mapper>

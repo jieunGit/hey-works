@@ -31,6 +31,11 @@ public class WorkingDao {
 		return sqlSession.insert("workingMapper.insertLeave", l);
 	}
 	
+	public AllLeave selectMyleaveStatus(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("workingMapper.selectMyleaveStatus", userNo);
+	}
+	
 	public ArrayList<Leave> selectMyleave(SqlSessionTemplate sqlSession, int userNo){
 		
 		return (ArrayList)sqlSession.selectList("workingMapper.selectMyleave", userNo);
@@ -78,18 +83,47 @@ public class WorkingDao {
 	}
 	
 	
-	public ArrayList<Working> selectAtnaList(SqlSessionTemplate sqlSession){
-		//int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		//int limit = pi.getBoardLimit();
-		//RowBounds rowBounds = new RowBounds(offset, limit);
+	public ArrayList<Working> selectAtnaList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaList", null);
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaList", null, rowBounds);
 	}
-	public ArrayList<Working> selectAtnaListt(SqlSessionTemplate sqlSession){
-		//int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		//int limit = pi.getBoardLimit();
-		//RowBounds rowBounds = new RowBounds(offset, limit);
+	
+	public int selectAtnaSearchCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("workingMapper.selectAtnaSearchCount", map);
+	}
+	
+	public ArrayList<Working> selectAtnaSearch(SqlSessionTemplate sqlSession, HashMap<String, String> map, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaListt", null);
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAtnaSearch", map, rowBounds);
+	}
+
+	public int selectAleaveAppListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("workingMapper.selectAleaveAppListCount");
+	}
+	
+	public ArrayList<Leave> selectAleaveAppList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("workingMapper.selectAleaveAppList", null, rowBounds);
+	}
+	
+	public Leave selectLeaveApplyForm(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.selectOne("workingMapper.selectLeaveApplyForm", leaveAno);
+	}
+	
+	public int updateApplyLeaveStatus(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.update("workingMapper.updateApplyLeaveStatus", leaveAno);
+	}
+	
+	public int deleteApplyLeave(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.delete("workingMapper.deleteApplyLeave", leaveAno);
 	}
 }
