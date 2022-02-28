@@ -54,7 +54,7 @@
 		
 		<div class="elec-outer">
 
-        <a href="" class="subject">내 정보 관리</a>
+        <a href="#" class="subject" style="margin-left:100px;">내 정보 관리</a>
         <br><br>
         <hr>
 
