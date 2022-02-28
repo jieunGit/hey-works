@@ -29,11 +29,11 @@
         float:left;
         margin:5px;
     }
-    .select{width:10%;}
+    .select{width:15%;}
     .text{width:25%;}
     .searchBtn{Width:10%;}
 
-    .date-box>input{width:200px; height:40px; margin-right:10px;}
+    .date-box{font-size:25px; font-weight:600;}
 
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
@@ -50,23 +50,72 @@
         <jsp:include page="workingSidebar.jsp"/>
 
         <div class="all-status">
-
+			
             <div class="title-box">
-                <h3 style="font-size:20px;">전사 근무현황</h3>
+                <h3 style="font-size:20px;">전사 근태현황</h3>
             </div><br>
-
-            <div class="date-box" style="margin-bottom:50px;">
-                <input type="date" name="checkDate">
-                <button type="" class="btn btn-primary">조회</button>
+			
+            <div class="date-box" style="margin-bottom:50px;" align="center">
+            	<!--<img src="resources/images/left-arrow.png" id="left" style="width: 20px; height: 20px;">  -->
+                <span id="today" name="today">
+                
+                </span>             
+                <!--<img src="resources/images/right-arrow.png" id="right" style="width: 20px; height: 20px;"> -->
             </div>
 
+            <script>
+            	$(document).ready(function(){
+                    var today = new Date();
+
+                    var year = today.getFullYear(); // 년도
+                    var month = today.getMonth() + 1; // 월
+                    var date = today.getDate(); // 일
+
+                    document.getElementById("today").innerHTML = year + "-" + 0 + month + "-" + date;
+                })
+            </script>
+            
+            <!-- 
+            <script>
+            $("#left").click(function(){
+            	
+            	var sysdate = $("#today").text();
+            	var sysdateArr = sysdate.split("-"); 
+            	//console.log(sysdateArr); // ['2022', '02', '21']
+            	
+            	var stDate = new Date(sysdateArr[0], sysdateArr[1]-1, sysdateArr[2]);    
+            	var agoSt = new Date(stDate.setDate(stDate.getDate() -1+1)).toISOString().substring(0,10);
+            	
+                //console.log(agoSt);                       	
+                
+            	document.getElementById("today").innerHTML = agoSt;
+            	
+            })
+            
+            $("#right").click(function(){
+            	
+            	var sysdate = $("#today").text();
+            	var sysdateArr = sysdate.split("-"); 
+            	//console.log(startDateArr); // ['2022', '02', '21']
+            	
+            	var stDate = new Date(sysdateArr[0], sysdateArr[1]-1, sysdateArr[2]);    
+            	var nextSt = new Date(stDate.setDate(stDate.getDate() +1+1)).toISOString().substring(0,10);	
+
+                //console.log(nextSt);                  	
+                
+            	document.getElementById("today").innerHTML = nextSt;
+
+            })
+            </script>
+             -->
+
 			<div id="search-area">
-	            <form id="searchForm" action="AllLeaveSearch.wo" method="Get" style="margin-left:560px">
+	            <form id="searchForm" action="allTnaSearch.wo" method="Get" style="margin-left:520px">
 	            	<input type="hidden" name="cpage" value="1">
 	                <div class="select">
 	                    <select class="custom-select" name="condition" >
-	                        <option value="deptName">소속</option>
 	                        <option value="userName">이름</option>
+	                        <option value="tnaStatus">근태상태</option>
 	                    </select>
 	                </div>
 	                <div class="text">
@@ -75,12 +124,19 @@
 	                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
 	            </form>
             </div>
-
+			<c:if test="${ not empty condition }">
+				<script>
+					$(function(){
+						$("#search-area option[value=${condition}]").attr("selected", true);
+					})
+				</script>
+			</c:if>
+			
             <br><br><br><br>
 
             <table class="table-bordered">
                 <thead class="tb-head">
-                    <tr height="43px">
+                    <tr height="40px">
                         <th colspan="4">사원 정보</th>
                         <th colspan="6">근무 정보</th>
                     </tr>
@@ -98,21 +154,31 @@
                     </tr>
                 </thead>
                 <tbody id="tnaTbody" align="center" class="tb-body">
-                    <tr height="37px">
-                        <td>사번</td>
-                        <td>이름</td>
-                        <td>소속</td>
-                        <td>직급</td>
-                        <td>출근시각</td>
-                        <td>퇴근시각</td>
-                        <td>휴게시간</td>
-                        <td>근무시간</td>
-                        <td>연장근무</td>
-                        <td>근태상태</td>
-                    </tr>
+                	<c:forEach var="w" items="${wlist}">
+	                    <tr height="37px">
+	                        <td>${ w.userNo }</td>
+	                        <td>${ w.userName }</td>
+	                        <td>${ w.deptName }</td>
+	                        <td>${ w.jobName }</td>
+	                        <td>${ w.clockIn }</td>
+	                        <td>${ w.clockOut }</td>
+	                        <td>01:00</td>
+	                        <td>${ w.workTime }시간 </td>
+	                        <td>${ w.overTime }시간</td>
+                        	<td>
+                                <c:if test="${w.tnaStatus eq'연장근무'}">
+                                <font color="red">${w.tnaStatus}</font></c:if>
+                                <c:if test="${w.tnaStatus eq'정상근무'}">
+                                <font color="green">${w.tnaStatus}</font></c:if>
+                                <c:if test="${w.tnaStatus eq'휴가'}">
+                                <font color="blue">${w.tnaStatus}</font></c:if>
+                            </td>
+	                    </tr>
+                    </c:forEach>
                 </tbody>
                 
              </table>
+             <br>
             
              <div id="pagingArea">
                 <ul class="pagination">
@@ -121,12 +187,12 @@
                     		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="selectAllTna.wo?cpage=${ pi.currentPage-1 }">Previous</a></li>
+                    		<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ pi.currentPage-1 }">Previous</a></li>
                     	</c:otherwise>
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<li class="page-item"><a class="page-link" href="selectAllTna.wo?cpage=${ p }">${ p }</a></li>
+                    	<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ p }">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>
@@ -134,50 +200,12 @@
                     		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="selectAllTna.wo?cpage=${ pi.currentPage+1 }">Next</a></li>
+                    		<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ pi.currentPage+1 }">Next</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>
              </div>
              
-             <script>
-              $(function(){
-                  selectAllList();
-              });
-              
-           	// 근무현황 리스트 조회해오는 ajax
-                 function selectAllList(cpage){
-           			
-                 	var sysdate = $("#sysdate").text();
-                 	
-                 	$.ajax({
-                 		url:"selectAllTna.wo",
-                 		data: {sysdate:sysdate},
-                 		success:function(tlist){
-         					let list = "";
-         					for(let i in tlist){
-         						list += "<tr>"
-						     + "<td>" + tlist[i].userNo + "</td>"
-						     + "<td>" + tlist[i].userName + "</td>"
-						     + "<td>" + tlist[i].deptName + "</td>"
-						     + "<td>" + tlist[i].jobName + "</td>"
-						     + "<td>" + tlist[i].clockIn + "</td>"
-						     + "<td>" + tlist[i].clockOut + "</td>"
-						     + "<td>" + "01:00" + "</td>"
-						     + "<td>" + tlist[i].workTime + "시간" + "</td>"
-						     + "<td>" + tlist[i].overTime + "시간" + "</td>"
-						     + "<td>" + tlist[i].tnaStatus + "</td>"
-						     + "</tr>";	    	   	    	   
-					}
-         					
-					$("#tnaTbody").html(list);
-                 		},error:function(){
-                 			console.log("전사 근무현황 ajax통신 실패");
-                 		}
-                 	})
-          	 
-           }
-             </script>
                 
 
         </div>

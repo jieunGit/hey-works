@@ -42,7 +42,7 @@
     .sidebar li{
         padding: 13px 0px 13px 15px;
     }
-    li:hover {
+    .sidebar li:hover {
         cursor: pointer;
         background-color: rgba(24, 121, 201, 0.2);
     }
@@ -58,12 +58,12 @@
             <i class='fas fa-angle-double-right' style='font-size:24px'> 인사관리</i>
         </div>
         <ul>
-            <li><i class="fa-solid fa-user-gear" style='font-size:20px'><a>임직원관리</a></i></li>
+            <li><i class="fa-solid fa-user-gear" style='font-size:20px'><a href="admin.organ">임직원관리</a></i></li>
             <li><i class="fa-solid fa-sitemap" style='font-size:20px'><a>조직도관리</a></i></li>
         </ul>
 
         <div class="goUserBtn">
-            <button id="goUser" type="button" class="btn btn-success" style="height: 40px;">조직도로 이동</button>
+            <button id="goUser" type="button" class="btn btn-success" style="height: 40px;">사용자모드로 변경</button>
         </div>
     </div>
 

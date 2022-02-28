@@ -20,7 +20,8 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .date-box{font-size:25px; font-weight:700;}
+    .title-box{font-size:20px; font-weight:600;}
+    .date-box{font-size:25px; font-weight:600;}
     .table-bordered th{font-size:14px; text-align:center;}
     .table-bordered td{font-size:13px;}
     #pagingArea{width:fit-content;margin:auto;}
@@ -56,12 +57,12 @@
             </div>
 
 			<div id="search-area">
-	            <form id="searchForm" action="AllLeaveSearch.wo" method="Get" style="margin-left:560px">
+	            <form id="searchForm" action="allLeaveSearch.wo" method="Get" style="margin-left:560px">
 	            	<input type="hidden" name="cpage" value="1">
 	                <div class="select">
 	                    <select class="custom-select" name="condition" >
-	                        <option value="deptName">소속</option>
 	                        <option value="userName">이름</option>
+	                        <option value="deptName">소속</option>
 	                    </select>
 	                </div>
 	                <div class="text">
@@ -94,7 +95,7 @@
                     <th width="85px">상세</th>
                 </tr>
                 <c:forEach var="a" items="${alist}">
-                	<input type="hidden" name=userNo value="${a.userNo}">
+                	<input type="hidden" name="userNo" value="${a.userNo}">
 	                <tr style="height:37px; text-align:center">
 	                    <td>${ a.userName }</td>
 	                    <td>${ a.deptName }</td>

@@ -3,7 +3,6 @@ package com.kh.hey.working.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -88,24 +87,21 @@ public class WorkingController {
 		return "working/overtimeApplyForm";
 	}
 
-	// 근무/휴가현황 test
-	@RequestMapping("myWorkingStatus.wo")
-	public String myWorkingStatus() {
-		return "working/myWorkingStatus";
-	}
-
 	// 개인 휴가현황
 	@RequestMapping("selectMyleave.wo")
 	public ModelAndView selectMyleave(HttpSession session, ModelAndView mv) {
 
 		int userNo = ((Employee) session.getAttribute("loginUser")).getUserNo();
 
-		ArrayList<Leave> leList = wService.selectMyleave(userNo);
+		AllLeave leStatus = wService.selectMyleaveStatus(userNo);
+		ArrayList<Leave> leList = wService.selectMyleave(userNo); // 휴가신청 리스트 
 
+		mv.addObject("leStatus", leStatus);
 		mv.addObject("leList", leList);
 		mv.setViewName("working/leaveStatus");
 
-		System.out.println(leList); // leaveAno, userNo = 0으로 찍힘
+		//System.out.println(leStatus);
+		//System.out.println(leList); 
 
 		return mv;
 	}
@@ -126,7 +122,7 @@ public class WorkingController {
 	}
 
 	// 전사 휴가현황 검색 요청
-	@RequestMapping("AllLeaveSearch.wo")
+	@RequestMapping("allLeaveSearch.wo")
 	public String selectLeaveSearch(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model,
 			String condition, String keyword) {
 
@@ -213,63 +209,101 @@ public class WorkingController {
 		return new Gson().toJson(wlist);
 
 	}
-
+	
+	// 전사 근태현황 리스트 조회
 	@RequestMapping("allTnaMain.wo")
-	public String allTnaMain() {
-		return "working/AjaxallWorkingStatus";
-	}
-	
-	@RequestMapping("selectAllTna.wo")
-	public ModelAndView a() {
-		ModelAndView mv = new ModelAndView();
-		int currentPage = 2;
-		int listCount = wService.selectAtnaListCount();
+	public String allTnaMain(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model, @RequestParam(value="today", required = false) String today) {
+		
+		System.out.println(today);
+		int listCount = wService.selectAtnaListCount();	
+		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
-		ArrayList<Working> tlist = wService.selectAtnaListt();
+		ArrayList<Working> wlist = wService.selectAtnaList(pi);
 		
-		System.out.println(tlist);
 		
-		mv.setViewName("working/AjaxallWorkingStatus");
-		mv.addObject("tlist", tlist);
-		mv.addObject("currentPage", 2);
+		model.addAttribute("pi", pi);
+		model.addAttribute("wlist", wlist);
+		
+		return "working/allWorkingStatus";
+	}
 	
-		return mv;
+	@RequestMapping("allTnaSearch.wo")
+	public String selectTnaSearch(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model,
+			String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);	
+		
+		int searchCount = wService.selectAtnaSearchCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(searchCount, currentPage, 10, 10);
+		ArrayList<Working> wlist = wService.selectAtnaSearch(map, pi);
+
+		model.addAttribute("pi", pi);
+		model.addAttribute("wlist", wlist);
+
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		
+		return "working/allWorkingStatus"; 
 		
 	}
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value="selectAllTna.wo",
-	 * produces="application/json; charset=UTF-8") public ModelandView
-	 * selectAllTnaMain(@RequestParam(value="cpage", defaultValue="1") int
-	 * currentPage, Model model) {
-	 * 
-	 * // 전체 리스트 개수 int listCount = wService.selectAtnaListCount();
-	 * 
-	 * PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
-	 * //ArrayList<Working> tlist = wService.selectAtnaList(pi); ArrayList<Working>
-	 * tlist = wService.selectAtnaList();
-	 * 
-	 * JSONObject obj = new JSONObject();
-	 * 
-	 * 
-	 * if(cpage=='1') {
-	 * 
-	 * }
-	 * 
-	 * 
-	 * 
-	 * //System.out.println(pi); // [listCount=28, currentPage=1, pageLimit=10,
-	 * boardLimit=10, maxPage=3, startPage=1, endPage=3]
-	 * //System.out.println(tlist); // 28개 데이터
-	 * 
-	 * obj.put("pi", pi); obj.put("tlist", tlist);
-	 * 
-	 * return new Gson().toJson(obj);
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	
+	// 전사원 휴가 신청 list 
+	@RequestMapping("leaveApplyList.wo")
+	public String allLeaveApplyMain(@RequestParam(value = "cpage", defaultValue = "1") int currentPage, Model model) {
+		
+		int listCount = wService.selectAleaveAppListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Leave> leApplist = wService.selectAleaveAppList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("leApplist", leApplist);
+		
+		return "working/allLeaveApplyList";
+		
+	}
+	
+	// 전사 휴가신청 상태 수정 폼 
+	@RequestMapping("leaveApplyUpdateForm.wo")
+	public String leaveStatusUpdate(int leaveAno, Model model) {
 
+		Leave l = wService.selectLeaveApplyForm(leaveAno);
+		
+		model.addAttribute("l", l);
+		return "working/allLeaveApplyUpdate";
+	}
+
+	// 전사 휴가신청 상태 수정 
+	@RequestMapping("updateApplyLeave.wo")
+	public String updateApplyLeaveStatus(int leaveAno, HttpSession session) {
+		
+		int result = wService.updateApplyLeaveStatus(leaveAno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 승인 처리되었습니다.");
+			//return "working/allLeaveApplyList";	
+			return "redirect:leaveApplyList.wo";
+		}else {
+			session.setAttribute("alertMsg", "승인처리 실패");
+			return "redirect:leaveApplyUpdateForm.wo";
+		}
+	}
+
+	// 전사 휴가신청 삭제
+	@RequestMapping("deleteApplyLeave.wo")
+	public String deleteApplyLeave(int leaveAno, HttpSession session) {
+		
+		int result = wService.deleteApplyLeave(leaveAno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "신청 내역을 삭제하였습니다.");
+			return "redirect:leaveApplyList.wo";
+		}else {
+			session.setAttribute("alertMsg", "삭제처리 실패");
+			return "redirect:leaveApplyUpdateForm.wo";
+		}
+	}
 }

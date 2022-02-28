@@ -2,11 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <style>
 	.outer{
 		width:1200px;
@@ -77,6 +82,184 @@
 	#approvalTable:hover{
 		cursor:pointer;
 	}
+
+
+	/* TODOLIST CSS */
+	.todo-wrapper {
+    /* justify-content: center; */
+    /* margin-left: 10rem; */
+    width: 250px;
+
+}
+
+.todo-title {
+    /* padding: 0.8rem; */
+    /* margin-top: 10px; */
+    /* margin-bottom: 20px; */
+    text-align: center;
+    color: rgb(63, 145, 213);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.todo-box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.todo-input-box {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    height: 3rem;
+    border-bottom: 1px solid #ddd;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+button {
+    background-color: transparent;
+    border: 0;
+}
+
+.complete-all-btn {
+    color: gray;
+    min-width: none;
+    min-height: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.5rem 0.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    
+}
+
+.complete-all-btn.checked {
+    color: green
+}
+
+.todo-input {
+    width: 80%;
+    text-align: center;
+    border: 0;
+    outline: none;
+    font-size: 0.8rem;
+}
+
+.todo-item {
+    position: relative;
+    display: flex;
+	list-style-type :none;
+    flex-wrap: nowrap;
+    flex-direction: row;
+	list-style-position :inside;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.todo-item:hover .delBtn {
+    opacity: 1;
+}
+
+.checkbox {
+    min-width: none;
+    min-height: none;
+    width: 1.5rem;
+    height: 1.2rem;
+    /* margin: 0.5rem 0.5rem; */
+    border-radius: 50px;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.6rem;
+}
+
+.todo-item.checked .checkbox{
+    border: 2px solid darkgray;
+    color: black;
+}
+
+.todo {
+    font-size: 0.75rem;
+    padding: 0 1rem;
+    width: 80%;
+}
+
+.todo-item.checked .todo{
+ font-style: italic;
+ text-decoration: line-through;
+ color: lightgray;
+}
+
+.delBtn {
+    opacity: 1;
+    width: 3rem;
+    height: 3rem;
+    font-size: 0.9rem;
+    font-weight: lighter;
+    cursor: pointer;
+}
+.left-items{
+    font-size: 0.8rem;
+}
+.todo-bottom {
+    height: 3rem;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-group{
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.button-group button {
+    border: 1px solid #eee;
+    padding: 0.2rem 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.button-group button.selected {
+    border: 2px solid rosybrown;
+    padding: 0.2rem 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 8px;
+}
+
+.clear-completed-btn:hover {
+    font-style: italic;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.show-completed-btn{
+    font-size: 0.8rem;
+}
+
+.edit-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 590px;
+    height: 2.8rem;
+    margin: 0;
+}
+
+p.info {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #ccc;
+}
+/* TODOSLIT CSS  끝 ----------- */
 </style>
 </head>
 <body>
@@ -134,8 +317,35 @@
 			</div>
 			<div id="book">
 				<div class="title">
-					예약바로가기
+					<a href="myReserve.re" style="color: black;">오늘의 예약목록</a>
 					<hr>
+					<table class="table">
+					<c:choose>
+						<c:when test="${!empty list}">
+							
+							<thead style="font-size: 11px; text-align: center;">
+								<tr>
+									<th width="30%" > 자원명</th>
+									<th > 예약시간</th>
+								</tr>
+								
+							</thead>
+							<tbody style="font-size: 11px; text-align: center;" >
+								<c:forEach var="r" items="${list}" begin="0" end="2">
+									<tr>
+										<td>${r.resourceName}</td>
+										<td>${r.startDate} ~<br>${r.endDate}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</c:when>
+						<c:otherwise>
+								<tr>
+									<td colspan="3">예약 목록이 비어있습니다.</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</table>
 				</div>
 				<div>
 
@@ -177,8 +387,65 @@
 			</div>
 			<div id="todo">
 				<div class="title">
-					to do list
+					<div class="todo-title">ToDoList</div>
 					<hr>
+
+					<div class="todo-wrapper">
+						<div class="todo-box">
+						
+						<!-- <form name="todoInsert" action="todolistInsert.to" method="post"> -->
+							<div class="todo-input-box">
+								<!-- <button class="complete-all-btn">✔</button> -->
+								<input type="text" class="todo-input" id="contentTag" name="todoContent" placeholder="해야 할 일을 입력해주세요.">
+		
+								<button type="submit" style="display: none;">??</button>
+							</div>
+						<!-- </form> -->
+							
+							<ul class="todo-list" style="list-style: none; padding-left: 10px;" >
+								<c:forEach var="t" items="${ todoList }" begin="0" end="5">
+									<c:choose>
+										<c:when test="${ t.checkStatus eq 'Y'}">
+											<li class="todo-item" >
+												<div class="checkbox chkbtn" style="color: black;">✔</div>
+												<div class="todo todocontent" contenteditable="true" >${t.todoContent}</div>
+												<input type="hidden" name="checkNo" value="${t.checkNo}" id="checkNoTag">
+									   
+												<button class="delBtn">x</button>
+											</li>
+										</c:when>
+										<c:otherwise>
+											<li class="todo-item checked">
+												<div class="checkbox completebtn"></div>
+												
+												<div class="todo">${t.todoContent}</div>
+											  
+												<input type="hidden" name="checkNo" value="${t.checkNo}" id="checkNoTag">
+												<button class="delBtn">x</button>
+											</li>
+		
+										</c:otherwise>
+								</c:choose>
+								</c:forEach>
+		
+							  
+							</ul>
+							<div class="todo-bottom" style="margin-top: 1px;">
+								<div class="left-items">&nbsp;${count} items left</div>
+								<!-- <div class="button-group">
+									<button class="show-all-btn selected" data-type="all">All</button>
+									<button class="show-active-btn" data-type="active">Active</button>
+									<button class="show-completed-btn" data-type="completed">Completed</button>
+								</div> -->
+								<button class="clear-completed-btn" style="font-size: 0.8rem;">Clear Completed</button>
+							</div>
+
+
+						
+						</div>
+						<!-- <p class='info'>더블클릭 시 수정 가능!</p> -->
+					   
+					</div>
 				</div>
 				<div>
 
@@ -270,6 +537,221 @@
 		})
 		
 		
+
+		// todolist ajax --------------------------------------------------------------
+
+
+		  // todolist 입력
+
+		  $(function(){
+
+				$(document).on('keyup', '.todo-input', function(e){
+
+					var content = $(this).val()
+
+					if(e.keyCode == 13){  
+
+						$.ajax({
+							url:"ajaxInsertTodo.to",
+							data: {todoContent:content},
+							dataType:"JSON",
+							success:function(result){
+
+								if (result == 'success') {
+								
+									location.reload();
+								}else{
+									alertify.alert("todolist 입력에 실패하였습니다..")
+									location.reload();
+								}
+								
+							}
+						});
+
+						location.reload();
+
+					}
+
+				
+					})
+
+
+				})
+
+
+
+
+
+
+
+
+
+		  // todolist 삭제하기
+		  $(function(){
+            	$(document).on('click', '.delBtn', function(){
+                 var cNo = $(this).siblings("#checkNoTag").val();
+
+                  $.ajax({
+                url:"deleteTodolist.to",
+                data: { checkNo: cNo},
+                dataType:"JSON",
+                success:function(json){
+
+                    if (json.result == 1) {
+                    
+                    location.reload();
+
+
+                    }else{
+                      alertify.alert("todolist 삭제에 실패하였습니다..")
+                      location.reload();
+
+                    }
+                    
+                },
+                error: function(request, status, error){
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                  }
+                });
+           
+              })
+        })
+
+		   // todolist 완료처리하기
+		   $(function(){
+            	$(document).on('click', '.chkbtn', function(){
+                 var cNo = $(this).siblings("#checkNoTag").val();
+
+                  $.ajax({
+                url:"completeTodolist.to",
+                data: { checkNo: cNo},
+                dataType:"JSON",
+                success:function(json){
+
+                    if (json.result == 1) {
+                    //  alertify.alert("todolist 완료에 성공하였습니다..")
+                    
+                    location.reload();
+
+
+                    }else{
+                      alertify.alert("todolist 삭제에 실패하였습니다..")
+                      location.reload();
+
+                    }
+                    
+                },
+                error: function(request, status, error){
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                  }
+                });
+           
+              })
+        })
+
+        //todo 복구하기
+        $(function(){
+            	$(document).on('click', '.completebtn', function(){
+                 var cNo = $(this).siblings("#checkNoTag").val();
+
+                  $.ajax({
+                url:"restoreTodolist.to",
+                data: { checkNo: cNo},
+                dataType:"JSON",
+                success:function(json){
+
+                    if (json.result == 1) {
+                    //  alertify.alert("todolist 완료에 성공하였습니다..")
+                    
+                    location.reload();
+
+
+                    }else{
+                      alertify.alert("todolist 삭제에 실패하였습니다..")
+                      location.reload();
+
+                    }
+                    
+                },
+                error: function(request, status, error){
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                  }
+                });
+           
+              })
+        })
+
+
+         // todolist 수정하기
+         $(function(){
+
+            $(document).on('keyup', '.todocontent', function(e){
+
+                var cNo = $(this).siblings("#checkNoTag").val();
+                var content = $(this).text()
+
+                if(e.keyCode == 13){  
+
+                    $.ajax({
+                        url:"updateTodolist.to",
+                        data: { checkNo: cNo, todoContent:content},
+                        dataType:"JSON",
+                        success:function(result){
+
+                            if (result == 'success') {
+                            
+                                location.reload();
+                            }else{
+                                alertify.alert("todolist 수정에 실패하였습니다..")
+                                location.reload();
+                            }
+                            
+                        }
+                    });
+
+                    location.reload();
+
+                }
+
+               
+                })
+
+
+             })
+
+
+			 
+              // clear-completed 완료된 todolist 지우기
+			  $(function(){
+
+				$(document).on('click', '.clear-completed-btn', function(){
+
+
+						$.ajax({
+							url:"deleteComleteTodo.to",
+							data: {},
+							dataType:"JSON",
+							success:function(result){
+
+								if (result == 'success') {
+								
+									location.reload();
+								}else{
+									alertify.alert("todolist 삭제에 실패하였습니다..")
+									location.reload();
+								}
+								
+							}
+						});
+
+						location.reload();
+
+					})
+
+
+				})
+
+
 		
 	</script>
 

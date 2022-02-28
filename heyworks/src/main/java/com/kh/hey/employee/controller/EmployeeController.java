@@ -19,6 +19,10 @@ import com.kh.hey.common.model.vo.PageInfo;
 import com.kh.hey.common.template.Pagination;
 import com.kh.hey.employee.model.service.EmployeeService;
 import com.kh.hey.employee.model.vo.Employee;
+import com.kh.hey.reserve.model.service.ReservationService;
+import com.kh.hey.reserve.model.vo.Reservation;
+import com.kh.hey.todo.model.service.todolistService;
+import com.kh.hey.todo.model.vo.Todolist;
 
 @Controller
 public class EmployeeController {
@@ -28,6 +32,12 @@ public class EmployeeController {
 	
 	@Autowired
 	private ApprovalService aService;
+	
+	@Autowired 
+	private ReservationService rService;
+	
+	@Autowired 
+	private todolistService tService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -73,7 +83,7 @@ public class EmployeeController {
 		
 		// 전자결재용 메인-------------------------------------------------------------
 		String userName = ((Employee)session.getAttribute("loginUser")).getUserName();
-
+		String userNo = (String.valueOf(((Employee)session.getAttribute("loginUser")).getUserNo()));
 		
 		int listCount = aService.selectListCount(userName);
 		
@@ -84,6 +94,18 @@ public class EmployeeController {
 		model.addAttribute("apList", apList);
 		// 전자결재 끝-----------------------------------------------------------------
 
+		//예약목록 메인----------------------------------------------------------
+		ArrayList<Reservation> list = rService.myReserveList(pi, userNo);
+		model.addAttribute("list", list);
+		
+		//예약목록  끝--------------------------------------------------------------
+		
+		//todolist 메인 ---------------------------------------------
+		ArrayList<Todolist> todoList = tService.todolistSelect(userNo);
+		int count = tService.todolistCount(userNo);
+		model.addAttribute("todoList", todoList);
+		model.addAttribute("count", count);
+		
 		return "main";
 	}
 	

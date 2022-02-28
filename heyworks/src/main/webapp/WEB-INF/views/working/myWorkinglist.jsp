@@ -52,7 +52,7 @@
     .working-box-list>li{
         text-align:center;
         margin-top:20px;
-        margin-right:10px;
+        margin-right:20px;
         padding-right:15px;
         font-size:13px;
         font-family: 'Cafe24SsurroundAir';
@@ -78,54 +78,31 @@
             <div class="year-outer">
 
                 <div class="title-box">
-                    올해 근무 정보
+                    	올해 근무 정보
                 </div><br>
     
                 <div class="working-box">
-                    <strong><img src="resources/images/time.png" style="width: 20px; height: 20px;"> 근무시간</strong>
-                    <ul class="working-box-list" style="width:300px">
+                    <strong><img src="resources/images/to-do-list.png" style="width: 20px; height: 20px;"> 근무일수 및 현황</strong>
+                    <ul class="working-box-list" style="width:510px">
                         <li style="border-right:1px solid lightgray;">
-                            <strong style="margin-left:20px;">근무일수</strong><br><br>
-                            <span>1일</span>
+                            <strong style="margin-left:40px;">총 근무일수</strong><br><br>
+                            <span style="margin-left:35px;">19일</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
-                            <strong>총근무시간</strong><br><br>
-                            <span>0시간</span>
+                            <strong>정상근무</strong><br><br>
+                            <span>14회</span>
                         </li>
-                        <li>
-                            <strong>평균근무시간</strong><br><br>
-                            <span>0시간</span>
-                        </li>
-                    </ul>
-    
-                    <strong><img src="resources/images/to-do-list.png" style="width: 20px; height: 20px;"> 근태현황</strong>
-                    <ul class="working-box-list" style="width:300px">
                         <li style="border-right:1px solid lightgray;">
-                            <strong style="margin-left:20px;">지각</strong><br><br>
-                            <span> 1회</span>
+                            <strong>연장근무</strong><br><br>
+                            <span>3회</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>조기퇴근</strong><br><br>
                             <span>0회</span>
                         </li>
-                        <li style="border-right:1px solid lightgray;">
-                            <strong>결근</strong><br><br>
-                            <span>0회</span>
-                        </li>
                         <li>
-                            <strong>퇴근미체크</strong><br><br>
+                            <strong>퇴근 미체크</strong><br><br>
                             <span>0회</span>
-                        </li>
-                    </ul>
-    
-                    <strong><img src="resources/images/gift.png" style="width: 20px; height: 20px;"> 휴가현황</strong>
-                    <ul class="working-box-list"  style="width:205px">
-                        <li style="border-right:1px solid lightgray;">
-                            <strong style="margin-left:20px;">잔여휴가</strong><br><br>
-                            <span>15일</span>
-                        </li>
-                        <li style="padding-top:17px;">
-                            <a href="leaveApplyForm.wo" class="btn btn-primary" style="font-size:13px;">휴가신청</a>
                         </li>
                     </ul>
                 </div>
@@ -152,15 +129,14 @@
                 <table class="table-bordered">
                     <thead class="tb-head">
                         <tr height="45px">
-                            <th width="130">날짜</th>
-                            <th width="110">휴일구분</th>
-                            <th width="130">근무스케줄시간</th>
-                            <th width="85">출근시각</th>
-                            <th width="85">퇴근시각</th>
-                            <th width="85">휴게시간</th>
-                            <th width="85">근무시간</th>
-                            <th width="85">연장근무</th>
-                            <th width="100">근태상황</th>
+                            <th width="160">날짜</th>
+                            <th width="165">근무스케줄시간</th>
+                            <th width="95">출근시각</th>
+                            <th width="95">퇴근시각</th>
+                            <th width="95">휴게시간</th>  
+                            <th width="95">연장근무</th>
+                            <th width="100">총 근무시간</th>
+                            <th width="110">근태상태</th>
                         </tr>
                     </thead>
                     <tbody align="center" class="tb-body" id="weekTna">
@@ -233,20 +209,33 @@
                                 	
                 					let list = "";
                 					for(let i in wlist){
-                						list += "<tr>"
-										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
-										     + "<td>" 
-										     +"</td>"
-										     + "<td>" + "08:00 ~ 17:00" + "</td>"
-										     + "<td>" + wlist[i].clockIn + "</td>"
-										     + "<td>" + wlist[i].clockOut + "</td>"
-										     + "<td>" + "01:00" + "</td>"
-										     + "<td>" + wlist[i].workTime + "시간" + "</td>"
-										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
-										     + "<td id='tnaStatus'>" + wlist[i].tnaStatus + "</td>"
-										     + "</tr>";
-										    	   	    	   
+                						if(wlist[i].clockIn == null){
+                    						list += "<tr>"
+   										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
+   										     + "<td>" + "08:00 ~ 17:00" + "</td>"
+   										     + "<td>" + " " + "</td>"
+   										     + "<td>" + " " + "</td>"
+   										     + "<td>" + "01:00" + "</td>"
+   										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
+   										     + "<td>" + wlist[i].workTime + "시간" + "</td>"			     
+   										     + "<td>" + wlist[i].tnaStatus + "</td>"
+   										     + "</tr>";	
+                						}else{
+                    						list += "<tr>"
+   										     + "<td>" + wlist[i].tnaDate + "(" + wlist[i].tnaDay + ")" + "</td>"
+   										     + "<td>" + "08:00 ~ 17:00" + "</td>"
+   										     + "<td>" + wlist[i].clockIn + "</td>"
+   										     + "<td>" + wlist[i].clockOut + "</td>"
+   										     + "<td>" + "01:00" + "</td>"
+   										     + "<td>" + wlist[i].overTime + "시간" + "</td>"
+   										     + "<td>" + wlist[i].workTime + "시간" + "</td>"			     
+   										     + "<td>" + wlist[i].tnaStatus + "</td>"
+   										     + "</tr>";	 
+                						}
+
+										     
 									}
+                					
                 					
 									$("#weekTna").html(list);
                                 },error:function(){
@@ -255,18 +244,8 @@
                             })
                         }
                     </script>
-                    <!--  
-                    <script>
-                    	$(function(){
-                    		var tnaStatus = document.getElementById("tnaStatus").text();
-                    		console.log(tnaStatus);
-                    		
-                    		//if(tnaStatus == '정상근무'){
-                    			
-                    		//}
-                    	});
-                    </script>
-                    -->
+                    
+                    
                     <!--
                     <tbody align="center" class="tb-body">
                     	<c:forEach var="w" items="${wlist}">
