@@ -57,7 +57,7 @@
             <img src="resources/images/2722998.png" style="width: 25px; height: 25px;"> 근태관리
         </div><br>
 
-        <div class="sidebar-menu">
+        <div class="sidebar-menu" style="margin-left:20px">
             <ul>
                 <li style="font-size:15px;"><strong>내 근무</strong>
                     <ul>
