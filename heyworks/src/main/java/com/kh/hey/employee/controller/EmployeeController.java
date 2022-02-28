@@ -51,7 +51,7 @@ public class EmployeeController {
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(e.getUserPwd(), loginUser.getUserPwd())) { 
 			
-			if(e.getUserPwd().equals("0000")) { // 나중에 1234으로 변경하기
+			if(e.getUserPwd().equals("1234")) { 
 				
 				mv.addObject("userId", e.getUserId());
 				mv.setViewName("employee/updatePassword");
