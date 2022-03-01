@@ -25,16 +25,17 @@
         height:700px;
     }
     .table-bordered{
-        margin-left:60px;
+        margin-left:35px;
     }
     .table-bordered th{
         height:40px;
 		text-align:center;
-		font-size:14px;
+		font-size:15px;
+		background: rgba(211, 211, 211, 0.336);
     }
     .table-bordered td{
         padding-left:7px;
-		font-size:13px;
+		font-size:14px;
     }
 </style>
 </head>
@@ -57,14 +58,14 @@
 				<br>
 		
 				<!--휴가신청서 내용-->
-				<div class="leave-content" style="border:1px solid lightgrey;"><br>
+				<div class="leave-content" style="border:1px solid #cfcfcfd7;"><br>
 					
 					<h3 align="center" class="title-box">휴가 상세</h3>
-					<br><br>
+					<br><br>				
 					<table class="table-bordered">
 						<tr>
 							<th width="130">신청자</th>
-							<td width="650">${l.userName}</td>
+							<td width="300">${l.userName}</td>
 						</tr>
 						<tr>
 							<th>소속</th>
@@ -78,26 +79,32 @@
 							<th>신청일</th>
 							<td>${l.applyDate}</td>
 						</tr>
+					</table>
+					<br><br>
+		
+					<table class="table-bordered">
 						<tr>
-							<th>구분</th>
-							<td>${l.leaveType}</td>
+							<th width="130">*구분</th>
+							<td width="710">${l.leaveType}</td>
 						</tr>
 						<tr>
-							<th>휴가기간</th>
+							<th>*휴가기간</th>
 							<td>
 								 ${l.startDate} ~ ${l.endDate}
+								
 							</td>
 						</tr>
 						<tr>
 							<th>신청일수</th>
-							<td> ${l.leaveUse} </td>
+							<td id="leaveUse" readonly style="font-weight:500">
+								${l.leaveUse}
+							</td>
 						</tr>
+
 						<tr>
-							<th>사유</th>
-							<td style="height:100px;">
-								
-									${l.reason}
-								
+							<th>*사유</th>
+							<td style="height:200px;">							
+									${l.reason}			
 							</td>
 						</tr>
 					</table>

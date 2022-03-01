@@ -20,10 +20,10 @@
        padding-left:30px;
        padding-top:30px;
     }
-    .title-box{font-size:20px; font-weight:600;}
+    .title-box{font-size:21px; font-weight:600;}
     .date-box{font-size:25px; font-weight:600;}
-    .table-bordered th{font-size:14px; text-align:center;}
-    .table-bordered td{font-size:13px;}
+    .table-bordered th{font-size:15px; text-align:center;}
+    .table-bordered td{font-size:14px;}
     #pagingArea{width:fit-content;margin:auto;}
     
     #searchForm{
@@ -49,10 +49,10 @@
         <div class="all-status">
 
             <div class="title-box">
-                <h3 style="font-size:20px;">전사 휴가현황</h3>
-            </div><br>
+               	전사 휴가현황
+            </div><br><br>
 
-            <div class="date-box" style="margin-bottom:50px;" align="center">
+            <div class="date-box" style="margin-bottom:50px; background:rgba(24, 121, 201, 0.2);" align="center">
                 <span> 2022-01-01 ~ 2022-12-31 </span>
             </div>
 
@@ -68,7 +68,7 @@
 	                <div class="text">
 	                    <input type="text" class="form-control" name="keyword" value="${ keyword }">
 	                </div>
-	                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+	                <button type="submit" class="searchBtn btn btn-secondary">Search</button>
 	            </form>
             </div>
 			<c:if test="${ not empty condition }">
@@ -118,10 +118,10 @@
                 <ul class="pagination">
                 	<c:choose>
               			<c:when test="${ pi.currentPage eq 1 }">
-                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    		<li class="page-item disabled"><a class="page-link" href="#"><<</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ pi.currentPage-1 }">Previous</a></li>
+                    		<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ pi.currentPage-1 }"><<</a></li>
                     	</c:otherwise>
                     </c:choose>
                     
@@ -131,10 +131,10 @@
                     
                     <c:choose>
                     	<c:when test="${ pi.currentPage eq pi.maxPage }">
-                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                    		<li class="page-item disabled"><a class="page-link" href="#">>></a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ pi.currentPage+1 }">Next</a></li>
+                    		<li class="page-item"><a class="page-link" href="leaveStatusList.wo?cpage=${ pi.currentPage+1 }">>></a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>

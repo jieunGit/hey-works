@@ -472,6 +472,11 @@
 		      , L.STATUS
 		      , USER_NAME
 		      , DEPT_NAME
+    		  , DECODE(JOB_CODE, 1, '사원'
+                    		   , 2, '주임'
+                   		       , 3, '대리'
+                   			   , 4, '과장'
+                    		   , 9, '대표이사') "JOB_NAME"
 		  FROM LEAVE_ALIST L
 		  JOIN EMPLOYEE E USING(USER_NO)
 		  JOIN DEPARTMENT D USING(DEPT_CODE)

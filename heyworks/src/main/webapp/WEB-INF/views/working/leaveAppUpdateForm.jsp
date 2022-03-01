@@ -7,13 +7,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-    @font-face {
-    font-family: 'Cafe24SsurroundAir';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-	}
-	*{font-family: 'Cafe24SsurroundAir';}
     .outer{
         width:1200px;
         height:1200px;
@@ -32,16 +25,17 @@
         height:700px;
     }
     .table-bordered{
-        margin-left:60px;
+        margin-left:35px;
     }
     .table-bordered th{
         height:40px;
 		text-align:center;
-		font-size:14px;
+		font-size:15px;
+		background: rgba(211, 211, 211, 0.336);
     }
     .table-bordered td{
         padding-left:7px;
-		font-size:13px;
+		font-size:14px;
     }
 </style>
 </head>
@@ -68,18 +62,22 @@
 				<br>
 		
 				<!--휴가신청서 내용-->
-				<div class="leave-content" style="border:1px solid lightgrey;"><br>
+				<div class="leave-content" style="border:1px solid #cfcfcfd7;"><br>
 					
 					<h3 align="center" class="title-box">휴가 신청서</h3>
 					<br><br>
 					<table class="table-bordered">
 						<tr>
 							<th width="130">신청자</th>
-							<td width="280">${loginUser.userName}</td>
+							<td width="300">${loginUser.userName}</td>
 						</tr>
 						<tr>
 							<th>소속</th>
 							<td>${loginUser.deptName}</td>
+						</tr>
+						<tr>
+							<th>직급</th>
+							<td>${l.jobName}</td>
 						</tr>
 						<tr>
 							<th>신청일</th>
@@ -91,7 +89,7 @@
 					<table class="table-bordered">
 						<tr>
 							<th width="130">*구분</th>
-							<td width="650">${l.leaveType}</td>
+							<td width="710">${l.leaveType}</td>
 						</tr>
 						<tr>
 							<th>*휴가기간</th>
