@@ -49,6 +49,11 @@
 		  , job_code
 		  , admin_yn
 		  , image
+		  , decode(job_code, 1, '사원'
+		                   , 2, '주임'
+		                   , 3, '대리'
+		                   , 4, '과장'
+		                   , 9, '대표이사') job_name
 	  from employee
 	  join department using(dept_code)
 	 where status = 'Y'

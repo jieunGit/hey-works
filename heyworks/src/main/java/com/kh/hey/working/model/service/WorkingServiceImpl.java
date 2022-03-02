@@ -131,6 +131,21 @@ public class WorkingServiceImpl implements WorkingService {
 		return wDao.deleteApplyLeave(sqlSession, leaveAno);
 	}
 
+	@Override
+	public Working selectAtnaForm(int userNo) {
+		return wDao.selectAtnaForm(sqlSession, userNo);
+	}
+
+	@Override
+	public int updateTnaUpdate(Working w) {
+		return wDao.updateTnaUpdate(sqlSession, w);
+	}
+
+	@Override
+	public Leave leaveAppUpdateForm(int leaveAno) {
+		return wDao.leaveAppUpdateForm(sqlSession, leaveAno);
+	}
+
 
 
 

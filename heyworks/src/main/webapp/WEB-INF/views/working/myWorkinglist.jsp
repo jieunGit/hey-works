@@ -7,12 +7,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-    @font-face {
-    font-family: 'Cafe24SsurroundAir';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
     .outer{
         width:1200px;
         height:1200px;
@@ -23,46 +17,45 @@
        width: 950px;
 	   height:100%;
 	   display:inline-block;
-       padding-left:30px;
+       padding-left:40px;
        padding-top:30px;
     }
-    .title-box{font-size:20px; font-weight:600; font-family: 'Cafe24SsurroundAir';}
+    .title-box{font-size:21px; font-weight:600;}
     .working-box-list{
         list-style:none;
-        height:100px;
+        height:110px;
     }
     .working-box-list, .working-box-list>li{
         float:left;
     }
     .working-box>strong{
         position:absolute;
-        font-size:16px;
-        font-family: 'Cafe24SsurroundAir';
+        font-size:17px;
     }
     .working-box-list{
         position:relative;
         top:30px;
-    }
-    .working-box-list{
+        padding-bottom:20px;
         border:1px solid lightgray;
         border-radius:5px;
-        margin-right:20px;
+        margin-right:30px;
     }
-    .working-box>ul{margin-right:35px;}
+    .working-box>ul{margin-right:55px;}
     .working-box-list>li{
         text-align:center;
-        margin-top:20px;
-        margin-right:20px;
-        padding-right:15px;
-        font-size:13px;
-        font-family: 'Cafe24SsurroundAir';
+        margin-top:22px;
+        margin-left:20px;
+        margin-right:40px;
+        padding-right:45px;
+        font-size:16px;
+        padding-bottom:10px;
     }
 
     /*주간 근무 정보*/
     #left, #right:hover{cursor:pointer;}
-    .week-select{font-size:20px; font-weight:700; font-family: 'Cafe24SsurroundAir';}
-    .table-bordered th{font-size:14px; text-align:center; font-family: 'Cafe24SsurroundAir';}
-    .table-bordered td{font-size:13px; font-family: 'Cafe24SsurroundAir';}
+    .week-select{font-size:20px; font-weight:700;}
+    .table-bordered th{font-size:14px; text-align:center;}
+    .table-bordered td{font-size:13px;}
     .tb-body tr{height:37px;}
 </style>
 </head>
@@ -83,10 +76,10 @@
     
                 <div class="working-box">
                     <strong><img src="resources/images/to-do-list.png" style="width: 20px; height: 20px;"> 근무일수 및 현황</strong>
-                    <ul class="working-box-list" style="width:510px">
+                    <ul class="working-box-list" style="width:900px; margin-top:10px; height:120px;">
                         <li style="border-right:1px solid lightgray;">
-                            <strong style="margin-left:40px;">총 근무일수</strong><br><br>
-                            <span style="margin-left:35px;">19일</span>
+                            <strong style="margin-left:5px">총 근무일수</strong><br><br>
+                            <span>19일</span>
                         </li>
                         <li style="border-right:1px solid lightgray;">
                             <strong>정상근무</strong><br><br>
@@ -111,6 +104,7 @@
     
             <br><br><br><br><br><br><br><br><br><br>
     
+
             <!--주간 근무 정보-->
             <div class="week-outer" style=height:600px;>
     
@@ -136,7 +130,7 @@
                             <th width="95">휴게시간</th>  
                             <th width="95">연장근무</th>
                             <th width="100">총 근무시간</th>
-                            <th width="110">근태상태</th>
+                            <th width="105">근태상태</th>
                         </tr>
                     </thead>
                     <tbody align="center" class="tb-body" id="weekTna">

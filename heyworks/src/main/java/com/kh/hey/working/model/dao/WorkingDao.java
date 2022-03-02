@@ -126,4 +126,16 @@ public class WorkingDao {
 	public int deleteApplyLeave(SqlSessionTemplate sqlSession, int leaveAno) {
 		return sqlSession.delete("workingMapper.deleteApplyLeave", leaveAno);
 	}
+	
+	public Working selectAtnaForm(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("workingMapper.selectAtnaForm", userNo);
+	}
+	
+	public int updateTnaUpdate(SqlSessionTemplate sqlSession, Working w) {
+		return sqlSession.update("workingMapper.updateTnaUpdate", w);
+	}
+	
+	public Leave leaveAppUpdateForm(SqlSessionTemplate sqlSession, int leaveAno) {
+		return sqlSession.selectOne("workingMapper.leaveAppUpdateForm", leaveAno);
+	}
 }

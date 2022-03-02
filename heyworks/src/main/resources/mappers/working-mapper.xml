@@ -126,7 +126,8 @@
 	<!-- 내 휴가신청 내역 -->
 	<select id="selectMyleave" resultMap="leaveResult">
 		SELECT
-		        APPLY_DATE
+			    LEAVE_ANO
+		      , APPLY_DATE
 		      , LEAVE_TYPE
 		      , TO_CHAR(TO_DATE(START_DATE), 'YYYY-MM-DD') "START_DATE"
 		      , TO_CHAR(TO_DATE(L.END_DATE), 'YYYY-MM-DD') "END_DATE"
@@ -426,4 +427,59 @@
 		   SET STATUS = '취소'
 		 WHERE LEAVE_ANO = #{leaveAno}
 	</delete>
+	
+	<select id="selectAtnaForm" resultMap="workingResult">
+			SELECT
+		       USER_NO
+		     , ROWNUM NUMROW
+		     , E.USER_NAME
+		     , DEPT_NAME
+		     , DECODE(JOB_CODE, 1, '사원'
+		                      , 2, '주임'
+		                      , 3, '대리'
+		                      , 4, '과장'
+		                      , 9, '대표이사') "JOB_NAME"
+		     , CLOCK_IN
+		     , CLOCK_OUT
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE(CLOCK_IN, 'HH24:MI'))))*24-1) "WORK_TIME"
+		     , TRUNC(ABS((TO_DATE(CLOCK_OUT, 'HH24:MI')-(TO_DATE('17:00', 'HH24:MI'))))*24) "OVER_TIME"
+		     , TNA_STATUS
+		  FROM TNA T
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE TO_DATE(TNA_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+           AND USER_NO = #{userNo}
+	</select>
+	
+	<update id="updateTnaUpdate">
+		UPDATE
+			   TNA
+		   SET CLOCK_IN = #{clockIn}
+		     , CLOCK_OUT = #{clockOut}
+		     , TNA_STATUS = #{tnaStatus}
+		 WHERE USER_NO = #{userNo}
+	</update>
+	
+	<select id="leaveAppUpdateForm" resultMap="leaveResult">
+		SELECT
+			    LEAVE_ANO
+		      , APPLY_DATE
+		      , LEAVE_TYPE
+		      , TO_CHAR(TO_DATE(START_DATE), 'YYYY-MM-DD') "START_DATE"
+		      , TO_CHAR(TO_DATE(L.END_DATE), 'YYYY-MM-DD') "END_DATE"
+		      , LEAVE_USE
+		      , REASON
+		      , L.STATUS
+		      , USER_NAME
+		      , DEPT_NAME
+    		  , DECODE(JOB_CODE, 1, '사원'
+                    		   , 2, '주임'
+                   		       , 3, '대리'
+                   			   , 4, '과장'
+                    		   , 9, '대표이사') "JOB_NAME"
+		  FROM LEAVE_ALIST L
+		  JOIN EMPLOYEE E USING(USER_NO)
+		  JOIN DEPARTMENT D USING(DEPT_CODE)
+		 WHERE LEAVE_ANO = #{leaveAno}
+	</select>
 </mapper>
