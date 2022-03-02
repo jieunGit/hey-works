@@ -79,6 +79,15 @@
         color:white;
         font-size:17px;
         font-weight:500;
+		transition: all 0.4s;
+	}
+	.in-btn:focus, .out-btn:focus{
+		outline:none;
+	}
+	.in-btn:hover, .out-btn:hover{
+		background:white;
+		color:rgb(63, 145, 213);
+		border: 1px solid rgb(63, 145, 213);
 	}
 	#approvalTable{
 		font-size:10px;
