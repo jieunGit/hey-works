@@ -15,6 +15,7 @@ import lombok.ToString;
 
 public class Calendar {
 	
+	private int userNo;
 	private String id;
 	private String calendarId;
 	private String title;
@@ -22,6 +23,6 @@ public class Calendar {
 	private String start;
 	private String end;
 	private String location;
-	private String creator;
-
+	private String userName;
+	private String state;
 }

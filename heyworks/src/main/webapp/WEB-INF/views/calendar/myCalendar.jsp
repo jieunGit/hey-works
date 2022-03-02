@@ -468,8 +468,8 @@ $(document).ready(function(){
 	        title: '아빠생신',
 	        category: 'allday',
 	        dueDateClass: '',
-	        start: '2022-02-11T09:00:00+09:00',
-	        end: '2022-02-11T18:00:00+09:00',	        
+	        start: '2022-03-11T09:00:00+09:00',
+	        end: '2022-03-11T18:00:00+09:00',	        
 	       // isReadOnly: true
 	        
 	    },
@@ -479,9 +479,10 @@ $(document).ready(function(){
 	        title: '창립기념일',
 	        category: 'allday',
 	        dueDateClass: '',
-	        start: '2022-02-14T09:30:00+09:00',
-	        end: '2022-02-14T12:30:00+09:00',
-	        attendees:['강동원']
+	        start: '2022-03-14T09:30:00+09:00',
+	        end: '2022-03-14T12:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['최지은']
 	       
 	    },
 	 {
@@ -490,8 +491,36 @@ $(document).ready(function(){
 	        title: '휴가',
 	        category: 'allday',
 	        dueDateClass: '',
-	        start: '2022-02-21T13:30:00+09:00',
-	        end: '2022-02-25T18:30:00+09:00'
+	        start: '2022-03-21T13:30:00+09:00',
+	        end: '2022-03-25T18:30:00+09:00'
+	    },
+	 {
+	        id: '4',
+	        calendarId: '3',
+	        title: '아침회의 참석',
+	        category: 'time',
+	        dueDateClass: '',
+	        start: '2022-02-28T09:30:00+09:00',
+	        end: '2022-02-28T11:30:00+09:00'
+	    },
+	 {
+	        id: '5',
+	        calendarId: '1',
+	        title: '친구들과 약속',
+	        category: 'time',
+	        location:'홍대',
+	        dueDateClass: '',
+	        start: '2022-03-05T16:00:00+09:00',
+	        end: '2022-03-05T22:00:00+09:00'
+	    },
+	 {
+	        id: '6',
+	        calendarId: '1',
+	        title: '점심약속',
+	        category: 'time',
+	        dueDateClass: '',
+	        start: '2022-03-02T12:00:00+09:00',
+	        end: '2022-03-02T13:00:00+09:00'
 	    }
 
 	]);

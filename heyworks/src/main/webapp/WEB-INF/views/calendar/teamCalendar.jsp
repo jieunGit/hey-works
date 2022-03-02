@@ -387,7 +387,7 @@ function hexToRGBA(hex) {
     calendar.borderColor = '#03bd9e';
     addCalendar(calendar);
 
-     calendar = new CalendarInfo();
+    calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
     calendar.name = '휴가';
@@ -397,7 +397,7 @@ function hexToRGBA(hex) {
     calendar.borderColor = '#bbdc00';
     addCalendar(calendar);
 
-     calendar = new CalendarInfo();
+    calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
     calendar.name = '회의';
@@ -407,15 +407,15 @@ function hexToRGBA(hex) {
     calendar.borderColor = '#ffbb3b';
     addCalendar(calendar);
 
-/*    calendar = new CalendarInfo();
+/*     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = 'etc';
+    calendar.name = '개인작업';
     calendar.color = '#ffffff';
     calendar.bgColor = '#9d9d9d';
     calendar.dragBgColor = '#9d9d9d';
     calendar.borderColor = '#9d9d9d';
-    addCalendar(calendar);  */
+    addCalendar(calendar);   */
 
 })();
 
@@ -467,22 +467,22 @@ $(document).ready(function(){
 	        category: 'time',
 	        location: 'gather town',
 	        dueDateClass: '',
-	        start: '2022-02-12T14:30:00+09:00',
-	        end: '2022-02-12T17:30:00+09:00',	        
+	        start: '2022-03-12T14:30:00+09:00',
+	        end: '2022-03-12T17:30:00+09:00',	        
 	        isReadOnly: true,
-	        attendees:['강동원']
+	        attendees:['신누리']
 	        
 	    },
 	 {
 	        id: '2',
 	        calendarId: '2',
-	        title: '신한은행 차세대 프로젝트',
+	        title: '홈페이지 개편',
 	        category: 'allday',
 	        dueDateClass: '',
-	        start: '2022-02-21T09:30:00+09:00',
-	        end: '2022-05-21T12:30:00+09:00',
+	        start: '2022-01-15T09:30:00+09:00',
+	        end: '2022-03-21T12:30:00+09:00',
 	        isReadOnly: true,
-	        attendees:['서강준']
+	        attendees:['최지은']
 	       
 	    },
 	 {
@@ -492,9 +492,8 @@ $(document).ready(function(){
 	        category: 'time',
 	        location: '코엑스',
 	        dueDateClass: '',
-	        start: '2022-02-14T13:30:00+09:00',
-	        end: '2022-02-14T18:30:00+09:00',
-	        isReadOnly: true,
+	        start: '2022-03-14T13:30:00+09:00',
+	        end: '2022-03-14T18:30:00+09:00',
 	        attendees:['이해랑']
 	    },
 	 {
@@ -507,6 +506,71 @@ $(document).ready(function(){
 	        end: '2022-02-28T11:30:00+09:00',
 	        isReadOnly: true,
 	        attendees:['주세현']
+	    },
+	 {
+	        id: '5',
+	        calendarId: '4',
+	        title: '쥬세현 휴가',
+	        category: 'allday',
+	        dueDateClass: '',
+	        start: '2022-02-15T09:30:00+09:00',
+	        end: '2022-02-17T11:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['주세현']
+	    },
+	 {
+	        id: '6',
+	        calendarId: '4',
+	        title: '최지은 휴가',
+	        category: 'allday',
+	        dueDateClass: '',
+	        start: '2022-02-03T09:30:00+09:00',
+	        end: '2022-02-04T11:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['최지은']
+	    },
+	 {
+	        id: '7',
+	        calendarId: '4',
+	        title: '신누리 휴가',
+	        category: 'allday',
+	        dueDateClass: '',
+	        start: '2022-03-04T09:30:00+09:00',
+	        end: '2022-03-04T11:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['신누리']
+	    },
+	 {
+	        id: '8',
+	        calendarId: '4',
+	        title: '이해랑 휴가',
+	        category: 'allday',
+	        dueDateClass: '',
+	        start: '2022-03-08T09:30:00+09:00',
+	        end: '2022-03-08T11:30:00+09:00',
+	        attendees:['이해랑']
+	    },
+	 {
+	        id: '9',
+	        calendarId: '4',
+	        title: '권한나 휴가',
+	        category: 'allday',
+	        dueDateClass: '',
+	        start: '2022-03-10T09:30:00+09:00',
+	        end: '2022-03-10T11:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['권한나']
+	    },
+	 {
+	        id: '10',
+	        calendarId: '4',
+	        title: '안수현 휴가',
+	        category: 'allday',
+	        dueDateClass: '',
+	        start: '2022-03-22T09:30:00+09:00',
+	        end: '2022-03-23T11:30:00+09:00',
+	        isReadOnly: true,
+	        attendees:['안수현']
 	    }
 
 	]);
@@ -688,7 +752,6 @@ $(document).ready(function(){
       var start = datePicker.getStartDate();
       var end = datePicker.getEndDate();
       var calendar = selectedCalendar ? selectedCalendar : CalendarList[0];
-
       if (!title) {
           return;
       }
@@ -700,14 +763,15 @@ $(document).ready(function(){
           isAllDay: isAllDay,
           location: location,
           start: start,
-          end: end,
+          end: end,          
           category: isAllDay ? 'allday' : 'time',
           dueDateClass: '',
           color: calendar.color,
           bgColor: calendar.bgColor,
           dragBgColor: calendar.bgColor,
           borderColor: calendar.borderColor,
-          state: 'Busy'
+          state: 'Busy',
+          attendees:['${loginUser.userName}']
       }]);
 
       $('#modal-new-schedule').modal('hide');
@@ -759,7 +823,8 @@ $(document).ready(function(){
           borderColor: calendar.borderColor,
           location: scheduleData.location,
           isPrivate: scheduleData.isPrivate,
-          state: scheduleData.state
+          state: scheduleData.state,
+          attendees:['${loginUser.userName}']
       };
       if (calendar) {
           schedule.calendarId = calendar.id;
