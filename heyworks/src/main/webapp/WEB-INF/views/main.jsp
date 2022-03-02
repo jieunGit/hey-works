@@ -115,9 +115,8 @@
 		outline:none;
 	}
 	.in-btn:hover, .out-btn:hover{
-		background:white;
-		color:rgb(63, 145, 213);
-		border: 1px solid rgb(63, 145, 213);
+		background:#3f91d598;
+		color:white;
 	}
 	#approvalTable{
 		font-size:10px;
@@ -402,7 +401,7 @@ p.info {
 				</div>
 				<div class="tna-content" align="center">
 					<p id="live-date" class="live-date" style="font-size:22px;"></p>
-					<strong id="live-time" class="live-time" style="font-size:35px;"></strong><br><br>
+					<strong id="live-time" class="live-time" style="font-size:37px;"></strong><br><br>
 					<br>
 					<table class="click-time">
 						<tr>
