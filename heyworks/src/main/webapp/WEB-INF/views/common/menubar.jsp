@@ -8,15 +8,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	@font-face {
-    font-family: 'KoPubDotumMedium';
-     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/KoPubDotumMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-	}
-    * {
-      font-family: 'KoPubDotumMedium';
-    }
     #header{
         width: 1200px;
         height: 50px;
@@ -88,10 +79,11 @@
         height: 100%;
         padding: 13px;  
     }
+   
+    
  	#profile{
 		border-radius:100%; 	
  	}
- 	
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
