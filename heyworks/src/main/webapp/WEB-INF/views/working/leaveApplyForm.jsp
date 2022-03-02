@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    @font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+	}
+	*{font-family: 'Cafe24SsurroundAir';}
     .outer{
         width:1200px;
         height:1200px;
@@ -25,16 +32,17 @@
         height:700px;
     }
     .table-bordered{
-        margin-left:60px;
+        margin-left:35px;
     }
     .table-bordered th{
         height:40px;
 		text-align:center;
-		font-size:14px;
+		font-size:15px;
+		background: rgba(211, 211, 211, 0.336);
     }
     .table-bordered td{
         padding-left:7px;
-		font-size:13px;
+		font-size:14px;
     }
 </style>
 </head>
@@ -59,25 +67,29 @@
 				<br>
 		
 				<!--휴가신청서 내용-->
-				<div class="leave-content" style="border:1px solid lightgrey;"><br>
+				<div class="leave-content" style="border:1px solid #cfcfcfd7;"><br>
 					
-					<h3 align="center" class="title-box">휴가 신청</h3>
+					<h3 align="center" class="title-box">휴가 신청서</h3>
 					<br><br>
 					<table class="table-bordered">
 						<tr>
-							<th width="130">신청자</th>
-							<td width="280">${loginUser.userName}</td>
+							<th width="130px">신청자</th>
+							<td width="300px">${loginUser.userName}</td>
 						</tr>
 						<tr>
 							<th>소속</th>
 							<td>${loginUser.deptName}</td>
 						</tr>
 						<tr>
+							<th>직급</th>
+							<td>${loginUser.jobName}</td>
+						</tr>
+						<tr>
 							<th>신청일</th>
 							<td id="sysdate"></td>
 						</tr>
 					</table>
-					<br><br>
+					<br>
 
 					<!--신청일 : 오늘날짜-->
 					<script>
@@ -93,18 +105,18 @@
 						document.getElementById("sysdate").innerHTML = year + "-" + month + "-" + date;
 					</script>
 		
-					<table class="table-bordered">
+					<table class="table-bordered" id="leaveForm">
 						<tr>
-							<th width="130">*구분</th>
-							<td width="650">
+							<th width="130px">*구분</th>
+							<td style="padding-top:10px">
 								<input type="radio" id="day" name="leaveType" value="연차" checked>
-								<label for="day">연차</label>
+								<label for="day" style="margin-right:15px">연차</label>
 		
 								<input type="radio" id="event" name="leaveType" value="경조">
-								<label for="event">경조</label>
+								<label for="event" style="margin-right:15px">경조</label>
 		
 								<input type="radio" id="sick" name="leaveType" value="병가">
-								<label for="sick">병가</label>
+								<label for="sick" style="margin-right:15px">병가</label>
 
 								<input type="radio" id="baby" name="leaveType" value="출산휴가">
 								<label for="baby">출산휴가</label>
@@ -119,7 +131,8 @@
 						</tr>
 						<tr>
 							<th>신청일수</th>
-							<td id="leaveUse" readonly></td>
+							<td id="leaveUse" readonly style="font-weight:500">
+							</td>
 						</tr>
 						<input type="hidden" name="leaveUse" id="useDay">
 
@@ -149,7 +162,7 @@
 						<tr>
 							<th>*사유</th>
 							<td style="height:100px;">
-								<textarea name="reason" cols="100" rows="12" style="resize:none; border:none;" required></textarea>
+								<textarea name="reason" cols="95" rows="11" style="resize:none; border:none;" required></textarea>
 							</td>
 						</tr>
 					</table>

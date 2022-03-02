@@ -20,7 +20,7 @@
        padding-left:30px;
        padding-top:30px;
     }
-
+	.title-box{font-size:21px; font-weight:600;}
     #searchForm{
         width:80%;
         margin:auto;
@@ -35,8 +35,8 @@
 
     .date-box{font-size:25px; font-weight:600;}
 
-    .table-bordered th{font-size:14px; text-align:center;}
-    .table-bordered td{font-size:13px;}
+    .table-bordered th{font-size:15px; text-align:center;}
+    .table-bordered td{font-size:14px;}
     .tb-body tr{height:37px;}
     
     #pagingArea{width:fit-content;margin:auto;}
@@ -52,10 +52,10 @@
         <div class="all-status">
 			
             <div class="title-box">
-                <h3 style="font-size:20px;">전사 근태현황</h3>
-            </div><br>
+                	전사 근태현황
+            </div><br><br>
 			
-            <div class="date-box" style="margin-bottom:50px;" align="center">
+            <div class="date-box" style="margin-bottom:50px; background:rgba(24, 121, 201, 0.2);" align="center" >
             	<!--<img src="resources/images/left-arrow.png" id="left" style="width: 20px; height: 20px;">  -->
                 <span id="today" name="today">
                 
@@ -71,7 +71,7 @@
                     var month = today.getMonth() + 1; // 월
                     var date = today.getDate(); // 일
 
-                    document.getElementById("today").innerHTML = year + "-" + 0 + month + "-" + date;
+                    document.getElementById("today").innerHTML = year + "-" + 0 + month + "-" + 0 + date;
                 })
             </script>
             
@@ -121,7 +121,7 @@
 	                <div class="text">
 	                    <input type="text" class="form-control" name="keyword" value="${ keyword }">
 	                </div>
-	                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+	                <button type="submit" class="searchBtn btn btn-secondary">Search</button>
 	            </form>
             </div>
 			<c:if test="${ not empty condition }">
@@ -138,19 +138,20 @@
                 <thead class="tb-head">
                     <tr height="40px">
                         <th colspan="4">사원 정보</th>
-                        <th colspan="6">근무 정보</th>
+                        <th colspan="7">근무 정보</th>
                     </tr>
                     <tr height="43px">
-                        <th width="100px">사번</th>
-                        <th width="95px">이름</th>
-                        <th width="95px">소속</th>
+                        <th width="95px">사번</th>
+                        <th width="90px">이름</th>
+                        <th width="90px">소속</th>
                         <th width="95px">직급</th>
-                        <th width="87px">출근시각</th>
-                        <th width="87px">퇴근시각</th>
-                        <th width="87px">휴게시간</th>
-                        <th width="87px">근무시간</th>
-                        <th width="87px">연장근무</th>
-                        <th width="95px">근태상태</th>
+                        <th width="80px">출근시각</th>
+                        <th width="80px">퇴근시각</th>
+                        <th width="80px">휴게시간</th>
+                        <th width="80px">근무시간</th>
+                        <th width="80px">연장근무</th>
+                        <th width="90px">근태상태</th>
+                        <th width="60px">상세</th>
                     </tr>
                 </thead>
                 <tbody id="tnaTbody" align="center" class="tb-body">
@@ -173,6 +174,7 @@
                                 <c:if test="${w.tnaStatus eq'휴가'}">
                                 <font color="blue">${w.tnaStatus}</font></c:if>
                             </td>
+                            <td><a href="tnaUpdateForm.wo?userNo=${w.userNo}"><img src="resources/images/edit.png" style="width: 15px; height: 20px;"></a></td>
 	                    </tr>
                     </c:forEach>
                 </tbody>
@@ -184,10 +186,10 @@
                 <ul class="pagination">
                 	<c:choose>
               			<c:when test="${ pi.currentPage eq 1 }">
-                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    		<li class="page-item disabled"><a class="page-link" href="#"><<</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ pi.currentPage-1 }">Previous</a></li>
+                    		<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ pi.currentPage-1 }"><<</a></li>
                     	</c:otherwise>
                     </c:choose>
                     
@@ -197,10 +199,10 @@
                     
                     <c:choose>
                     	<c:when test="${ pi.currentPage eq pi.maxPage }">
-                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                    		<li class="page-item disabled"><a class="page-link" href="#">>></a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ pi.currentPage+1 }">Next</a></li>
+                    		<li class="page-item"><a class="page-link" href="allTnaMain.wo?cpage=${ pi.currentPage+1 }">>></a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>

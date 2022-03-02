@@ -13,6 +13,7 @@
         margin:auto;
     }
     .outer>div{float:left;}
+    .title-box{font-size:21px; font-weight:600;}
     .all-apply{
        width: 950px;
 	   height:100%;
@@ -21,8 +22,8 @@
        padding-top:30px;
     }
     .date-box{font-size:25px; font-weight:600;}
-    .table-bordered th{font-size:14px; text-align:center;}
-    .table-bordered td{font-size:13px;}
+    .table-bordered th{font-size:15px; text-align:center;}
+    .table-bordered td{font-size:14px;}
     #tb-reason:hover{cursor:pointer;}
 
     #pagingArea{width:fit-content;margin:auto;}
@@ -38,10 +39,10 @@
         <div class="all-apply">
 
             <div class="title-box">
-                <h3 style="font-size:20px;">휴가 신청내역</h3>
-            </div><br>
+                  	휴가 신청내역
+            </div><br><br>
 
-            <div class="date-box" style="margin-bottom:50px;" align="center">
+            <div class="date-box" style="margin-bottom:50px; background:rgba(24, 121, 201, 0.2);" align="center">
                 <span> 2022-01-01 ~ 2022-12-31 </span>
             </div>
 
@@ -81,10 +82,10 @@
                <ul class="pagination">
                	<c:choose>
              			<c:when test="${ pi.currentPage eq 1 }">
-                   		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                   		<li class="page-item disabled"><a class="page-link" href="#"><<</a></li>
                    	</c:when>
                    	<c:otherwise>
-                   		<li class="page-item"><a class="page-link" href="leaveApplyList.wo?cpage=${ pi.currentPage-1 }">Previous</a></li>
+                   		<li class="page-item"><a class="page-link" href="leaveApplyList.wo?cpage=${ pi.currentPage-1 }"><<</a></li>
                    	</c:otherwise>
                    </c:choose>
                    
@@ -94,10 +95,10 @@
                    
                    <c:choose>
                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
-                   		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                   		<li class="page-item disabled"><a class="page-link" href="#">>></a></li>
                    	</c:when>
                    	<c:otherwise>
-                   		<li class="page-item"><a class="page-link" href="leaveApplyList.wo?cpage=${ pi.currentPage+1 }">Next</a></li>
+                   		<li class="page-item"><a class="page-link" href="leaveApplyList.wo?cpage=${ pi.currentPage+1 }">>></a></li>
                    	</c:otherwise>
                    </c:choose>
                </ul>

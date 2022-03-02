@@ -40,6 +40,7 @@
 </style>
 </head>
 <body>
+
     <div class="outer">
 
         <jsp:include page="../common/menubar.jsp"/>
@@ -47,29 +48,32 @@
         <br><br>
 
 		<div class="applyForm-outer">
-			<form action="updateApplyLeave.wo" method="post">
+			<form action="insertLeave.wo" method="post">
 		
-				<input type="hidden" name="leaveAno" value="${l.leaveAno}">
+				<input type="hidden" name="userNo" value="${loginUser.userNo}">
 				
 				<div class="leave-btn">
-					<button type="submit" class="btn btn-primary">승인</button>
-					<button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
+					<button type="button" class="btn btn-secondary" onclick="history.back();">뒤로가기</button>
+					
+					<c:if test="${l.status eq '대기' }">
+						<a href="deleteApplyLeave.wo?leaveAno=${ l.leaveAno }" class="btn btn-danger" style="margin-top:7px; margin-left:770px;">삭제</a>
+					</c:if>
 				</div>
 				<br>
 		
 				<!--휴가신청서 내용-->
 				<div class="leave-content" style="border:1px solid #cfcfcfd7;"><br>
 					
-					<h3 align="center" class="title-box">휴가 상세</h3>
-					<br><br>				
+					<h3 align="center" class="title-box">휴가 신청서</h3>
+					<br><br>
 					<table class="table-bordered">
 						<tr>
 							<th width="130">신청자</th>
-							<td width="300">${l.userName}</td>
+							<td width="300">${loginUser.userName}</td>
 						</tr>
 						<tr>
 							<th>소속</th>
-							<td>${l.deptName}</td>
+							<td>${loginUser.deptName}</td>
 						</tr>
 						<tr>
 							<th>직급</th>

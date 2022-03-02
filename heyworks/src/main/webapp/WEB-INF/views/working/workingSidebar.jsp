@@ -13,39 +13,37 @@
 	    height:800px;
         display:inline-block;
     }
-    .sidebar>*{margin-left:15px;}
-    .sidebar-title{font-size:20px; font-weight:bold;}
-    .click-td{text-align:right; border:none;}
-    button{margin-top:7px;}
-    /*실시간 날짜, 시간*/
-    .date{font-size:15px;}
-    .time{
-        font-size:30px;
+    .sidebar>*{        
+        width: 100%;
     }
-    .in-btn, .out-btn{
-        width:65px;
-        height:37px;
-        border-radius:20px;
-        border:none;
-        background:rgb(63, 145, 213);
-        color:white;
-        font-size:15px;
-        font-weight:600;
+    .sidebar-title{
+    	font-size:23px; 
+    	font-weight:bold;
+    	margin-left: 15px;
     }
-    .ot-btn{
-        width:147px;
-        height:37px;
-        border-radius:20px;
-        border:none;
-        background:lightgrey;
-        color:white;
-        font-size:15px;
-        font-weight:600;
+    .sidebar-menu ul{
+    	list-style:none; 
+    	padding-left:0px; 
+    	padding-top:10px;
     }
-    .in-btn, .out-btn, .ot-btn:hover{cursor:pointer;}
-    ul{list-style:none; padding-left:0px; margin-top:10px;}
-    a{text-decoration:none; color:black;}
-    ul>li{margin-top:10px;}
+    .sidebar-menu li{
+    	padding-top:15px; 	
+    	padding-bottom:10px;
+    }
+    .sidebar-menu li li:hover{
+    	background:rgba(24, 121, 201, 0.2);
+    }
+    #menu-select{
+    	padding-left:45px;
+    	font-size:18px;
+    }
+    #menu-select:hover{
+    	background:rgba(24, 121, 201, 0.2);
+    }
+    .sidebar-menu a{
+    	color:black;
+    	text-decoration:none;
+   	}
 
 </style>
 </head>
@@ -54,28 +52,22 @@
     <div class="sidebar">
         <br>
         <div class="sidebar-title">
-            <img src="resources/images/2722998.png" style="width: 25px; height: 25px;"> 근태관리
-        </div><br>
+            <img src="resources/images/2722998.png" style="width:40px; height:40px;"> 근태관리
+        </div>
 
-        <div class="sidebar-menu" style="margin-left:20px">
+        <div class="sidebar-menu">
             <ul>
-                <li style="font-size:15px;"><strong>내 근무</strong>
-                    <ul>
-                        <li style="margin-left:15px;"><a href="main.wo">근태현황</a></li>
-                        <li style="margin-left:15px;"><a href="selectMyleave.wo">휴가현황</a></li>
-                    </ul>
-                </li><br><br>
+                <li style="font-size:19px; padding-left:25px;"><strong>내 근무</strong></li>
+                <li id="menu-select"><a href="main.wo">근태현황</a></li>
+                <li id="menu-select"><a href="selectMyleave.wo">휴가현황</a></li>
 
                 <!--관리자만-->
-                <c:if test="${ loginUser.adminYn eq 'Y' }">
-	                <li style="font-size:15px;"><strong>근무관리</strong>
-	                    <ul>
-	                        <li style="margin-left:15px;"><a href="allTnaMain.wo">전사 근태현황</a></li>
-	                        <li style="margin-left:15px;"><a href="leaveStatusList.wo">전사 휴가현황</a></li>
-	                        <li style="margin-left:15px;"><a href="leaveApplyList.wo">휴가 신청내역</a></li>
-	                    </ul>
-	                </li>
-                </c:if>
+             	<c:if test="${ loginUser.adminYn eq 'Y' }">
+		             <li style="font-size:19px; padding-left:25px;"><strong>전사 근무관리</strong></li>
+		             <li id="menu-select"><a href="allTnaMain.wo">근태현황</a></li>
+		             <li id="menu-select"><a href="leaveStatusList.wo">휴가현황</a></li>
+		             <li id="menu-select"><a href="leaveApplyList.wo">휴가 신청내역</a></li>
+            	</c:if>
             </ul>
         </div>
 
