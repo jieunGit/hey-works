@@ -340,9 +340,9 @@
 			</div>
 			<!-- footer부분 -->
 			<div id="footer">
-					<a onclick="deleteValue();">삭제</a> |
-					<a href="">그룹설정</a> |
-					<a href="">메일보내기</a>
+					<a onclick="deleteValue();">삭제</a>
+					<!-- <a href="">그룹설정</a> |
+					<a href="">메일보내기</a> -->
 					
 					
 			</div>

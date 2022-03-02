@@ -238,7 +238,7 @@ display: none;
 			</div> -->
 			
 			<!-- 검색영역 --> 
-			<form name="searchContacts" action="groupAdList.ad" method="post">
+			<form name="searchContacts" action="adAllList.ad" method="post">
 				<div class="search-box">
 					<input type="text" class="form-control" placeholder="Search…" class="simpleContactSearch" name="contactInput">
 					<button type="submit" style="border: none; background: none;"><i class="fa-solid fa-magnifying-glass" id="simpleContactbtn" ></i></button>
@@ -339,9 +339,9 @@ display: none;
 			</div>
 			<!-- footer부분 -->
 			<div id="footer">
-					<a onclick="deleteValue();">삭제</a> |
-					<a href="">그룹설정</a> |
-					<a href="">메일보내기</a>
+					<a onclick="deleteValue();">삭제</a>
+					<!-- <a href="">그룹설정</a> |
+					<a href="">메일보내기</a> -->
 					
 					
 			</div>

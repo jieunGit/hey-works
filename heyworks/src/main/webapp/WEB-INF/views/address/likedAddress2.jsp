@@ -214,8 +214,8 @@
 			<!-- footer부분 -->
 			<div id="footer">
 					<a href="">삭제</a> |
-					<a href="">그룹설정</a> |
-					<a href="">메일보내기</a>
+					<!-- <a href="">그룹설정</a> |
+					<a href="">메일보내기</a> -->
 					
 					
 			</div>

@@ -320,7 +320,7 @@
 			<div id="footer">
 					<a onclick="deleteValue();">삭제</a> |
 					<!-- <a href="">그룹설정</a> | -->
-					<a href="">메일보내기</a>
+					<!-- <a href="">메일보내기</a> -->
 					
 					
 			</div>
@@ -335,7 +335,7 @@
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="adAllList.ad?cpage=${ pi.currentPage-1 }"><i
+								href="likeAddress.ad?cpage=${ pi.currentPage-1 }"><i
 									class="fa-solid fa-angles-right"></i></a></li>
 						</c:otherwise>
 					</c:choose>
@@ -343,7 +343,7 @@
 
 					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 						<li class="page-item"><a class="page-link"
-							href="adAllList.ad?cpage=${ p }">${ p }</a></li>
+							href="likeAddress.ad?cpage=${ p }">${ p }</a></li>
 					</c:forEach>
 
 
@@ -354,7 +354,7 @@
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="adAllList.ad?cpage=${ pi.currentPage+1 }"><i
+								href="likeAddress.ad?cpage=${ pi.currentPage+1 }"><i
 									class="fa-solid fa-angles-right"></i></a></li>
 						</c:otherwise>
 					</c:choose>

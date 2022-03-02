@@ -832,7 +832,7 @@
 				  <tr>
 					<th style="width: 100px;">예약일</th>
 					<td >
-					   <input type="date" class="datepicker" name="startday">
+					   <input type="date" class="datepicker" name="startday" style="font-size: 13px;">
 
 					   <select class="startday_hour" style="width: 70px; height: 30px;">
 						<c:set var="breakPoint" value="0" />
@@ -850,8 +850,8 @@
 
 				   </select>
 				   ~
-				   <input type="date" class="datepicker" name="endday">
-					   <select class="endday_hour" style="width: 70px; height: 30px;">
+				   <input type="date" class="datepicker" name="endday" style="font-size: 13px;">
+					   <select class="endday_hour" style="width: 70px; height: 30px; ">
 					  <c:set var="breakPoint" value="0" />
 					  <c:forEach var="i" begin="0" end="23">
 						  <c:forEach var="j" begin="0" end="1">
