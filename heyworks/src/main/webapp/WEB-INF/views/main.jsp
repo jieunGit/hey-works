@@ -10,12 +10,26 @@
 <title>Insert title here</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="resources/calendar/dist/tui-calendar.css">
-      <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
-  <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
-    <link rel="stylesheet" type="text/css" href="resources/calendar/css/default.css">
-    <link rel="stylesheet" type="text/css" href="resources/calendar/css/icons.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/color-calendar@1.0.5/dist/bundle.js"></script>
+<link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/color-calendar@1.0.5/dist/css/theme-basic.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/color-calendar@1.0.5/dist/css/theme-glass.css"
+    />
+    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
 <style>
 	.outer{
 		width:1200px;
@@ -43,11 +57,27 @@
 		width: 270px;
 		height: 450px;
 	}
-	#calendar1{
-	position: relative;
-		width: 540px;
-		height: 450px;
+	
+	
+ 	#calendar1{	
+	margin: auto;
+	width: 540px;
+	height: 450px;
 	}
+	.caltitle{
+	font-weight: 700;
+	padding: 10px;
+	padding-bottom: 0;
+	
+	}
+	#calendar-b{
+	margin: auto;
+	width: 400px;
+	height: 370px;
+}
+	
+	
+	
 	#mail, #calendar1{margin-left:20px;}
 	#profile{
 		width: 180px;
@@ -391,12 +421,13 @@ p.info {
 				</div>
 			</div>
 			<div id="calendar1">
-				<div class="title">
-					<span id="renderRange" class="render-range"></span>
-					<hr>					
-				</div><a href="myCalendar.ca">
-				<div id="calendar"></div>
-				</a>
+				<div class="caltitle">
+					일정
+					<hr>
+				</div>
+				
+      <div id="calendar-b"></div>
+				
 			</div>
 			<div id="todo">
 				<div class="title">
@@ -765,21 +796,33 @@ p.info {
 
 
 				})
-
+		
+				let calB = new Calendar({
+			    	  id: "#calendar-b",
+			    	  theme: "basic",
+			    	  primaryColor: "#3F91D5",
+			    	  weekdayType: "short"
+			    	 /*   eventsData: [
+			    	    {
+			    	      id: 1,
+			    	      name: "French class",
+			    	      start: "2022-03-07T06:00:00",
+			    	      end: "2022-03-09T20:30:00"
+			    	    },
+			    	    {
+			    	      id: 2,
+			    	      name: "Blockchain 101",
+			    	      start: "2022-03-20T10:00:00",
+			    	      end: "2022-03-20T11:30:00"
+			    	    }
+			    	  ]  */
+			    	});
 
 		
 	</script>
 	
-	<script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
-  <script src="resources/calendar/dist/tui-calendar.js"></script>
-  <script src="resources/calendar/js/data/calendars.js"></script>
-  <script type="text/javascript" class="code-js">
-  var cal = new tui.Calendar('#calendar', {
-	    defaultView: 'month' // monthly view option
-	  });
-  </script>
-  <script src="resources/calendar/js/default.js"></script>
+
+
 
 </body>
 </html>
