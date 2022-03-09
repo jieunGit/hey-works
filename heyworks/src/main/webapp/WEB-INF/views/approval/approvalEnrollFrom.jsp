@@ -393,7 +393,6 @@
             		},
             		success:function(list){
             			
-            			
             			let value = "";
         				for(let i in list){
         					value += "<tr>"
@@ -407,17 +406,12 @@
         				$(".sawon-list>tbody").html(value);
 
             		},error:function(){
-            			
             			console.log("사원조회용 ajax통신 실패");
-            			
             		}
             	})
             } 
             
             function searchConfirm(keyword){
-            	
-            	//var keyword = $("input[name='keyword']").val();
-            	console.log(keyword);
             	
             	$("input[name='keyword']").keyup(function(e){
                     if(e.keyCode == 13){
@@ -442,30 +436,13 @@
 		            	})
 		            }
             	 })
-            	}
+            }
             
             /*ajax끝*/
-            
-            // 사원 값 비교해서 체크박스 disabled하기
-            /* 사용안함
-            function valueCheck(){
-            	
-            	let checkvalue = $("input:checkbox[name='job']:checked").val();
-
-            	$('input:checkbox[name="job"]').each(function(){
-            	    
-            		if(checkvalue > $(this).val()){
-            			this.disabled = true;
-            		}else{
-            			this.disabled = false;
-            		}
-            	})
-
-            }*/
 
             /*버튼 클릭시 결재 화면에 뿌려질 용도*/
             function list(num){
-
+				
                 var nameCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".nameCheck").text();
                 var jobCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".jobCheck").text();
             	var noCheck = $(".sawon-list>tbody>tr>td>input:checked").parent().siblings(".noCheck").text();
@@ -512,11 +489,12 @@
 	            	       + "<input type='hidden' name='confirmList[2].confirmNo' id='clist3'>"
 	            	       + "<input type='hidden' name='confirmList[2].procedureNo' value='3'>"
 	            	       + "</td>"
-            		
             	}
-           		// 결재자 리스트 누적해서 뿌려주기
+            	
+           		// 선택한 결재자만큼 input, td 누적해서 생성해주기
             	$("#line-list").html($("#line-list").html() + value); 
             	
+				// 선택한 버튼에 따라서 결재자 선택한 칸에 보여지게           		
                 switch(num){
                     case 1:$("#yoelam").text(nameCheck + " " + jobCheck),$("#readNo").val(noCheck); break;
                     case 2:$("#chamjo").text(nameCheck + " " + jobCheck),$("#refNo").val(noCheck); break;
@@ -524,38 +502,39 @@
                     case 4:$("#sign2").text(nameCheck + " " + jobCheck),$("#clist2").val(noCheck); break;
                     case 5:$("#sign3").text(nameCheck + " " + jobCheck),$("#clist3").val(noCheck); return;
                 }
-            	
+				
             	// 결재자 값 비교해서 선택 불가하게 하기
                	let sign1 = $("#sign1").text();
                	let fsign = sign1.slice(-2);
                	
-               	if(fsign == '이사'){
+               	let sign2 = $("#sign2").text();
+               	let ssign = sign2.slice(-2);
+               	
+               	if(fsign == '이사' || ssign == '이사'){
                		$('input:checkbox[name="job"]').each(function(){
                    		if($(this).val() == 4 || $(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
                    			this.disabled = true;
                    		}
                    	})
-               	}else if(fsign == '과장'){
+               	}else if(fsign == '과장' || ssign == '과장'){
                		$('input:checkbox[name="job"]').each(function(){
                    		if($(this).val() == 3 || $(this).val() == 2 || $(this).val() == 1){
                    			this.disabled = true;
                    		}
                    	})
-               	}else if(fsign == '대리'){
+               	}else if(fsign == '대리' || ssign == '대리'){
                		$('input:checkbox[name="job"]').each(function(){
                    		if($(this).val() == 2 || $(this).val() == 1){
                    			this.disabled = true;
                    		}
                    	})
-               	}else if(fsign == '주임'){
+               	}else if(fsign == '주임' || ssign == '주임'){
                		$('input:checkbox[name="job"]').each(function(){
                    		if($(this).val() == 1){
                    			this.disabled = true;
                    		}
                    	})
                	} // 결재비교 끝
-
-                
             }
             
             function minuspeople(num){ // 하나씩 삭제
@@ -590,14 +569,12 @@
             }
             
             function confirmList(){           	
-            	
             	// 사원+직급 뿌려주기
             	$("#read").val($("#yoelam").text());
             	$("#reference").val($("#chamjo").text());
             	$("#confirm1").val($("#sign1").text());
             	$("#confirm2").val($("#sign2").text());
             	$("#confirm3").val($("#sign3").text());
-            	
             }
             
             //------------------------------------------결재자 끝

@@ -441,7 +441,7 @@
 						
 						if(result == 'S'){
 							alertify.alert("댓글이 등록되었습니다.");
-    						$("#replyContent").val("");
+    						$("#reply-content").val("");
     						selectReplyList();
     					}else{
     						alertify.alert("댓글등록 실패!");

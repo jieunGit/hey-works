@@ -143,7 +143,6 @@
                     }
                 }
             })
-
         })
 
         /*새 비밀번호 유효성 검사*/
@@ -159,11 +158,9 @@
                 if($("#new-pwd").val() == ""){
                     $("#pwd-info").text("");
                 }
-
             }else{
                 $("#pwd-info").css("color", "green").text("멋있어요!");
             }
-
         })
 
 
@@ -180,8 +177,7 @@
 
         })
 
-							//$newchk.text("");
-        /* 새 비밀번호와 비밀번호 확인 일치 확인(수정중)*/
+        /* 새 비밀번호와 비밀번호 확인 일치 확인*/
         function validate(){
 
             let $new = $("#new-pwd").val();
@@ -192,7 +188,6 @@
             	alert("비밀번호가 일치하지 않습니다!");
             	location.href="updatePwdForm.em";
             	return false;
-
             }
         }
     </script>

@@ -129,6 +129,11 @@
         			$("#type").show();
     				$("#searchStandBy").hide();
         		}
+        		if($("select[name='subject']").val() == 'title'){
+        			$("#type").hide();
+    				$("#searchStandBy").show();
+        		}
+        		
         	})
         </script>
 

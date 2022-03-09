@@ -165,7 +165,7 @@
                 <li><a href="main.wo">
                     <img src="resources/images/bag.png">
                 </a></li>
-                <li><a href="main.el">
+                <li id="approval"><a href="main.el">
                     <img src="resources/images/approval.png">
                 </a></li>
                 <li><a href="">

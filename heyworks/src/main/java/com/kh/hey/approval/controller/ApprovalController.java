@@ -611,7 +611,7 @@ public class ApprovalController {
 			}
 			
 			session.setAttribute("alertMsg", "결재 문서가 삭제되었습니다.");
-			return "redirect:main.el";
+			return "redirect:onlist.el?status=A";
 			
 		}else {
 			

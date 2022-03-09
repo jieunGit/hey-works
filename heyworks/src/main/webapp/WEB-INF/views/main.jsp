@@ -324,8 +324,9 @@ p.info {
 			</div>
 			<div id="mail">
 				<div class="title">
-					새로온 메일()
+					새로온 메일(0)
 					<hr>
+					새로온 메일이 없습니다.
 				</div>
 				<div>
 
