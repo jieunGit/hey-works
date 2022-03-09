@@ -52,6 +52,9 @@
     .side-list:hover{
     	cursor:pointer;
     }
+    #approval{
+    	background: rgb(25, 105, 170);
+    }
 </style>
 </head>
 <body>

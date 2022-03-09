@@ -494,7 +494,8 @@
             //------------------------------------------결재자 끝
             
             //----------------------비품시작
-            function addItem(){
+            
+            function addItem(){ // 한 행 추가
             	
             	var value = "";
             	value += "<tr>"
@@ -511,10 +512,9 @@
             		   
            		count++;
            		procedure++;
-           		
             }
             
-            function removeList(){
+            function removeList(){ // 한 행 삭제
             	
             	var tablelt = $("#equipmentList tr").length;
             	            	
@@ -527,13 +527,11 @@
             		alert("한 행은 반드시 존재해야합니다!");
             		return false;
             	}
-            	
             	count--;
             	procedure--;
-            	
             }
             
-            function allTotalPay(){
+            function allTotalPay(){ // 비품금액 총 합계
             	
            		var totalPay = 0;
             	var tablelt = $("#equipmentList tr").length;
@@ -542,7 +540,6 @@
            			totalPay += $("input[name='itemList[" + i + "].amount'").val() * $("input[name='itemList[" + i + "].total'").val()
 				}
            		$("input[name='totalPay']").val(totalPay);
-            	
             }
         </script>
 
