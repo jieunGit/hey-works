@@ -180,8 +180,8 @@
 			  , post
 			  , address
 			  , address_detail
-			  , to_date(hire_date, 'YYYY-MM-DD') hire_date
-			  , to_date(end_date, 'YYYY-MM-DD') end_date
+			  , hire_date
+			  , end_date
 			  , email
 			  , phone
 			  , call
@@ -210,10 +210,9 @@
 		  from employee
 		  join department using (dept_code)
 		 where (status = 'Y' or status = 'R')
-		 <if test="dno > 0">
+		 <if test="dno > 0 ">
            and dept_code = #{ dno }
-         </if>
-	
+		 </if>
 	</select>
 	
 	<select id="adminDeptOrgan" resultMap="organResult">
@@ -232,7 +231,9 @@
 			  , email
 			  , phone
 			  , call
-			  , status
+			  , decode
+			    (status, 'Y ', '재직'
+			           , 'R ', '휴직') status
 			  , dept_code
 			  , dept_name
 			  , decode
@@ -250,6 +251,55 @@
 		 <if test="dno > 0 ">
 		   and dept_code = #{ dno }
 		 </if>
+		 order by job_code desc
+		 		, user_name asc
+	
+	</select>
+	
+	<select id="adSearchCountList" resultType="_int">
+
+		select         
+			   count(*)
+		  from employee
+		 where (status = 'Y' or status = 'R')
+           and user_name = #{ userName }
+	
+	</select>
+	
+	<select id="adSearchOrgan" resultMap="organResult">
+
+		select
+			    user_no
+			  , user_name
+			  , user_id
+			  , user_pwd
+			  , birth
+			  , post
+			  , address
+			  , address_detail
+			  , hire_date
+			  , end_date
+			  , email
+			  , phone
+			  , call
+			  , decode
+			    (status, 'Y ', '재직'
+			           , 'R ', '휴직') status
+			  , dept_code
+			  , dept_name
+			  , decode
+			    (job_code, 1, '사원' 
+			             , 2, '주임'
+			             , 3, '대리'
+			             , 4, '과장'
+			             , 9, '대표이사') job_name
+			  , image
+			  , admin_yn
+			  , nvl(job_code, 0) job_code
+		  from employee
+		  join department using (dept_code)
+		 where (status = 'Y' or status = 'R')
+		   and user_name like '%'||#{ userName }||'%'
 		 order by job_code desc
 		 		, user_name asc
 	

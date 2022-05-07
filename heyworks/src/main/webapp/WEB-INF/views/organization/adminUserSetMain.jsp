@@ -126,9 +126,9 @@
                 <!--검색바-->
                 <form class="searchbar">
                     <div class="input-group">
-                    <input type="text" class="form-control" placeholder="사번 / 이름 검색">
+                    <input type="text" class="form-control" value="${ userName }" name="userName" placeholder="이름 검색">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
+                        <button class="btn btn-default" type="submit" onclick="searchOrgan">
                         <i class="glyphicon glyphicon-search"></i>
                         </button>
                     </div>
@@ -136,19 +136,8 @@
                 </form>
             </div>
             
-            <script>
-	            $(function(){
-	            	$('#deptCode').change(function(){
-	            		var dtCode = $('#deptCode option:selected').val();
-	            		console.log(dtCode);
-	            		location.href="list.selectOr?dno=" + dtCode;
-	            	})
-	            });
-            </script>
-           
             
-        	
-			
+            
             <!--임직원목록-->
             <table class="table">
                 <thead>
@@ -190,12 +179,19 @@
             			<li class="pagePrev" class="page-item disabled"><a href="#"><</a></li>
             		</c:when>
             		<c:otherwise>
-            			<li class="pagePrev" class="page-item"><a href=""><</a></li>
+            			<li class="pagePrev" class="page-item"><a href="list.adminOrgan?dno=${ dno }&cpage=${ pi.currentPage-1 }"><</a></li>
             		</c:otherwise>
             	</c:choose>
             	
             	<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-            		<li class="page" class="page-item"><a class="cur" onclick="current();">${ p }</a></li>
+            		<c:choose>
+            		<c:when test="${ pi.currentPage eq p }">
+            			<li class="active"><a href="#">${ p }</a></li>
+            		</c:when>
+            		<c:otherwise>
+	           			<li class="page" class="page-item"><a href="list.adminOrgan?dno=${ dno }&cpage=${ p }">${ p }</a></li>
+            		</c:otherwise>
+            		</c:choose>
             	</c:forEach>
             	
             	<c:choose>
@@ -203,7 +199,7 @@
             			<li class="pageNext" class="page-item disabled"><a href="#">></a></li>
             		</c:when>
             		<c:otherwise>
-            			<li class="pageNext" class="page-item"><a onclick="next();">></a></li>
+            			<li class="pageNext" class="page-item"><a href="list.adminOrgan?dno=${ dno }&cpage=${ pi.currentPage+1 }">></a></li>
             		</c:otherwise>
             	</c:choose>
             	
@@ -212,17 +208,23 @@
        </div>
    </div>
    
+   <!-- 드롭다운 클릭 시 부서별 조회 -->
    <script>
-   		function prev(){
-   			location.href = "";
-   		}
+    $(function(){
+    	$('#deptCode').change(function(){
+    		var dtCode = $('#deptCode option:selected').val();
+    		//console.log(dtCode);
+    		location.href="list.adminOrgan?dno=" + dtCode;
+    	})
+    });
    </script>
    
+   <!-- 임직원 상세정보 -->
    <script>
    	 $(function(){
    		 $('.table>tbody>tr').click(function(){
    			location.href = "updateForm.organ?userNo=" + $(this).children('.userNo').text();
-   			 console.log($(this).children('.userNo').text());
+   			 //console.log($(this).children('.userNo').text());
    		 })
    	 })
    </script>
