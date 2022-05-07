@@ -59,6 +59,16 @@ public class OrganizationServiceImple implements OrganizationService {
 	public ArrayList<Organ> adminDeptOrgan(int dno, PageInfo pi) {
 		return orDao.adminDeptOrgan(sqlSession, dno, pi);
 	}
+	
+	@Override
+	public int adSearchCountList(String userName) {
+		return orDao.adSearchCountList(sqlSession, userName);
+	}
+
+	@Override
+	public ArrayList<Organ> adSearchOrgan(String userName, PageInfo pi) {
+		return orDao.adSearchOrgan(sqlSession, userName, pi);
+	}
 
 	@Override
 	public int insertOrgan(Organ o) {
@@ -84,6 +94,8 @@ public class OrganizationServiceImple implements OrganizationService {
 	public Organ mainEmp(String userNo) {
 		return orDao.mainEmp(sqlSession, userNo);
 	}
+
+	
 
 	
 

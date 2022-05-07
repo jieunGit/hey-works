@@ -151,7 +151,7 @@
                 <img src="resources/images/miniletter.png" id="letter">
             </a>
             <a href="myPage.em">
-                <img src="resources/images/user.jpg" id="profile">
+                <img src="${ emp.image }" id="profile">
             </a>
         </div>
     </div>

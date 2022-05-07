@@ -80,7 +80,7 @@ public class OrganizationController {
 			return "organization/organizationMain";
 			
 		}else {
-			System.out.println("요청실패");
+			//System.out.println("요청실패");
 			return "redirect:/";
 		}
 		
@@ -96,67 +96,57 @@ public class OrganizationController {
 		if(emp != null) {
 			return emp;		
 		}else {
-			System.out.println("요청실패");
+			//System.out.println("요청실패");
 			return emp;
 		}
 	}
 	
-	// 관리자모드 임직원 조회(하..페이징..때문에 미완성)
+	
+	// ---------------- 관리자모드 ---------------------
+	
+	// 임직원 조회
 	@RequestMapping("list.adminOrgan")
 	public String adSelectOrgan(@RequestParam(value="cpage", defaultValue="1") int currentPage, 
-								@RequestParam(value="dno", defaultValue="0") int dno, HttpSession session, Model model) {
+								@RequestParam(value="dno", defaultValue="0") int dno,
+								@RequestParam(value="userName", defaultValue="")String userName, HttpSession session, Model model) {
 		
 		// 갯수조회
-		int listCount = orService.adCountList(dno);
+		if(userName.equals("")) {			
 		
-		// 페이징처리
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		// 조직도 조회요청
-		ArrayList<Organ> organ = orService.adminDeptOrgan(dno, pi);
-		
-		System.out.println(listCount);
-		System.out.println(organ);
-		
-		if(organ != null) {
-			//System.out.println(inList);
-			session.setAttribute("organ", organ);
-			session.setAttribute("pi", pi);
-			return "organization/adminUserSetMain";
-		}else {
-			System.out.println("받은메세지 불러오기 실패");
-			return "organization/adminUserSetMain";
-		}
-		
-	}
-	
-	// ajax
-		@RequestMapping("list.selectOr")
-		public String adselectOr(@RequestParam(value="cpage", defaultValue="1") int currentPage, 
-								 @RequestParam(value="dno", defaultValue="0")int dno, HttpSession session, Model model) {
-			
-			// 갯수조회
 			int listCount = orService.adCountList(dno);
-			
-			// 페이징처리
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-			// 조직도 조회요청
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 			ArrayList<Organ> organ = orService.adminDeptOrgan(dno, pi);
-			
-			System.out.println(listCount);
-			System.out.println(organ);
-			
 			if(organ != null) {
-				session.setAttribute("organ", organ);
-				session.setAttribute("pi", pi);
+				model.addAttribute("organ", organ);
+				model.addAttribute("pi", pi);
 				model.addAttribute("dno", dno);
 				return "organization/adminUserSetMain";
 			}else {
-				System.out.println("받은메세지 불러오기 실패");
 				return "organization/adminUserSetMain";
 			}
 			
+		}else {
+			int listCount = orService.adSearchCountList(userName);
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<Organ> organ = orService.adSearchOrgan(userName, pi);
+			if(organ != null) {
+				model.addAttribute("organ", organ);
+				model.addAttribute("pi", pi);
+				model.addAttribute("userName", userName);
+				return "organization/adminUserSetMain";
+			}else {
+				session.setAttribute("alertMsg", "잘못된 요청입니다.");
+				return "organization/adminUserSetMain";
+			}
 		}
-	
+		
+		
+		// 조직도 조회요청
+		
+		
+		
+		
+	}
 	
 	// 사용자추가 폼
 	@RequestMapping("userPlustForm.organ")
@@ -183,7 +173,6 @@ public class OrganizationController {
 		return "redirect:list.adminOrgan";
 		
 	}
-	
 	
 	// 사용자추가 > ID 유효성검사
 	@ResponseBody

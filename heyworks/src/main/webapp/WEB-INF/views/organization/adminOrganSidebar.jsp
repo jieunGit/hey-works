@@ -58,7 +58,7 @@
             <i class='fas fa-angle-double-right' style='font-size:24px'> 인사관리</i>
         </div>
         <ul>
-            <li><i class="fa-solid fa-user-gear" style='font-size:20px'><a href="admin.organ">임직원관리</a></i></li>
+            <li><i class="fa-solid fa-user-gear" style='font-size:20px'><a href="list.adminOrgan">임직원관리</a></i></li>
             <li><i class="fa-solid fa-sitemap" style='font-size:20px'><a>조직도관리</a></i></li>
         </ul>
 

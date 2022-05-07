@@ -107,8 +107,7 @@
           
             <!--안내문구-->
             <div class="inform">
-                <p id="inform1">* 사용자 추가</p>
-                <p id="inform2">- 여기서 설정한 비밀번호는 임시비밀번호로 사용자가 직접 1회 비밀번호를 변경 후 오피스 사용이 가능합니다.</p>
+                <p id="inform1">* 사용자 정보 수정</p>
             </div>
 
             <!--입력폼-->
@@ -140,7 +139,7 @@
                         </li>
                         <li>
                             <span>비밀번호확인*</span>
-                            <label><input type="password" name="userPwdCheck" id="userPwdCheck" required></label>
+                            <label><input type="password" name="userPwdCheck" id="userPwdCheck"></label>
                             <div id="pwdResult" style="font-size: 0.8em; margin-left: 115px; display:none;"></div>
                         </li>
                     </ul>
@@ -201,7 +200,7 @@
                     </ul>
                     
                     <div class="buttons">
-                        <button type="submit" class="btn btn-primary">추가하기</button>
+                        <button type="submit" class="btn btn-primary">수정하기</button>
                         <button type="button" class="btn btn-danger">취소하기</button>
                     </div>
 

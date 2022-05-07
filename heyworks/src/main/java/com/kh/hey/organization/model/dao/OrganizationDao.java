@@ -50,6 +50,20 @@ public class OrganizationDao {
 		
 	}
 	
+	public int adSearchCountList(SqlSessionTemplate sqlSession, String userName) {
+		return sqlSession.selectOne("organMapper.adSearchCountList", userName);
+	}
+	
+	public ArrayList<Organ> adSearchOrgan(SqlSessionTemplate sqlSession, String userName, PageInfo pi) {
+
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("organMapper.adSearchOrgan", userName, rowBounds);
+		
+	}
+	
 	public int insertOrgan(SqlSessionTemplate sqlSession, Organ o) {
 		return sqlSession.insert("organMapper.insertOrgan", o);
 	}

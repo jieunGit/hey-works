@@ -49,7 +49,7 @@ public class MessageController {
 			session.setAttribute("count", listCount);
 			return "message/inMsgList";
 		}else {
-			System.out.println("받은메세지 불러오기 실패");
+			//System.out.println("받은메세지 불러오기 실패");
 			return "message/inMsgList";
 		}
 		
@@ -69,8 +69,8 @@ public class MessageController {
 			session.setAttribute("msg", msg);
 			return "message/inMsgDetailView";
 		}else {
-			System.out.println("상세보기 불러오기 실패");
-			System.out.println(msg);
+			//System.out.println("상세보기 불러오기 실패");
+			//System.out.println(msg);
 			return "message/inMsgDetailView";
 		}
 		
@@ -136,7 +136,7 @@ public class MessageController {
 			session.setAttribute("count", listCount);
 			return "message/inMsgList";
 		}else {
-			System.out.println("받은메세지 불러오기 실패");
+			//System.out.println("받은메세지 불러오기 실패");
 			return "message/inMsgList";
 		}
 		
@@ -205,7 +205,7 @@ public class MessageController {
 			session.setAttribute("count", listCount);
 			return "message/outMsgList";
 		}else {
-			System.out.println("받은메세지 불러오기 실패");
+			//System.out.println("받은메세지 불러오기 실패");
 			return "message/outMsgList";
 		}
 		
@@ -225,8 +225,8 @@ public class MessageController {
 			session.setAttribute("msg", msg);
 			return "message/outMsgDetailView";
 		}else {
-			System.out.println("상세보기 불러오기 실패");
-			System.out.println(msg);
+			//System.out.println("상세보기 불러오기 실패");
+			//System.out.println(msg);
 			return "message/outMsgDetailView";
 		}
 		
@@ -275,7 +275,7 @@ public class MessageController {
 			session.setAttribute("count", listCount);
 			return "message/outMsgList";
 		}else {
-			System.out.println("받은메세지 불러오기 실패");
+			//System.out.println("받은메세지 불러오기 실패");
 			return "message/outMsgList";
 		}
 		
@@ -300,7 +300,7 @@ public class MessageController {
 			session.setAttribute("count", listCount);
 			return "message/keepMsgList";
 		}else {
-			System.out.println("받은메세지 불러오기 실패");
+			//System.out.println("받은메세지 불러오기 실패");
 			return "message/keepMsgList";
 		}
 		
@@ -332,7 +332,7 @@ public class MessageController {
 			session.setAttribute("count", listCount);
 			return "message/keepMsgList";
 		}else {
-			System.out.println("받은메세지 불러오기 실패");
+			//System.out.println("받은메세지 불러오기 실패");
 			return "message/keepMsgList";
 		}
 		

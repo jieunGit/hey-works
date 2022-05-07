@@ -27,6 +27,9 @@ public interface OrganizationService {
 	// 5-1. 부서별인원검색
 	int adCountList(int dno);
 	ArrayList<Organ> adminDeptOrgan(int dno, PageInfo pi);
+	// 5-2. 사번/이름검색
+	int adSearchCountList(String userName);
+	ArrayList<Organ> adSearchOrgan(String userName, PageInfo pi);
 	
 	// 6. 사용자추가 요청
 	// 6-1. Id유효성검사

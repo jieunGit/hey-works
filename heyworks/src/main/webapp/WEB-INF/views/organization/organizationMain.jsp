@@ -89,23 +89,20 @@
         width: 250px;
         height: 80px;
     }
-    #detail1 .image {
+    #detail1 img {
         float: left;
         width:80px;
         height:80px;
-    }
-    image img {
-        width: 100px;
-        height: 100px;
         border-radius: 50%;
     }
     #detail1 .inform {
         width: 160px;
         height: 80px;
+        float: right;
+        margin-top: 10px;
     }
     .inform ul {
         padding-left: 13px;
-        margin-top: 8px;
         list-style: none;
     }
     .image, .inform {
@@ -275,7 +272,7 @@
 			$(document).on('click', '.userList', function(){
 				
 				var userNo = $(this).children(".userNo").text();
-				console.log(userNo);
+				//console.log(userNo);
 				
 				$.ajax({
 					url:"detail.emp",

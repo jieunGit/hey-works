@@ -113,7 +113,7 @@ public class EmployeeController {
 		
 		//로그인유저 메인 -----------------------------------------------------------
 		Organ emp = orService.mainEmp(userNo);
-		model.addAttribute("emp", emp);
+		session.setAttribute("emp", emp);
 		System.out.println(emp);
 		
 		return "main";
